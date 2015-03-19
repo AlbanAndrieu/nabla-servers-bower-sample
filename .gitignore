@@ -1,0 +1,12 @@
+.project
+.settings/
+.classpath
+target/
+node/
+node_modules/
+.bower/
+bower_components/
+dist
+.tmp
+.sass-cache
+*.log
