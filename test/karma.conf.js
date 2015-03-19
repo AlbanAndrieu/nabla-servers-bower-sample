@@ -1,3 +1,4 @@
+'use strict';
 // Karma configuration
 // http://karma-runner.github.io/0.12/config/configuration-file.html
 // Generated on 2015-03-19 using
@@ -56,9 +57,31 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
       'karma-phantomjs-launcher',
+      'karma-ie-launcher',
+      'karma-junit-reporter',
+      'karma-coverage',
       'karma-jasmine'
     ],
+
+    // test results reporter to use
+    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
+    reporters: ['dots', 'progress', 'junit', 'coverage'],
+
+    preprocessors: {
+      'src/**/*.js': ['coverage']
+    },
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: '../target/karma-coverage'
+    },
+
+    junitReporter: {
+      outputFile: '../target/surefire-reports/TEST-KarmaTest.xml'
+    },
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit

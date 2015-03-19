@@ -8,7 +8,7 @@
  * Controller of the cmrTestApp
  */
 angular.module('cmrTestApp')
-  .controller('AboutCtrl', function ($scope) {
+  .controller('AboutCtrl', function($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
