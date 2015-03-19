@@ -1,6 +1,14 @@
 {
-  "name": "cmr-test",
-  "version": "0.0.0",
+  "name": "bower-sample",
+  "description": "Sample bower component",
+  "version": "1.0.1",
+  "author": "Nabla Core Team <dev@home.nabla.mobi>",
+  "private": "false",
+  "main": "src/index.js",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
   "dependencies": {
     "angular": "^1.3.0",
     "bootstrap": "^3.2.0",

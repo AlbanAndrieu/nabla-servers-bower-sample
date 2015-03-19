@@ -7,13 +7,17 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Configurable paths for the application
   var appConfig = {
@@ -66,15 +70,24 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9000,
+        port: 8001,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
+        livereload: 35729,
+            analytics: {
+              account: 'UA-56011797-1',
+              domainName: 'nabla.mobi'
+            },
+            discussions: {
+              shortName: 'nabla',
+              url: 'http://home.nabla.mobi',
+              dev: false
+            }
       },
       livereload: {
         options: {
           open: true,
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               connect.static('.tmp'),
               connect().use(
@@ -93,7 +106,7 @@ module.exports = function (grunt) {
       test: {
         options: {
           port: 9001,
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
@@ -108,6 +121,7 @@ module.exports = function (grunt) {
       },
       dist: {
         options: {
+          port: 9002,
           open: true,
           base: '<%= yeoman.dist %>'
         }
@@ -134,6 +148,21 @@ module.exports = function (grunt) {
       }
     },
 
+    jscs: {
+      options: {
+        config: '.jscs.json'
+      },
+      all: {
+        src: [
+          'Gruntfile.js',
+          '<%= yeoman.app %>/scripts/{,*/}*.js'
+        ]
+      },
+      test: {
+        src: ['test/spec/{,*/}*.js']
+      }
+    },
+
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -146,8 +175,12 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
-    },
+      server: '.tmp',
+      bower: ['.bower', 'bower_components'],
+        tmp: ['tmp'],
+        build: ['build'],
+        docs: ['docs']
+      },
 
     // Add vendor prefixed styles
     autoprefixer: {
@@ -156,7 +189,7 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-          map: true,
+          map: true
         },
         files: [{
           expand: true,
@@ -380,6 +413,14 @@ module.exports = function (grunt) {
       ]
     },
 
+    ngdocs: {
+      options: {
+        scripts: ['angular.js', '../src.js'],
+        html5Mode: false
+      },
+      all: ['src/**/*.js']
+    },
+
     // Test settings
     karma: {
       unit: {
@@ -390,7 +431,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+  grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
@@ -405,7 +446,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
+  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
@@ -436,8 +477,11 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
+  grunt.registerTask('docs', ['build', 'ngdocs', 'connect']);
+
   grunt.registerTask('default', [
     'newer:jshint',
+    'jscs',
     'test',
     'build'
   ]);

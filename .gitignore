@@ -2,6 +2,10 @@
 .settings/
 .classpath
 target/
+/build/
+.DS_Store
+.idea/workspace.xml
+*~
 node/
 node_modules/
 .bower/
@@ -10,3 +14,4 @@ dist
 .tmp
 .sass-cache
 *.log
+/docs/
