@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<groupId>com.nabla.project.servers.sample</groupId>
+		<artifactId>sample</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<!--<groupId>com.nabla.project.servers.sample</groupId> -->
+	<artifactId>bower-sample</artifactId>
+	<packaging>pom</packaging>
+	<!--<version>1.0</version> -->
+	<name>bower-sample</name>
+	<description>Bower sample components</description>
+    <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+
+    <scm>
+            <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
+            <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
+            <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+    </scm>
+
+	<ciManagement>
+		<system>Jenkins</system>
+		<!--<url>${JENKINS_URL}/job/${JOB_NAME}</url>-->
+        <url>${JOB_URL}</url>
+	</ciManagement>
+
+	<issueManagement>
+		<url>https://github.com/AlbanAndrieu/nabla-servers-bower/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<properties>
+		<!-- TODO remove maven.frontend.plugin.version once super pom 1.1.15-SNAPSHOT will be available -->
+        <maven.frontend.plugin.version>0.0.19</maven.frontend.plugin.version>
+        <node.version>v0.10.24</node.version>
+        <npm.version>2.5.0</npm.version>
+	</properties>
+
+   <build>
+	    <!--
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+        -->
+
+        <plugins>
+            <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven.clean.plugin.version}</version>
+                    <configuration>
+                            <filesets>
+                                    <fileset>
+                                            <directory>${project.basedir}</directory>
+                                            <includes>
+                                                    <include>.bower/</include>
+                                                    <include>node_modules/</include>
+                                                    <include>node/</include>
+                                                    <include>bower_components/</include>
+                                                    <include>build/</include>
+                                            </includes>
+                                            <excludes>
+                                                    <!-- Allow mvn clean install > install.log -->
+                                                    <exclude>**/build.log</exclude>
+                                                    <exclude>**/install.log</exclude>
+                                            </excludes>
+                                            <followSymlinks>false</followSymlinks>
+                                    </fileset>
+                            </filesets>
+                    </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>${maven.frontend.plugin.version}</version>
+
+                <configuration>
+                    <nodeVersion>${node.version}</nodeVersion>
+                    <npmVersion>${npm.version}</npmVersion>
+                </configuration>
+
+                <executions>
+
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt build</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+			    <property>
+				     <name>!profile.activation</name>
+				 </property>
+		    </activation>
+            <properties>
+                <sonar.language>js</sonar.language>
+                <!--<sonar.exclusions>${basedir}/src/main/webapp/lib/**</sonar.exclusions>-->
+                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+                <sonar.javascript.lcov.reportPath>${basedir}/target/lcov.info</sonar.javascript.lcov.reportPath>
+	        </properties>
+	     </profile>
+    </profiles>
+</project>
