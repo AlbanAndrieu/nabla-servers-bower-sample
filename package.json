@@ -33,6 +33,7 @@
   "devDependencies": {
     "bower": "~1.3.12",
     "grunt": "^0.4.5",
+    "grunt-cli": "0.1.13",
     "grunt-autoprefixer": "^2.0.0",
     "grunt-concurrent": "^1.0.0",
     "grunt-contrib-clean": "^0.6.0",
@@ -61,7 +62,7 @@
     "karma-chrome-launcher": "0.1.5",
     "karma-coverage": "0.2.6",
     "karma-firefox-launcher": "0.1.3",
-    "karma-jasmine": "~0.2.2",
+    "karma-jasmine": "0.1.5",
     "karma-junit-reporter": "0.2.2",
     "karma-ng-html2js-preprocessor": "0.1.2",
     "karma-ng-scenario": "0.1.0",
