@@ -9,23 +9,20 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<!--<groupId>com.nabla.project.servers.sample</groupId> -->
 	<artifactId>bower-sample</artifactId>
-	<packaging>pom</packaging>
-	<!--<version>1.0</version> -->
+	<packaging>war</packaging>
 	<name>bower-sample</name>
 	<description>Bower sample components</description>
     <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
 
     <scm>
-            <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
-            <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
-            <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+		<connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
+		<developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
+		<url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
     </scm>
 
 	<ciManagement>
 		<system>Jenkins</system>
-		<!--<url>${JENKINS_URL}/job/${JOB_NAME}</url>-->
         <url>${JOB_URL}</url>
 	</ciManagement>
 
@@ -35,17 +32,112 @@
 	</issueManagement>
 
 	<properties>
-		<!-- TODO remove maven.frontend.plugin.version once super pom 1.1.15-SNAPSHOT will be available -->
-        <maven.frontend.plugin.version>0.0.19</maven.frontend.plugin.version>
-        <node.version>v0.10.24</node.version>
-        <npm.version>2.5.0</npm.version>
+        <!--<node.version>0.10.32</node.version>-->
+        <node.version>0.10.24</node.version>
+        <jersey.version>1.8</jersey.version>
+
+        <jetty9.version>9.2.3.v20140905</jetty9.version>
 	</properties>
+
+	<dependencies>
+		<!--
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<scope>${scope.tomcat.never.type}</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-impl</artifactId>
+			<scope>${scope.tomcat.never.type}</scope>
+		</dependency>
+		-->
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+
+        <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
+		<!-- https://github.com/mdeimel/jetty-proxy -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-proxy</artifactId>
+            <version>${jetty.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+       <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+   </dependencies>
 
    <build>
 	    <!--
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>app</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
         -->
+		<finalName>test</finalName>
+
+
+	<pluginManagement>
+		<plugins>
+			<!--This plugin's configuration is used to store Eclipse m2e settings
+				only. It has no influence on the Maven build itself. -->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>${lifecycle.mapping.version}</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>com.github.eirslett</groupId>
+									<artifactId>frontend-maven-plugin</artifactId>
+									<versionRange>[${maven.frontend.plugin.version},)</versionRange>
+									<goals>
+										<goal>install-node-and-npm</goal>
+										<goal>npm</goal>
+										<goal>grunt</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore></ignore>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+		</plugins>
+	</pluginManagement>
 
         <plugins>
             <plugin>
@@ -58,10 +150,13 @@
                                             <directory>${project.basedir}</directory>
                                             <includes>
                                                     <include>.bower/</include>
+                                                    <include>.tmp/</include>
                                                     <include>node_modules/</include>
                                                     <include>node/</include>
                                                     <include>bower_components/</include>
                                                     <include>build/</include>
+                                                    <include>docs/</include>
+                                                    <include>dist/</include>
                                             </includes>
                                             <excludes>
                                                     <!-- Allow mvn clean install > install.log -->
@@ -79,17 +174,21 @@
                 <version>${maven.frontend.plugin.version}</version>
 
                 <configuration>
-                    <nodeVersion>${node.version}</nodeVersion>
+                    <nodeVersion>v${node.version}</nodeVersion>
                     <npmVersion>${npm.version}</npmVersion>
+                    <!--
+                    <nodeDownloadRoot>http://home.nabla.mobi/download/nodejs/</nodeDownloadRoot>
+					<npmDownloadRoot>http:///home.nabla.mobi/download/npm/-/</npmDownloadRoot>
+					-->
                 </configuration>
 
                 <executions>
-
-                    <execution>
+					<execution>
                         <id>install node and npm</id>
                         <goals>
                             <goal>install-node-and-npm</goal>
                         </goals>
+						<phase>validate</phase>
                     </execution>
 
                     <execution>
@@ -97,22 +196,179 @@
                         <goals>
                             <goal>npm</goal>
                         </goals>
+						<phase>initialize</phase>
                         <configuration>
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
 
                     <execution>
-                        <id>grunt build</id>
+                        <id>grunt bower</id>
                         <goals>
                             <goal>grunt</goal>
                         </goals>
+						<phase>generate-sources</phase>
                         <configuration>
-                            <arguments>build</arguments>
+                            <arguments>prepare</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt check</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+						<phase>compile</phase>
+                        <configuration>
+                            <arguments>check</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt unit-test</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+						<phase>test</phase>
+                        <configuration>
+                            <arguments>unit-test</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt integration-test</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+						<phase>integration-test</phase>
+                        <configuration>
+                            <arguments>integration-test</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>grunt prepare-package</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+						<phase>prepare-package</phase>
+                        <configuration>
+                            <arguments>package</arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+					<webResources>
+						<resource>
+							<directory>dist</directory>
+						</resource>
+					</webResources>
+                    <webApp>
+                        <contextPath>/test</contextPath>
+                    </webApp>
+					<archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <pomPropertiesFile>false</pomPropertiesFile>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+					</archive>
+                </configuration>
+            </plugin>
+            <!-- launch mvn clean install jetty:run-war -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${maven.jetty.eclipse.plugin.version}</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+                    <httpConnector>
+                        <!--host>localhost</host-->
+                        <port>${jetty.port}</port>
+                    </httpConnector>
+					<stopPort>${jetty.stop.port}</stopPort>
+					<stopKey>STOP</stopKey>
+				</configuration>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<version>${maven.wro4j.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>css</id>
+						<configuration>
+							<targetGroups>style</targetGroups>
+							<wroFile>${basedir}/src/main/webapp/WEB-INF/wro.xml</wroFile>
+							<extraConfigFile>${basedir}/src/main/webapp/WEB-INF/wro.properties</extraConfigFile>
+						</configuration>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<minimize>true</minimize>
+					<destinationFolder>${project.build.directory}/${project.build.finalName}</destinationFolder>
+					<cssDestinationFolder>${project.build.directory}/${project.build.finalName}/css/</cssDestinationFolder>
+					<jsDestinationFolder>${project.build.directory}/${project.build.finalName}/js/</jsDestinationFolder>
+					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+					<ignoreMissingResources>false</ignoreMissingResources>
+				</configuration>
+			</plugin>
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+                        <id>lcovFileForSonar</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+								<echo message="Copying LCOV file -> lcof.info for Sonar purpose to target directory" />
+                                <copy todir="${basedir}/target" flatten="true">
+                                    <fileset dir="${basedir}/target">
+                                        <include name="karma-coverage/PhantomJS*/lcov.info" />
+                                    </fileset>
+                                </copy>
+
+								<!--
+                                <path id="sourceDirectory.path">
+                                  <pathelement location="${basedir}/app/scripts"/>
+                                </path>
+
+                                <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
+                                  <map from="${basedir}/" to=""/>
+                                </pathconvert>
+
+								<echo message="Base dir: ${basedir} " />
+								<echo message="Source directory: ${project.build.sourceDirectory}" />
+								<echo message="Relative source directory: ${relativeSourceDirectory}" />
+								<echo message="Fixing a problem with a path to the JavaScript path" />
+                                <replaceregexp byline="true">
+                                    <regexp pattern="SF:\./todo/(.*)" />
+                                    <substitution expression="SF:${relativeSourceDirectory}/\1" />
+                                    <fileset dir="target">
+                                        <include name="lcov.info" />
+                                    </fileset>
+                                </replaceregexp>
+                                -->
+
+                            </target>
+                        </configuration>
+                    </execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 
@@ -125,11 +381,46 @@
 				 </property>
 		    </activation>
             <properties>
-                <sonar.language>js</sonar.language>
+                <!--<sonar.language>js</sonar.language>-->
                 <!--<sonar.exclusions>${basedir}/src/main/webapp/lib/**</sonar.exclusions>-->
+                <sonar.sources>src/main,app</sonar.sources>
+                <sonar.tests>test</sonar.tests>
                 <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
                 <sonar.javascript.lcov.reportPath>${basedir}/target/lcov.info</sonar.javascript.lcov.reportPath>
 	        </properties>
 	     </profile>
+         <!-- Jenkins by default defines a property BUILD_NUMBER which is used to enable the profile. -->
+         <profile>
+             <id>jenkins</id>
+             <activation>
+                 <property>
+                     <name>BUILD_NUMBER</name>
+                 </property>
+             </activation>
+             <properties>
+                 <maven.test.failure.skip>true</maven.test.failure.skip>
+                 <maven.test.skip>true</maven.test.skip>
+             </properties>
+		    <build>
+		 		<plugins>
+		 			<plugin>
+		 				<groupId>org.owasp</groupId>
+		 				<artifactId>dependency-check-maven</artifactId>
+		 				<version>${maven.dependency.check.plugin.version}</version>
+		 				<configuration>
+		 					<format>XML</format>
+		 				</configuration>
+		 				<executions>
+		 					<execution>
+		 						<phase>compile</phase>
+		 						<goals>
+		 							<goal>check</goal>
+		 						</goals>
+		 					</execution>
+		 				</executions>
+		 			</plugin>
+		 		</plugins>
+		    </build>
+         </profile>
     </profiles>
 </project>
