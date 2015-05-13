@@ -1,20 +1,12 @@
 'use strict';
-// Karma configuration
-// http://karma-runner.github.io/0.12/config/configuration-file.html
-// Generated on 2015-03-19 using
-// generator-karma 0.9.0
 
 module.exports = function(config) {
-  'use strict';
-
   config.set({
-    // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
 
     // base path, that will be used to resolve files and exclude
     basePath: '../',
 
-    // testing framework to use (jasmine/mocha/qunit/...)
+    // frameworks to use
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
@@ -29,33 +21,27 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
+      'bower_components/angular-audio/app/angular.audio.js',
+      'bower_components/flow.js/dist/flow.js',
+      'bower_components/ng-flow/dist/ng-flow.js',
+      'bower_components/fusty-flow.js/src/fusty-flow.js',
+      'bower_components/fusty-flow.js/src/fusty-flow-factory.js',
+      'bower_components/nabla-auth/nabla-auth.js',
+      'bower_components/nabla-configuration/nabla-config.js',
+      'bower_components/nabla-configuration/nabla-configuration.js',
+      'bower_components/angular-websocket/angular-websocket.min.js',
+      'bower_components/nabla-notifications/nabla-notifications.js',
+      'bower_components/nabla-header/nabla-header.js',
+      'bower_components/sample-component/sample-component.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
       'test/spec/**/*.js'
     ],
 
-    // list of files / patterns to exclude
-    exclude: [
-    ],
+    // list of files to exclude
+    exclude: [],
 
-    // web server port
-    port: 8080,
-
-    // Start these browsers, currently available:
-    // - Chrome
-    // - ChromeCanary
-    // - Firefox
-    // - Opera
-    // - Safari (only Mac)
-    // - PhantomJS
-    // - IE (only Windows)
-    browsers: [
-      'PhantomJS', 'Chrome', 'Firefox'
-    ],
-
-    // Which plugins to enable
     plugins: [
       'karma-chrome-launcher',
       'karma-firefox-launcher',
@@ -71,33 +57,49 @@ module.exports = function(config) {
     reporters: ['dots', 'progress', 'junit', 'coverage'],
 
     preprocessors: {
-      'src/**/*.js': ['coverage']
+      'app/**/*.js': ['coverage']
     },
 
     coverageReporter: {
       type: 'lcov',
-      dir: '../target/karma-coverage'
+      dir: './target/karma-coverage'
     },
 
     junitReporter: {
-      outputFile: '../target/surefire-reports/TEST-KarmaTest.xml'
+      outputFile: './target/surefire-reports/TEST-sample-component-KarmaTest.xml'
     },
 
-    // Continuous Integration mode
-    // if true, it capture browsers, run tests and exit
-    singleRun: false,
+    // web server port
+    port: 9877,
 
+    // cli runner port
+    runnerPort: 9101,
+
+    // enable / disable colors in the output (reporters and logs)
     colors: true,
 
     // level of logging
-    // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
     logLevel: config.LOG_INFO,
 
-    // Uncomment the following lines if you are using grunt's server to run the tests
-    // proxies: {
-    //   '/': 'http://localhost:9000/'
-    // },
-    // URL root prevent conflicts with the site root
-    // urlRoot: '_karma_'
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: true,
+
+    // Start these browsers, currently available:
+    // - Chrome
+    // - ChromeCanary
+    // - Firefox
+    // - Opera (has to be installed with `npm install karma-opera-launcher`)
+    // - Safari (only Mac; has to be installed with `npm install karma-safanabla-launcher`)
+    // - PhantomJS
+    // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
+    browsers: ['PhantomJS'],
+
+    // If browser does not capture in given timeout [ms], kill it
+    captureTimeout: 60000,
+
+    // Continuous Integration mode
+    // if true, it capture browsers, run tests and exit
+    singleRun: true
   });
 };

@@ -2,20 +2,21 @@
 
 /**
  * @ngdoc overview
- * @name cmrTestApp
+ * @name myTestApp
  * @description
- * # cmrTestApp
+ * # myTestApp
  *
  * Main module of the application.
  */
 angular
-  .module('cmrTestApp', [
+  .module('myTestApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'nabla-header'
   ])
   .config(function($routeProvider) {
     $routeProvider

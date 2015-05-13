@@ -9,15 +9,34 @@
 
 module.exports = function(grunt) {
 
+  var zone;
+  var xdomainUrl;
+
+  try {
+    xdomainUrl = require('./urlConfig.js').getUrl();
+    zone = require('./urlConfig.js').getProxy();
+  } catch (e) {
+    if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
+      console.log('No urlConfig module found, going with defaults');
+      xdomainUrl = 'slave="http://home.nabla.mobi:8080/login"';
+      zone = 'home.nabla.mobi';
+    }
+  }
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+
+  var async = require('async'),
+      request = require('request');
+
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-zaproxy');
 
   // Configurable paths for the application
   var appConfig = {
@@ -30,6 +49,20 @@ module.exports = function(grunt) {
 
     // Project settings
     yeoman: appConfig,
+
+    bower: {
+      install: {
+        options: {
+          targetDir: 'bower_components',
+          install: true,
+          verbose: true,
+//          cleanTargetDir: true,
+          cleanBowerDir: false,
+          bowerOptions: {},
+          copy: true
+        }
+      }
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -72,23 +105,58 @@ module.exports = function(grunt) {
       options: {
         port: 8001,
         // Change this to '0.0.0.0' to access the server from outside.
+        //hostname: '*',
         hostname: 'localhost',
         livereload: 35729,
-            analytics: {
-              account: 'UA-56011797-1',
-              domainName: 'nabla.mobi'
+        analytics: {
+          account: 'UA-56011797-1',
+          domainName: 'nabla.mobi'
+        },
+        discussions: {
+          shortName: 'nabla',
+          url: 'http://home.nabla.mobi',
+          dev: false
+        },
+        //open: true,
+        middleware: function(connect, options) {
+          var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
+          return [
+
+            function(req, res, next) {
+              res.setHeader('Access-Control-Allow-Origin', '*');
+              res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+              res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+              return next();
             },
-            discussions: {
-              shortName: 'nabla',
-              url: 'http://home.nabla.mobi',
-              dev: false
-            }
+            connect.static(options.base),
+            connect.directory(options.base),
+            proxy
+          ];
+        }
       },
       livereload: {
         options: {
           open: true,
-          middleware: function(connect) {
+          middleware: function(connect, options) {
+
+            if (!Array.isArray(options.base)) {
+                options.base = [options.base];
+            }
+
+            // Setup the proxy
+            var middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest];
+
+            // Serve static files.
+            options.base.forEach(function(base) {
+                middlewares.push(connect.static(base));
+            });
+
+            // Make directory browse-able.
+            var directory = options.directory || options.base[options.base.length - 1];
+            middlewares.push(connect.directory(directory));
+
             return [
+              middlewares,
               connect.static('.tmp'),
               connect().use(
                 '/bower_components',
@@ -105,7 +173,7 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
-          port: 9001,
+          port: 9002,
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
@@ -121,11 +189,22 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          port: 9002,
+          port: 9003,
           open: true,
           base: '<%= yeoman.dist %>'
         }
-      }
+      },
+      proxies: [{
+        context: '/login/',
+        host: zone,
+        port: 8080,
+        changeOrigin: true
+      }, {
+        context: '/apidocs/',
+        host: zone,
+        port: 8080,
+        changeOrigin: true
+      }]
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
@@ -176,11 +255,11 @@ module.exports = function(grunt) {
         }]
       },
       server: '.tmp',
-      bower: ['.bower', 'bower_components'],
-        tmp: ['tmp'],
-        build: ['build'],
-        docs: ['docs']
-      },
+      //bower: ['.bower', 'bower_components'],
+      tmp: ['tmp'],
+      build: ['build'],
+      docs: ['docs']
+    },
 
     // Add vendor prefixed styles
     autoprefixer: {
@@ -367,6 +446,21 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
+          cwd: 'bower_components/nabla-header',
+          src: 'img/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/nabla-notifications/',
+          src: ['**/views/*'],
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/nabla-notifications',
+          src: 'img/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
           dot: true,
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
@@ -425,7 +519,63 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',
+        //browsers: ['PhantomJS', 'Chrome', 'Firefox'],
         singleRun: true
+      }
+//      sampleComponent: {
+//        configFile: 'karma-sample-component.conf.js'
+//      }
+//      nablaAuth: {
+//        configFile: 'karma-nabla-auth.conf.js'
+//      },
+//      nablaNotifications: {
+//        configFile: 'karma-nabla-notifications.conf.js',
+//        //browsers: ['PhantomJS', 'Chrome'],
+//        //singleRun: false,
+//        //logLevel: 'DEBUG',
+//        autoWatch: true
+//      },
+//      nablaHeader: {
+//        configFile: 'karma-nabla-header.conf.js',
+//        //browsers: ['PhantomJS', 'Chrome'],
+//        //singleRun: false,
+//        //logLevel: 'DEBUG',
+//        autoWatch: true
+//      }
+    },
+
+    'zap_start': {
+      options: {
+        port: 8090
+      }
+    },
+    'zap_spider': {
+      options: {
+        url: 'http://localhost:9090',
+        port: 8090
+      }
+    },
+    'zap_scan': {
+      options: {
+        url: 'http://localhost:9090',
+        port: 8090
+      }
+    },
+    'zap_alert': {
+      options: {
+        port: 8090
+      }
+    },
+    'zap_report': {
+      options: {
+        dir: 'build/reports/zaproxy',
+        port: 8090,
+        html: true
+      }
+    },
+    'zap_stop': {
+      options: {
+        port: 8090
       }
     }
   });
@@ -441,9 +591,11 @@ module.exports = function(grunt) {
       'wiredep',
       'concurrent:server',
       'autoprefixer:server',
+      'configureProxies:server',
       'connect:livereload',
       'watch'
     ]);
+
   });
 
   grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
@@ -451,13 +603,75 @@ module.exports = function(grunt) {
     grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('test', [
+
+  /**
+   * Run acceptance tests to teach ZAProxy how to use the app.
+   **/
+  grunt.registerTask('acceptance-test', function() {
+    var done = this.async();
+
+    // make sure requests are proxied through ZAP
+    var r = request.defaults({'proxy': 'http://localhost:8090'});
+
+    async.series([
+      function(callback) {
+        r.get('http://localhost:9090/index.html', callback);
+      }
+      // Add more requests to navigate through parts of the application
+    ], function(err) {
+      if (err) {
+        grunt.fail.warn('Acceptance test failed: ' + JSON.stringify(err, null, 2));
+        grunt.fail.warn('Is zaproxy started?');
+        return;
+      }
+      grunt.log.ok();
+      done();
+    });
+  });
+
+  /**
+   * ZAProxy alias task.
+   **/
+  grunt.registerTask('zap', [
+  //'zap_start',
+    'acceptance-test',
+    'zap_spider',
+    'zap_scan',
+    'zap_alert',
+    'zap_report'
+  //'zap_stop'
+  ]);
+
+  grunt.registerTask('prepare', [
+    //'clean:bower',
+    'bower'
+  ]);
+
+  grunt.registerTask('integration-test', [
+    'zap'
+  ]);
+
+  grunt.registerTask('unit-test', [
+    'check',
     'clean:server',
     'wiredep',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
     'karma'
+  ]);
+
+  grunt.registerTask('check', [
+    'newer:jshint',
+    'jscs'
+  ]);
+
+  grunt.registerTask('package', [
+    'build'
+  ]);
+
+  grunt.registerTask('site', [
+    'docs'
   ]);
 
   grunt.registerTask('build', [
@@ -477,12 +691,20 @@ module.exports = function(grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('docs', ['build', 'ngdocs', 'connect']);
+  grunt.registerTask('docs', [
+    'clean:docs',
+    'ngdocs'
+  ]);
+
+  grunt.registerTask('test-docs', [
+    'docs',
+    'connect'
+  ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
-    'jscs',
-    'test',
-    'build'
+    'bower',
+    'unit-test',
+    'package',
+    'site'
   ]);
 };
