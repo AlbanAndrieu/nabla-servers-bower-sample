@@ -23,6 +23,12 @@ module.exports = function(grunt) {
     }
   }
 
+  var ZAP_PORT = 8090;
+  var SERVER_HOST = 'localhost';
+  var SERVER_PORT = '9090';
+  var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
+  var SERVER_CONTEXT = 'login';
+
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -444,21 +450,12 @@ module.exports = function(grunt) {
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: 'bower_components/nabla-header',
-          src: 'img/*',
-          dest: '<%= yeoman.dist %>'
-        }, {
+        files: [
+        {
           expand: true,
           cwd: 'bower_components/nabla-notifications/',
           src: ['**/views/*'],
-          dest: '<%= yeoman.dist %>'
-        }, {
-          expand: true,
-          cwd: 'bower_components/nabla-notifications',
-          src: 'img/*',
-          dest: '<%= yeoman.dist %>'
+          dest: '<%= yeoman.app %>'
         }, {
           expand: true,
           dot: true,
@@ -477,6 +474,16 @@ module.exports = function(grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: 'bower_components/nabla-header',
+          src: 'img/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/nabla-notifications',
+          src: 'img/*',
+          dest: '<%= yeoman.dist %>'
         }, {
           expand: true,
           cwd: 'bower_components/bootstrap/dist',
@@ -544,6 +551,18 @@ module.exports = function(grunt) {
 //      }
     },
 
+    protractor: {
+      options: {
+		keepAlive: true,
+        configFile: 'test/protractor.conf.js',
+        args: {
+          //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
+          //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
+        }
+      },
+      run: {}
+    },
+
     'zap_start': {
       options: {
         port: 8090
@@ -551,31 +570,31 @@ module.exports = function(grunt) {
     },
     'zap_spider': {
       options: {
-        url: 'http://localhost:9090',
-        port: 8090
+        url: SERVER_URL,
+        port: ZAP_PORT
       }
     },
     'zap_scan': {
       options: {
-        url: 'http://localhost:9090',
-        port: 8090
+        url: SERVER_URL,
+        port: ZAP_PORT
       }
     },
     'zap_alert': {
       options: {
-        port: 8090
+        port: ZAP_PORT
       }
     },
     'zap_report': {
       options: {
         dir: 'build/reports/zaproxy',
-        port: 8090,
+        port: ZAP_PORT,
         html: true
       }
     },
     'zap_stop': {
       options: {
-        port: 8090
+        port: ZAP_PORT
       }
     }
   });
@@ -611,11 +630,11 @@ module.exports = function(grunt) {
     var done = this.async();
 
     // make sure requests are proxied through ZAP
-    var r = request.defaults({'proxy': 'http://localhost:8090'});
+    var r = request.defaults({'proxy': SERVER_URL});
 
     async.series([
       function(callback) {
-        r.get('http://localhost:9090/index.html', callback);
+        r.get(SERVER_URL + '/' + SERVER_CONTEXT + '/index.html', callback);
       }
       // Add more requests to navigate through parts of the application
     ], function(err) {
@@ -627,6 +646,8 @@ module.exports = function(grunt) {
       grunt.log.ok();
       done();
     });
+
+    grunt.task.run(['protractor:run']);
   });
 
   /**
@@ -659,6 +680,7 @@ module.exports = function(grunt) {
     'autoprefixer',
     'connect:test',
     'karma'
+    //'protractor:run'
   ]);
 
   grunt.registerTask('check', [

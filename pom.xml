@@ -62,21 +62,17 @@
             <artifactId>jersey-json</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+			<scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-
 
         <dependency>
                 <groupId>javax.servlet</groupId>
@@ -91,11 +87,20 @@
             <scope>compile</scope>
         </dependency>
 
+	   <!--
        <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
         </dependency>
+        -->
+
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
    </dependencies>
 
    <build>
@@ -132,6 +137,20 @@
 									<ignore></ignore>
 								</action>
 							</pluginExecution>
+							<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>org.owasp</groupId>
+        								<artifactId>dependency-check-maven</artifactId>
+        								<versionRange>[${maven.dependency.check.plugin.version},)</versionRange>
+        								<goals>
+        									<goal>check</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore />
+        							</action>
+        						</pluginExecution>
+        					</pluginExecutions>
 						</pluginExecutions>
 					</lifecycleMappingMetadata>
 				</configuration>
@@ -279,6 +298,47 @@
 					</archive>
                 </configuration>
             </plugin>
+			<!-- for automatic running of integration tests with Jetty -->
+			<!-- mvn org.codehaus.cargo:cargo-maven2-plugin:run -->
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>${maven.cargo.maven2.plugin.version}</version>
+				<configuration>
+					<wait>${cargo.wait}</wait>
+					<container>
+						<timeout>180000</timeout> <!-- 5 minutes -->
+						<!--<containerId>${cargo.container}</containerId> -->
+						<!--<type>${cargo.container.type}</type> -->
+					</container>
+					<configuration>
+						<!--<type>${cargo.configuration.type}</type> -->
+						<!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
+						<properties>
+							<cargo.hostname>${cargo.host}</cargo.hostname>
+							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
+							<cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
+							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+							<cargo.logging>high</cargo.logging>
+							<cargo.jvmargs><![CDATA[${cargo.jmx.activation}]]></cargo.jvmargs>
+							<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
+						</properties>
+					</configuration>
+					<deployables>
+						<deployable>
+							<groupId>com.misys.mgr</groupId>
+							<artifactId>bower-fr-integration-test</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/</context>
+							</properties>
+							<pingURL>http://${cargo.host}:${cargo.port}/</pingURL>
+							<pingTimeout>60000</pingTimeout>
+						</deployable>
+					</deployables>
+				</configuration>
+			</plugin>
             <!-- launch mvn clean install jetty:run-war -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
@@ -421,6 +481,43 @@
 		 			</plugin>
 		 		</plugins>
 		    </build>
+         </profile>
+         <profile>
+             <id>logback</id>
+             <activation>
+			     <property>
+			 	     <name>!profile.activation</name>
+			 	 </property>
+		     </activation>
+             <dependencies>
+                 <dependency>
+                     <groupId>ch.qos.logback</groupId>
+                     <artifactId>logback-classic</artifactId>
+                     <version>${logback.version}</version>
+                     <scope>runtime</scope>
+                 </dependency>
+                 <dependency>
+                     <groupId>ch.qos.logback</groupId>
+                     <artifactId>logback-core</artifactId>
+                     <version>${logback.version}</version>
+                     <scope>runtime</scope>
+                 </dependency>
+             </dependencies>
+         </profile>
+         <profile>
+             <id>log4j</id>
+             <dependencies>
+                 <dependency>
+                     <groupId>org.slf4j</groupId>
+                     <artifactId>slf4j-log4j12</artifactId>
+                     <scope>runtime</scope>
+                 </dependency>
+                 <dependency>
+                     <groupId>log4j</groupId>
+                     <artifactId>log4j</artifactId>
+                     <scope>runtime</scope>
+                 </dependency>
+             </dependencies>
          </profile>
     </profiles>
 </project>
