@@ -6,7 +6,7 @@
   "register": "http://home.nabla.mobi:5678",
   "publish": "http://home.nabla.mobi:5678",
   "storage": {
-    "cache" : ".bower/cache",
+    "packages" : ".bower/packages",
     "registry" : ".bower/registry"
   },
   "tmp": ".bower/tmp"

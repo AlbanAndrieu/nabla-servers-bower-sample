@@ -17,6 +17,13 @@ Run `grunt` for building and `grunt serve` for preview.
 
 Running `grunt test` will run the unit tests with karma.
 
+## Proxy
+
+proxy is used to get riskinsight.
+In order to be activated it must be reached once : http://localhost:9090/login
+
+Then you can go to : http://localhost:9090/
+
 ## Run war in jetty
 
 ```
@@ -31,3 +38,7 @@ Make sure you are running zap 2.3.0
 ```
 export PATH=/usr/local/zap/zap-2.3.0/:${PATH}
 ```
+
+In case of trouble with zap.
+Please deactivate html report in Gruntfile.js
+html: false
