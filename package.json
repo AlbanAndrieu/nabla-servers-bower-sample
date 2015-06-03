@@ -58,10 +58,13 @@
     "grunt-newer": "^1.1.0",
     "grunt-ng-annotate": "^0.9.2",
     "grunt-ngdocs": "^0.2.7",
+    "grunt-pagespeed": "^1.0.0",
     "grunt-protractor-runner": "^2.0.0",
     "grunt-svgmin": "^2.0.0",
     "grunt-usemin": "^3.0.0",
     "grunt-wiredep": "^2.0.0",
+    "grunt-wpt": "^3.1.1",
+    "grunt-yslow": "0.0.4",
     "grunt-zaproxy": "^0.1.1",
     "jasmine-reporters": "1.0.1",
     "jshint-stylish": "^1.0.0",
@@ -81,10 +84,13 @@
     "phantomjs": "1.9.12",
     "protractor": "^2.1.0",
     "request": "^2.55.0",
-    "time-grunt": "^1.0.0"
+    "time-grunt": "^1.0.0",
+    "webpagetest": "~0.1.2"
   },
   "scripts": {
     "install": "node node_modules/protractor/bin/webdriver-manager update",
-    "test": "grunt unit-test"
+    "pretest": "./node_modules/phantomjs/bin/phantomjs yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' t.co",
+    "test": "grunt unit-test",
+    "webpagetest": "./node_modules/webpagetest/bin/webpagetest test t.co --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec"
   }
 }
