@@ -43,6 +43,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-zaproxy');
+  grunt.loadNpmTasks('grunt-yslow');
+  grunt.loadNpmTasks('grunt-pagespeed');
+  grunt.loadNpmTasks('grunt-wpt');
 
   // Configurable paths for the application
   var appConfig = {
@@ -132,6 +135,12 @@ module.exports = function(grunt) {
               res.setHeader('Access-Control-Allow-Origin', '*');
               res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
               res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+              res.setHeader('X-Content-Type-Options', 'nosniff');
+              res.setHeader('X-Frame-Options', 'DENY');
+              res.setHeader('X-XSS-Protection', '1;mode=block');
+              res.setHeader('Expires', '0');
+              res.setHeader('Pragma', 'no-cache');
+              res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate');
               return next();
             },
             connect.static(options.base),
@@ -563,9 +572,71 @@ module.exports = function(grunt) {
       run: {}
     },
 
+    yslow: {
+      options: {
+        thresholds: {
+          weight: 180,
+          speed: 1000,
+          score: 80,
+          requests: 15
+        }
+      },
+      pages: {
+        files: [
+          {
+            src: SERVER_URL,
+            thresholds: {
+              weight: 100
+            }
+          }
+        ]
+      }
+    },
+
+    pagespeed: {
+      options: {
+        nokey: true,
+        //url: 'http://home.nabla.mobi/'
+        url: 'http://home.nabla.mobi:9090/'
+      },
+      //prod: {
+      //  options: {
+      //    url: "https://developers.google.com/speed/docs/insights/v1/getting_started",
+      //    locale: "en_GB",
+      //    strategy: "desktop",
+      //    threshold: 80
+      //  }
+      //},
+      paths: {
+        options: {
+          paths: ['/#/about', '/todo'],
+          locale: 'en_GB',
+          strategy: 'desktop',
+          threshold: 80
+        }
+      }
+    },
+
+    wpt: {
+      options: {
+        locations: ['Tokyo', 'SanJose_IE9'],
+        key: process.env.WPT_API_KEY
+      },
+      sideroad: {
+        options: {
+          url: [
+            'http://home.nabla.mobi',
+            'http://home.nabla.mobi:8380/jenkins/'
+          ]
+        },
+        dest: 'tmp/sideroad/'
+      }
+    },
+
     'zap_start': {
       options: {
-        port: 8090
+        port: ZAP_PORT,
+        daemon: false
       }
     },
     'zap_spider': {
@@ -669,7 +740,9 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('integration-test', [
-    'zap'
+    'zap',
+    'pagespeed',
+    'wp'
   ]);
 
   grunt.registerTask('unit-test', [

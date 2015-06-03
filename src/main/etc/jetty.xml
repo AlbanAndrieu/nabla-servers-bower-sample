@@ -3,6 +3,7 @@
 
 <Configure id="server" class="org.eclipse.jetty.server.Server">
 
+	<!--
 	<New id="ServletContextHandler" class="org.eclipse.jetty.servlet.ServletContextHandler">
 		 <Set name="servletHandler">
 			<New id="servletHandler" class="org.eclipse.jetty.servlet.ServletHandler">
@@ -58,6 +59,5 @@
 			</Set>
 		</New>
 	</Set>
-
-
+	-->
 </Configure>
