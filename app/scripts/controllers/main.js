@@ -18,6 +18,7 @@ angular.module('myTestApp')
     //});
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
+      'Bootstrap',
       'AngularJS',
       'Karma'
     ];
