@@ -15,7 +15,7 @@ exports.config = {
     userName: 'nabla',
     userPassword: 'microsoft',
 	//resetPassword: 'microsoft',
-    appContext: 'login/'
+    appContext: '/'
   },
   capabilities: {
     'browserName': 'firefox',

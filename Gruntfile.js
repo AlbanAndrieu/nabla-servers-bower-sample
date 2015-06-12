@@ -46,6 +46,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-ngdocs');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-zaproxy');
   grunt.loadNpmTasks('grunt-perfbudget');
   grunt.loadNpmTasks('grunt-yslow');
@@ -56,6 +59,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phantomas');
   grunt.loadNpmTasks('grunt-sitespeedio');
   grunt.loadNpmTasks('grunt-uncss');
+
+  //var fs = require('fs');
+  //
+  //var parseString = require('xml2js').parseString;
+  //// Returns the second occurence of the version number
+  //var parseVersionFromPomXml = function() {
+  //    var version;
+  //    var pomXml = fs.readFileSync('pom.xml', 'utf8');
+  //    parseString(pomXml, function(err, result) {
+  //        version = result.project.version[0];
+  //    });
+  //    return version;
+  //};
+  //
+  //var VERSION = parseVersionFromPomXml();
+  //console.log('VERSION : ' + VERSION);
 
   // Configurable paths
   var config = {
@@ -267,6 +286,16 @@ module.exports = function(grunt) {
       }
     },
 
+    // Mocha testing framework configuration options
+    mocha: {
+      all: {
+        options: {
+          run: true,
+          urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
+        }
+      }
+    },
+
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -289,18 +318,7 @@ module.exports = function(grunt) {
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
-        browsers: ['last 1 version']
-      },
-      server: {
-        options: {
-          map: true
-        },
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
+        browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1']
       },
       dist: {
         files: [{
@@ -344,7 +362,8 @@ module.exports = function(grunt) {
           '<%= config.dist %>/scripts/{,*/}*.js',
           '<%= config.dist %>/styles/{,*/}*.css',
           '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.dist %>/styles/fonts/*'
+          '<%= config.dist %>/styles/fonts/*',
+          '<%= config.dist %>/*.{ico,png}'
         ]
       }
     },
@@ -353,13 +372,16 @@ module.exports = function(grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= config.app %>/index.html',
+      html: '<%= config.app %>/**/*.html',
       options: {
         dest: '<%= config.dist %>',
         flow: {
           html: {
             steps: {
               js: ['concat', 'uglifyjs'],
+              // Disabled as we'll be using a manual
+              // cssmin configuration later. This is
+              // to ensure we work well with grunt-uncss
               css: ['cssmin']
             },
             post: {}
@@ -372,6 +394,7 @@ module.exports = function(grunt) {
     usemin: {
       html: ['<%= config.dist %>/{,*/}*.html'],
       css: ['<%= config.dist %>/styles/{,*/}*.css'],
+      //js: ['<%= config.dist %>/scripts/**/*.js'],
       options: {
         assetsDirs: [
           '<%= config.dist %>',
@@ -381,32 +404,26 @@ module.exports = function(grunt) {
       }
     },
 
-    // The following *-min tasks will produce minified files in the dist folder
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    uncss: {
+      dist: {
+        options: {
+          // Take our Autoprefixed stylesheet main.css &
+          // any other stylesheet dependencies we have..
+          stylesheets: [
+            '../.tmp/styles/main.css',
+            '../bower_components/bootstrap/dist/css/bootstrap.css'
+          ],
+          // Ignore css selectors for async content with complete selector or regexp
+          // Only needed if using Bootstrap
+          ignore: [/dropdown-menu/,/\.collapsing/,/\.collapse/]
+        },
+        files: {
+          '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html']
+        }
+      }
+    },
 
+    // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
         files: [{
@@ -432,11 +449,15 @@ module.exports = function(grunt) {
     htmlmin: {
       dist: {
         options: {
+          collapseBooleanAttributes: true,
           collapseWhitespace: true,
           conservativeCollapse: true,
-          collapseBooleanAttributes: true,
+          removeAttributeQuotes: true,
           removeCommentsFromCDATA: true,
-          removeOptionalTags: true
+          removeEmptyAttributes: true,
+          removeOptionalTags: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true
         },
         files: [{
           expand: true,
@@ -446,6 +467,31 @@ module.exports = function(grunt) {
         }]
       }
     },
+
+    // By default, your `index.html`'s <!-- Usemin block --> will take care
+    // of minification. These next options are pre-configured if you do not
+    // wish to use the Usemin blocks.
+    //cssmin: {
+    //   dist: {
+    //     files: {
+    //       '.tmp/styles-min/main.css': [
+    //         '.tmp/styles/{,*/}*.css'
+    //       ]
+    //     }
+    //   }
+    //},
+    //uglify: {
+    //  dist: {
+    //    files: {
+    //      '<%= config.dist %>/scripts/': [
+    //        '<%= config.dist %>/scripts/*.js'
+    //      ]
+    //    }
+    //  }
+    //},
+    //concat: {
+    //  dist: {}
+    //},
 
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
@@ -473,20 +519,13 @@ module.exports = function(grunt) {
         files: [
         {
           expand: true,
-          cwd: 'bower_components/nabla-notifications/',
-          src: ['**/views/*'],
-          dest: '<%= config.app %>'
-        }, {
-          expand: true,
           dot: true,
           cwd: '<%= config.app %>',
           dest: '<%= config.dist %>',
           src: [
             '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
+            '{,*/}*.html',
             'styles/fonts/{,*/}*.*'
           ]
         }, {
@@ -494,6 +533,9 @@ module.exports = function(grunt) {
           cwd: '.tmp/images',
           dest: '<%= config.dist %>/images',
           src: ['generated/*']
+        }, {
+          src: 'node_modules/apache-server-configs/dist/.htaccess',
+          dest: '<%= config.dist %>/.htaccess'
         }, {
           expand: true,
           cwd: 'bower_components/nabla-header',
@@ -699,8 +741,9 @@ module.exports = function(grunt) {
 
     'zap_start': {
       options: {
+		host: SERVER_HOST,
         port: ZAP_PORT,
-        daemon: false
+        daemon: true
       }
     },
     'zap_spider': {
@@ -717,7 +760,8 @@ module.exports = function(grunt) {
     },
     'zap_alert': {
       options: {
-        port: ZAP_PORT
+        port: ZAP_PORT,
+        ignore: ['X-Content-Type-Options header missing']
       }
     },
     'zap_report': {
@@ -729,13 +773,17 @@ module.exports = function(grunt) {
     },
     'zap_stop': {
       options: {
+		host: SERVER_HOST,
         port: ZAP_PORT
       }
     }
   });
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function(target) {
+  grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function(target) {
+    if (grunt.option('allow-remote')) {
+      grunt.config.set('connect.options.hostname', '0.0.0.0');
+    }
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
@@ -743,6 +791,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:server',
       'wiredep',
+      //'ngconstant:dev',
       'concurrent:server',
       'autoprefixer',
       'configureProxies:server',
@@ -752,9 +801,9 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
+  grunt.registerTask('server', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
+    grunt.task.run([target ? ('serve:' + target) : 'serve']);
   });
 
 
@@ -775,7 +824,8 @@ module.exports = function(grunt) {
     ], function(err) {
       if (err) {
         grunt.fail.warn('Acceptance test failed: ' + JSON.stringify(err, null, 2));
-        grunt.fail.warn('Is zaproxy started?');
+        grunt.task.run(['zap_stop']);
+        //grunt.fail.warn('Is zaproxy started?');
         return;
       }
       grunt.log.ok();
@@ -789,12 +839,12 @@ module.exports = function(grunt) {
    * ZAProxy alias task.
    **/
   grunt.registerTask('zap', [
-    'zap_start',
+    //'zap_start',
     'acceptance-test',
-    'zap_spider',
-    'zap_scan',
-    'zap_alert',
-    'zap_report',
+    //'zap_spider',
+    //'zap_scan',
+    //'zap_alert',
+    //'zap_report',
     'zap_stop'
   ]);
 
@@ -813,16 +863,28 @@ module.exports = function(grunt) {
     'perfbudget'
   ]);
 
-  grunt.registerTask('unit-test', [
-    'check',
-    'clean:server',
-    'wiredep',
-    'concurrent:test',
-    'autoprefixer',
-    'connect:test',
-    'karma'
-    //'protractor:run'
+  grunt.registerTask('test', [
+    'unit-test'
   ]);
+
+  grunt.registerTask('unit-test', function(target) {
+    if (target !== 'watch') {
+      grunt.task.run([
+        'check',
+        'clean:server',
+        'wiredep',
+        //'ngconstant:dev',
+        'concurrent:test',
+        'autoprefixer'
+      ]);
+    }
+
+    grunt.task.run([
+      'connect:test',
+      //'mocha',
+      'karma'
+    ]);
+  });
 
   grunt.registerTask('check', [
     'newer:jshint',
@@ -840,9 +902,12 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    //'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
+    //'uncss',
+    //'ngtemplates',
     'concat',
     'ngAnnotate',
     'copy:dist',

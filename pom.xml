@@ -192,6 +192,8 @@
                                             <directory>${project.basedir}</directory>
                                             <includes>
                                                     <include>.bower/</include>
+                                                    <include>.node_cache/</include>
+                                                    <include>.node_tmp/</include>
                                                     <include>.tmp/</include>
                                                     <include>node_modules/</include>
                                                     <include>node/</include>
@@ -276,19 +278,6 @@
                             <arguments>unit-test</arguments>
                         </configuration>
                     </execution>
-
-					<!--
-                    <execution>
-                        <id>grunt integration-test</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-						<phase>integration-test</phase>
-                        <configuration>
-                            <arguments>integration-test</arguments>
-                        </configuration>
-                    </execution>
-                    -->
 
                     <execution>
                         <id>grunt prepare-package</id>
@@ -507,8 +496,8 @@
                  </property>
              </activation>
              <properties>
-                 <maven.test.failure.skip>true</maven.test.failure.skip>
-                 <maven.test.skip>true</maven.test.skip>
+                <maven.test.failure.skip>false</maven.test.failure.skip>
+                <maven.test.skip>false</maven.test.skip>
              </properties>
 		    <build>
 		 		<plugins>

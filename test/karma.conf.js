@@ -60,7 +60,8 @@ module.exports = function(config) {
     },
 
     junitReporter: {
-      outputFile: './target/surefire-reports/TEST-sample-component-KarmaTest.xml'
+      outputFile: './target/surefire-reports/TEST-default-KarmaTest.xml',
+      suite: ''
     },
 
     // web server port
@@ -84,7 +85,7 @@ module.exports = function(config) {
     // - ChromeCanary
     // - Firefox
     // - Opera (has to be installed with `npm install karma-opera-launcher`)
-    // - Safari (only Mac; has to be installed with `npm install karma-safanabla-launcher`)
+    // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
     browsers: ['PhantomJS'],

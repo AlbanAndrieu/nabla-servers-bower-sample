@@ -11,6 +11,7 @@ angular.module('myTestApp')
   .controller('AboutCtrl', function($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
+      'Bootstrap',
       'AngularJS',
       'Karma'
     ];

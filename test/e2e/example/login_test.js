@@ -21,7 +21,7 @@ describe('Protractor Demo Sample', function() {
 
   it('should have a title', function() {
 
-    expect(browser.getTitle()).toEqual('FusionRisk Insight');
+    expect(browser.getTitle()).toEqual('Sample');
   });
 
   it('should have a text', function() {
