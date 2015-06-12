@@ -277,6 +277,7 @@
                         </configuration>
                     </execution>
 
+					<!--
                     <execution>
                         <id>grunt integration-test</id>
                         <goals>
@@ -287,6 +288,7 @@
                             <arguments>integration-test</arguments>
                         </configuration>
                     </execution>
+                    -->
 
                     <execution>
                         <id>grunt prepare-package</id>
@@ -361,8 +363,8 @@
 					</configuration>
 					<deployables>
 						<deployable>
-							<groupId>com.misys.mgr</groupId>
-							<artifactId>bower-fr-integration-test</artifactId>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
 							<type>war</type>
 							<properties>
 								<context>/</context>
@@ -526,6 +528,34 @@
 		 					</execution>
 		 				</executions>
 		 			</plugin>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>${maven.frontend.plugin.version}</version>
+
+						<configuration>
+							<nodeVersion>${node.version}</nodeVersion>
+							<npmVersion>${npm.version}</npmVersion>
+							<!--
+							<nodeDownloadRoot>http://home.nabla.mobi/download/nodejs/</nodeDownloadRoot>
+							<npmDownloadRoot>http://home.nabla.mobi/download/npm/-/</npmDownloadRoot>
+							-->
+						</configuration>
+
+						<executions>
+							<execution>
+								<id>grunt integration-test</id>
+								<goals>
+									<goal>grunt</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<configuration>
+									<arguments>integration-test</arguments>
+								</configuration>
+							</execution>
+						</executions>
+
+					</plugin>
 		 		</plugins>
 		    </build>
          </profile>

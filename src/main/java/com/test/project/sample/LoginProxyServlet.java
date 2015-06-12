@@ -8,13 +8,14 @@ import org.eclipse.jetty.proxy.ProxyServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LoginProxyServlet extends ProxyServlet {
+public class LoginProxyServlet extends ProxyServlet
+{
 
-	private static final long serialVersionUID = 1L;
-	
-	private static Logger LOG = LoggerFactory.getLogger(LoginProxyServlet.class);
-    
-	/*
+    private static final long serialVersionUID = 1L;
+
+    private static Logger     LOG              = LoggerFactory.getLogger(LoginProxyServlet.class);
+
+    /*
     @Override
     protected URI rewriteURI(HttpServletRequest request) {
         // Forward all requests to another port on this machine
@@ -33,5 +34,5 @@ public class LoginProxyServlet extends ProxyServlet {
         LOG.debug("URI is : {}",uri );
         return URI.create(uri).normalize();
     }
-    */
+     */
 }

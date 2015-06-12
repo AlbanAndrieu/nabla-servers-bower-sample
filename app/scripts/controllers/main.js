@@ -8,14 +8,14 @@
  * Controller of the myTestApp
  */
 angular.module('myTestApp')
-  .controller('MainCtrl', function($scope, $resource, Auth, RI_GLOBALS) {
-    RI_GLOBALS.isDev = true;
-    Auth.user.set({
-      loginName: 'kgr',
-      userName: 'kgr',
-      userShortName: 'KGR',
-      credentials: 'Kondor_123'
-    });
+  .controller('MainCtrl', function($scope, $resource/*, Auth, NABLA_GLOBALS*/) {
+    //NABLA_GLOBALS.isDev = true;
+    //Auth.user.set({
+    //  loginName: 'nabla',
+    //  userName: 'nabla',
+    //  userShortName: 'NABLA',
+    //  credentials: 'microsoft'
+    //});
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',

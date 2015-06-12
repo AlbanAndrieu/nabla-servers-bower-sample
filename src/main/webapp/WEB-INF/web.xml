@@ -20,6 +20,7 @@
         <param-value>text/html,text/plain,text/xml,application/xhtml+xml,text/css,application/javascript,application/json,image/svg+xml</param-value>
       </init-param>
 
+      <async-supported>true</async-supported>
       <!--
       <init-param>
         <param-name>methods</param-name>
@@ -96,7 +97,7 @@
   </servlet>
 
   <servlet-mapping>
-      <servlet-name>proxy-notifications</servlet-name>
+      <servlet-name>proxy-apidocs</servlet-name>
       <url-pattern>/apidocs/*</url-pattern>
   </servlet-mapping>
 </web-app>
