@@ -13,8 +13,8 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/angular/angular.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-resource/angular-resource.js',
@@ -26,12 +26,6 @@ module.exports = function(config) {
       'bower_components/ng-flow/dist/ng-flow.js',
       'bower_components/fusty-flow.js/src/fusty-flow.js',
       'bower_components/fusty-flow.js/src/fusty-flow-factory.js',
-      'bower_components/nabla-auth/nabla-auth.js',
-      'bower_components/nabla-configuration/nabla-config.js',
-      'bower_components/nabla-configuration/nabla-configuration.js',
-      'bower_components/angular-websocket/angular-websocket.min.js',
-      'bower_components/nabla-notifications/nabla-notifications.js',
-      'bower_components/nabla-header/nabla-header.js',
       'bower_components/sample-component/sample-component.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower

@@ -15,8 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
-    'nabla-header'
+    'ngTouch'
+    //'nabla-header'
   ])
   .config(function($routeProvider) {
     $routeProvider
