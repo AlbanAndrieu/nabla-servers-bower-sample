@@ -534,7 +534,7 @@
 						<version>${maven.frontend.plugin.version}</version>
 
 						<configuration>
-							<nodeVersion>${node.version}</nodeVersion>
+							<nodeVersion>v${node.version}</nodeVersion>
 							<npmVersion>${npm.version}</npmVersion>
 							<!--
 							<nodeDownloadRoot>http://home.nabla.mobi/download/nodejs/</nodeDownloadRoot>

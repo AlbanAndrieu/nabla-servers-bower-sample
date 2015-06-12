@@ -16,23 +16,20 @@ public class LoginProxyServlet extends ProxyServlet
     private static Logger     LOG              = LoggerFactory.getLogger(LoginProxyServlet.class);
 
     /*
-    @Override
-    protected URI rewriteURI(HttpServletRequest request) {
-        // Forward all requests to another port on this machine
-        String uri = "http://localhost:8060";
-
-        // Take the current path and append it to the new url
-        String path = request.getRequestURI();
-        uri += path;
-
-        // Add query params
-        String query = request.getQueryString();
-        if (query != null && query.length() > 0) {
-            uri += "?" + query;
-        }
-        
-        LOG.debug("URI is : {}",uri );
-        return URI.create(uri).normalize();
-    }
+     * @Override
+     * protected URI rewriteURI(HttpServletRequest request) {
+     * // Forward all requests to another port on this machine
+     * String uri = "http://localhost:8060";
+     * // Take the current path and append it to the new url
+     * String path = request.getRequestURI();
+     * uri += path;
+     * // Add query params
+     * String query = request.getQueryString();
+     * if (query != null && query.length() > 0) {
+     * uri += "?" + query;
+     * }
+     * LOG.debug("URI is : {}",uri );
+     * return URI.create(uri).normalize();
+     * }
      */
 }
