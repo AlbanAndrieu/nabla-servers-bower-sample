@@ -32,10 +32,8 @@
 	</issueManagement>
 
 	<properties>
-		<!--
         <node.version>0.10.32</node.version>
-        <npm.version>2.11.0</npm.version>
-        -->
+        <npm.version>2.5.1</npm.version>
         <jersey.version>1.8</jersey.version>
 
         <jetty9.version>9.2.3.v20140905</jetty9.version>
@@ -221,8 +219,8 @@
                     <nodeVersion>v${node.version}</nodeVersion>
                     <npmVersion>${npm.version}</npmVersion>
                     <!--
-                    <nodeDownloadRoot>http://home.nabla.mobi/download/nodejs/</nodeDownloadRoot>
-					<npmDownloadRoot>http:///home.nabla.mobi/download/npm/-/</npmDownloadRoot>
+                    <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
+					<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
 					-->
                 </configuration>
 
@@ -526,8 +524,8 @@
 							<nodeVersion>v${node.version}</nodeVersion>
 							<npmVersion>${npm.version}</npmVersion>
 							<!--
-							<nodeDownloadRoot>http://home.nabla.mobi/download/nodejs/</nodeDownloadRoot>
-							<npmDownloadRoot>http://home.nabla.mobi/download/npm/-/</npmDownloadRoot>
+							<nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
+							<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
 							-->
 						</configuration>
 

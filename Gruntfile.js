@@ -901,11 +901,11 @@ module.exports = function(grunt) {
    * ZAProxy alias task.
    **/
   grunt.registerTask('zap', [
-    //'zap_start',
+    'zap_start',
     'acceptance-test',
-    //'zap_spider',
-    //'zap_scan',
-    //'zap_alert',
+    'zap_spider',
+    'zap_scan',
+    'zap_alert',
     //'zap_report',
     'zap_stop'
   ]);
