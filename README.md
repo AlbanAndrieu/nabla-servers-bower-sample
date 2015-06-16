@@ -2,7 +2,9 @@
 
 [![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
+```html
 http://githubbadge.appspot.com/AlbanAndrieu
+```
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
