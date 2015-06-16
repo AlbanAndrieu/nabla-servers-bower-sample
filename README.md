@@ -1,5 +1,9 @@
 # bower-sample
 
+[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+
+[![GitHub](http://githubbadge.appspot.com/AlbanAndrieu)](https://github.com/AlbanAndrieu)
+
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
 
