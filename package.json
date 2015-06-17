@@ -77,7 +77,7 @@
     "grunt-yslow-test": "^0.1.0",
     "grunt-zaproxy": "^0.1.1",
     "jasmine-core": "^2.3.4",
-    "jasmine-reporters": "^2.0.6",
+    "jasmine-reporters": "^1.0.0",
     "jshint-stylish": "^1.0.0",
     "karma": "0.12.17",
     "karma-chrome-launcher": "0.1.5",

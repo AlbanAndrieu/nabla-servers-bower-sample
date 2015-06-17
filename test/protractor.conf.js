@@ -28,13 +28,22 @@ exports.config = {
     }
   },
   onPrepare: function() {
-      var jasmineReporters = require('jasmine-reporters');
-      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-          consolidateAll: true,
-          filePrefix: 'TEST-default-Protractor',
-          savePath: 'target/surefire-reports'
-      }));
+      // The require statement must be down here, since jasmine-reporters@1.0
+      // expects jasmine to be in the global and protractor does not guarantee
+      // this until inside the onPrepare function.
+      require('jasmine-reporters');
+      jasmine.getEnv().addReporter(
+          new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
+      );
   },
+  //onPrepare: function() {
+  //    var jasmineReporters = require('jasmine-reporters');
+  //    jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+  //        consolidateAll: true,
+  //        filePrefix: 'TEST-default-Protractor',
+  //        savePath: 'target/surefire-reports'
+  //    }));
+  //},
   //multiCapabilities: [{
   //  'browserName': 'firefox'
   //}, {
