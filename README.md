@@ -1,6 +1,7 @@
 # bower-sample
 
 [![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Jenkins Build Status](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly)
 
 ```html
 http://githubbadge.appspot.com/AlbanAndrieu
