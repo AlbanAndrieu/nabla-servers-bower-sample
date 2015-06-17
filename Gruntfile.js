@@ -822,6 +822,7 @@ module.exports = function(grunt) {
     },
     'zap_alert': {
       options: {
+		host: SERVER_HOST,
         port: ZAP_PORT,
         ignore: ['X-Content-Type-Options header missing']
       }
@@ -829,6 +830,7 @@ module.exports = function(grunt) {
     'zap_report': {
       options: {
         dir: 'build/reports/zaproxy',
+        host: SERVER_HOST,
         port: ZAP_PORT,
         html: true
       }
@@ -840,7 +842,6 @@ module.exports = function(grunt) {
       }
     }
   });
-
 
   grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function(target) {
     if (grunt.option('allow-remote')) {
@@ -906,7 +907,7 @@ module.exports = function(grunt) {
     'zap_spider',
     'zap_scan',
     'zap_alert',
-    //'zap_report',
+    'zap_report',
     'zap_stop'
   ]);
 
