@@ -72,9 +72,10 @@ module.exports = function(grunt) {
           //console.dir(result.project.parent[0]);
           //version = result.project.version[0];
       });
-      console.log('Done.');
       return version;
   };
+
+  //console.log('Done.');
 
   var VERSION = parseVersionFromPomXml();
   console.log('VERSION : ' + VERSION);
@@ -714,6 +715,7 @@ module.exports = function(grunt) {
         format: 'tap',
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
+        threshold: '\'{"overall": "A", "ycdn": "F", "yexpires": "F"}\'',
         urls: [SERVER_URL],
         //reports: ['target/surefire-reports/yslow.xml']
         reports: ['target/yslow.tap']
@@ -803,7 +805,7 @@ module.exports = function(grunt) {
 
     'zap_start': {
       options: {
-		host: SERVER_HOST,
+        host: SERVER_HOST,
         port: ZAP_PORT,
         daemon: true
       }
@@ -811,18 +813,20 @@ module.exports = function(grunt) {
     'zap_spider': {
       options: {
         url: SERVER_URL,
+        host: SERVER_HOST,
         port: ZAP_PORT
       }
     },
     'zap_scan': {
       options: {
         url: SERVER_URL,
+        host: SERVER_HOST,
         port: ZAP_PORT
       }
     },
     'zap_alert': {
       options: {
-		host: SERVER_HOST,
+        host: SERVER_HOST,
         port: ZAP_PORT,
         ignore: ['X-Content-Type-Options header missing']
       }
@@ -837,7 +841,7 @@ module.exports = function(grunt) {
     },
     'zap_stop': {
       options: {
-		host: SERVER_HOST,
+        host: SERVER_HOST,
         port: ZAP_PORT
       }
     }
@@ -887,8 +891,8 @@ module.exports = function(grunt) {
     ], function(err) {
       if (err) {
         grunt.fail.warn('Acceptance test failed: ' + JSON.stringify(err, null, 2));
+        grunt.fail.warn('Is zaproxy still running?');
         grunt.task.run(['zap_stop']);
-        //grunt.fail.warn('Is zaproxy started?');
         return;
       }
       grunt.log.ok();
