@@ -22,7 +22,7 @@ exports.config = {
     proxy: {
        proxyType: 'manual',
        //httpProxy: 'localhost:' + process.env.ZAP_PORT,
-       httpProxy: 'localhost:8090',
+       httpProxy: 'home.nabla.mobi:8090',
        sslProxy: '',
        noProxy: ''
     }

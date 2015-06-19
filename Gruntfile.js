@@ -54,11 +54,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-yslow');
   grunt.loadNpmTasks('grunt-yslow-test');
   grunt.loadNpmTasks('grunt-pagespeed');
+  grunt.loadNpmTasks('grunt-pagespeed-junit');
   grunt.loadNpmTasks('grunt-wpt');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-phantomas');
   grunt.loadNpmTasks('grunt-sitespeedio');
   grunt.loadNpmTasks('grunt-uncss');
+  grunt.loadNpmTasks('grunt-compare-size');
 
   var fs = require('fs');
 
@@ -119,16 +121,16 @@ module.exports = function(grunt) {
           livereload: '<%= connect.options.livereload %>'
         }
       },
-      jsTest: {
+      jstest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
+        tasks: ['newer:jshint:all', 'test:watch', 'karma']
+      },
+      gruntfile: {
+        files: ['Gruntfile.js']
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
-      },
-      gruntfile: {
-        files: ['Gruntfile.js']
       },
       livereload: {
         options: {
@@ -221,6 +223,7 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
+          //open: false,
           port: 9002,
           middleware: function(connect) {
             return [
@@ -239,6 +242,7 @@ module.exports = function(grunt) {
         options: {
           port: 9003,
           open: true,
+          //livereload: false,
           base: '<%= config.dist %>'
         }
       },
@@ -366,6 +370,11 @@ module.exports = function(grunt) {
 
     // Renames files for browser caching purposes
     filerev: {
+      //options: {
+      //  encoding: 'utf8',
+      //  algorithm: 'md5',
+      //  length: 20
+      //},
       dist: {
         src: [
           '<%= config.dist %>/scripts/{,*/}*.js',
@@ -387,7 +396,7 @@ module.exports = function(grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              js: ['concat', 'uglifyjs']
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
@@ -430,6 +439,13 @@ module.exports = function(grunt) {
           '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html']
         }
       }
+    },
+
+    'compare_size': {
+      files: [
+        'app/styles/**',
+        'dist/styles/**'
+      ]
     },
 
     // The following *-min tasks produce minified files in the dist folder
@@ -483,7 +499,7 @@ module.exports = function(grunt) {
     //cssmin: {
     //   dist: {
     //     files: {
-    //       '.tmp/styles-min/main.css': [
+    //       '<%= config.dist %>/styles/main.css': [
     //         '.tmp/styles/{,*/}*.css'
     //       ]
     //     }
@@ -712,13 +728,15 @@ module.exports = function(grunt) {
     'yslow_test': {
       options: {
         info: 'grade',
-        format: 'tap',
+        //format: 'tap',
+        format: 'junit',
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
         threshold: '\'{"overall": "A", "ycdn": "F", "yexpires": "F"}\'',
-        urls: [SERVER_URL],
-        //reports: ['target/surefire-reports/yslow.xml']
-        reports: ['target/yslow.tap']
+        urls: [SERVER_URL + SERVER_CONTEXT],
+        //headers: '\'{"Cookie": "user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
+        reports: ['target/surefire-reports/yslow.xml']
+        //reports: ['target/yslow.tap']
       },
       'your_target': {
         files: []
@@ -726,11 +744,25 @@ module.exports = function(grunt) {
     },
 
     phantomas: {
-      gruntSite: {
+      grunt: {
         options: {
+          assertions: {
+            assetsWithQueryString: 3,     // receive warning, when there are more than 3 assets with a query string
+            bodyHTMLSize: 10500, // receive warning, when the bodyHTMLsize is bigger than 10500
+            jsErrors: 0,     // receive warning, when more than 0 JS errors appear
+            gzipRequests: {      // receive warning, when less compressed assets are loaded then 10 ( might be useful for checking server configurations )
+              type: '<',
+              value: 10
+            }
+          },
           indexPath: './phantomas/',
-          options: {},
-          url: SERVER_URL,
+          options: {
+            timeout: 30,
+            //cookie: 'user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
+            verbose: true,
+            debug: true
+          },
+          url: SERVER_URL + SERVER_CONTEXT,
           buildUi: true
         }
       }
@@ -768,6 +800,15 @@ module.exports = function(grunt) {
           threshold: 80
         }
       }
+    },
+
+    pagespeed_junit: {
+      options: {
+        urls: ['http://home.nabla.mobi:9090/'],
+        //key: '<API_KEY>',
+        reports: ['results.xml'],
+        threshold: 10,
+        ruleThreshold: 2
     },
 
     wpt: {
@@ -828,7 +869,10 @@ module.exports = function(grunt) {
       options: {
         host: SERVER_HOST,
         port: ZAP_PORT,
-        ignore: ['X-Content-Type-Options header missing']
+        ignore: ['Content-Type header missing',
+                 'Private IP disclosure',
+                 'X-Content-Type-Options header missing',
+                 'X-Frame-Options header not set']
       }
     },
     'zap_report': {
@@ -906,13 +950,13 @@ module.exports = function(grunt) {
    * ZAProxy alias task.
    **/
   grunt.registerTask('zap', [
-    'zap_start',
+    //'zap_start',
     'acceptance-test',
     'zap_spider',
     'zap_scan',
     'zap_alert',
-    'zap_report',
-    'zap_stop'
+    'zap_report'
+    //'zap_stop'
   ]);
 
   grunt.registerTask('prepare', [
@@ -924,6 +968,7 @@ module.exports = function(grunt) {
     'zap',
     'yslow_test',
     'pagespeed',
+    'pagespeed_junit',
     'sitespeedio',
     'phantomas',
     'wpt',
@@ -1000,6 +1045,7 @@ module.exports = function(grunt) {
     'bower',
     'unit-test',
     'package',
+    'compare_size',
     'site'
   ]);
 };
