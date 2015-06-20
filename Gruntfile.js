@@ -396,7 +396,7 @@ module.exports = function(grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs']
+              js: ['concat', 'uglifyjs'],
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
