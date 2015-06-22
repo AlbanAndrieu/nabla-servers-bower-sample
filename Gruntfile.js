@@ -829,7 +829,7 @@ module.exports = function(grunt) {
 
     wpt: {
       options: {
-        locations: ['Tokyo', 'Frankfurt:Firefox'],
+        locations: ['Frankfurt:Firefox'],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
