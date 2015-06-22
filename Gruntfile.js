@@ -809,6 +809,7 @@ module.exports = function(grunt) {
         reports: ['results.xml'],
         threshold: 10,
         ruleThreshold: 2
+      }
     },
 
     wpt: {
