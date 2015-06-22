@@ -809,7 +809,7 @@ module.exports = function(grunt) {
       //},
       paths: {
         options: {
-          paths: ['/#/about', '/todo'],
+          paths: ['/#/about', '/#/'],
           locale: 'en_GB',
           strategy: 'desktop',
           threshold: 80
@@ -847,6 +847,7 @@ module.exports = function(grunt) {
       default: {
         options: {
           url: 'http://home.nabla.mobi:9090/',
+          timeout: 300,
           key: process.env.WPT_API_KEY
         }
       }
