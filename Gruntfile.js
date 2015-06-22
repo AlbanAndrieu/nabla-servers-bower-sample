@@ -1025,7 +1025,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('site', [
-    'docs'
+    'docs',
+    'gh-pages'
   ]);
 
   grunt.registerTask('build', [
