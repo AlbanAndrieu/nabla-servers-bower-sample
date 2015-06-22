@@ -829,7 +829,7 @@ module.exports = function(grunt) {
 
     wpt: {
       options: {
-        locations: ['Frankfurt:Firefox'],
+        locations: ['SanJose_IE9'],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
@@ -839,7 +839,7 @@ module.exports = function(grunt) {
             //'http://home.nabla.mobi:8380/jenkins/'
           ]
         },
-        dest: 'tmp/sideroad/'
+        dest: './target/sideroad/'
       }
     },
 
