@@ -802,7 +802,7 @@ module.exports = function(grunt) {
       }
     },
 
-    pagespeed_junit: {
+    'pagespeed_junit': {
       options: {
         urls: ['http://home.nabla.mobi:9090/'],
         //key: '<API_KEY>',
