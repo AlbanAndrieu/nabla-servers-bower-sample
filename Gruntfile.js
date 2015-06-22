@@ -829,7 +829,7 @@ module.exports = function(grunt) {
 
     wpt: {
       options: {
-        locations: ['Tokyo', 'SanJose_IE9'],
+        locations: ['Tokyo', 'SanJose'],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
@@ -971,7 +971,14 @@ module.exports = function(grunt) {
     'zap_spider',
     'zap_scan',
     'zap_alert',
-    'zap_report'
+    'zap_report',
+    'yslow_test',
+    'pagespeed',
+    'pagespeed_junit',
+    'sitespeedio',
+    'phantomas',
+    'wpt',
+    'perfbudget'
     //'zap_stop'
   ]);
 
@@ -981,14 +988,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('integration-test', [
-    'zap',
-    'yslow_test',
-    'pagespeed',
-    'pagespeed_junit',
-    'sitespeedio',
-    'phantomas',
-    'wpt',
-    'perfbudget'
+    'zap'
   ]);
 
   grunt.registerTask('test', [
