@@ -829,7 +829,7 @@ module.exports = function(grunt) {
 
     wpt: {
       options: {
-        locations: ['SanJose_IE9'],
+        locations: ['Tokyo'],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
@@ -977,7 +977,7 @@ module.exports = function(grunt) {
     'pagespeed_junit',
     'sitespeedio',
     'phantomas',
-    'wpt',
+    //'wpt',
     'perfbudget'
     //'zap_stop'
   ]);
