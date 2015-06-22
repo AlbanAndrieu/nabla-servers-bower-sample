@@ -61,6 +61,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sitespeedio');
   grunt.loadNpmTasks('grunt-uncss');
   grunt.loadNpmTasks('grunt-compare-size');
+  grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
 
   var fs = require('fs');
 
@@ -422,24 +423,24 @@ module.exports = function(grunt) {
       }
     },
 
-    uncss: {
-      dist: {
-        options: {
-          // Take our Autoprefixed stylesheet main.css &
-          // any other stylesheet dependencies we have..
-          stylesheets: [
-            '../.tmp/styles/main.css',
-            '../bower_components/bootstrap/dist/css/bootstrap.css'
-          ],
-          // Ignore css selectors for async content with complete selector or regexp
-          // Only needed if using Bootstrap
-          ignore: [/dropdown-menu/,/\.collapsing/,/\.collapse/]
-        },
-        files: {
-          '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html']
-        }
-      }
-    },
+    //uncss: {
+    //  dist: {
+    //    options: {
+    //      // Take our Autoprefixed stylesheet main.css &
+    //      // any other stylesheet dependencies we have..
+    //      stylesheets: [
+    //        '../.tmp/styles/main.css',
+    //        '../bower_components/bootstrap/dist/css/bootstrap.css'
+    //      ],
+    //      // Ignore css selectors for async content with complete selector or regexp
+    //      // Only needed if using Bootstrap
+    //      ignore: [/dropdown-menu/,/\.collapsing/,/\.collapse/]
+    //    },
+    //    files: {
+    //      '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html']
+    //    }
+    //  }
+    //},
 
     'compare_size': {
       files: [
@@ -765,6 +766,20 @@ module.exports = function(grunt) {
           url: SERVER_URL + SERVER_CONTEXT,
           buildUi: true
         }
+      }
+    },
+
+    'phantomcss-gitdiff': {
+      options: {},
+      'your_target': {
+        options: {
+          screenshots: 'test/visual/screenshots/',
+          results: 'results/visual/',
+          baseUrl: SERVER_URL + SERVER_CONTEXT
+        },
+        src: [
+          'test/files/{,**/}*.html'
+        ]
       }
     },
 
