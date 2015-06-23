@@ -8,13 +8,13 @@ http://githubbadge.appspot.com/AlbanAndrieu
 ```
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
-Then I applyied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
+Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
 
 ## Deploy
 
 Page deployed at :
 
-http://albanandrieu.github.io/nabla-servers-bower-sample/#/
+http://albanandrieu.github.io/nabla-servers-bower-sample/
 
 ## Build & development
 
