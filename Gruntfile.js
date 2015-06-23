@@ -788,7 +788,7 @@ module.exports = function(grunt) {
         options: {
           url: 'http://home.nabla.mobi:9090/',
           deepth: 1,
-          resultBaseDir: './target/sitespeedio/'
+          resultBaseDir: './build/sitespeedio/'
         }
       }
     },
@@ -839,7 +839,7 @@ module.exports = function(grunt) {
             //'http://home.nabla.mobi:8380/jenkins/'
           ]
         },
-        dest: './target/sideroad/'
+        dest: './build/sideroad/'
       }
     },
 
