@@ -540,6 +540,17 @@
 									<arguments>integration-test</arguments>
 								</configuration>
 							</execution>
+
+							<execution>
+								<id>grunt site</id>
+								<goals>
+									<goal>grunt</goal>
+								</goals>
+								<phase>site</phase>
+								<configuration>
+									<arguments>site</arguments>
+								</configuration>
+							</execution>
 						</executions>
 
 					</plugin>
