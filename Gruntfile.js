@@ -848,7 +848,11 @@ module.exports = function(grunt) {
         options: {
           url: 'http://home.nabla.mobi:9090/',
           timeout: 300,
-          key: process.env.WPT_API_KEY
+          key: process.env.WPT_API_KEY,
+          budget: {
+            render: '2000',
+            SpeedIndex: '3000'
+          }
         }
       }
     },
