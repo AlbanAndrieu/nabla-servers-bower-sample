@@ -45,6 +45,14 @@
           -->
 
           <!-- Security rules from https://www.owasp.org/index.php/List_of_useful_HTTP_headers -->
+          <Item>
+            <New id="header-favicon" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+              <Set name="pattern">/favicon.ico</Set>
+              <Set name="name">Cache-Control</Set>
+              <Set name="value">Max-Age=3600,public</Set>
+              <Set name="terminating">true</Set>
+            </New>
+          </Item>
 
           <Item>
             <New id="header-jsp" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
@@ -79,7 +87,6 @@
             <New id="header-expires" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
               <Set name="pattern">/*</Set>
               <Set name="name">Expires</Set>
-              <!--<Set name="value">1</Set>-->
               <Set name="value">Sun, 19 Jul 2020 18:06:32 GMT</Set>
             </New>
           </Item>
