@@ -729,15 +729,15 @@ module.exports = function(grunt) {
     'yslow_test': {
       options: {
         info: 'grade',
-        //format: 'tap',
-        format: 'junit',
+        format: 'tap',
+        //format: 'junit',
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
         threshold: '\'{"overall": "A", "ycdn": "F", "yexpires": "F"}\'',
         urls: [SERVER_URL + SERVER_CONTEXT],
         //headers: '\'{"Cookie": "user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
-        reports: ['target/surefire-reports/yslow.xml']
-        //reports: ['target/yslow.tap']
+        //reports: ['target/surefire-reports/yslow.xml']
+        reports: ['target/yslow.tap']
       },
       'your_target': {
         files: []
