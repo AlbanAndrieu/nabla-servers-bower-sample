@@ -44,7 +44,7 @@ describe('Protractor Demo Sample', function() {
   //  password.clear();
   //  password.sendKeys(params.userPassword);
   //
-  //  element(by.css('button')).click();
+  //  element(by.id('submit_btn')).click();
   //
   //  // Login takes some time, so wait until it's done.
   //  // For the test app's login, we know it's done when it redirects to
