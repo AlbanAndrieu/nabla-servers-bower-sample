@@ -62,6 +62,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-uncss');
   grunt.loadNpmTasks('grunt-compare-size');
   grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
+  grunt.loadNpmTasks('grunt-resemble-cli');
 
   var fs = require('fs');
 
@@ -381,8 +382,8 @@ module.exports = function(grunt) {
           '<%= config.dist %>/scripts/{,*/}*.js',
           '<%= config.dist %>/styles/{,*/}*.css',
           '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.dist %>/styles/fonts/*',
-          '<%= config.dist %>/*.{ico,png}'
+          //'<%= config.dist %>/*.{ico,png}',
+          '<%= config.dist %>/styles/fonts/*'
         ]
       }
     },
@@ -734,7 +735,8 @@ module.exports = function(grunt) {
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
         threshold: '\'{"overall": "A", "ycdn": "F", "yexpires": "F"}\'',
-        urls: [SERVER_URL + SERVER_CONTEXT],
+        urls: [SERVER_URL + SERVER_CONTEXT,
+               SERVER_URL + '#/about'],
         //headers: '\'{"Cookie": "user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
         //reports: ['target/surefire-reports/yslow.xml']
         reports: ['target/yslow.tap']
@@ -756,7 +758,7 @@ module.exports = function(grunt) {
               value: 10
             }
           },
-          indexPath: './phantomas/',
+          indexPath: './build/phantomas/',
           options: {
             timeout: 30,
             //cookie: 'user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
@@ -771,14 +773,70 @@ module.exports = function(grunt) {
 
     'phantomcss-gitdiff': {
       options: {},
-      'your_target': {
+        desktop: {
+            options: {
+                baseUrl: 'http://localhost:9090/',
+                cleanupComparisonImages: false,
+                //viewportSize: [1024, 768], //desktop
+                viewportSize: [320, 400], //mobile
+                gitDiff: true
+            },
+            files: [{
+              cwd: 'dist/',
+              src: '*.html'
+            }]
+        }
+    },
+
+    resemble: {
+      options: {
+        screenshotRoot: 'build/screenshots/',
+        //url: 'http://0.0.0.0:8000/dist',
+        url: 'http://localhost:9090/',
+        //debug: true,
+        gm: true
+
+      },
+      desktop: {
         options: {
-          screenshots: 'test/visual/screenshots/',
-          results: 'results/visual/',
-          baseUrl: SERVER_URL + SERVER_CONTEXT
+          width: 1100
         },
-        src: [
-          'test/files/{,**/}*.html'
+        files: [
+         {
+           cwd: 'dist/',
+           //expand: true,
+           //src: ['**/*.html'],
+           src: ['*.html'],
+           dest: 'desktop'
+         }
+        ]
+      },
+      //desktop: {
+      //  options: {
+      //    width: 1100,
+      //  },
+      //  src: ['dist/about', 'dist/contact', 'dist/customers', 'dist/customers/customer-stories'],
+      //  dest: 'desktop',
+      //},
+      //tablet: {
+      //  options: {
+      //    width: 800,
+      //  },
+      //  src: ['dist/**/*.html'],
+      //  dest: 'tablet',
+      //},
+      mobile: {
+        options: {
+          width: 450
+        },
+        files: [
+         {
+           cwd: 'dist/',
+           //expand: true,
+           //src: ['**/*.html'],
+           src: ['*.html'],
+           dest: 'mobile'
+         }
         ]
       }
     },
@@ -983,7 +1041,8 @@ module.exports = function(grunt) {
     'sitespeedio',
     'phantomas',
     //'wpt',
-    'perfbudget'
+    'perfbudget',
+    'resemble'
     //'zap_stop'
   ]);
 
