@@ -24,12 +24,11 @@ module.exports = function(grunt) {
   }
 
   var ZAP_PORT = process.env.ZAP_PORT || 8090;
-  console.log('ZAP_PORT : ' + ZAP_PORT);
-  //var SERVER_HOST = process.env.SERVER_HOST || 'home.nabla.mobi';
+  //console.log('ZAP_PORT : ' + ZAP_PORT);
   var SERVER_HOST = process.env.SERVER_HOST || 'localhost';
-  console.log('SERVER_HOST : ' + SERVER_HOST);
+  //console.log('SERVER_HOST : ' + SERVER_HOST);
   var SERVER_PORT = process.env.JETTY_PORT || 9090;
-  console.log('SERVER_PORT : ' + SERVER_PORT);
+  //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_CONTEXT = '';
 
@@ -63,6 +62,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-compare-size');
   grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
   grunt.loadNpmTasks('grunt-resemble-cli');
+  grunt.loadNpmTasks('grunt-banner');
 
   var fs = require('fs');
 
@@ -92,11 +92,21 @@ module.exports = function(grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+    // Project meta
+    pkg: require('./package.json'),
+    banner: '/**\n' +
+            ' * <%= pkg.name %>\n' +
+            ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+            ' * @link <%= pkg.homepage %>\n' +
+            ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
+            ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
+            ' */\n',
 
     // Project settings
     config: config,
 
     bower: {
+      bower: require('./bower.json'),
       install: {
         options: {
           targetDir: 'bower_components',
@@ -398,11 +408,11 @@ module.exports = function(grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              js: ['concat', 'uglifyjs']
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
-              css: ['cssmin']
+              //css: ['cssmin']
             },
             post: {}
           }
@@ -424,24 +434,32 @@ module.exports = function(grunt) {
       }
     },
 
-    //uncss: {
-    //  dist: {
-    //    options: {
-    //      // Take our Autoprefixed stylesheet main.css &
-    //      // any other stylesheet dependencies we have..
-    //      stylesheets: [
-    //        '../.tmp/styles/main.css',
-    //        '../bower_components/bootstrap/dist/css/bootstrap.css'
-    //      ],
-    //      // Ignore css selectors for async content with complete selector or regexp
-    //      // Only needed if using Bootstrap
-    //      ignore: [/dropdown-menu/,/\.collapsing/,/\.collapse/]
-    //    },
-    //    files: {
-    //      '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html']
-    //    }
-    //  }
-    //},
+    uncss: {
+      dist: {
+        options: {
+          compress: !true,
+          // Take our Autoprefixed stylesheet main.css &
+          // any other stylesheet dependencies we have..
+          stylesheets: [
+            '../.tmp/styles/main.css',
+            //'../bower_components/nabla-notification/styles/css/nabla-notification.css',
+            //'../bower_components/nabla-header/styles/css/nabla-header.css',
+            '../bower_components/bootstrap/dist/css/bootstrap.css'
+          ],
+          // Ignore css selectors for async content with complete selector or regexp
+          // Only needed if using Bootstrap
+          ignore: ['.ng-move', '.ng-enter', '.ng-leave', '.created_by_jQuery',
+                   /nabla-header.*/,
+                   /dropdown-menu/,/\.collapsing/,/\.collapse/]
+        },
+        files: {
+          '.tmp/styles/main.css': ['<%= config.app %>/{,*/}*.html'
+          //'./bower_components/nabla-notification/{,*/}*.html',
+          //'./bower_components/nabla-header/{,*/}*.html'
+          ]
+        }
+      }
+    },
 
     'compare_size': {
       files: [
@@ -498,15 +516,16 @@ module.exports = function(grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care
     // of minification. These next options are pre-configured if you do not
     // wish to use the Usemin blocks.
-    //cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    //},
+    cssmin: {
+       dist: {
+         files: {
+           '<%= config.dist %>/styles/main.css': [
+           //'<%= config.app %>/styles/{,*/}*.css',
+           '.tmp/styles/{,*/}*.css'
+           ]
+         }
+       }
+    },
     //uglify: {
     //  dist: {
     //    files: {
@@ -519,6 +538,18 @@ module.exports = function(grunt) {
     //concat: {
     //  dist: {}
     //},
+
+    usebanner: {
+      dist: {
+        options: {
+          position: 'top',
+          banner: '<%= banner %>'
+        },
+        files: {
+          src: ['<%= config.dist %>/styles/*.css', '<%= config.dist %>/scripts/*.js']
+        }
+      }
+    },
 
     // ng-annotate tries to make the code safe for minification automatically
     // by using the Angular long form for dependency injection.
@@ -624,7 +655,7 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>'
         }, {
           expand: true,
-          cwd: 'bower_components/nabla-notifications',
+          cwd: 'bower_components/nabla-notification',
           src: 'img/*',
           dest: '<%= config.dist %>'
         }, {
@@ -1088,7 +1119,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('site', [
-    'docs',
     'gh-pages'
   ]);
 
@@ -1099,7 +1129,7 @@ module.exports = function(grunt) {
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
-    //'uncss',
+    'uncss',
     //'ngtemplates',
     'concat',
     'ngAnnotate',
@@ -1109,7 +1139,8 @@ module.exports = function(grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'usebanner'
   ]);
 
   grunt.registerTask('docs', [
@@ -1127,6 +1158,6 @@ module.exports = function(grunt) {
     'unit-test',
     'package',
     'compare_size',
-    'site'
+    'docs'
   ]);
 };

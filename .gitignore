@@ -13,6 +13,7 @@ bower_components/
 dist
 .tmp
 .sass-cache
+.sizecache.json
 *.log
 /docs/
 
