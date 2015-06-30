@@ -63,6 +63,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
   grunt.loadNpmTasks('grunt-resemble-cli');
   grunt.loadNpmTasks('grunt-banner');
+  grunt.loadNpmTasks('grunt-release');
 
   var fs = require('fs');
 
@@ -808,7 +809,7 @@ module.exports = function(grunt) {
       options: {},
         desktop: {
             options: {
-                baseUrl: 'http://localhost:9090/',
+                baseUrl: SERVER_URL + SERVER_CONTEXT,
                 cleanupComparisonImages: false,
                 //viewportSize: [1024, 768], //desktop
                 viewportSize: [320, 400], //mobile
@@ -825,7 +826,7 @@ module.exports = function(grunt) {
       options: {
         screenshotRoot: 'build/screenshots/',
         //url: 'http://0.0.0.0:8000/dist',
-        url: 'http://localhost:9090/',
+        url: SERVER_URL + SERVER_CONTEXT,
         //debug: true,
         gm: true
 
@@ -999,6 +1000,21 @@ module.exports = function(grunt) {
       options: {
         host: SERVER_HOST,
         port: ZAP_PORT
+      }
+    },
+
+    release: {
+      options: {
+        additionalFiles: ['bower.json'],
+        npm: false, //default: true
+        github: {
+          //apiRoot: 'https://git.example.com/v3', // Default: https://github.com
+          repo: '<%= pkg.repository.url %>', //put your user/repo here
+          accessTokenVar: 'GITHUB_ACCESS_TOKEN', //ENVIRONMENT VARIABLE that contains GitHub Access Token
+          // Or you can use username and password env variables, we discourage you to do so
+          usernameVar: 'GITHUB_USERNAME', //ENVIRONMENT VARIABLE that contains GitHub username
+          passwordVar: 'GITHUB_PASSWORD' //ENVIRONMENT VARIABLE that contains GitHub password
+        }
       }
     }
   });
