@@ -59,6 +59,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phantomas');
   grunt.loadNpmTasks('grunt-sitespeedio');
   grunt.loadNpmTasks('grunt-uncss');
+  grunt.loadNpmTasks('grunt-penthouse');
+  grunt.loadNpmTasks('grunt-critical');
   grunt.loadNpmTasks('grunt-compare-size');
   grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
   grunt.loadNpmTasks('grunt-resemble-cli');
@@ -85,7 +87,7 @@ module.exports = function(grunt) {
   var VERSION = parseVersionFromPomXml();
   console.log('VERSION : ' + VERSION);
 
-  // Configurable paths
+  // Configurable paths for the application
   var config = {
     app: require('./bower.json').appPath || 'app',
     dist: 'dist'
@@ -459,6 +461,36 @@ module.exports = function(grunt) {
           //'./bower_components/nabla-header/{,*/}*.html'
           ]
         }
+      }
+    },
+
+    critical: {
+      test: {
+        options: {
+            //base: '<%= config.dist %>/',
+            base: './',
+            css: [
+                '.tmp/styles/main.css'
+                //'test/fixture/styles/bootstrap.css'
+            ],
+            width: 320,
+            height: 480
+        },
+        src: '<%= config.dist %>/index.html',
+        //dest: 'styles/critical.css'
+        //dest: 'index.html'
+        dest: '<%= config.dist %>/index.html'
+      }
+    },
+
+    penthouse: {
+      server: {
+        //outfile: '<%= config.dist %>/styles/critical.css',
+        css: '<%= config.dist %>/styles/main.*.css',
+        //url: SERVER_URL + SERVER_CONTEXT,
+        url: 'http://localhost:9090/#/',
+        width: 1280,
+        height: 800
       }
     },
 
@@ -1084,6 +1116,7 @@ module.exports = function(grunt) {
     'zap_scan',
     'zap_alert',
     'zap_report',
+    //'penthouse',
     'yslow_test',
     'pagespeed',
     'pagespeed_junit',
@@ -1157,6 +1190,7 @@ module.exports = function(grunt) {
     'uglify',
     'filerev',
     'usemin',
+    'critical',
     'htmlmin',
     'usebanner'
   ]);
