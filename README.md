@@ -92,3 +92,7 @@ phantomjs yslow.js --info basic --format plain http://localhost:9090/
 grunt pagespeed
 grunt wpt
 ```
+
+## Performance improvements
+
+What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA

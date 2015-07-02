@@ -360,8 +360,19 @@ module.exports = function(grunt) {
         src: ['<%= config.app %>/index.html'],
         exclude: [
                    '/angular-i18n/',  // localizations are loaded dynamically
-                   '/swagger-ui/',
-                   'bower_components/bootstrap/dist/js/bootstrap.js'
+                   'bower_components/bootstrap/dist/js/bootstrap.js',
+                   'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded as used by uncss
+                   '/swagger-ui/'
+        ]
+      },
+      server: {
+        ignorePath: /^\/|\.\.\//,
+        src: ['<%= config.app %>/index.html'],
+        exclude: [
+                   '/angular-i18n/',  // localizations are loaded dynamically
+                   'bower_components/bootstrap/dist/js/bootstrap.js',
+                   //'bower_components/bootstrap/dist/css/bootstrap.css', // needed as we do not do uncss
+                   '/swagger-ui/'
         ]
       },
       test: {
@@ -474,7 +485,7 @@ module.exports = function(grunt) {
                 //'test/fixture/styles/bootstrap.css'
             ],
             width: 320,
-            height: 480
+            height: 70
         },
         src: '<%= config.dist %>/index.html',
         //dest: 'styles/critical.css'
@@ -1059,7 +1070,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'wiredep',
+      'wiredep:server',
       //'ngconstant:dev',
       'concurrent:server',
       'autoprefixer',
@@ -1144,7 +1155,7 @@ module.exports = function(grunt) {
       grunt.task.run([
         'check',
         'clean:server',
-        'wiredep',
+        'wiredep:test',
         //'ngconstant:dev',
         'concurrent:test',
         'autoprefixer'
@@ -1173,7 +1184,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep',
+    'wiredep:app', //remove boostrap after the test
     //'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
