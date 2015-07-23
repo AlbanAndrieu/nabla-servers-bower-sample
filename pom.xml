@@ -32,8 +32,10 @@
 	</issueManagement>
 
 	<properties>
+		<!--<node.version>0.12.4</node.version>-->
         <node.version>0.10.32</node.version>
-        <npm.version>2.5.1</npm.version>
+		<npm.version>2.13.0</npm.version>
+		<!--<npm.version>2.7.1</npm.version>-->
         <jersey.version>1.8</jersey.version>
 
         <jetty9.version>9.2.3.v20140905</jetty9.version>
@@ -311,7 +313,7 @@
                 </configuration>
             </plugin>
 			<!-- for automatic running of integration tests with Jetty -->
-			<!-- mvn org.codehaus.cargo:cargo-maven2-plugin:run -->
+			<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>

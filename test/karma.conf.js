@@ -60,8 +60,9 @@ module.exports = function(config) {
     },
 
     junitReporter: {
-      outputFile: './target/surefire-reports/TEST-default-KarmaTest.xml',
-      suite: ''
+      //outputFile: './target/surefire-reports/TEST-default-KarmaTest.xml',
+      outputDir: './target/surefire-reports/',
+      suite: 'KarmaTest'
     },
 
     // web server port
