@@ -36,6 +36,7 @@ module.exports = function(grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
+  //require('jit-grunt')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -44,36 +45,36 @@ module.exports = function(grunt) {
   var async = require('async'),
       request = require('request');
 
-  grunt.loadNpmTasks('grunt-ngdocs');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-ng-annotate');
-  grunt.loadNpmTasks('grunt-ng-constant');
-  grunt.loadNpmTasks('grunt-angular-templates');
-  grunt.loadNpmTasks('grunt-zaproxy');
-  grunt.loadNpmTasks('grunt-perfbudget');
-  //grunt.loadNpmTasks('grunt-yslow');
-  grunt.loadNpmTasks('grunt-yslow-test');
-  grunt.loadNpmTasks('grunt-pagespeed');
-  grunt.loadNpmTasks('grunt-pagespeed-junit');
-  grunt.loadNpmTasks('grunt-wpt');
-  grunt.loadNpmTasks('grunt-gh-pages');
-  grunt.loadNpmTasks('grunt-phantomas');
-  grunt.loadNpmTasks('grunt-sitespeedio');
-  grunt.loadNpmTasks('grunt-uncss');
-  //TODO http://grunt-tasks.com/grunt-purifycss/
-  grunt.loadNpmTasks('grunt-postcss');
-  //grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
-  grunt.loadNpmTasks('grunt-critical');
-  grunt.loadNpmTasks('grunt-compare-size');
-  //grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
-  grunt.loadNpmTasks('grunt-resemble-cli');
-  grunt.loadNpmTasks('grunt-banner');
-  grunt.loadNpmTasks('grunt-release');
-  grunt.loadNpmTasks('grunt-version-check');
-  grunt.loadNpmTasks('grunt-installed-check');
-  grunt.loadNpmTasks('grunt-check-dependencies');
-  grunt.loadNpmTasks('grunt-nsp-package');
+  //grunt.loadNpmTasks('grunt-ngdocs');
+  //grunt.loadNpmTasks('grunt-contrib-connect');
+  //grunt.loadNpmTasks('grunt-contrib-clean');
+  //grunt.loadNpmTasks('grunt-ng-annotate');
+  //grunt.loadNpmTasks('grunt-ng-constant');
+  //grunt.loadNpmTasks('grunt-angular-templates');
+  //grunt.loadNpmTasks('grunt-zaproxy');
+  //grunt.loadNpmTasks('grunt-perfbudget');
+  ////grunt.loadNpmTasks('grunt-yslow');
+  //grunt.loadNpmTasks('grunt-yslow-test');
+  //grunt.loadNpmTasks('grunt-pagespeed');
+  //grunt.loadNpmTasks('grunt-pagespeed-junit');
+  //grunt.loadNpmTasks('grunt-wpt');
+  //grunt.loadNpmTasks('grunt-gh-pages');
+  //grunt.loadNpmTasks('grunt-phantomas');
+  //grunt.loadNpmTasks('grunt-sitespeedio');
+  //grunt.loadNpmTasks('grunt-uncss');
+  ////TODO http://grunt-tasks.com/grunt-purifycss/
+  //grunt.loadNpmTasks('grunt-postcss');
+  ////grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
+  //grunt.loadNpmTasks('grunt-critical');
+  //grunt.loadNpmTasks('grunt-compare-size');
+  ////grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
+  //grunt.loadNpmTasks('grunt-resemble-cli');
+  //grunt.loadNpmTasks('grunt-banner');
+  //grunt.loadNpmTasks('grunt-release');
+  //grunt.loadNpmTasks('grunt-version-check');
+  //grunt.loadNpmTasks('grunt-installed-check');
+  //grunt.loadNpmTasks('grunt-check-dependencies');
+  //grunt.loadNpmTasks('grunt-nsp-package');
 
   var parseVersionFromPomXml = function() {
       var fs = require('fs');
@@ -920,7 +921,7 @@ module.exports = function(grunt) {
         //url: 'http://0.0.0.0:8000/dist',
         url: SERVER_URL + SERVER_CONTEXT,
         //debug: true,
-        gm: true
+        gm: false
 
       },
       desktop: {
