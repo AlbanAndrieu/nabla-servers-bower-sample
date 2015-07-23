@@ -28,6 +28,12 @@ exports.config = {
     }
   },
   onPrepare: function() {
+
+      //var failFast = require('jasmine-fail-fast');
+      //jasmine.getEnv().addReporter(failFast.init());
+      require('jasmine-bail-fast');
+      jasmine.getEnv().bailFast();
+
       // The require statement must be down here, since jasmine-reporters@1.0
       // expects jasmine to be in the global and protractor does not guarantee
       // this until inside the onPrepare function.

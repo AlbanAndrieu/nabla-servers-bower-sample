@@ -25,6 +25,8 @@ module.exports = function(grunt) {
 
   var ZAP_PORT = process.env.ZAP_PORT || 8090;
   //console.log('ZAP_PORT : ' + ZAP_PORT);
+  var ZAP_HOST = process.env.ZAP_HOST || 'localhost';
+  //console.log('ZAP_HOST : ' + ZAP_HOST);
   var SERVER_HOST = process.env.SERVER_HOST || 'localhost';
   //console.log('SERVER_HOST : ' + SERVER_HOST);
   var SERVER_PORT = process.env.JETTY_PORT || 9090;
@@ -50,7 +52,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-zaproxy');
   grunt.loadNpmTasks('grunt-perfbudget');
-  grunt.loadNpmTasks('grunt-yslow');
+  //grunt.loadNpmTasks('grunt-yslow');
   grunt.loadNpmTasks('grunt-yslow-test');
   grunt.loadNpmTasks('grunt-pagespeed');
   grunt.loadNpmTasks('grunt-pagespeed-junit');
@@ -59,21 +61,50 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-phantomas');
   grunt.loadNpmTasks('grunt-sitespeedio');
   grunt.loadNpmTasks('grunt-uncss');
-  grunt.loadNpmTasks('grunt-penthouse');
+  //TODO http://grunt-tasks.com/grunt-purifycss/
+  grunt.loadNpmTasks('grunt-postcss');
+  //grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
   grunt.loadNpmTasks('grunt-critical');
   grunt.loadNpmTasks('grunt-compare-size');
-  grunt.loadNpmTasks('grunt-phantomcss-gitdiff');
+  //grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
   grunt.loadNpmTasks('grunt-resemble-cli');
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-release');
+  grunt.loadNpmTasks('grunt-version-check');
+  grunt.loadNpmTasks('grunt-installed-check');
+  grunt.loadNpmTasks('grunt-check-dependencies');
+  grunt.loadNpmTasks('grunt-nsp-package');
 
-  var fs = require('fs');
-
-  var parseString = require('xml2js').parseString;
-  // Returns the second occurence of the version number
   var parseVersionFromPomXml = function() {
+      var fs = require('fs');
+      var parseString = require('xml2js').parseString;
       var version;
-      var pomXml = fs.readFileSync('pom.xml', 'utf8');
+      var pomFile = 'pom.xml';
+      if (typeof process.env.MVN_RELEASE_VERSION !== 'undefined') {
+        pomFile = 'pom.xml.tag';
+      }
+      //TODO use pom.xml.tag
+      //pom.xml.next
+      var pomXml;
+      try {
+        pomXml = fs.readFileSync(pomFile, 'utf8');
+      } catch (err) {
+
+        // If the type is not what you want, then just throw the error again.
+        if (err.code !== 'ENOENT') { throw err; }
+        // Handle a file-not-found error
+
+        try {
+          pomXml = fs.readFileSync('pom.xml', 'utf8');
+        } catch (err) {
+          // If the type is not what you want, then just throw the error again.
+          if (err.code !== 'ENOENT') { throw err; }
+
+          // Handle a file-not-found error
+          console.log('Missing pom.xml');
+        }
+
+      }
       parseString(pomXml, function(err, result) {
           version = result.project.parent[0].version;
           //console.dir(result.project.parent[0]);
@@ -84,7 +115,24 @@ module.exports = function(grunt) {
 
   //console.log('Done.');
 
-  var VERSION = parseVersionFromPomXml();
+  var getVersion = function() {
+    // TODO use https://www.npmjs.com/package/grunt-jenkins-build-info
+    var POM_VERSION = parseVersionFromPomXml();
+    var JENKINS_VERSION = process.env.BUILD_NUMBER || '0';
+    // TODO use https://www.npmjs.com/package/grunt-jenkins-build-number for 0
+    var RELEASE_VERSION = process.env.MVN_RELEASE_VERSION || POM_VERSION;
+    if (typeof process.env.MVN_RELEASE_VERSION === 'undefined') {
+      RELEASE_VERSION = RELEASE_VERSION + '.' + JENKINS_VERSION;
+    }
+    var pattern = /SNAPSHOT/i;
+    RELEASE_VERSION = RELEASE_VERSION.replace(pattern, 'build');
+    //MVN_ISDRYRUN
+    //MVN_DEV_VERSION
+    //console.log('RELEASE_VERSION : ' + RELEASE_VERSION);
+    return RELEASE_VERSION;
+  };
+
+  var VERSION = getVersion();
   console.log('VERSION : ' + VERSION);
 
   // Configurable paths for the application
@@ -145,7 +193,7 @@ module.exports = function(grunt) {
       },
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
+        tasks: ['newer:copy:styles', 'postcss']
       },
       livereload: {
         options: {
@@ -339,9 +387,12 @@ module.exports = function(grunt) {
     },
 
     // Add vendor prefixed styles
-    autoprefixer: {
+    postcss: {
       options: {
-        browsers: ['> 1%', 'last 2 versions', 'Firefox ESR', 'Opera 12.1']
+        processors: [
+          //require('pixrem')(), // add fallbacks for rem units
+          require('autoprefixer-core')({browsers: 'last 2 versions'}) // add vendor prefixes
+        ]
       },
       dist: {
         files: [{
@@ -781,26 +832,26 @@ module.exports = function(grunt) {
       run: {}
     },
 
-    yslow: {
-      options: {
-        thresholds: {
-          weight: 180,
-          speed: 1000,
-          score: 80,
-          requests: 15
-        }
-      },
-      pages: {
-        files: [
-          {
-            src: SERVER_URL,
-            thresholds: {
-              weight: 100
-            }
-          }
-        ]
-      }
-    },
+    //yslow: {
+    //  options: {
+    //    thresholds: {
+    //      weight: 180,
+    //      speed: 1000,
+    //      score: 80,
+    //      requests: 15
+    //    }
+    //  },
+    //  pages: {
+    //    files: [
+    //      {
+    //        src: SERVER_URL,
+    //        thresholds: {
+    //          weight: 100
+    //        }
+    //      }
+    //    ]
+    //  }
+    //},
 
     'yslow_test': {
       options: {
@@ -812,7 +863,7 @@ module.exports = function(grunt) {
         threshold: '\'{"overall": "A", "ycdn": "F", "yexpires": "F"}\'',
         urls: [SERVER_URL + SERVER_CONTEXT,
                SERVER_URL + '#/about'],
-        //headers: '\'{"Cookie": "user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
+        //headers: '\'{"Cookie": "'JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
         //reports: ['target/surefire-reports/yslow-main.xml',
         //          'target/surefire-reports/yslow-about.xml']
         reports: ['target/yslow-main.tap',
@@ -838,7 +889,7 @@ module.exports = function(grunt) {
           indexPath: './build/phantomas/',
           options: {
             timeout: 30,
-            //cookie: 'user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
+            //cookie: ''JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
             verbose: true,
             debug: true
           },
@@ -1002,7 +1053,7 @@ module.exports = function(grunt) {
 
     'zap_start': {
       options: {
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT,
         daemon: true
       }
@@ -1010,20 +1061,20 @@ module.exports = function(grunt) {
     'zap_spider': {
       options: {
         url: SERVER_URL,
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT
       }
     },
     'zap_scan': {
       options: {
         url: SERVER_URL,
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT
       }
     },
     'zap_alert': {
       options: {
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT,
         ignore: ['Content-Type header missing',
                  'Private IP disclosure',
@@ -1034,16 +1085,33 @@ module.exports = function(grunt) {
     'zap_report': {
       options: {
         dir: 'build/reports/zaproxy',
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT,
         html: true
       }
     },
     'zap_stop': {
       options: {
-        host: SERVER_HOST,
+        host: ZAP_HOST,
         port: ZAP_PORT
       }
+    },
+    'zap_results': {
+      options: {
+        risks: ['High']
+        //risks: ['High', 'Medium', 'Low', 'Informational']
+      }
+    },
+
+    versioncheck: {
+      options: {
+        skip: ['semver', 'npm', 'lodash'],
+        hideUpToDate: false
+      }
+    },
+
+    checkDependencies: {
+        this: {}
     },
 
     release: {
@@ -1075,7 +1143,7 @@ module.exports = function(grunt) {
       'wiredep:server',
       //'ngconstant:dev',
       'concurrent:server',
-      'autoprefixer',
+      'postcss',
       'configureProxies:server',
       'connect:livereload',
       'watch'
@@ -1135,8 +1203,9 @@ module.exports = function(grunt) {
     'phantomas',
     //'wpt',
     'perfbudget',
-    'resemble'
+    'resemble',
     //'zap_stop'
+    'zap_results'
   ]);
 
   grunt.registerTask('prepare', [
@@ -1160,7 +1229,7 @@ module.exports = function(grunt) {
         'wiredep:test',
         //'ngconstant:dev',
         'concurrent:test',
-        'autoprefixer'
+        'postcss'
       ]);
     }
 
@@ -1171,10 +1240,21 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('check', [
+  grunt.registerTask('check', function(target) {
+    grunt.task.run([
     'newer:jshint',
-    'jscs'
-  ]);
+    'jscs',
+    'checkDependencies',
+    'versioncheck'
+    ]);
+
+    if (target === 'release') {
+      grunt.task.run([
+        //'validate-package',
+        'installed_check'
+      ]);
+    }
+  });
 
   grunt.registerTask('package', [
     'build'
@@ -1190,7 +1270,7 @@ module.exports = function(grunt) {
     //'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
-    'autoprefixer',
+    'postcss',
     'uncss',
     //'ngtemplates',
     'concat',

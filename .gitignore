@@ -2,6 +2,7 @@
 .settings/
 .classpath
 target/
+target-eclipse/
 /build/
 .DS_Store
 .idea/workspace.xml
