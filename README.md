@@ -1,4 +1,4 @@
-# bower-sample
+# nabla-servers-bower-sample
 
 [![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
 [![Jenkins Build Status](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly)
@@ -9,6 +9,9 @@
 ```html
 http://githubbadge.appspot.com/AlbanAndrieu
 ```
+
+A bower project sample.
+=============
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
