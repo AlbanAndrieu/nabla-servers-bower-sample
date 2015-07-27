@@ -1,7 +1,10 @@
 # bower-sample
 
-[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
 [![Jenkins Build Status](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly)
+
+[![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample) [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
+[![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample) [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 
 ```html
 http://githubbadge.appspot.com/AlbanAndrieu
