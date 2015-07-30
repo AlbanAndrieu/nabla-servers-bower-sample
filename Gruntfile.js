@@ -8,6 +8,12 @@
 // 'test/spec/**/*.js'
 
 module.exports = function(grunt) {
+  var localConfig;
+  try {
+    localConfig = require('./server/config/local.env');
+  } catch (e) {
+    localConfig = {};
+  }
 
   var zone;
   var xdomainUrl;
@@ -32,15 +38,35 @@ module.exports = function(grunt) {
   var SERVER_PORT = process.env.JETTY_PORT || 9090;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
-  var SERVER_CONTEXT = '';
-
-  // Load grunt tasks automatically
-  require('load-grunt-tasks')(grunt);
-  //require('jit-grunt')(grunt);
+  var SERVER_CONTEXT = '/';
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  // Load grunt tasks automatically
+  //require('load-grunt-tasks')(grunt);
+  // Load grunt tasks automatically, when needed
+  require('jit-grunt')(grunt, {
+	bower: 'grunt-bower-task',
+	versioncheck: 'grunt-version-check',
+	configureProxies: 'grunt-connect-proxy',
+	'zap_start': 'grunt-zaproxy',
+	'zap_spider': 'grunt-zaproxy',
+	'zap_scan': 'grunt-zaproxy',
+	'zap_alert': 'grunt-zaproxy',
+	'zap_report': 'grunt-zaproxy',
+	'zap_stop': 'grunt-zaproxy',
+	'zap_results': 'grunt-zaproxy',
+	'validate-package': 'grunt-nsp-package',
+	resemble: 'grunt-resemble-cli',
+	usebanner: 'grunt-banner',
+    express: 'grunt-express-server',
+    useminPrepare: 'grunt-usemin',
+    ngtemplates: 'grunt-angular-templates',
+    cdnify: 'grunt-google-cdn',
+    protractor: 'grunt-protractor-runner',
+    buildcontrol: 'grunt-build-control'
+  });
 
   var async = require('async'),
       request = require('request');
@@ -280,6 +306,7 @@ module.exports = function(grunt) {
                 '/app/styles',
                 connect.static('./app/styles')
               ),
+              //connect.static(config.dist),
               connect.static(config.app)
             ];
           }
@@ -414,18 +441,19 @@ module.exports = function(grunt) {
                    '/angular-i18n/',  // localizations are loaded dynamically
                    'bower_components/bootstrap/dist/js/bootstrap.js',
                    'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded as used by uncss
-                   '/swagger-ui/'
+                   '/swagger-ui/',
+                   /bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/
         ]
-      },
-      server: {
-        ignorePath: /^\/|\.\.\//,
-        src: ['<%= config.app %>/index.html'],
-        exclude: [
-                   '/angular-i18n/',  // localizations are loaded dynamically
-                   'bower_components/bootstrap/dist/js/bootstrap.js',
-                   //'bower_components/bootstrap/dist/css/bootstrap.css', // needed as we do not do uncss
-                   '/swagger-ui/'
-        ]
+      //},
+      //server: {
+      //  ignorePath: /^\/|\.\.\//,
+      //  src: ['<%= config.app %>/index.html'],
+      //  exclude: [
+      //             '/angular-i18n/',  // localizations are loaded dynamically
+      //             'bower_components/bootstrap/dist/js/bootstrap.js',
+      //             //'bower_components/bootstrap/dist/css/bootstrap.css', // needed as we do not do uncss
+      //             '/swagger-ui/'
+      //  ]
       },
       test: {
         devDependencies: true,
@@ -443,6 +471,29 @@ module.exports = function(grunt) {
               }
             }
           }
+      }
+    },
+
+    browserSync: {
+      dev: {
+        bsFiles: {
+          src: [
+            '<%= config.app %>/**/*.html',
+            '<%= config.app %>/**/*.json',
+            '<%= config.app %>/styles/**/*.css',
+            '<%= config.app %>/scripts/**/*.js',
+            '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+            '.tmp/**/*.{css,js}'
+          ]
+        }
+      },
+      options: {
+        watchTask: true,
+        online: false,
+        //browser: ["google chrome", "firefox"],
+        //server: '<%= config.app %>'
+        proxy: 'localhost:8011'
+        //proxy: SERVER_HOST + ":" + SERVER_PORT
       }
     },
 
@@ -654,7 +705,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '.tmp/concat/scripts',
-          src: '*.js',
+          src: ['*.js'],
           dest: '.tmp/concat/scripts'
         }]
       }
@@ -769,6 +820,40 @@ module.exports = function(grunt) {
       }
     },
 
+    buildcontrol: {
+      options: {
+        dir: 'dist',
+        commit: true,
+        push: true,
+        connectCommits: false,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      //pages: {
+      //  options: {
+      //    remote: 'git@github.com:example_user/example_webapp.git',
+      //    branch: 'gh-pages'
+      //  }
+      //},
+      heroku: {
+        options: {
+          remote: 'heroku',
+          branch: 'master'
+        }
+      },
+      openshift: {
+        options: {
+          remote: 'openshift',
+          branch: 'master'
+        }
+      //},
+      //local: {
+      //  options: {
+      //    remote: '../',
+      //    branch: 'build'
+      //  }
+      }
+    },
+
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
@@ -833,26 +918,15 @@ module.exports = function(grunt) {
       run: {}
     },
 
-    //yslow: {
-    //  options: {
-    //    thresholds: {
-    //      weight: 180,
-    //      speed: 1000,
-    //      score: 80,
-    //      requests: 15
-    //    }
-    //  },
-    //  pages: {
-    //    files: [
-    //      {
-    //        src: SERVER_URL,
-    //        thresholds: {
-    //          weight: 100
-    //        }
-    //      }
-    //    ]
-    //  }
-    //},
+    env: {
+      test: {
+        NODE_ENV: 'test'
+      },
+      prod: {
+        NODE_ENV: 'production'
+      },
+      all: localConfig
+    },
 
     'yslow_test': {
       options: {
@@ -919,7 +993,8 @@ module.exports = function(grunt) {
 
     resemble: {
       options: {
-        screenshotRoot: 'build/screenshots/',
+        screenshotRoot: 'screenshots/',
+        tolerance: 10,
         //url: 'http://0.0.0.0:8000/dist',
         url: SERVER_URL + SERVER_CONTEXT,
         //debug: true,
@@ -1141,12 +1216,15 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'wiredep:server',
+      //'wiredep:server', if we do not use uncss below
+      'wiredep:app',
       //'ngconstant:dev',
       'concurrent:server',
+      'uncss',
       'postcss',
       'configureProxies:server',
       'connect:livereload',
+      'browserSync',
       'watch'
     ]);
 
@@ -1244,7 +1322,7 @@ module.exports = function(grunt) {
   grunt.registerTask('check', function(target) {
     grunt.task.run([
     'newer:jshint',
-    'jscs',
+    'newer:jscs',
     'checkDependencies',
     'versioncheck'
     ]);
