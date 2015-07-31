@@ -1,13 +1,51 @@
-<p>This is the about view.</p>
+<div class="view-about">
+  <div class="image">
+    <div class="row text-center">
+      <img src="images/gravatar.png">
+    </div>
+  </div>
+  <div class="text">
 
-<script id="echochamber">
-  var EchoChamber = window.EchoChamber || {};
-  (function() {
-    EchoChamber.discussionURL = window.location;
-    var script = document.createElement('script');
-    script.src = 'https://s3.amazonaws.com/echochamberjs/dist/main.js';
-    script.async = true;
-    var entry = document.getElementById('echochamber');
-    entry.parentNode.insertBefore(script, entry);
-  })();
-</script>
+    <p>
+      {{"views.about.My name is..." | translate}}
+    </p>
+
+    <p>
+      {{"views.about.I'm Web Developer and..." | translate}}
+    </p>
+
+    <p>
+      {{"views.about.Author of" | translate}}
+      <a href="https://github.com/AlbanAndrieu">https://github.com/AlbanAndrieu</a>.
+    </p>
+
+    <p>
+      {{"views.about.Have successful experience..." | translate}}
+    </p>
+
+    <p>
+      {{"views.about.JS, HTML and CSS enthusiast..." | translate}}
+    </p>
+  </div>
+
+  <script id="echochamber">
+    var EchoChamber = window.EchoChamber || {};
+    (function() {
+      EchoChamber.discussionURL = window.location;
+      var script = document.createElement('script');
+      script.src = 'https://s3.amazonaws.com/echochamberjs/dist/main.js';
+      script.async = true;
+      var entry = document.getElementById('echochamber');
+      entry.parentNode.insertBefore(script, entry);
+    })();
+  </script>
+
+  <div class="text">
+
+      <p translate="XSS_TEST" translate-values="{username: '<span style=\'color:red;\'>WARNING! TRANSLATE XSS HACKED if you can see this text in RED</span>'}"></p>
+      <p translate="XSS_TEST" translate-values="{username: '<SCRIPT>alert(\'Cookie\'+document.cookie)</SCRIPT>'}"></p>
+
+  </div>
+
+</div>
+

@@ -16,6 +16,28 @@ A bower project sample.
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
 
+## Create project
+
+as local user
+```
+npm install generator-angular
+npm install generator-angular-fullstack
+```
+
+as local user
+```
+yo angular translate
+```
+
+TODO
+grunt serve:dist
+
+## Internationalization
+
+https://scotch.io/tutorials/internationalization-of-angularjs-applications
+
+https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean...master
+
 ## Deploy
 
 Page deployed at :
@@ -38,10 +60,11 @@ In order to be activated it must be reached once : http://localhost:9090/login
 Even though it is strongly advice to run this project behind an apache.
 Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order to install this project behind an apache.
 
-## Run war in jetty
+## Run war in jetty or cargo
 
 ```
-mvn clean install jetty:run-war
+mvn jetty:run-war
+mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
 ```
 
 ## ZaProxy

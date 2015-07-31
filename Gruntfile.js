@@ -60,6 +60,7 @@ module.exports = function(grunt) {
 	'validate-package': 'grunt-nsp-package',
 	resemble: 'grunt-resemble-cli',
 	usebanner: 'grunt-banner',
+	replace: 'grunt-text-replace',
     express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
@@ -184,18 +185,7 @@ module.exports = function(grunt) {
     config: config,
 
     bower: {
-      bower: require('./bower.json'),
-      install: {
-        options: {
-          targetDir: 'bower_components',
-          install: true,
-          verbose: true,
-//          cleanTargetDir: true,
-          cleanBowerDir: false,
-          bowerOptions: {},
-          copy: true
-        }
-      }
+      bower: require('./bower.json')
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -215,6 +205,10 @@ module.exports = function(grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:all', 'test:watch', 'karma']
       },
+      compass: {
+        files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
+        tasks: ['compass:server', 'postcss']
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -229,7 +223,8 @@ module.exports = function(grunt) {
         files: [
           '<%= config.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= config.app %>/resources/{,*/}*.json'
         ]
       }
     },
@@ -241,7 +236,7 @@ module.exports = function(grunt) {
         // Change this to '0.0.0.0' to access the server from outside.
         //hostname: '*',
         hostname: 'localhost',
-        livereload: 35729,
+        livereload: 35730,
         analytics: {
           account: 'UA-56011797-1',
           domainName: 'nabla.mobi'
@@ -438,11 +433,16 @@ module.exports = function(grunt) {
         ignorePath: /^\/|\.\.\//,
         src: ['<%= config.app %>/index.html'],
         exclude: [
-                   '/angular-i18n/',  // localizations are loaded dynamically
-                   'bower_components/bootstrap/dist/js/bootstrap.js',
-                   'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded as used by uncss
-                   '/swagger-ui/',
-                   /bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/
+                   //'/angular-i18n/',  // localizations are loaded dynamically
+                   //'bower_components/bootstrap/dist/js/bootstrap.js',
+                   //'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded if used by uncss
+                   'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+                   //'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css', // notneeded if used by uncss
+                   //'/swagger-ui/',
+                   ///bootstrap-sass-official/,
+                   ///bootstrap.js/, '/json3/', '/es5-shim/',
+                   ///bootstrap.css/,
+                   /font-awesome.css/
         ]
       //},
       //server: {
@@ -471,6 +471,39 @@ module.exports = function(grunt) {
               }
             }
           }
+      },
+      sass: {
+        src: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
+        ignorePath: /(\.\.\/){1,2}bower_components\//
+      }
+    },
+
+    // Compiles Sass to CSS and generates necessary files if requested
+    compass: {
+      options: {
+        sassDir: '<%= config.app %>/styles',
+        cssDir: '.tmp/styles',
+        generatedImagesDir: '.tmp/images/generated',
+        imagesDir: '<%= config.app %>/images',
+        javascriptsDir: '<%= config.app %>/scripts',
+        fontsDir: '<%= config.app %>/styles/fonts',
+        importPath: './bower_components',
+        httpImagesPath: '/images',
+        httpGeneratedImagesPath: '/images/generated',
+        httpFontsPath: '/styles/fonts',
+        relativeAssets: false,
+        assetCacheBuster: false,
+        raw: 'Sass::Script::Number.precision = 10\n'
+      },
+      dist: {
+        options: {
+          generatedImagesDir: '<%= config.dist %>/images/generated'
+        }
+      },
+      server: {
+        options: {
+          sourcemap: true
+        }
       }
     },
 
@@ -492,7 +525,7 @@ module.exports = function(grunt) {
         online: false,
         //browser: ["google chrome", "firefox"],
         //server: '<%= config.app %>'
-        proxy: 'localhost:8011'
+        proxy: 'localhost:8001'
         //proxy: SERVER_HOST + ":" + SERVER_PORT
       }
     },
@@ -509,6 +542,7 @@ module.exports = function(grunt) {
           '<%= config.dist %>/scripts/{,*/}*.js',
           '<%= config.dist %>/styles/{,*/}*.css',
           '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '!<%= config.dist %>/images/no-filerev/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           //'<%= config.dist %>/*.{ico,png}',
           '<%= config.dist %>/styles/fonts/*'
         ]
@@ -525,11 +559,11 @@ module.exports = function(grunt) {
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs']
+              js: ['concat', 'uglifyjs'],
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
-              //css: ['cssmin']
+              css: ['cssmin']
             },
             post: {}
           }
@@ -558,15 +592,20 @@ module.exports = function(grunt) {
           // Take our Autoprefixed stylesheet main.css &
           // any other stylesheet dependencies we have..
           stylesheets: [
-            '../.tmp/styles/main.css',
             //'../bower_components/nabla-notification/styles/css/nabla-notification.css',
             //'../bower_components/nabla-header/styles/css/nabla-header.css',
-            '../bower_components/bootstrap/dist/css/bootstrap.css'
+            //'../bower_components/bootstrap/dist/css/bootstrap.css',
+            '../bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+            '../.tmp/styles/main.css'
           ],
           // Ignore css selectors for async content with complete selector or regexp
           // Only needed if using Bootstrap
-          ignore: ['.ng-move', '.ng-enter', '.ng-leave', '.created_by_jQuery',
+          ignore: ['.ng-move', '.ng-enter', '.ng-leave',
+                   '#added_at_runtime', '.created_by_jQuery',
                    /nabla-header.*/,
+                   /github-fork-ribbon.*/,
+                   /app-loading.*/,
+                   /ec-.*/,
                    /dropdown-menu/,/\.collapsing/,/\.collapse/]
         },
         files: {
@@ -704,9 +743,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/concat/scripts',
-          src: ['*.js'],
-          dest: '.tmp/concat/scripts'
+          cwd: '<%= config.dist %>/scripts',
+          src: ['{,*/}*.js'],
+          dest: '<%= config.dist %>/scripts'
         }]
       }
     },
@@ -783,9 +822,13 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>',
           src: [
             '*.{ico,png,txt}',
+            //'.htaccess',
+            '*.html',
+            'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            '{,*/}*.html',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+            'fonts/{,*/}*.*',
+            'resources/{,*/}*.*'
           ]
         }, {
           expand: true,
@@ -797,6 +840,11 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>/.htaccess'
         }, {
           expand: true,
+          cwd: '.',
+          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          dest: '<%= config.dist %>'
+        }, {
+          expand: true,
           cwd: 'bower_components/nabla-header',
           src: 'img/*',
           dest: '<%= config.dist %>'
@@ -805,6 +853,16 @@ module.exports = function(grunt) {
           cwd: 'bower_components/nabla-notification',
           src: 'img/*',
           dest: '<%= config.dist %>'
+//        }, {
+//          expand: true,
+//          cwd: 'bower_components/font-awesome/fonts/',
+//          src: '**/*',
+//          dest: '<%= config.dist %>/fonts'
+        }, {
+          expand: true,
+          cwd: 'bower_components/angular-i18n/',
+          src: '*.js',
+          dest: '<%= config.dist %>/bower_components/angular-i18n'
         }, {
           expand: true,
           cwd: 'bower_components/bootstrap/dist',
@@ -857,13 +915,16 @@ module.exports = function(grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'copy:styles'
+        //'copy:styles'
+        'compass:server'
       ],
       test: [
-        'copy:styles'
+        //'copy:styles'
+        'compass'
       ],
       dist: [
-        'copy:styles',
+        //'copy:styles',
+        'compass:dist',
         'imagemin',
         'svgmin'
       ]
@@ -904,6 +965,33 @@ module.exports = function(grunt) {
 //        //logLevel: 'DEBUG',
 //        autoWatch: true
 //      }
+    },
+
+    replace: {
+      // Sets DEBUG_MODE to FALSE in dist
+      debugMode: {
+        //src: ['<%= config.dist %>/scripts/scripts.js'],
+        src: ['.tmp/concat/scripts/scripts.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\/\*DEBUG_MODE\*\/.{1,}\/\*DEBUG_MODE\*\//gi,
+            to: '/*DEBUG_MODE*/false/*DEBUG_MODE*/'
+          }
+        ]
+      },
+      // Sets VERSION_TAG for cache busting
+      versionTag: {
+        //src: ['<%= config.dist %>/scripts/scripts.js'],
+        src: ['.tmp/concat/scripts/scripts.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: /\/\*VERSION_TAG_START\*\/.{1,}\/\*VERSION_TAG_END\*\//gi,
+            to: '/*VERSION_TAG_START*/' + new Date().getTime() + '/*VERSION_TAG_END*/'
+          }
+        ]
+      }
     },
 
     protractor: {
@@ -1218,7 +1306,7 @@ module.exports = function(grunt) {
       'wiredep:app',
       //'ngconstant:dev',
       'concurrent:server',
-      'uncss',
+      //'uncss',
       'postcss',
       'configureProxies:server',
       'connect:livereload',
@@ -1348,13 +1436,15 @@ module.exports = function(grunt) {
     'useminPrepare',
     'concurrent:dist',
     'postcss',
-    'uncss',
+    //'uncss',
     //'ngtemplates',
     'concat',
-    'ngAnnotate',
     'copy:dist',
     'cdnify',
     'cssmin',
+    'replace:debugMode',
+    'replace:versionTag',
+    'ngAnnotate',
     'uglify',
     'filerev',
     'usemin',
