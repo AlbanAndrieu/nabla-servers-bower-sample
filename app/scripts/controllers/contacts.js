@@ -2,18 +2,18 @@
 
 /**
  * @ngdoc function
- * @name myTestApp.controller:AboutCtrl
+ * @name myTestApp.controller:ContactsCtrl
  * @description
- * # AboutCtrl
+ * # ContactsCtrl
  * Controller of the myTestApp
  */
 angular.module('myTestApp')
-  .controller('AboutCtrl', function($scope) {
+  .controller('ContactsCtrl', function($scope) {
+    // Yeoman part (for tests)
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'Bootstrap',
       'AngularJS',
       'Karma'
     ];
-
   });

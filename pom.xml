@@ -37,6 +37,7 @@
 		<npm.version>2.13.0</npm.version>
 		<!--<npm.version>2.7.1</npm.version>-->
         <jersey.version>1.8</jersey.version>
+		<appsensor.core.version>2.1.0</appsensor.core.version>
 
         <jetty9.version>9.2.3.v20140905</jetty9.version>
 	</properties>
@@ -125,6 +126,13 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- this is just one of the appsensor dependencies you'll need - see step below called pluggable components -->
+		<dependency>
+			<groupId>org.owasp.appsensor</groupId>
+			<artifactId>appsensor-core</artifactId>
+			<version>${appsensor.core.version}</version>
+		</dependency>
    </dependencies>
 
    <build>
@@ -198,6 +206,7 @@
                                                     <include>node_modules/</include>
                                                     <include>node/</include>
                                                     <include>bower_components/</include>
+                                                    <include>lib/</include>
                                                     <!--<include>build/</include>-->
                                                     <include>docs/</include>
                                                     <include>dist/</include>

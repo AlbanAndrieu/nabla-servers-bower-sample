@@ -1,0 +1,38 @@
+{
+  "PAGE_TITLE": "i18n pour AngularJS applications",
+  "PAGE_CONTENT": "Comment traduire des applications AngularJS sans rafraichir la page avec angular-translate",
+
+  "XSS_TEST": "{{username}}",
+
+  "views.Fork me on": "Fork me on",
+
+  "views.index.Home": "Maison",
+  "views.index.About": "A propos",
+  "views.index.Contact": "Contact",
+  "views.index.from the Yeoman team": "de la part de l'equipe Yeoman",
+
+  "views.main.i18n for your AngularJS applications": "i18n pour AngularJS applications",
+  "views.main.I'm Yeoman": "Je suis Yeoman",
+  "views.main.Always a pleasure scaffolding your apps.": "Toujours un plaisir d'echaffauder vos apps.",
+  "views.main.Splendid!": "Splendid!",
+  "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
+  "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.",
+  "views.main.Angular": "Angular",
+  "views.main.Angular description": "AngularJS is a toolset for building the framework most suited to your application development.",
+  "views.main.Karma": "Karma",
+  "views.main.Karma description": "Spectacular Test Runner for JavaScript.",
+  "views.main.Bootstrap": "Bootstrap",
+  "views.main.Bootstrap description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+
+  "views.about.My name is...": "My name is Alban Andrieu.",
+  "views.about.I'm Web Developer and...": "I'm Web Developer and software engineer with vast experience in Front-End, Back-End, DevOps, Sysadmin, Security, Build, Release, QA related stuff.",
+  "views.about.Author of": "Author of",
+  "views.about.Have successful experience...": "Have successful experience creating Mobile Web Applications from scratch to more than 50k. downloads (as Manager, Developer, Tester and Publisher).",
+  "views.about.JS, HTML and CSS enthusiast...": "JS, HTML and CSS enthusiast. Enjoying life :)",
+
+  "views.contacts.Follow me on": "Follow me on",
+  "views.contacts.My": "My",
+
+
+  "directives.language-select.Language": "Langage"
+}

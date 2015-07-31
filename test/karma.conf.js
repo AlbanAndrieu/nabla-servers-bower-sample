@@ -13,7 +13,7 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
@@ -21,12 +21,12 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
-      'bower_components/angular-audio/app/angular.audio.js',
-      'bower_components/flow.js/dist/flow.js',
-      'bower_components/ng-flow/dist/ng-flow.js',
-      'bower_components/fusty-flow.js/src/fusty-flow.js',
-      'bower_components/fusty-flow.js/src/fusty-flow-factory.js',
-      'bower_components/sample-component/sample-component.js',
+      'bower_components/angular-translate/angular-translate.js',
+      'bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+      'bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
+      'bower_components/angular-translate-storage-local/angular-translate-storage-local.js',
+      'bower_components/angular-translate-handler-log/angular-translate-handler-log.js',
+      'bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
