@@ -29,26 +29,27 @@ as local user
 yo angular translate
 ```
 
-TODO
-grunt serve:dist
-
 ## Internationalization
 
 https://scotch.io/tutorials/internationalization-of-angularjs-applications
 
 https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean...master
 
-## Deploy
-
-Page deployed at :
-
-http://albanandrieu.github.io/nabla-servers-bower-sample/
-
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
 
 ## Testing
+
+test (dev mode)
+```
+grunt serve
+```
+
+test (deployment mode)
+```
+grunt serve:dist
+```
 
 Running `grunt test` will run the unit tests with karma.
 
@@ -121,6 +122,12 @@ phantomjs yslow.js --info basic --format plain http://localhost:9090/
 grunt pagespeed
 grunt wpt
 ```
+
+## Deploy to internet
+
+Page deployed at :
+
+http://albanandrieu.github.io/nabla-servers-bower-sample/
 
 ## Performance improvements
 

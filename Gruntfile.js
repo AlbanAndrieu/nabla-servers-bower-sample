@@ -164,7 +164,7 @@ module.exports = function(grunt) {
   console.log('VERSION : ' + VERSION);
 
   // Configurable paths for the application
-  var config = {
+  var appConfig = {
     app: require('./bower.json').appPath || 'app',
     dist: 'dist'
   };
@@ -182,7 +182,7 @@ module.exports = function(grunt) {
             ' */\n',
 
     // Project settings
-    config: config,
+    config: appConfig,
 
     bower: {
       bower: require('./bower.json')
@@ -201,9 +201,9 @@ module.exports = function(grunt) {
           livereload: '<%= connect.options.livereload %>'
         }
       },
-      jstest: {
+      jsTest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:all', 'test:watch', 'karma']
+        tasks: ['newer:jshint:test', 'test:watch', 'karma']
       },
       compass: {
         files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
@@ -211,10 +211,10 @@ module.exports = function(grunt) {
       },
       gruntfile: {
         files: ['Gruntfile.js']
-      },
-      styles: {
-        files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'postcss']
+      //},
+      //styles: {
+      //  files: ['<%= config.app %>/styles/{,*/}*.css'],
+      //  tasks: ['newer:copy:styles', 'postcss']
       },
       livereload: {
         options: {
@@ -246,7 +246,6 @@ module.exports = function(grunt) {
           url: 'http://home.nabla.mobi',
           dev: false
         },
-        //open: true,
         middleware: function(connect, options) {
           var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
           return [
@@ -263,8 +262,8 @@ module.exports = function(grunt) {
               res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate');
               return next();
             },
-            connect.static(options.base),
-            connect.directory(options.base),
+            connect.static(options.base[0]),
+            connect.directory(options.base[0]),
             proxy
           ];
         }
@@ -301,15 +300,13 @@ module.exports = function(grunt) {
                 '/app/styles',
                 connect.static('./app/styles')
               ),
-              //connect.static(config.dist),
-              connect.static(config.app)
+              connect.static(appConfig.app)
             ];
           }
         }
       },
       test: {
         options: {
-          //open: false,
           port: 9002,
           middleware: function(connect) {
             return [
@@ -319,16 +316,15 @@ module.exports = function(grunt) {
                 '/bower_components',
                 connect.static('./bower_components')
               ),
-              connect.static(config.app)
+              connect.static(appConfig.app)
             ];
           }
         }
       },
       dist: {
         options: {
-          port: 9003,
+          //port: 9003,
           open: true,
-          //livereload: false,
           base: '<%= config.dist %>'
         }
       },
@@ -436,13 +432,13 @@ module.exports = function(grunt) {
                    //'/angular-i18n/',  // localizations are loaded dynamically
                    //'bower_components/bootstrap/dist/js/bootstrap.js',
                    //'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded if used by uncss
-                   'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+                   'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css'
                    //'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css', // notneeded if used by uncss
                    //'/swagger-ui/',
                    ///bootstrap-sass-official/,
                    ///bootstrap.js/, '/json3/', '/es5-shim/',
                    ///bootstrap.css/,
-                   /font-awesome.css/
+                   ///font-awesome.css/
         ]
       //},
       //server: {
@@ -459,7 +455,7 @@ module.exports = function(grunt) {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',
         exclude: [/angular-i18n/, /swagger-ui/, /angular-scenario/],
-        ignorePath:  /\.\.\//, // remove ../../ from paths of injected javascripts
+        ignorePath: /\.\.\//, // remove ../../ from paths of injected javascripts
         fileTypes:{
           js: {
             block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -554,16 +550,18 @@ module.exports = function(grunt) {
     // additional tasks can operate on them
     useminPrepare: {
       html: '<%= config.app %>/**/*.html',
+      //html: '<%= config.app %>/index.html',
       options: {
         dest: '<%= config.dist %>',
         flow: {
           html: {
             steps: {
-              js: ['concat', 'uglifyjs'],
+              js: ['concat'],
+              //js: ['concat', 'uglifyjs'] //when using uncss
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
-              css: ['cssmin']
+              css: ['cssmin'] //disable when using uncss
             },
             post: {}
           }
@@ -582,6 +580,47 @@ module.exports = function(grunt) {
           '<%= config.dist %>/images',
           '<%= config.dist %>/styles'
         ]
+      }
+    },
+
+    // The following *-min tasks will produce minified files in the dist folder
+    // By default, your `index.html`'s <!-- Usemin block --> will take care of
+    // minification. These next options are pre-configured if you do not wish
+    // to use the Usemin blocks.
+    // cssmin: {
+    //   dist: {
+    //     files: {
+    //       '<%= config.dist %>/styles/main.css': [
+    //         '.tmp/styles/{,*/}*.css'
+    //       ]
+    //     }
+    //   }
+    // },
+    uglify: {
+      dist: {
+        files: {
+          '<%= config.dist %>/scripts/scripts.js': [
+            '<%= config.dist %>/scripts/scripts.js'
+          ],
+          '<%= config.dist %>/scripts/vendor.js': [
+            '<%= config.dist %>/scripts/vendor.js'
+          ]
+        }
+      }
+    },
+    // concat: {
+    //   dist: {}
+    // },
+
+    usebanner: {
+      dist: {
+        options: {
+          position: 'top',
+          banner: '<%= banner %>'
+        },
+        files: {
+          src: ['<%= config.dist %>/styles/*.css', '<%= config.dist %>/scripts/*.js']
+        }
       }
     },
 
@@ -680,13 +719,13 @@ module.exports = function(grunt) {
     htmlmin: {
       dist: {
         options: {
-          collapseBooleanAttributes: true,
           collapseWhitespace: true,
           conservativeCollapse: true,
-          removeAttributeQuotes: true,
+          collapseBooleanAttributes: true,
           removeCommentsFromCDATA: true,
-          removeEmptyAttributes: true,
           removeOptionalTags: true,
+          removeEmptyAttributes: true,
+          removeAttributeQuotes: true,
           removeRedundantAttributes: true,
           useShortDoctype: true
         },
@@ -696,44 +735,6 @@ module.exports = function(grunt) {
           src: ['*.html', 'views/{,*/}*.html'],
           dest: '<%= config.dist %>'
         }]
-      }
-    },
-
-    // By default, your `index.html`'s <!-- Usemin block --> will take care
-    // of minification. These next options are pre-configured if you do not
-    // wish to use the Usemin blocks.
-    cssmin: {
-       dist: {
-         files: {
-           '<%= config.dist %>/styles/main.css': [
-           //'<%= config.app %>/styles/{,*/}*.css',
-           '.tmp/styles/{,*/}*.css'
-           ]
-         }
-       }
-    },
-    //uglify: {
-    //  dist: {
-    //    files: {
-    //      '<%= config.dist %>/scripts/': [
-    //        '<%= config.dist %>/scripts/*.js'
-    //      ]
-    //    }
-    //  }
-    //},
-    //concat: {
-    //  dist: {}
-    //},
-
-    usebanner: {
-      dist: {
-        options: {
-          position: 'top',
-          banner: '<%= banner %>'
-        },
-        files: {
-          src: ['<%= config.dist %>/styles/*.css', '<%= config.dist %>/scripts/*.js']
-        }
       }
     },
 
@@ -843,31 +844,31 @@ module.exports = function(grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= config.dist %>'
+        //}, {
+        //  expand: true,
+        //  cwd: 'bower_components/nabla-header',
+        //  src: 'images/*',
+        //  dest: '<%= config.dist %>'
+        //}, {
+        //  expand: true,
+        //  cwd: 'bower_components/nabla-notification',
+        //  src: 'images/*',
+        //  dest: '<%= config.dist %>'
         }, {
           expand: true,
-          cwd: 'bower_components/nabla-header',
-          src: 'img/*',
-          dest: '<%= config.dist %>'
-        }, {
-          expand: true,
-          cwd: 'bower_components/nabla-notification',
-          src: 'img/*',
-          dest: '<%= config.dist %>'
-//        }, {
-//          expand: true,
-//          cwd: 'bower_components/font-awesome/fonts/',
-//          src: '**/*',
-//          dest: '<%= config.dist %>/fonts'
+          cwd: 'bower_components/font-awesome/fonts/',
+          src: '**/*',
+          dest: '<%= config.dist %>/fonts'
         }, {
           expand: true,
           cwd: 'bower_components/angular-i18n/',
           src: '*.js',
           dest: '<%= config.dist %>/bower_components/angular-i18n'
-        }, {
-          expand: true,
-          cwd: 'bower_components/bootstrap/dist',
-          src: 'fonts/*',
-          dest: '<%= config.dist %>'
+        //}, {
+        //  expand: true,
+        //  cwd: 'bower_components/bootstrap/dist',
+        //  src: 'fonts/*',
+        //  dest: '<%= config.dist %>'
         }]
       },
       styles: {
@@ -970,8 +971,7 @@ module.exports = function(grunt) {
     replace: {
       // Sets DEBUG_MODE to FALSE in dist
       debugMode: {
-        //src: ['<%= config.dist %>/scripts/scripts.js'],
-        src: ['.tmp/concat/scripts/scripts.js'],
+        src: ['<%= config.dist %>/scripts/scripts.js'],
         overwrite: true,
         replacements: [
           {
@@ -982,8 +982,7 @@ module.exports = function(grunt) {
       },
       // Sets VERSION_TAG for cache busting
       versionTag: {
-        //src: ['<%= config.dist %>/scripts/scripts.js'],
-        src: ['.tmp/concat/scripts/scripts.js'],
+        src: ['<%= config.dist %>/scripts/scripts.js'],
         overwrite: true,
         replacements: [
           {
@@ -996,7 +995,7 @@ module.exports = function(grunt) {
 
     protractor: {
       options: {
-        keepAlive: true,
+        //keepAlive: true,
         configFile: 'test/protractor.conf.js',
         args: {
           //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
@@ -1303,7 +1302,7 @@ module.exports = function(grunt) {
     grunt.task.run([
       'clean:server',
       //'wiredep:server', if we do not use uncss below
-      'wiredep:app',
+      'wiredep',
       //'ngconstant:dev',
       'concurrent:server',
       //'uncss',
@@ -1316,11 +1315,10 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('server', function(target) {
+  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run([target ? ('serve:' + target) : 'serve']);
   });
-
 
   /**
    * Run acceptance tests to teach ZAProxy how to use the app.
@@ -1431,13 +1429,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep:app', //remove boostrap after the test
+    //'wiredep:app', //remove boostrap after the test
+    'wiredep',
     //'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
     'postcss',
     //'uncss',
-    //'ngtemplates',
+    'ngtemplates',
     'concat',
     'copy:dist',
     'cdnify',
