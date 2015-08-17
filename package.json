@@ -114,7 +114,7 @@
     "karma-phantomjs-launcher": "~0.2.0",
     "karma-script-launcher": "0.1.0",
     "karma-tapfile-reporter": "0.0.1",
-    "libxslt": "~0.5.2",
+    "libxslt": "0.5.1",
     "load-grunt-tasks": "^3.1.0",
     "node_xslt": "^0.1.9",
     "phantomjs": "1.9.17",
