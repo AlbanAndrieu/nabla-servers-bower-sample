@@ -2,14 +2,21 @@
   "PAGE_TITLE": "i18n for your AngularJS applications",
   "PAGE_CONTENT": "How to translate your AngularJS applications without page reload with angular-translate",
 
-   "XSS_TEST": "{{username}}",
+  "XSS_TEST": "{{username}}",
 
   "views.Fork me on": "Fork me on",
 
+  "views.index.Project": "Nabla",
+  "views.index.Project version": "1.0",
   "views.index.Home": "Home",
   "views.index.About": "About",
   "views.index.Contact": "Contact",
   "views.index.from the Yeoman team": "from the Yeoman team",
+  "views.index.Submit": "Submit",
+  "views.index.Profile": "Profile",
+  "views.index.Logout": "Logout",
+  "views.index.Language": "Language",
+  "views.index.Search": "Search",
 
   "views.main.i18n for your AngularJS applications": "i18n for your AngularJS applications",
   "views.main.I'm Yeoman": "I'm Yeoman",

@@ -2,14 +2,21 @@
   "PAGE_TITLE": "i18n для ваших AngularJS приложений",
   "PAGE_CONTENT": "Как переводить ваши AngularJS приложения без перезагрузки страницы с angular-translate",
 
-   "XSS_TEST": "{{username}}",
+  "XSS_TEST": "{{username}}",
 
   "views.Fork me on": "Создай Fork на",
 
+  "views.index.Project": "Nabla",
+  "views.index.Project version": "1.0",
   "views.index.Home": "Главная",
   "views.index.About": "Обо мне",
   "views.index.Contact": "Контакты",
   "views.index.from the Yeoman team": "от команды Yeoman",
+  "views.index.Submit": "Submit",
+  "views.index.Profile": "Profile",
+  "views.index.Logout": "Logout",
+  "views.index.Language": "Language",
+  "views.index.Search": "Search",
 
   "views.main.i18n for your AngularJS applications": "i18n для ваших AngularJS приложений",
   "views.main.I'm Yeoman": "Я- Yeoman",

@@ -6,10 +6,17 @@
 
   "views.Fork me on": "Fork me on",
 
+  "views.index.Project": "Nabla",
+  "views.index.Project version": "1.0",
   "views.index.Home": "Maison",
   "views.index.About": "A propos",
   "views.index.Contact": "Contact",
   "views.index.from the Yeoman team": "de la part de l'equipe Yeoman",
+  "views.index.Submit": "Submit",
+  "views.index.Profile": "Profile",
+  "views.index.Logout": "Logout",
+  "views.index.Language": "Language",
+  "views.index.Search": "Search",
 
   "views.main.i18n for your AngularJS applications": "i18n pour AngularJS applications",
   "views.main.I'm Yeoman": "Je suis Yeoman",

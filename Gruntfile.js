@@ -432,7 +432,9 @@ module.exports = function(grunt) {
                    //'/angular-i18n/',  // localizations are loaded dynamically
                    //'bower_components/bootstrap/dist/js/bootstrap.js',
                    //'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded if used by uncss
-                   'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css'
+                   'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
+                   'bower_components/social-likes/social-likes_classic.css',
+                   'bower_components/social-likes/social-likes_birman.css'
                    //'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css', // notneeded if used by uncss
                    //'/swagger-ui/',
                    ///bootstrap-sass-official/,

@@ -9,6 +9,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/social-likes/social-likes_flat.css" />
     <link rel="stylesheet" href="bower_components/github-fork-ribbon-css/gh-fork-ribbon.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -33,46 +34,153 @@
 	</div>
 
     <div class="page-wrapper" hidden-when-loading>
+
+<!-- Le navbar
+================================================== -->
       <div class="header">
-        <div class="navbar navbar-default" role="navigation">
-          <div class="container clearfix">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+          <!--<div class="container clearfix">-->
+          <div class="container-fluid">
+			<!--
             <div class="pull-right">
               <div ng-translate-language-select></div>
             </div>
+            -->
 
+			<!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
+              <a class="navbar-brand" href="#/">
+				<!--http://svgporn.com/logos/angular-icon.svg-->
+                <img style="max-width:50px; margin-top: -7px;" alt="Brand" src="images/angular-icon.svg">
+              </a>
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              <a class="navbar-brand" href="#/">{{"views.index.Project" | translate}}</a>
             </div>
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
               <ul class="nav navbar-nav">
-                <li
-                  ng-class="{active: currentPath === '/'}"
-                  >
+                <li ng-class="{active: currentPath === '/'}">
                   <a ng-href="#/">{{"views.index.Home" | translate}}</a>
                 </li>
-                <li
-                  ng-class="{active: currentPath === '/about'}"
-                  >
+                <li ng-class="{active: currentPath === '/about'}">
                   <a ng-href="#/about">{{"views.index.About" | translate}}</a>
                 </li>
-                <li
-                  ng-class="{active: currentPath === '/contacts'}"
-                  >
+                <li ng-class="{active: currentPath === '/contacts'}">
                   <a ng-href="#/contacts">{{"views.index.Contact" | translate}}</a>
                 </li>
               </ul>
-            </div>
+              <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="{{'views.index.Search' | translate}}">
+                </div>
+                <button type="submit" class="btn btn-default">{{"views.index.Submit" | translate}}</button>
+              </form>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{"views.index.Profile" | translate}}</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{"views.index.Logout" | translate}}</a></li>
+                <li><a href="#">Link</a></li>
+                <!--
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </li>
+                -->
+                <li>
+                <div ng-controller="DropdownCtrl">
+                  <!-- Split button -->
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{"views.index.Language" | translate}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                      <li role="menuitem"><a href="#">Action</a></li>
+                      <li role="menuitem"><a href="#">Another action</a></li>
+                      <li role="menuitem"><a href="#">Something else here</a></li>
+                    </ul>
+                  </li>
           </div>
+                </li>
+                <li><div ng-translate-language-select></div></li>
+              </ul>
+
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
         </div>
       </div>
 
+<!-- Le header
+================================================== -->
+    <div class="bs-header text-center">
+      <div class="container">
+        <h1>{{"views.main.i18n for your AngularJS applications" | translate}}</h1>
+
+        <p>{{"views.main.Always a pleasure scaffolding your apps." | translate}}</p>
+
+        <p>
+            <button type="button" class="btn btn-outline-inverse btn-lg" href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample"><i class="icon-github"></i>Code on Github</button>
+
+            <button type="button" class="btn btn-outline-inverse btn-lg" href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases/tag/v{{'views.index.Project version' | translate}}">
+                  <i class="glyphicon glyphicon-download-alt"></i> Download <small>({{"views.index.Project version" | translate}})</small>
+            </button>
+
+        </p>
+      </div>
+      <div class="bs-social container">
+        <ul class="bs-social-buttons list-inline list-unstyled">
+            <li>
+                <iframe
+              src="http://ghbtns.com/github-btn.html?user=AlbanAndrieu&amp;repo=nabla-servers-bower-sample&amp;type=watch&amp;count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+            </li>
+            <li>
+               <iframe
+              src="http://ghbtns.com/github-btn.html?user=AlbanAndrieu&amp;repo=nabla-servers-bower-sample&amp;type=fork&amp;count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+            </li>
+            <li>
+                <a href="https://twitter.com/share" class="twitter-share-button"
+                   data-hashtags="angularjs">Tweet</a>
+                <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = "//platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
+            </li>
+            <li>
+                <div class="g-plusone" data-size="medium"></div>
+
+                <script type="text/javascript">
+                    (function () {
+                        var po = document.createElement('script');
+                        po.type = 'text/javascript';
+                        po.async = true;
+                        po.src = 'https://apis.google.com/js/plusone.js';
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(po, s);
+                    })();
+                </script>
+            </li>
+        </ul>
+      </div> <!-- bs-social container -->
+    </div>
+
+<!-- Le main
+================================================== -->
       <div class="container">
         <div class="clearfix">
           <div class="pull-right">
@@ -85,6 +193,12 @@
 
       <div class="footer">
         <div class="container">
+          <div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
+            <div class="facebook" title="Share link on Facebook">Facebook</div>
+            <div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
+            <div class="plusone" title="Share link on Google+">Google+</div>
+            <div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
+          </div>
           <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
         </div>
       </div>
@@ -127,7 +241,9 @@
     <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
     <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
     <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="bower_components/social-likes/src/social-likes.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

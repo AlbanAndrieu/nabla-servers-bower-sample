@@ -6,10 +6,6 @@
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample) [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample) [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 
-```html
-http://githubbadge.appspot.com/AlbanAndrieu
-```
-
 A bower project sample.
 =============
 
@@ -28,6 +24,16 @@ as local user
 ```
 yo angular translate
 ```
+
+Added
+
+```
+NOK bower install angular-bootstrap-nav
+```
+TODO use https://angular-ui.github.io/bootstrap/ for language
+TODO remvove app/styles/components/_header.scss language-select
+SEE https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js
+SEE https://github.com/angular-ui/angular-google-maps
 
 ## Internationalization
 
