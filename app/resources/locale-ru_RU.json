@@ -9,6 +9,9 @@
   "views.index.Project": "Nabla",
   "views.index.Project version": "1.0",
   "views.index.Home": "Главная",
+  "views.index.Blog": "Blog",
+  "views.index.Sample": "Sample",
+  "views.index.Project": "Project",
   "views.index.About": "Обо мне",
   "views.index.Contact": "Контакты",
   "views.index.from the Yeoman team": "от команды Yeoman",
@@ -33,7 +36,7 @@
 
   "views.about.My name is...": "Меня зовут Альбан Андриё.",
   "views.about.I'm Web Developer and...": "Я- веб-разработчик и software инженер с большим опытом в области Front-End, Back-End, DevOps, Sysadmin, Security, Build, Release, QA.",
-  "views.about.Author of": "Author of",
+  "views.about.Author of": "Author of this sample project available on",
   "views.about.Have successful experience...": "Имею успешный опыт создания мобильного веб-приложения от идеи и до более 50 тысяч скачиваний (как менеджер, разработчик, тестер и publisher).",
   "views.about.JS, HTML and CSS enthusiast...": "JS, HTML and CSS энтузиаст. Наслаждаюсь жизнью :)",
 
