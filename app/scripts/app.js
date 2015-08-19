@@ -47,9 +47,27 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
-      .when('/contacts', {
+      .when('/blog', {
 		navitem: true,
 		name: 'route3',
+        templateUrl: 'views/blog.html',
+        controller: 'BlogCtrl'
+      })
+      .when('/project', {
+		navitem: true,
+		name: 'route4',
+        templateUrl: 'views/project.html',
+        controller: 'ProjectCtrl'
+      })
+      .when('/sample', {
+		navitem: true,
+		name: 'route5',
+        templateUrl: 'views/sample.html',
+        controller: 'SampleCtrl'
+      })
+      .when('/contacts', {
+		navitem: true,
+		name: 'route6',
         templateUrl: 'views/contacts.html',
         controller: 'ContactsCtrl'
       })

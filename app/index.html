@@ -9,12 +9,15 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/social-likes/social-likes_flat.css" />
     <link rel="stylesheet" href="bower_components/github-fork-ribbon-css/gh-fork-ribbon.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/blog.css">
+    <link rel="stylesheet" href="styles/carousel.css">
     <!-- endbuild -->
   </head>
   <body ng-controller="AppCtrl">
@@ -35,7 +38,7 @@
 
     <div class="page-wrapper" hidden-when-loading>
 
-<!-- Le navbar
+<!-- navbar
 ================================================== -->
       <div class="header">
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -50,8 +53,8 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
               <a class="navbar-brand" href="#/">
-				<!--http://svgporn.com/logos/angular-icon.svg-->
-                <img style="max-width:50px; margin-top: -7px;" alt="Brand" src="images/angular-icon.svg">
+				<!--http://svgporn.com/logos/angular.svg-->
+                <img style="max-width:50px; margin-top: -7px;" alt="Brand" src="images/angular.svg">
               </a>
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -68,6 +71,15 @@
               <ul class="nav navbar-nav">
                 <li ng-class="{active: currentPath === '/'}">
                   <a ng-href="#/">{{"views.index.Home" | translate}}</a>
+                </li>
+                <li ng-class="{active: currentPath === '/blog'}">
+                  <a ng-href="#/blog">{{"views.index.Blog" | translate}}</a>
+                </li>
+                <li ng-class="{active: currentPath === '/project'}">
+                  <a ng-href="#/project">{{"views.index.Project" | translate}}</a>
+                </li>
+                <li ng-class="{active: currentPath === '/sample'}">
+                  <a ng-href="#/sample">{{"views.index.Sample" | translate}}</a>
                 </li>
                 <li ng-class="{active: currentPath === '/about'}">
                   <a ng-href="#/about">{{"views.index.About" | translate}}</a>
@@ -111,7 +123,9 @@
                   </li>
           </div>
                 </li>
+                <!--
                 <li><div ng-translate-language-select></div></li>
+                -->
               </ul>
 
             </div><!-- /.navbar-collapse -->
@@ -119,89 +133,34 @@
         </div>
       </div>
 
-<!-- Le header
+<!-- header
 ================================================== -->
-    <div class="bs-header text-center">
-      <div class="container">
-        <h1>{{"views.main.i18n for your AngularJS applications" | translate}}</h1>
-
-        <p>{{"views.main.Always a pleasure scaffolding your apps." | translate}}</p>
-
-        <p>
-            <button type="button" class="btn btn-outline-inverse btn-lg" href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample"><i class="icon-github"></i>Code on Github</button>
-
-            <button type="button" class="btn btn-outline-inverse btn-lg" href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases/tag/v{{'views.index.Project version' | translate}}">
-                  <i class="glyphicon glyphicon-download-alt"></i> Download <small>({{"views.index.Project version" | translate}})</small>
-            </button>
-
-        </p>
-      </div>
-      <div class="bs-social container">
-        <ul class="bs-social-buttons list-inline list-unstyled">
-            <li>
-                <iframe
-              src="http://ghbtns.com/github-btn.html?user=AlbanAndrieu&amp;repo=nabla-servers-bower-sample&amp;type=watch&amp;count=true"
-              allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
-            </li>
-            <li>
-               <iframe
-              src="http://ghbtns.com/github-btn.html?user=AlbanAndrieu&amp;repo=nabla-servers-bower-sample&amp;type=fork&amp;count=true"
-              allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
-            </li>
-            <li>
-                <a href="https://twitter.com/share" class="twitter-share-button"
-                   data-hashtags="angularjs">Tweet</a>
-                <script>!function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0];
-                    if (!d.getElementById(id)) {
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = "//platform.twitter.com/widgets.js";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }
-                }(document, "script", "twitter-wjs");</script>
-            </li>
-            <li>
-                <div class="g-plusone" data-size="medium"></div>
-
-                <script type="text/javascript">
-                    (function () {
-                        var po = document.createElement('script');
-                        po.type = 'text/javascript';
-                        po.async = true;
-                        po.src = 'https://apis.google.com/js/plusone.js';
-                        var s = document.getElementsByTagName('script')[0];
-                        s.parentNode.insertBefore(po, s);
-                    })();
-                </script>
-            </li>
-        </ul>
-      </div> <!-- bs-social container -->
-    </div>
-
-<!-- Le main
+     <br/>
+<!-- main
 ================================================== -->
-      <div class="container">
-        <div class="clearfix">
-          <div class="pull-right">
-            <span class="glyphicon glyphicon-time"></span>
-            {{currentTime | date:'medium'}}
-          </div>
-        </div>
-        <div ng-view=""></div>
-      </div>
 
-      <div class="footer">
-        <div class="container">
-          <div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
-            <div class="facebook" title="Share link on Facebook">Facebook</div>
-            <div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
-            <div class="plusone" title="Share link on Google+">Google+</div>
-            <div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
-          </div>
-          <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
-        </div>
-      </div>
+      <div ng-view=""></div>
+
+<!-- footer
+================================================== -->
+
+
+      <!-- FOOTER -->
+      <footer>
+		<div class="footer">
+			<div class="container">
+			<div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
+				<div class="facebook" title="Share link on Facebook">Facebook</div>
+				<div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
+				<div class="plusone" title="Share link on Google+">Google+</div>
+				<div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
+			</div>
+			<p class="pull-right"><a href="#">Back to top</a></p>
+			<p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+			<p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
+			</div>
+		</div>
+      </footer>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -214,16 +173,6 @@
        ga('create', 'UA-56011797-1');
        ga('send', 'pageview');
     </script>
-
-    <!-- BOTTOM RIGHT GITHUB RIBBON -->
-    <div class="github-fork-ribbon-wrapper right-bottom" hidden-when-loading>
-      <div class="github-fork-ribbon">
-        <a href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample">
-          {{"views.Fork me on" | translate}}
-          GitHub
-        </a>
-      </div>
-    </div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -251,6 +200,9 @@
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/appCtrl.js"></script>
     <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/blog.js"></script>
+    <script src="scripts/controllers/project.js"></script>
+    <script src="scripts/controllers/sample.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/contacts.js"></script>
     <script src="scripts/services/LocaleService.js"></script>
