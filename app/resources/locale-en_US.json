@@ -12,6 +12,7 @@
   "views.index.Blog": "Blog",
   "views.index.Sample": "Sample",
   "views.index.Project": "Project",
+  "views.index.Other": "Other",
   "views.index.About": "About",
   "views.index.Contact": "Contact",
   "views.index.from the Yeoman team": "from the Yeoman team",

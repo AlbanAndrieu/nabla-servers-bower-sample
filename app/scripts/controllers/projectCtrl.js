@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name myTestApp.controller:ContactsCtrl
+ * @name myTestApp.controller:ProjectController
  * @description
- * # ContactsCtrl
+ * # ProjectController
  * Controller of the myTestApp
  */
 angular.module('myTestApp')
-  .controller('ContactsCtrl', function($scope) {
+  .controller('ProjectController', function($scope) {
     // Yeoman part (for tests)
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

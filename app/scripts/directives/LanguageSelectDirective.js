@@ -36,7 +36,7 @@ angular.module('myTestApp')
     };
   });
 
-angular.module('myTestApp').controller('DropdownCtrl', function($scope, $log, LocaleService) {
+angular.module('myTestApp').controller('DropdownController', function($scope, $log, LocaleService) {
   'use strict';
   $scope.items = [
     'The first choice!',
