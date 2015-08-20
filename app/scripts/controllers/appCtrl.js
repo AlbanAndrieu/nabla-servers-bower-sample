@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name myTestApp.controller:AppCtrl
+ * @name myTestApp.controller:AppController
  * @description
- * # AppCtrl
+ * # AppController
  * Common application controller
  */
 angular.module('myTestApp')
-  .controller('AppCtrl', function($scope, $rootScope, $translate, $interval, VERSION_TAG) {
+  .controller('AppController', function($scope, $location, $anchorScroll, $rootScope, $translate, $interval, VERSION_TAG) {
     /**
      * Cache busting
      */
@@ -55,4 +55,13 @@ angular.module('myTestApp')
       $rootScope.pageTitle = $translate.instant(pageTitleTranslationId);
       $rootScope.pageContent = $translate.instant(pageContentTranslationId);
     });
+
+    /**
+     * SCROLL TO TOP
+     */
+    $scope.scrollTo = function(id) {
+       $location.hash(id);
+       $anchorScroll();
+    };
+
   });

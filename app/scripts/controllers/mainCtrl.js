@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name myTestApp.controller:MainCtrl
+ * @name myTestApp.controller:MainController
  * @description
- * # MainCtrl
+ * # MainController
  * Controller of the myTestApp
  */
 angular.module('myTestApp')
-  .controller('MainCtrl', function($scope/*, $resource/*, Auth, NABLA_GLOBALS*/) {
+  .controller('MainController', function($scope/*, $resource/*, Auth, NABLA_GLOBALS*/) {
     //NABLA_GLOBALS.isDev = true;
     //Auth.user.set({
     //  loginName: 'nabla',
@@ -24,4 +24,5 @@ angular.module('myTestApp')
     ];
     //var Book = $resource('./rest/books/:isbn');
     //$scope.books = Book.query();
+
   });

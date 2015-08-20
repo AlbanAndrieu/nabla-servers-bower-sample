@@ -45,6 +45,11 @@ https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean..
 
 Run `grunt` for building and `grunt serve` for preview.
 
+```
+mvn clean install -Dserver=jetty9x
+mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
+```
+
 ## Testing
 
 test (dev mode)
@@ -72,6 +77,7 @@ Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order
 ```
 mvn jetty:run-war
 mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
+-Dserver=jetty9x
 ```
 
 ## ZaProxy
@@ -83,10 +89,10 @@ sudo apt-get install libxml2-dev libxslt-dev
 ```
 
 Note that ZAProxy must be installed and zap.sh must be available on the executable path for this to work.
-Make sure you are running zap 2.3.0
+Make sure you are running zap 2.3.0 or 2.3.1
 
 ```
-export PATH=/usr/local/zap/zap-2.3.0/:${PATH}
+export PATH=/usr/local/zap/zap-2.3.1/:${PATH}
 ```
 
 In case of trouble with zap locally.
@@ -95,6 +101,14 @@ html: false
 
 Please use : [ansible-zaproxy](https://github.com/AlbanAndrieu/ansible-zaproxy) in order to install zaproxy
 
+Start zap by hand:
+
+```
+sudo su - jenkins
+export DISPLAY=:99 && nohup /usr/local/zap/zap-2.3.1/zap.sh -daemon -port 8090 > zap.log &
+tail -f zap.log
+```
+
 ## Selenium Grid
 
 How to start selenium grid
@@ -102,16 +116,19 @@ How to start selenium grid
 ```
 ssh -X root@home.nabla.mobi
 #start by hand selenium grid
-nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role hub -port 4444 &
+#nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role hub -port 4444 &
+nohup java -jar /workspace/selenium-server-standalone-2.46.0.jar -role hub -port 4444 &
 #start by hand selenium instance for home.nabla.mobi
 ssh -X jenkins@home.nabla.mobi
-export DISPLAY=localhost:99.0 && nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
+#export DISPLAY=localhost:99.0 && nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
+export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.46.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
 #On home.nabla.mobi check starter script at
 #/etc/init.d/selenium_hub
 ```
 
 Check result at :
 
+curl http://home.nabla.mobi:4444/grid/console
 http://home.nabla.mobi:4444/grid/console
 
 http://home.nabla.mobi:5555/wd/hub/static/resource/hub.html
@@ -138,3 +155,7 @@ http://albanandrieu.github.io/nabla-servers-bower-sample/
 ## Performance improvements
 
 What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA
+
+## Issues
+
+http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel

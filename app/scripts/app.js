@@ -39,37 +39,37 @@ angular
 		navitem: true,
 		name: 'route1',
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainController'
       })
       .when('/about', {
 		navitem: true,
 		name: 'route2',
         templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
+        controller: 'AboutController'
       })
       .when('/blog', {
 		navitem: true,
 		name: 'route3',
         templateUrl: 'views/blog.html',
-        controller: 'BlogCtrl'
+        controller: 'BlogController'
       })
       .when('/project', {
 		navitem: true,
 		name: 'route4',
         templateUrl: 'views/project.html',
-        controller: 'ProjectCtrl'
+        controller: 'ProjectController'
       })
       .when('/sample', {
 		navitem: true,
 		name: 'route5',
         templateUrl: 'views/sample.html',
-        controller: 'SampleCtrl'
+        controller: 'SampleController'
       })
       .when('/contacts', {
 		navitem: true,
 		name: 'route6',
-        templateUrl: 'views/contacts.html',
-        controller: 'ContactsCtrl'
+        templateUrl: 'views/contact.html',
+        controller: 'ContactController'
       })
       .when('/test', {
         template: '<p>i am route 4 and not in the navbar</p>'
@@ -113,7 +113,7 @@ angular
     tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
   });
 
-angular.module('myTestApp').controller('NavbarCtrl', function($scope, $sce, $translate) {
+angular.module('myTestApp').controller('NavbarController', function($scope, $sce, $translate) {
   $scope.logo = $sce.trustAsHtml('<svg class=\'icon icon-logo\' viewBox=\'0 0 24 32\'>' +
     '<use xlink:href=\'#icon-logo\'></use></svg>');
 
