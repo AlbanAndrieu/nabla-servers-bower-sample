@@ -90,7 +90,7 @@
     "grunt-text-replace": "^0.4.0",
     "grunt-svgmin": "^2.0.0",
     "grunt-uncss": "^0.4.3",
-    "grunt-usemin": "^3.0.0",
+    "grunt-usemin": "3.0.0",
     "grunt-version-check": "^0.2.1",
     "grunt-wiredep": "^2.0.0",
     "grunt-wpt": "^3.1.1",
