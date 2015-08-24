@@ -14,14 +14,19 @@ angular.module('myTestApp')
       replace: true,
       template: '' +
         '<div class="language-select" ng-if="visible">' +
-          '<label>' +
-            '{{"directives.language-select.Language" | translate}}:' +
-            '<select ng-model="currentLocaleDisplayName"' +
+          //'<label>' +
+            //'<a ng-click="scrollTo(\'top\')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{"views.index.Language" | translate}} <span class="caret"></span></a>' +
+            //'<a ng-click="scrollTo(\'top\')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> </a>' +
+            //'<span class="glyphicon glyphicon-globe" aria-hidden="true"></span> ' +
+            //'{{"directives.language-select.Language" | translate}}:' +
+            '<select class="form-control" ng-model="currentLocaleDisplayName"' +
               'ng-options="localesDisplayName for localesDisplayName in localesDisplayNames"' +
               'ng-change="changeLanguage(currentLocaleDisplayName)">' +
             '</select>' +
-          '</label>' +
-        '</div>' +
+
+            //'</div>' +
+          //'</label>' +
+       '</div>' +
       '',
       controller: function($scope) {
         $scope.currentLocaleDisplayName = LocaleService.getLocaleDisplayName();
@@ -35,28 +40,3 @@ angular.module('myTestApp')
       }
     };
   });
-
-angular.module('myTestApp').controller('DropdownController', function($scope, $log, LocaleService) {
-  'use strict';
-  $scope.items = [
-    'The first choice!',
-    'And another choice for you.',
-    'but wait! A third!'
-  ];
-
-$scope.items = LocaleService.getLocaleDisplayName();
-
-  $scope.status = {
-    isopen: false
-  };
-
-  $scope.toggled = function(open) {
-    $log.log('Dropdown is now: ', open);
-  };
-
-  $scope.toggleDropdown = function($event) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    $scope.status.isopen = !$scope.status.isopen;
-  };
-});

@@ -64,4 +64,4 @@ angular.module('myTestApp')
        $anchorScroll();
     };
 
-  });
+});
