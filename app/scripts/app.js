@@ -18,7 +18,7 @@ angular
     'ngTouch',
     'pascalprecht.translate',// angular-translate
     'tmh.dynamicLocale',// angular-dynamic-locale
-    //'bootstrap.navbar',
+    'ui.gravatar',
     'ui.bootstrap'
     //'nabla-header'
   ])
@@ -65,9 +65,21 @@ angular
         templateUrl: 'views/sample.html',
         controller: 'SampleController'
       })
-      .when('/contacts', {
+      .when('/yeoman', {
 		navitem: true,
 		name: 'route6',
+        templateUrl: 'views/yeoman.html',
+        controller: 'YeomanController'
+      })
+      .when('/boostrap', {
+		navitem: true,
+		name: 'route7',
+        templateUrl: 'views/styles.html',
+        controller: 'BootstrapController'
+      })
+      .when('/contacts', {
+		navitem: true,
+		name: 'route8',
         templateUrl: 'views/contact.html',
         controller: 'ContactController'
       })
@@ -112,31 +124,3 @@ angular
   .config(function(tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
   });
-
-angular.module('myTestApp').controller('NavbarController', function($scope, $sce, $translate) {
-  $scope.logo = $sce.trustAsHtml('<svg class=\'icon icon-logo\' viewBox=\'0 0 24 32\'>' +
-    '<use xlink:href=\'#icon-logo\'></use></svg>');
-
-  $scope.searchInput = {placeholder: 'Search'};
-  $scope.title = $translate('PROJECT_TITLE');
-
-  $scope.selectOptions = [
-    {value: 'choicevalue1', label: 'choicelabel1'},
-    {value: 'choicevalue2', label: 'choicelabel2'}
-  ];
-
-  $scope.searchSelect = {
-    'default': '{{"views.index.Search" | translate}}',
-    'options': $scope.selectOptions
-  };
-
-  var submit = function() {
-    $scope.submittedValue = $scope.searchInput.value;
-  };
-
-  $scope.searchButton = {
-    'placeholder': '{{"views.index.Search" | translate}}',
-    'submit': submit
-  };
-
-});

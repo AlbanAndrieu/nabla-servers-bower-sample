@@ -6,6 +6,8 @@
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample) [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample) [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 
+[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)
+
 A bower project sample.
 =============
 
@@ -32,6 +34,7 @@ NOK bower install angular-bootstrap-nav
 ```
 TODO use https://angular-ui.github.io/bootstrap/ for language
 TODO remvove app/styles/components/_header.scss language-select
+TODO https://github.com/rackerlabs/angular-bootstrap-nav
 SEE https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js
 SEE https://github.com/angular-ui/angular-google-maps
 

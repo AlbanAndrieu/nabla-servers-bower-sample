@@ -15,16 +15,17 @@
   "views.index.Other": "Autre",
   "views.index.About": "A propos",
   "views.index.Contact": "Contact",
-  "views.index.from the Yeoman team": "de la part de l'equipe Yeoman",
+  "views.index.from the Yeoman team": "de la part de l'équipe Nabla",
   "views.index.Submit": "Soumettre",
-  "views.index.Profile": "Profil",
-  "views.index.Logout": "Deconnexion",
+  "views.index.Profile": "Profile",
+  "views.index.Login": "Connexion",
+  "views.index.Logout": "Déconnexion",
   "views.index.Language": "Langage",
   "views.index.Search": "Recherche",
 
   "views.main.i18n for your AngularJS applications": "i18n pour AngularJS applications",
   "views.main.I'm Yeoman": "Je suis Yeoman",
-  "views.main.Always a pleasure scaffolding your apps.": "Toujours un plaisir d'echaffauder vos apps.",
+  "views.main.Always a pleasure scaffolding your apps.": "Toujours un plaisir d'échaffauder vos apps.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
   "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.",
@@ -43,7 +44,8 @@
 
   "views.contacts.Follow me on": "Suit moi sur",
   "views.contacts.My": "Moi",
+  "views.contacts.Send mail": "M'écrire",
+  "views.contacts.Find me": "Où me trouver",
 
-
-  "directives.language-select.Language": "Langage"
+  "directives.language-select.Language": "{{views.index.Language}}"
 }

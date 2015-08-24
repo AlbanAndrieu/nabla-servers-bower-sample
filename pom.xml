@@ -372,6 +372,29 @@
 						</deployable>
 					</deployables>
 				</configuration>
+				<executions>
+					<execution>
+						<id>start-container</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<configuration>
+								<properties>
+									<cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
+								</properties>
+							</configuration>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-container</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
             <!-- launch mvn clean install jetty:run-war -->
 			<plugin>
