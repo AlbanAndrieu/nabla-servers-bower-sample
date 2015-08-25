@@ -7,7 +7,7 @@ exports.config = {
   //seleniumAddress: 'http://kgrdb01:4444/wd/hub',
   specs: ['e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
-  baseUrl: 'http://home.nabla.mobi:9090',
+  baseUrl: 'http://home.nabla.mobi:' + process.env.JETTY_PORT || 9090,
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
   //baseUrl: 'http://localhost:8001', //default test port with Yeoman
   //directConnect: true,  //bypass selenium
@@ -22,7 +22,7 @@ exports.config = {
     proxy: {
        proxyType: 'manual',
        //httpProxy: 'localhost:' + process.env.ZAP_PORT,
-       httpProxy: 'home.nabla.mobi:8090',
+       httpProxy: 'home.nabla.mobi:' + process.env.ZAP_PORT || 8090,
        sslProxy: '',
        noProxy: ''
     }
