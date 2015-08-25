@@ -9,11 +9,11 @@ describe('Protractor Demo Sample', function() {
   //browser.waitForAngular();
 
   beforeEach(function() {
-	//var params = browser.params;
-	//console.log('Opening browser... ' + browser.baseUrl + '/' + params.appContext);
+    //var params = browser.params;
+    //console.log('Opening browser... ' + browser.baseUrl + '/' + params.appContext);
     //
     //browser.get('/' + params.appContext + 'index.jsp#/indicators');
-	console.log('Opening browser... ' + browser.baseUrl + '/#/');
+    console.log('Opening browser... ' + browser.baseUrl + '/#/');
 
     browser.get('/');
 
@@ -21,17 +21,17 @@ describe('Protractor Demo Sample', function() {
 
   it('should have a title', function() {
 
-    expect(browser.getTitle()).toEqual('Sample');
+    expect(browser.getTitle()).toEqual('i18n for your AngularJS applications');
   });
 
-  it('should have a text', function() {
-
-    browser.get('/');
-
-    var data = element(by.css('.jumbotron.ng-scope'));
-	var header = data.element(by.tagName('h1'));
-    expect(header.getText()).toContain('\'Allo, \'Allo!');
-  });
+  //it('should have a text', function() {
+  //
+  //  browser.get('/');
+  //
+  //  var data = element(by.css('.jumbotron.ng-scope'));
+  //  var header = data.element(by.tagName('h1'));
+  //  expect(header.getText()).toContain('\'Allo, \'Allo!');
+  //});
 
   //it('should login to Sample', function() {
   //  var params = browser.params;
