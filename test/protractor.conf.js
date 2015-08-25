@@ -3,8 +3,7 @@
 exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
   //framework: 'jasmine2',
-  seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
-  //seleniumAddress: 'http://kgrdb01:4444/wd/hub',
+  //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
   baseUrl: 'http://home.nabla.mobi:' + process.env.JETTY_PORT || 9090,
@@ -22,7 +21,7 @@ exports.config = {
     proxy: {
        proxyType: 'manual',
        //httpProxy: 'localhost:' + process.env.ZAP_PORT,
-       httpProxy: 'home.nabla.mobi:' + process.env.ZAP_PORT || 8090,
+       httpProxy: 'localhost:' + process.env.ZAP_PORT || 8090,
        sslProxy: '',
        noProxy: ''
     }
