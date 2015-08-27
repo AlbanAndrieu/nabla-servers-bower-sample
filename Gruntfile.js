@@ -858,9 +858,14 @@ module.exports = function(grunt) {
         //  dest: '<%= config.dist %>'
         }, {
           expand: true,
-          cwd: 'bower_components/font-awesome/fonts/',
-          src: '**/*',
-          dest: '<%= config.dist %>/fonts'
+          cwd: '.',
+          src: 'bower_components/font-awesome/fonts/*',
+          dest: '<%= config.dist %>'
+        //}, {
+        //  expand: true,
+        //  cwd: 'bower_components/font-awesome/fonts/',
+        //  src: '**/*',
+        //  dest: '<%= config.dist %>/fonts'
         }, {
           expand: true,
           cwd: 'bower_components/angular-i18n/',
