@@ -1207,7 +1207,7 @@ module.exports = function(grunt) {
           key: process.env.WPT_API_KEY,
           budget: {
             render: '2000',
-            SpeedIndex: '3000'
+            SpeedIndex: '3050'
           }
         }
       }
