@@ -59,6 +59,7 @@ module.exports = function(grunt) {
 	'zap_results': 'grunt-zaproxy',
 	'validate-package': 'grunt-nsp-package',
 	resemble: 'grunt-resemble-cli',
+    instrument: 'grunt-protractor-coverage',
 	usebanner: 'grunt-banner',
 	replace: 'grunt-text-replace',
     express: 'grunt-express-server',
@@ -185,7 +186,8 @@ module.exports = function(grunt) {
     config: appConfig,
 
     bower: {
-      bower: require('./bower.json')
+      bower: require('./bower.json'),
+      verbose: true
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -485,7 +487,7 @@ module.exports = function(grunt) {
         imagesDir: '<%= config.app %>/images',
         javascriptsDir: '<%= config.app %>/scripts',
         fontsDir: '<%= config.app %>/styles/fonts',
-        importPath: './bower_components',
+        importPath: '<%= config.app %>/../bower_components',
         httpImagesPath: '/images',
         httpGeneratedImagesPath: '/images/generated',
         httpFontsPath: '/styles/fonts',
@@ -1177,7 +1179,7 @@ module.exports = function(grunt) {
       options: {
         urls: ['http://home.nabla.mobi:9090/'],
         //key: '<API_KEY>',
-        reports: ['results.xml'],
+        reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 10,
         ruleThreshold: 2
       }
@@ -1207,7 +1209,7 @@ module.exports = function(grunt) {
           key: process.env.WPT_API_KEY,
           budget: {
             render: '2000',
-            SpeedIndex: '3050'
+            SpeedIndex: '3000'
           }
         }
       }
@@ -1417,7 +1419,8 @@ module.exports = function(grunt) {
     'newer:jshint',
     'newer:jscs',
     'checkDependencies',
-    'versioncheck'
+    'versioncheck',
+    'validate-package'
     ]);
 
     if (target === 'release') {
