@@ -11,7 +11,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>bower-sample</artifactId>
 	<packaging>war</packaging>
-	<name>bower-sample</name>
+	<name>Nabla Bower Sample</name>
 	<description>Bower sample components</description>
     <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
 
@@ -32,10 +32,10 @@
 	</issueManagement>
 
 	<properties>
-		<!--<node.version>0.12.4</node.version>-->
-        <node.version>0.10.32</node.version>
+		<node.version>0.12.7</node.version>
+        <!--<node.version>0.10.32</node.version>-->
 		<npm.version>2.13.0</npm.version>
-		<!--<npm.version>2.7.1</npm.version>-->
+		<!--<npm.version>2.11.3</npm.version>-->
         <jersey.version>1.8</jersey.version>
 		<appsensor.core.version>2.1.0</appsensor.core.version>
 

@@ -27,11 +27,6 @@ as local user
 yo angular translate
 ```
 
-Added
-
-```
-NOK bower install angular-bootstrap-nav
-```
 TODO use https://angular-ui.github.io/bootstrap/ for language
 TODO remvove app/styles/components/_header.scss language-select
 TODO https://github.com/rackerlabs/angular-bootstrap-nav
@@ -51,6 +46,7 @@ Run `grunt` for building and `grunt serve` for preview.
 ```
 mvn clean install -Dserver=jetty9x
 mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
+npm ls --licenses
 ```
 
 ## Testing
@@ -95,7 +91,7 @@ Note that ZAProxy must be installed and zap.sh must be available on the executab
 Make sure you are running zap 2.3.0 or 2.3.1
 
 ```
-export PATH=/usr/local/zap/zap-2.3.1/:${PATH}
+export PATH=/usr/local/zap/zap-2.3.0/:${PATH}
 ```
 
 In case of trouble with zap locally.
@@ -119,27 +115,22 @@ How to start selenium grid
 ```
 ssh -X root@home.nabla.mobi
 #start by hand selenium grid
-#nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role hub -port 4444 &
-NOK nohup java -jar /workspace/selenium-server-standalone-2.46.0.jar -role hub -port 4444 &
-nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role hub -port 4444 &
+nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role hub -port 4444 -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver &
+tail -f nohup.out
 #check hub is working
 INFO - Nodes should register to http://172.17.42.1:4444/grid/register/
 #start by hand selenium instance for home.nabla.mobi
 ssh -X jenkins@home.nabla.mobi
 #export DISPLAY=localhost:99.0 && nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
-export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=40.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=43.0.2357.125,chrome_binary=/usr/bin/google-chrome,maxInstances=1,platform=LINUX &
-less /workspace/users/albandri10/nohup.out
+export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=40.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=43.0.2357.125,chrome_binary=/usr/bin/google-chrome,maxInstances=1,platform=LINUX clean install -Dserver=jetty9x -Dsurefire.useFile=false -Psample,jacoco,integration,run-its,arq-weld-ee-embedded -Darquillian=arq-weld-ee-embedded -Darquillian.launch=arq-weld-ee-embedded -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver &
+tail -f nohup.out
 
 curl http://localhost:4444/grid/api/proxy?id=http://172.17.42.1:5555
 curl http://home.nabla.mobi:4444/grid/console
 
 /usr/bin/google-chrome
 /opt/google/chrome/chrome --> NOK
-ADD /workspace/chrome-driver in
-sudo nano /etc/init/jenkins.conf
-    export JENKINS_HOME
-    export ZAPROXY_HOME=/zapSource/build/zap
-    export PATH=$PATH:$ZAPROXY_HOME:/workspace/chrome-driver/
+
 #On home.nabla.mobi check starter script at
 #/etc/init.d/selenium_hub
 ```
@@ -147,11 +138,24 @@ sudo nano /etc/init/jenkins.conf
 Check result at :
 
 curl http://home.nabla.mobi:4444/grid/console
+
 http://home.nabla.mobi:4444/grid/console
 
 http://home.nabla.mobi:5555/wd/hub/static/resource/hub.html
 
 Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium) in order to install selenium hub and node
+
+## Jenkins
+
+In order to properly configure Jenkins master
+
+```
+ADD /zapSource/build/zap in
+sudo nano /etc/init/jenkins.conf
+    export JENKINS_HOME
+    export ZAPROXY_HOME=/zapSource/build/zap
+    export PATH=$PATH:$ZAPROXY_HOME
+```
 
 ## Yslow Psi WebPageTest
 
