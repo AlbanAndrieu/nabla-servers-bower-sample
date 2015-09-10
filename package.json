@@ -37,7 +37,6 @@
   "devDependencies": {
     "apache-server-configs": "^2.7.1",
     "async": "1.4.2",
-    "autoprefixer-core": "6.0.1",
     "bower": "1.5.2",
     "cssnano": "3.0.1",
     "grunt": "^0.4.5",
@@ -99,6 +98,8 @@
     "grunt-wpt": "^3.1.1",
     "grunt-yslow-test": "^0.1.0",
     "grunt-zaproxy": "^0.1.5",
+    "grunt-autoprefixer": "3.0.3",
+    "autoprefixer": "6.0.2",
     "jasmine-bail-fast": "0.0.1",
     "jasmine-core": "^2.3.4",
     "jasmine-reporters": "2.0.7",
