@@ -17,7 +17,15 @@ exports.config = {
     appContext: '/'
   },
   capabilities: {
-    'browserName': 'firefox',
+    //'browserName': 'chromium',
+    'browserName': 'chrome',
+    //  'browserName': 'firefox',
+    //  'browserName': 'phantomjs',
+	//chromeOptions: {
+	//	binary: '/usr/bin/google-chrome',
+	//	args: [],
+	//	extensions: [],
+	//},
     proxy: {
        proxyType: 'manual',
        //httpProxy: 'localhost:' + process.env.ZAP_PORT,
@@ -26,6 +34,8 @@ exports.config = {
        noProxy: ''
     }
   },
+  chromeDriver: '../node_modules/protractor/selenium/chromedriver',
+  //seleniumServerJar: '../node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
   onPrepare: function() {
 
       //var failFast = require('jasmine-fail-fast');
@@ -36,19 +46,17 @@ exports.config = {
       // The require statement must be down here, since jasmine-reporters@1.0
       // expects jasmine to be in the global and protractor does not guarantee
       // this until inside the onPrepare function.
-      require('jasmine-reporters');
-      jasmine.getEnv().addReporter(
-          new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
-      );
+      //require('jasmine-reporters');
+      //jasmine.getEnv().addReporter(
+      //    new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
+      //);
+      var jasmineReporters = require('jasmine-reporters');
+      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+          consolidateAll: true,
+          filePrefix: 'TEST-default-Protractor',
+          savePath: 'target/surefire-reports'
+      }));
   },
-  //onPrepare: function() {
-  //    var jasmineReporters = require('jasmine-reporters');
-  //    jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-  //        consolidateAll: true,
-  //        filePrefix: 'TEST-default-Protractor',
-  //        savePath: 'target/surefire-reports'
-  //    }));
-  //},
   //multiCapabilities: [{
   //  'browserName': 'firefox'
   //}, {
