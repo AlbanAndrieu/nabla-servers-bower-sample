@@ -13,17 +13,17 @@
 	<packaging>war</packaging>
 	<name>Nabla Bower Sample</name>
 	<description>Bower sample components</description>
-    <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+    	<url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
 
-    <scm>
+    	<scm>
 		<connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
 		<developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
 		<url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
-    </scm>
+    	</scm>
 
 	<ciManagement>
 		<system>Jenkins</system>
-        <url>${JOB_URL}</url>
+        	<url>${JOB_URL}</url>
 	</ciManagement>
 
 	<issueManagement>
@@ -32,14 +32,14 @@
 	</issueManagement>
 
 	<properties>
-		<node.version>0.12.7</node.version>
-        <!--<node.version>0.10.32</node.version>-->
+		<!--<node.version>0.12.7</node.version>-->
+        	<node.version>0.10.32</node.version>
 		<npm.version>2.13.0</npm.version>
 		<!--<npm.version>2.11.3</npm.version>-->
-        <jersey.version>1.8</jersey.version>
+        	<jersey.version>1.8</jersey.version>
 		<appsensor.core.version>2.1.0</appsensor.core.version>
 
-        <jetty9.version>9.2.3.v20140905</jetty9.version>
+        	<jetty9.version>9.2.3.v20140905</jetty9.version>
 	</properties>
 
 	<dependencies>
