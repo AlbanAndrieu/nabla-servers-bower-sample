@@ -1,3 +1,5 @@
+package com.test.project.sample;
+
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 
@@ -6,14 +8,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 
 public class DeploymentITest
 {
@@ -96,17 +102,45 @@ public class DeploymentITest
     }
 
     @Test
-    public void testBaseRest() throws Exception
-    {
+    //@Ignore
+    public void testBaseRest() throws Exception {
 
         DeploymentITest.LOGGER.info("Testing URL : {}", DeploymentITest.BASE_URL);
 
-        Client webClient = Client.create();
+        Client client = ClientBuilder.newClient();
 
-        ClientResponse docResponse = webClient.resource(DeploymentITest.BASE_URL).get(ClientResponse.class);
-        docResponse.getEntity(String.class);
+        WebTarget webTarget = client.target(DeploymentITest.BASE_URL);
+        // webTarget.register(FilterForExampleCom.class);
+        WebTarget resourceWebTarget = webTarget.path("rest");
+        WebTarget booksTarget = resourceWebTarget.path("books");
+        WebTarget booksTestTarget = booksTarget.path("test");
 
-        assertEquals(format("Error getting login screen for %s at address %s", DEFAULT_CONTEXT, LOGIN_URL), 200, docResponse.getStatus());
+        //WebTarget target = client.target(DeploymentITest.BASE_URL).path("rest/{param}");
+        //String result = target.queryParam("param", "value").get(String.class);
+        //WebTarget booksTestTarget = client.target(DeploymentITest.BASE_URL + "/rest/books/test");
+        //Response responseTest = booksTestTarget.request("text/plain").get();
+
+        //System.out.println("Status : " + responseTest.getStatus());
+        //assertEquals(responseTest.getStatus(), 200);
+        //System.out.println("Response : " + responseTest.readEntity(String.class));
+
+        WebTarget helloworldWebTargetWithQueryParam = booksTarget.queryParam("test",
+                "10");
+
+        Invocation.Builder invocationBuilder = booksTestTarget
+                .request(MediaType.TEXT_PLAIN_TYPE);
+        invocationBuilder.header("some-header", "true");
+
+        Response responseFull = invocationBuilder.get();
+        System.out.println("Status : " + responseFull.getStatus());
+        String resultTest = responseFull.readEntity(String.class);
+        System.out.println("Response : " + resultTest);
+
+        assertEquals(
+                format("Error getting login screen for %s at address %s", DEFAULT_CONTEXT, DeploymentITest.BASE_URL),
+                HttpURLConnection.HTTP_OK, responseFull.getStatus());
+
+        assertEquals(resultTest, "Test");
     }
 
     @Test
@@ -116,6 +150,7 @@ public class DeploymentITest
 
         // TODO
         // It might required mocking database
+
     }
 
 }

@@ -15,6 +15,8 @@ public class LoginProxyServlet extends ProxyServlet
 
     private static Logger     LOG              = LoggerFactory.getLogger(LoginProxyServlet.class);
 
+    // TODO See : http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html
+    // or https://github.com/mnadeem/configuring-jetty-servlet-proxy
     /*
      * @Override
      * protected URI rewriteURI(HttpServletRequest request) {

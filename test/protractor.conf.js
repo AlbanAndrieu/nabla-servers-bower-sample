@@ -2,7 +2,7 @@
 
 exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
-  //framework: 'jasmine2',
+  framework: 'jasmine2',
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
