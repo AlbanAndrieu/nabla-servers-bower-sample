@@ -33,14 +33,27 @@
 
 	<properties>
 		<!--<node.version>0.12.7</node.version>-->
-        	<node.version>0.10.32</node.version>
+        <node.version>0.10.32</node.version>
 		<npm.version>2.13.0</npm.version>
 		<!--<npm.version>2.11.3</npm.version>-->
-        	<jersey.version>1.8</jersey.version>
+        <jersey.version>2.11</jersey.version>
 		<appsensor.core.version>2.1.0</appsensor.core.version>
 
-        	<jetty9.version>9.2.3.v20140905</jetty9.version>
+        <!--<jetty9.version>9.2.3.v20140905</jetty9.version>-->
+        <jetty9.version>9.3.3.v20150827</jetty9.version>
 	</properties>
+
+    <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+    </dependencyManagement>
 
 	<dependencies>
 		<!--
@@ -55,22 +68,42 @@
 			<scope>${scope.tomcat.never.type}</scope>
 		</dependency>
 		-->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-jetty-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+		</dependency>
+
+		<!--  Jersey Client required for test *and runtime* due to Jersey bug : https://java.net/jira/browse/JERSEY-2104 -->
+		<!--  This dependency can be scoped to test when Jersey is upgraded to >=2.4 -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+            <!--<scope>test</scope>-->
+		</dependency>
+
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <!--<scope>test</scope>-->
         </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>${jersey.version}</version>
+
+		<dependency>
+			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
+			<artifactId>http-builder</artifactId>
 			<scope>test</scope>
-        </dependency>
+		</dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -78,8 +111,8 @@
         </dependency>
 
         <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
 		<!-- https://github.com/mdeimel/jetty-proxy -->
@@ -106,19 +139,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlets</artifactId>
 			<version>${jetty.version}</version>
 			<type>jar</type>
 			<scope>runtime</scope>
 		</dependency>
-
-	   <!--
-       <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        -->
 
 		<!-- test dependencies -->
 		<dependency>
@@ -450,6 +485,44 @@
 								</artifactItem>
 							</artifactItems>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<configuration>
+					<createDependencyReducedPom>true</createDependencyReducedPom>
+					<filters>
+					<filter>
+						<artifact>*:*</artifact>
+						<excludes>
+						<exclude>META-INF/*.SF</exclude>
+						<exclude>META-INF/*.DSA</exclude>
+						<exclude>META-INF/*.RSA</exclude>
+						</excludes>
+					</filter>
+					</filters>
+				</configuration>
+
+				<executions>
+					<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>shade</goal>
+					</goals>
+					<configuration>
+						<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<manifestEntries>
+							<Main-Class>com.test.project.sample.App</Main-Class>
+							</manifestEntries>
+						</transformer>
+						</transformers>
+					</configuration>
 					</execution>
 				</executions>
 			</plugin>

@@ -73,36 +73,11 @@ module.exports = function(grunt) {
   var async = require('async'),
       request = require('request');
 
-  //grunt.loadNpmTasks('grunt-ngdocs');
-  //grunt.loadNpmTasks('grunt-contrib-connect');
-  //grunt.loadNpmTasks('grunt-contrib-clean');
-  //grunt.loadNpmTasks('grunt-ng-annotate');
-  //grunt.loadNpmTasks('grunt-ng-constant');
-  //grunt.loadNpmTasks('grunt-angular-templates');
-  //grunt.loadNpmTasks('grunt-zaproxy');
-  //grunt.loadNpmTasks('grunt-perfbudget');
-  ////grunt.loadNpmTasks('grunt-yslow');
-  //grunt.loadNpmTasks('grunt-yslow-test');
-  //grunt.loadNpmTasks('grunt-pagespeed');
-  //grunt.loadNpmTasks('grunt-pagespeed-junit');
-  //grunt.loadNpmTasks('grunt-wpt');
-  //grunt.loadNpmTasks('grunt-gh-pages');
-  //grunt.loadNpmTasks('grunt-phantomas');
-  //grunt.loadNpmTasks('grunt-sitespeedio');
   //grunt.loadNpmTasks('grunt-uncss');
   ////TODO http://grunt-tasks.com/grunt-purifycss/
   //grunt.loadNpmTasks('grunt-postcss');
   ////grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
-  //grunt.loadNpmTasks('grunt-critical');
-  //grunt.loadNpmTasks('grunt-compare-size');
   ////grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
-  //grunt.loadNpmTasks('grunt-resemble-cli');
-  //grunt.loadNpmTasks('grunt-banner');
-  //grunt.loadNpmTasks('grunt-release');
-  //grunt.loadNpmTasks('grunt-version-check');
-  //grunt.loadNpmTasks('grunt-installed-check');
-  //grunt.loadNpmTasks('grunt-check-dependencies');
-  //grunt.loadNpmTasks('grunt-nsp-package');
 
   var parseVersionFromPomXml = function() {
       var fs = require('fs');
@@ -172,6 +147,10 @@ module.exports = function(grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+
+    // Project settings
+    config: appConfig,
+
     // Project meta
     pkg: require('./package.json'),
     banner: '/**\n' +
@@ -182,9 +161,7 @@ module.exports = function(grunt) {
             ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
             ' */\n',
 
-    // Project settings
-    config: appConfig,
-
+    // Install bower dependencies
     bower: {
       bower: require('./bower.json'),
       verbose: true
