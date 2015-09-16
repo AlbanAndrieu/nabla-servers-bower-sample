@@ -10,12 +10,12 @@ class TestRestClient {
 
     private final String server      = "localhost";
     private String port;
-    private final String DEFAULT_PORT = "9190";
-    private final String productName = "#/about";
+    private final String DEFAULT_PORT = "9090";
+    private final String productName = "rest/books";
 
     private RESTClient RestClient;
 
-    public WebApiRestClient() {
+    public TestRestClient() {
 
         port = System.getProperty("jetty.port");
         if (null == port) {
@@ -29,7 +29,7 @@ class TestRestClient {
         setRestClient(connectString);
     }
 
-    public WebApiRestClient(String connectString) {
+    public TestRestClient(String connectString) {
 
         setRestClient(connectString);
     }
@@ -37,7 +37,7 @@ class TestRestClient {
     private void setRestClient(final connectString) {
 
         this.RestClient = new RESTClient(connectString);
-        this.RestClient.auth.basic 'kgr', 'Kondor-123'
+        //this.RestClient.auth.basic 'nabla', 'microsoft'
 
         println(connectString);
     }
@@ -73,8 +73,8 @@ class TestRestClient {
     }
 
     public HttpResponseDecorator postData(final String path, final String body, final String contentTypeString, final Map headers) {
-        def http = new HTTPBuilder( "http://" + this.server + ":" + this.port + "/" + this.productName + "/data/1.0/Trade?action=create" )
-        http.auth.basic 'kgr', 'Kondor-123'
+        def http = new HTTPBuilder( "http://" + this.server + ":" + this.port + "/" + this.productName + "/test" )
+        //http.auth.basic 'nabla', 'microsoft'
 
         http.post( path: 'Trade', body: body,
         requestContentType: 'application/json' ) { resp ->

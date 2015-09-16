@@ -5,8 +5,8 @@ import groovy.util.GroovyTestCase;
 
 import org.junit.Test
 
-class Arithmetic_UT extends GroovyTestCase {
-    
+class ArithmeticUTest extends GroovyTestCase {
+
     @Test
     void additionIsWorking() {
         assertEquals 4, 2+2
@@ -22,5 +22,5 @@ class Arithmetic_UT extends GroovyTestCase {
         assert 1 == 1
         assert 2 + 2 == 4 : "We're in trouble, arithmetic is broken"
     }
-    
+
 }

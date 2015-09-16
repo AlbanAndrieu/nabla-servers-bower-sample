@@ -36,11 +36,17 @@
         <node.version>0.10.32</node.version>
 		<npm.version>2.13.0</npm.version>
 		<!--<npm.version>2.11.3</npm.version>-->
-        <jersey.version>2.11</jersey.version>
+        <jersey.version>2.21</jersey.version>
+        <jersey.bom.version>2.21</jersey.bom.version>
+        <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+        <validation.api.version>1.1.0.Final</validation.api.version>
+
 		<appsensor.core.version>2.1.0</appsensor.core.version>
 
         <!--<jetty9.version>9.2.3.v20140905</jetty9.version>-->
         <jetty9.version>9.3.3.v20150827</jetty9.version>
+
+		<cargo.protocol>http</cargo.protocol>
 	</properties>
 
     <dependencyManagement>
@@ -155,12 +161,24 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<optional>true</optional><!-- needed only for annotations -->
+		</dependency>
+
 		<!-- test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <!-- jmockit musr be after junit in the classpath -->
+        <dependency>
+             <groupId>org.jmockit</groupId>
+             <artifactId>jmockit</artifactId>
+             <scope>test</scope>
+        </dependency>
 
 		<!-- this is just one of the appsensor dependencies you'll need - see step below called pluggable components -->
 		<dependency>
@@ -373,6 +391,7 @@
 						<!--<type>${cargo.configuration.type}</type> -->
 						<!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
 						<properties>
+							<!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -402,7 +421,7 @@
 							<properties>
 								<context>/</context>
 							</properties>
-							<pingURL>http://${cargo.host}:${cargo.port}/</pingURL>
+							<pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
 							<pingTimeout>60000</pingTimeout>
 						</deployable>
 					</deployables>
