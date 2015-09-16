@@ -4,29 +4,30 @@ import static org.junit.Assert.assertEquals
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 
-import org.junit.Ignore
+import org.junit.BeforeClass
 import org.junit.Test
 
-@Ignore("fix the test")
-class TestApi_IT {
+//@Ignore("fix the test")
+class TestRestITest extends GroovyTestCase {
 
     private TestRestClient client;
 
+	@BeforeClass
     void setUp() {
         this.client = new TestRestClient();
     }
 
     @Test
-    void testDocFXOContract() {
+    void testBasicRest() {
         // Given
-        String docUrl = "http://" + this.client.server + ":" + this.client.port + "/" + this.client.productName + "/doc/1.0/contract/test/";
+        String docUrl = "http://" + this.client.server + ":" + this.client.port + "/" + this.client.productName + "/test";
 
         // When
         HttpResponseDecorator docResponse = getData(docUrl);
 
         // Then
         if (docResponse.status != 200) {
-            fail("Doc has been not found, check if contract definition json file is deployed.");
+            fail("Test has been not found, check if contract definition json file is deployed.");
         }
         assertEquals(200, docResponse.status);
     }

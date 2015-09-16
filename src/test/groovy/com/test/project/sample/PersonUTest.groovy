@@ -6,12 +6,12 @@ import groovy.util.GroovyTestCase;
 
 import org.junit.Test
 
-class Person_UT extends GroovyTestCase {
+class PersonUTest extends GroovyTestCase {
 
     @Test
     void testSomething() {
 		Person person = new Person();
         assert person.greet("Toto").toString() == 'Hello Toto'
     }
-    
+
 }
