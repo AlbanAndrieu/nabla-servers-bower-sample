@@ -1010,7 +1010,7 @@ module.exports = function(grunt) {
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
         threshold: '\'{"overall": "B", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "B", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
         urls: [SERVER_URL + SERVER_CONTEXT,
-               SERVER_URL + '#/about'],
+               SERVER_URL + SERVER_CONTEXT + '#/about'],
         //headers: '\'{"Cookie": "'JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
         //reports: ['target/surefire-reports/yslow-main.xml',
         //          'target/surefire-reports/yslow-about.xml']
