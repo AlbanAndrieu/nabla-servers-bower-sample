@@ -1131,8 +1131,9 @@ module.exports = function(grunt) {
     pagespeed: {
       options: {
         nokey: true,
-        //url: 'http://home.nabla.mobi/'
-        url: 'http://home.nabla.mobi:9090/'
+        url: 'http://home.nabla.mobi/alban/'
+        //url: 'alban-andrieu.com'
+        //url: 'http://home.nabla.mobi:9090/'
       },
       //prod: {
       //  options: {
