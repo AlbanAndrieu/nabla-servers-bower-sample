@@ -1129,9 +1129,13 @@ module.exports = function(grunt) {
     pagespeed: {
       options: {
         nokey: true,
-        url: 'http://home.nabla.mobi/alban/'
+        //url: 'http://home.nabla.mobi/alban/'
         //url: 'alban-andrieu.com'
-        //url: 'http://home.nabla.mobi:9090/'
+        //url: 'alban-andrieu.eu'
+		//url: 'alban-andrieu.fr'
+		//url: 'bababou.fr'
+		//url: 'bababou.eu'
+        url: 'http://home.nabla.mobi:9090/'
       },
       //prod: {
       //  options: {
@@ -1347,7 +1351,7 @@ module.exports = function(grunt) {
     'zap_report',
     //'penthouse',
     'yslow_test',
-    'pagespeed',
+    //'pagespeed',
     'pagespeed_junit',
     'sitespeedio',
     'phantomas',
