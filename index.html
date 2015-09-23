@@ -26,12 +26,6 @@ img {
 }
 
 
-code{
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
-
 button,
 input,
 select{
@@ -70,8 +64,8 @@ input {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
-  src: url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("/.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
+  src: url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -94,16 +88,6 @@ input {
 
 .glyphicon-off:before {
   content: "\e017";
-}
-
-
-.glyphicon-chevron-left:before {
-  content: "\e079";
-}
-
-
-.glyphicon-chevron-right:before {
-  content: "\e080";
 }
 
 
@@ -194,28 +178,13 @@ p {
 }
 
 
-ul,
-ol {
+ul{
   margin-top: 0;
   margin-bottom: 10px;
 }
 
 ul ul{
   margin-bottom: 0;
-}
-
-
-code{
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-}
-
-
-code {
-  padding: 2px 4px;
-  font-size: 90%;
-  color: #c7254e;
-  background-color: #f9f2f4;
-  border-radius: 4px;
 }
 
 
@@ -739,18 +708,6 @@ code {
   border-color: #e7e7e7;
 }
 
-
-.carousel {
-  position: relative;
-}
-
-
-.carousel-inner {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-}
-
 .carousel-inner > .item {
   display: none;
   position: relative;
@@ -772,97 +729,7 @@ code {
     backface-visibility: hidden;
     -webkit-perspective: 1000px;
     perspective: 1000px;
-  } .carousel-inner > .item.active {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    left: 0;
   }
-}
-
-.carousel-inner > .active{
-  display: block;
-}
-
-.carousel-inner > .active {
-  left: 0;
-}
-
-
-.carousel-control {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 15%;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
-  font-size: 20px;
-  color: #fff;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-}
-
-.carousel-control.left {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
-}
-
-.carousel-control.right {
-  left: auto;
-  right: 0;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
-}
-.carousel-control .glyphicon-chevron-left,
-.carousel-control .glyphicon-chevron-right {
-  position: absolute;
-  top: 50%;
-  margin-top: -10px;
-  z-index: 5;
-  display: inline-block;
-}
-.carousel-control .glyphicon-chevron-left {
-  left: 50%;
-  margin-left: -10px;
-}
-.carousel-control .glyphicon-chevron-right {
-  right: 50%;
-  margin-right: -10px;
-}
-
-
-.carousel-indicators {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  z-index: 15;
-  width: 60%;
-  margin-left: -30%;
-  padding-left: 0;
-  list-style: none;
-  text-align: center;
-}
-
-.carousel-indicators li {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 1px;
-  text-indent: -999px;
-  border: 1px solid #fff;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: #000 \9;
-  background-color: transparent;
-}
-
-.carousel-indicators .active {
-  margin: 0;
-  width: 12px;
-  height: 12px;
-  background-color: #fff;
 }
 
 
@@ -884,22 +751,6 @@ code {
 }
 
 @media screen and (min-width: 768px) {
-  
-  .carousel-control .glyphicon-chevron-left,
-  .carousel-control .glyphicon-chevron-right{
-    width: 30px;
-    height: 30px;
-    margin-top: -15px;
-    font-size: 30px;
-  }
-  
-  .carousel-control .glyphicon-chevron-left{
-    margin-left: -15px;
-  }
-  
-  .carousel-control .glyphicon-chevron-right{
-    margin-right: -15px;
-  }
 
   
   .carousel-caption {
@@ -907,15 +758,7 @@ code {
     right: 20%;
     padding-bottom: 30px;
   }
-
-  
-  .carousel-indicators {
-    bottom: 20px;
-  }
 }
-
-
-
 
 .navbar-header .navbar-toggle {
   float: left;
@@ -1001,7 +844,7 @@ body {
   box-shadow: 0 -1.6em 0 0 white, -1.12em -1.12em 0 0 rgba(255, 255, 255, 0.75), -1.6em 0 0 0 rgba(255, 255, 255, 0.5), -1.12em 1.12em 0 0 rgba(255, 255, 255, 0.25);
   
           
-}</style> <script>(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['styles/vendor.dfeff107.css','styles/main.e6412d15.css']));</script> <noscript><link rel="stylesheet" href="styles/vendor.dfeff107.css"> <link rel="stylesheet" href="styles/main.e6412d15.css"></noscript>  <body ng-controller=AppController id=top> <!--[if lt IE 10]>
+}</style> <script>(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['styles/vendor.dfeff107.css','styles/main.0a43dcfd.css']));</script> <noscript><link rel="stylesheet" href="styles/vendor.dfeff107.css"> <link rel="stylesheet" href="styles/main.0a43dcfd.css"></noscript>  <body ng-controller=AppController id=top> <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]--> <!--
     <div id="nabla-header" header-view title="Application Header" appid="test">
@@ -1025,7 +868,7 @@ body {
 					</div>
                 </li>
                 --> <li> <!--<div class="">--> <!-- <input type="text" class="form-control" placeholder="{{'views.index.Language' | translate}}">--> <div class=form-group ng-translate-language-select=""></div> <!--</div>--> </li> </form> </div><!-- /.navbar-collapse --> </div><!-- /.container-fluid --> </div> </div> <!-- header
-================================================== --> <br> <!-- main
+================================================== --> <br> <br> <br> <!-- main
 ================================================== --> <div ng-view=""></div> <!-- footer
 ================================================== --> <!-- FOOTER --> <footer> <div class=footer> <div class=container> <div class="social-likes social-likes_light" data-url=https://home.nabla.mobi data-title=Nabla> <div class=facebook title="Share link on Facebook">Facebook</div> <div class=twitter data-via=AlbanAndrieu title="Share link on Twitter">Twitter</div> <div class=plusone title="Share link on Google+">Google+</div> <div class=pinterest title="Share image on Pinterest" data-media="">Pinterest</div> </div> <p class=pull-right><a ng-click="scrollTo('top')">Back to top</a></p> <p>&copy; 2014 Company, Inc. &middot; <a href=#>Privacy</a> &middot; <a href=#>Terms</a></p> <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p> </div> </div> </footer> </div> <!-- Google Analytics: change UA-XXXXX-X to be your site's ID --> <script>!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
        (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
@@ -1033,4 +876,4 @@ body {
        }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
        ga('create', 'UA-56011797-1');
-       ga('send', 'pageview');</script> <script src=scripts/vendor.99b77e80.js></script> <script src=scripts/scripts.fc95da89.js></script>  
+       ga('send', 'pageview');</script> <script src=scripts/vendor.1daa789e.js></script> <script src=scripts/scripts.b9c8b5a3.js></script>  
