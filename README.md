@@ -14,6 +14,31 @@ A bower project sample.
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
 
+This project is also used to test integration of build tools like:
+
+ * private-bower (bower repo and caching)
+ * nexus (npm and java packages repo and caching)
+ * jenkins (continuous delivery in a jetty embedded)
+ * sonar multi-languages and coverage (QA metrics except JIRA and perf metrics)
+ * yeoman/nodejs/npm/grunt/bower and maven integration
+ * zaproxy (security tests), checkmarx, dependency-check and nsp (thirdparty security check)
+ * performance (jmx, phantomas, pagespeed, webpagetest, yslow, junitperf in jenkins)
+ * sonar / stash / jira / jenkins /git /checkmarx integration
+
+languages like :
+
+ * javascript
+	* unit tests (karma) + LCOV coverage
+	* end2end tests (protractor)
+ * java
+	* unit tests (junit and jmockit) + Jacoco coverage
+	* integration tests (junit) + Jacoco coverage
+ * groovy
+	* unit tests (junit) + Jacoco coverage
+	* integration tests (junit) + Jacoco coverage
+
+jmeter, gatling, mutation testing and arquillian are available in other sample project
+
 ## Create project
 
 as local user
