@@ -16,4 +16,8 @@ class Person {
     String greet(String otherPerson) {
        "Hello ${otherPerson}"
     }
+
+	String name() {
+		"Hello ${name}"
+	 }
 }

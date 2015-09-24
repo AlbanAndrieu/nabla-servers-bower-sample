@@ -14,6 +14,31 @@ A bower project sample.
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
 
+This project is also used to test integration of build tools like:
+
+ * private-bower (bower repo and caching)
+ * nexus (npm and java packages repo and caching)
+ * jenkins (continuous delivery in a jetty embedded)
+ * sonar multi-languages and coverage (QA metrics except JIRA and perf metrics)
+ * yeoman/nodejs/npm/grunt/bower and maven integration
+ * zaproxy (security tests), checkmarx, dependency-check and nsp (thirdparty security check)
+ * performance (jmx, phantomas, pagespeed, webpagetest, yslow, junitperf in jenkins)
+ * sonar / stash / jira / jenkins /git /checkmarx integration
+
+languages like :
+
+ * javascript
+	* unit tests (karma) + LCOV coverage
+	* end2end tests (protractor)
+ * java
+	* unit tests (junit and jmockit) + Jacoco coverage
+	* integration tests (junit) + Jacoco coverage
+ * groovy
+	* unit tests (junit) + Jacoco coverage
+	* integration tests (junit) + Jacoco coverage
+
+jmeter, gatling, mutation testing and arquillian are available in other sample project
+
 ## Create project
 
 as local user
@@ -181,3 +206,53 @@ What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA
 ## Issues
 
 http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel
+
+## Eclipse
+
+ Uninstall Nodeclipse Core & Node.js
+
+Add plugins
+
+ - Groovy/Grails Tool Suite (GGTS) for Eclipse 3.6.4.RELEASE
+ - Nodeclipse "Enide Studio 2014" is Tool Suite for Node.js
+ - AngularJS Eclipse Plugin
+
+### Import as Maven project
+
+### Java
+
+Project Properties | Java Build Path | Default output folder
+Change target by target-eclipse
+bower-sample/target-eclipse/classes
+
+Exclude validation for
+
+ - node
+ - node_modules
+ - bower_components
+ - dist
+ - app
+ - coverage
+
+### Javascript
+
+Project | Import as project "app"
+Project Properties | JavasScript | Include Paths | Source | Add folders "script" "bower_components"
+
+Based on the following sample : https://github.com/oasp/oasp4js
+
+git clone https://github.com/oasp/oasp4js.git
+cd oasp4js
+npm install
+
+Project | Configure | Convert to AngularJS Project…
+Project Properties | Resource | Link Resources |  ../bower_components
+Project Properties | Tern | Script Paths | Add folder "app" -> JavaScript files and others available in project explorer
+Project Properties | Resource | Resource Filters | Exclude | Exclude all | Name node_modules, Name dist -> fixes most Web Resource Problems
+
+WARNING : o not forget the / in order to be considered as a folder in bower_components/
+
+Project Properties | Validation | Project specific settings | Web Resources Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined JavaScript file" in bower_components/
+Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
+
+See https://github.com/oasp/oasp4js/issues/24 for more details

@@ -902,15 +902,15 @@ module.exports = function(grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        //'copy:styles'
+        'copy:styles',
         'compass:server'
       ],
       test: [
-        //'copy:styles'
+        'copy:styles',
         'compass'
       ],
       dist: [
-        //'copy:styles',
+        'copy:styles',
         'compass:dist',
         'imagemin',
         'svgmin'
@@ -1008,7 +1008,7 @@ module.exports = function(grunt) {
         //format: 'junit',
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
-        threshold: '\'{"overall": "B", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "B", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
+        threshold: '\'{"overall": "C", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "C", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
         urls: [SERVER_URL + SERVER_CONTEXT,
                SERVER_URL + SERVER_CONTEXT + '#/about'],
         //headers: '\'{"Cookie": "'JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
@@ -1131,7 +1131,12 @@ module.exports = function(grunt) {
     pagespeed: {
       options: {
         nokey: true,
-        //url: 'http://home.nabla.mobi/'
+        //url: 'http://home.nabla.mobi/alban/'
+        //url: 'alban-andrieu.com'
+        //url: 'alban-andrieu.eu'
+		//url: 'alban-andrieu.fr'
+		//url: 'bababou.fr'
+		//url: 'bababou.eu'
         url: 'http://home.nabla.mobi:9090/'
       },
       //prod: {
@@ -1144,7 +1149,7 @@ module.exports = function(grunt) {
       //},
       paths: {
         options: {
-          paths: ['/#/about', '/#/'],
+          paths: ['#/about', '#/'],
           locale: 'en_GB',
           strategy: 'desktop',
           threshold: 80
@@ -1186,7 +1191,7 @@ module.exports = function(grunt) {
           key: process.env.WPT_API_KEY,
           budget: {
             render: '2000',
-            SpeedIndex: '3000'
+            SpeedIndex: '6000'
           }
         }
       }
@@ -1396,8 +1401,7 @@ module.exports = function(grunt) {
     'newer:jshint',
     'newer:jscs',
     'checkDependencies',
-    'versioncheck',
-    'validate-package'
+    'versioncheck'
     ]);
 
     if (target === 'release') {
