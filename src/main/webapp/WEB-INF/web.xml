@@ -16,10 +16,10 @@
       <filter-name>GzipFilter</filter-name>
       <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
       
-      <async-supported>true</async-supported>      
+      <!--<async-supported>true</async-supported>-->
       <init-param>
         <param-name>mimeTypes</param-name>
-        <param-value>text/html,text/plain,text/xml,application/xhtml+xml,text/css,application/javascript,application/json,image/svg+xml</param-value>
+        <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
       </init-param>
       <!--
       <init-param>
