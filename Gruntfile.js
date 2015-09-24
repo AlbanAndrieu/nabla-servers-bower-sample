@@ -1147,7 +1147,7 @@ module.exports = function(grunt) {
       //},
       paths: {
         options: {
-          paths: ['/#/about', '/#/'],
+          paths: ['#/about', '#/'],
           locale: 'en_GB',
           strategy: 'desktop',
           threshold: 80
