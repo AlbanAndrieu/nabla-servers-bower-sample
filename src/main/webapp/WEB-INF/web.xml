@@ -12,22 +12,21 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
-  <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/
+  <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/ -->
   <filter>
       <filter-name>GzipFilter</filter-name>
       <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
-      
+
       <async-supported>true</async-supported>
       <init-param>
         <param-name>mimeTypes</param-name>
         <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
-      </init-param>      
+      </init-param>
   </filter>
   <filter-mapping>
       <filter-name>GzipFilter</filter-name>
       <url-pattern>/*</url-pattern>
   </filter-mapping>
--->
 
   <servlet>
        <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
@@ -72,7 +71,7 @@
       <!-- <servlet-class>com.test.project.sample.LoginProxyServlet$Transparent</servlet-class>-->
       <servlet-class>org.eclipse.jetty.proxy.ProxyServlet$Transparent</servlet-class>
       <!-- <async-supported>true</async-supported> -->
-      
+
 	  <init-param>
 	    <param-name>proxyTo</param-name>
 	    <param-value>http://home.nabla.mobi:8080/apidocs</param-value>
