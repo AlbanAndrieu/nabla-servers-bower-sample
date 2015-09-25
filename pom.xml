@@ -606,9 +606,11 @@
                 <!--<sonar.language>js</sonar.language>-->
                 <!--<sonar.exclusions>${basedir}/src/main/webapp/lib/**</sonar.exclusions>-->
                 <sonar.sources>src/main,app</sonar.sources>
-                <sonar.tests>test</sonar.tests>
-                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+				<sonar.tests>src/test,test</sonar.tests>
+				<!--
+                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>--
                 <sonar.javascript.lcov.reportPath>${basedir}/target/lcov.info</sonar.javascript.lcov.reportPath>
+                -->
 	        </properties>
 	     </profile>
          <!-- Jenkins by default defines a property BUILD_NUMBER which is used to enable the profile. -->
