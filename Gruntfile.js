@@ -1152,7 +1152,7 @@ module.exports = function(grunt) {
           paths: ['#/about', '#/'],
           locale: 'en_GB',
           strategy: 'desktop',
-          threshold: 80
+          threshold: 60
         }
       }
     },
