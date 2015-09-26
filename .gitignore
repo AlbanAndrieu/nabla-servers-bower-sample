@@ -24,3 +24,4 @@ dist
 .node_cache/
 .node_tmp/
 dependency-reduced-pom.xml
+coverage/
