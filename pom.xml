@@ -557,20 +557,19 @@
                         </goals>
                         <configuration>
                             <target>
-								<echo message="Copying LCOV file lcof.info for Sonar purpose to target directory" />
+								<echo message="Copying LCOV file lcov.info for Sonar purpose to target directory" />
                                 <copy todir="${basedir}/target" flatten="true">
                                     <fileset dir="${basedir}/target">
-                                        <include name="karma-coverage/PhantomJS*/lcov.info" />
+                                        <include name="karma-coverage/lcov-karma.info" />
                                     </fileset>
                                 </copy>
 
-								<!--
                                 <path id="sourceDirectory.path">
-                                  <pathelement location="${basedir}/app/scripts"/>
+                                  <pathelement location="${basedir}/app/scripts" />
                                 </path>
 
                                 <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
-                                  <map from="${basedir}/" to=""/>
+                                  <map from="${basedir}/" to="" />
                                 </pathconvert>
 
 								<echo message="Base dir: ${basedir} " />
@@ -581,10 +580,9 @@
                                     <regexp pattern="SF:\./todo/(.*)" />
                                     <substitution expression="SF:${relativeSourceDirectory}/\1" />
                                     <fileset dir="target">
-                                        <include name="lcov.info" />
+                                        <include name="lcov-karma.info" />
                                     </fileset>
                                 </replaceregexp>
-                                -->
 
                             </target>
                         </configuration>
@@ -608,8 +606,8 @@
                 <sonar.sources>src/main,app</sonar.sources>
 				<sonar.tests>src/test,test</sonar.tests>
 				<!--
-                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>--
-                <sonar.javascript.lcov.reportPath>${basedir}/target/lcov.info</sonar.javascript.lcov.reportPath>
+                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+                <sonar.javascript.lcov.reportPath>${basedir}/target/lcov*.info</sonar.javascript.lcov.reportPath>
                 -->
 	        </properties>
 	     </profile>

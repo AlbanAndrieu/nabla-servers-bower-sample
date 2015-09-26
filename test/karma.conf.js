@@ -58,8 +58,22 @@ module.exports = function(config) {
     },
 
     coverageReporter: {
-      type: 'lcov',
-      dir: './target/karma-coverage'
+      //type: 'lcov',
+      dir: './target/karma-coverage',
+      //file: 'lcov-karma.info'
+      reporters: [
+        // reporters not supporting the `file` property
+        { type: 'html', subdir: 'report-html' },
+        { type: 'lcov', subdir: 'report-lcov'},
+        // reporters supporting the `file` property, use `subdir` to directly
+        // output them in the `dir` directory
+        { type: 'cobertura', subdir: '.', file: 'cobertura.txt' },
+        { type: 'lcovonly', subdir: '.', file: 'lcov-karma.info' }
+        //{ type: 'teamcity', subdir: '.', file: 'teamcity.txt' },
+        //{ type: 'text', subdir: '.', file: 'text.txt' },
+        //{ type: 'text-summary', subdir: '.', file: 'text-summary.txt' },
+      ]
+
     },
 
     junitReporter: {

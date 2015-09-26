@@ -207,6 +207,13 @@ What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA
 
 http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel
 
+## Run End2End tests
+
+```
+mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
+grunt --gruntfile Gruntfile-e2e.js
+```
+
 ## Eclipse
 
  Uninstall Nodeclipse Core & Node.js

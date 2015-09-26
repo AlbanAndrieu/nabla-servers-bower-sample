@@ -40,6 +40,9 @@ module.exports = function(grunt) {
   var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_CONTEXT = '/';
 
+  // Load grunt tasks automatically
+  //require('load-grunt-tasks')(grunt);
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -59,7 +62,9 @@ module.exports = function(grunt) {
 	'zap_results': 'grunt-zaproxy',
 	'validate-package': 'grunt-nsp-package',
 	resemble: 'grunt-resemble-cli',
-    instrument: 'grunt-protractor-coverage',
+    'protractor_coverage': 'grunt-protractor-coverage',
+    instrument: 'grunt-istanbul',
+    makeReport: 'grunt-istanbul',
 	usebanner: 'grunt-banner',
 	replace: 'grunt-text-replace',
     express: 'grunt-express-server',
@@ -142,7 +147,10 @@ module.exports = function(grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    e2e: 'coverage/e2e',
+    //instrumentedServer: 'coverage/server/instrument',
+    instrumentedE2E: 'coverage/e2e/instrumented'
   };
 
   // Define the configuration for all the tasks
@@ -243,7 +251,9 @@ module.exports = function(grunt) {
             },
             connect.static(options.base[0]),
             connect.directory(options.base[0]),
-            proxy
+            proxy,
+            mountFolder(connect, 'instrumented'),
+            mountFolder(connect, '.......')
           ];
         }
       },
@@ -320,6 +330,56 @@ module.exports = function(grunt) {
       }]
     },
 
+    instrument: {
+        //files: ['lib/**/*.js', '<%= config.app %>/scripts/**/*.js'],
+        files: ['<%= config.app %>/scripts/**/*.js'],
+        options: {
+			lazy: true,
+            basePath: '<%= config.instrumentedE2E %>/'
+        }
+    },
+
+    'protractor_coverage': {
+        options: {
+            configFile: 'test/protractor.conf.js', // Default config file
+            keepAlive: true,
+            noColor: false,
+            coverageDir: '<%= config.instrumentedE2E %>',
+            args: {}
+            //args: {
+            //    baseUrl: 'http://localhost:9000'
+            //}
+        },
+        phantom: {
+            options: {
+                args: {
+                    baseUrl: 'http://localhost:' + process.env.JETTY_PORT || 9190 + '/',
+                    // Arguments passed to the command
+                    'browser': 'phantomjs'
+                }
+            }
+        },
+        chrome: {
+            options: {
+                args: {
+                    baseUrl: 'http://localhost:' + process.env.JETTY_PORT || 9190 + '/',
+                    // Arguments passed to the command
+                    'browser': 'chrome'
+                }
+            }
+        }
+    },
+    makeReport: {
+        src:  '<%= config.instrumentedE2E %>/*.json',
+        options: {
+            type: 'lcov',
+            //type: 'html',
+            //dir: 'target/coverage/dir',
+            dir: 'target',
+            print: 'detail'
+        }
+    },
+
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
@@ -381,7 +441,10 @@ module.exports = function(grunt) {
       //bower: ['.bower', 'bower_components'],
       tmp: ['tmp'],
       build: ['build'],
-      docs: ['docs']
+      docs: ['docs'],
+      coverageE2E: {
+        src: ['<%= config.e2e %>/']
+      }
     },
 
     // Add vendor prefixed styles
@@ -857,6 +920,28 @@ module.exports = function(grunt) {
         //  dest: '<%= config.dist %>'
         }]
       },
+      coverageE2E: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= config.app %>',
+          dest: '<%= config.e2e %>/instrumented/app',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            'bower_components/**/*',
+            'images/**/*',
+            'fonts/**/*',
+            'views/**/*',
+            'styles/**/*'
+          ]
+        }, {
+          expand: true,
+          cwd: '.tmp/images',
+          dest: '<%= config.e2e %>/instrumented/app/images',
+          src: ['generated/*']
+        }]
+      },
       styles: {
         expand: true,
         cwd: '<%= config.app %>/styles',
@@ -932,26 +1017,6 @@ module.exports = function(grunt) {
         //browsers: ['PhantomJS', 'Chrome', 'Firefox'],
         singleRun: true
       }
-//      sampleComponent: {
-//        configFile: 'karma-sample-component.conf.js'
-//      }
-//      nablaAuth: {
-//        configFile: 'karma-nabla-auth.conf.js'
-//      },
-//      nablaNotifications: {
-//        configFile: 'karma-nabla-notifications.conf.js',
-//        //browsers: ['PhantomJS', 'Chrome'],
-//        //singleRun: false,
-//        //logLevel: 'DEBUG',
-//        autoWatch: true
-//      },
-//      nablaHeader: {
-//        configFile: 'karma-nabla-header.conf.js',
-//        //browsers: ['PhantomJS', 'Chrome'],
-//        //singleRun: false,
-//        //logLevel: 'DEBUG',
-//        autoWatch: true
-//      }
     },
 
     replace: {
@@ -1368,7 +1433,13 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('integration-test', [
-    'zap'
+    'clean:coverageE2E',
+    'copy:coverageE2E',
+    'instrument',
+    //'express:coverageE2E',
+    'zap',
+    'protractor_coverage:chrome',
+    'makeReport'
   ]);
 
   grunt.registerTask('test', [
