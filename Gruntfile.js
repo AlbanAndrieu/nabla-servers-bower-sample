@@ -6,6 +6,9 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var mountFolder = function(connect, dir) {
+  return connect.static(require('path').resolve(dir));
+};
 
 module.exports = function(grunt) {
   var localConfig;
