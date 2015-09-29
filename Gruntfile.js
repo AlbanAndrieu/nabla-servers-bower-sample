@@ -1230,7 +1230,7 @@ module.exports = function(grunt) {
         urls: ['http://home.nabla.mobi:9090/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
-        threshold: 10,
+        threshold: 70,
         ruleThreshold: 2
       }
     },
