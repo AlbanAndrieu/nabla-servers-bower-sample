@@ -1135,7 +1135,7 @@ module.exports = function(grunt) {
             jsErrors: 0,     // receive warning, when more than 0 JS errors appear
             gzipRequests: {      // receive warning, when less compressed assets are loaded then 10 ( might be useful for checking server configurations )
               type: '<',
-              value: 10
+              value: 5
             }
           },
           indexPath: './build/phantomas/',
@@ -1267,7 +1267,7 @@ module.exports = function(grunt) {
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 70,
-        ruleThreshold: 2
+        ruleThreshold: 10
       }
     },
 
