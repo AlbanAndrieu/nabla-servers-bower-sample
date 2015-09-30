@@ -32,8 +32,8 @@ exports.config = {
 	//},
     proxy: {
        proxyType: 'manual',
-       //httpProxy: 'localhost:' + process.env.ZAP_PORT,
-       httpProxy: 'localhost:' + process.env.ZAP_PORT || 8090,
+       httpProxy: 'localhost:8090',
+       //httpProxy: 'localhost:' + process.env.ZAP_PORT || 8090,
        sslProxy: '',
        noProxy: ''
     }

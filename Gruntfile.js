@@ -734,7 +734,9 @@ module.exports = function(grunt) {
             //base: '<%= config.dist %>/',
             base: './',
             css: [
-                '.tmp/styles/main.css'
+                '.tmp/styles/main.css',
+                '.tmp/styles/blog.css',
+                '.tmp/styles/carousel.css'
                 //'test/fixture/styles/bootstrap.css'
             ],
             width: 320,
@@ -1472,7 +1474,7 @@ module.exports = function(grunt) {
     'pagespeed_junit',
     'sitespeedio',
     'phantomas',
-    //'wpt',
+    'wpt',
     'perfbudget',
     'resemble',
     //'zap_stop'
