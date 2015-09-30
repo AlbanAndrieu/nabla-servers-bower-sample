@@ -42,7 +42,7 @@
                 <validation.api.version>1.1.0.Final</validation.api.version>
 
                 <appsensor.core.version>2.1.0</appsensor.core.version>
-        
+
                 <!--<jetty9.version>9.2.3.v20140905</jetty9.version>-->
                 <jetty9.version>9.3.3.v20150827</jetty9.version>
 
@@ -98,7 +98,7 @@
                         <artifactId>jersey-client</artifactId>
             <!--<scope>test</scope>-->
                 </dependency>
-	
+
 	        <dependency>
 	            <groupId>org.codehaus.groovy</groupId>
 	            <artifactId>groovy-all</artifactId>
@@ -115,7 +115,7 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </dependency>
-        
+
                 <dependency>
                     <groupId>javax.servlet</groupId>
                     <artifactId>javax.servlet-api</artifactId>
@@ -353,6 +353,62 @@
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+					<goal>single</goal>
+					</goals>
+					<configuration>
+					<descriptorRefs>
+						<descriptorRef>config</descriptorRef>
+					</descriptorRefs>
+					<descriptors>
+						<descriptor>src/main/assembly/web-bundle.xml</descriptor>
+					</descriptors>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+					</configuration>
+				</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<supportedProjectTypes>
+						<supportedProjectType>war</supportedProjectType>
+					</supportedProjectTypes>
+					<instructions>
+						<Import-Package>javax.servlet.jsp.*;version="[2.2.0,3.0)",org.eclipse.jetty.*;version="[$(version;===;${parsedVersion.osgiVersion}),$(version;==+;${parsedVersion.osgiVersion}))",*</Import-Package>
+						<Export-Package>!com.test*</Export-Package>
+						<!-- the test webapp is configured via a jetty xml file
+						in order to add the security handler. -->
+						<Web-ContextPath>/</Web-ContextPath>
+						<!-- in fact the '.' must not be there
+						but Felix-BND has a bug:
+						http://www.mail-archive.com/users@felix.apache.org/msg04730.html
+						https://issues.apache.org/jira/browse/FELIX-1571
+						-->
+						<Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- also make this webapp an osgi bundle -->
             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -368,88 +424,117 @@
                                         <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                         <pomPropertiesFile>false</pomPropertiesFile>
-                                                <manifest>
-                                                        <addClasspath>true</addClasspath>
-                                                </manifest>
-                                        </archive>
+                        <!--
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						-->
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
                 </configuration>
             </plugin>
-                        <!-- for automatic running of integration tests with Jetty -->
-                        <!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
-                        <plugin>
-                                <groupId>org.codehaus.cargo</groupId>
-                                <artifactId>cargo-maven2-plugin</artifactId>
-                                <version>${maven.cargo.maven2.plugin.version}</version>
-                                <configuration>
-                                        <wait>${cargo.wait}</wait>
-                                        <container>
-                                                <timeout>180000</timeout> <!-- 5 minutes -->
-                                                <!--<containerId>${cargo.container}</containerId> -->
-                                                <!--<type>${cargo.container.type}</type> -->
-                                        </container>
-                                        <configuration>
-                                                <!--<type>${cargo.configuration.type}</type> -->
-                                                <!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
-                                                <properties>
-                                                        <!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
-                                                        <cargo.hostname>${cargo.host}</cargo.hostname>
-                                                        <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
-                                                        <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
-                                                        <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
-                                                        <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
-                                                        <cargo.logging>high</cargo.logging>
-                                                        <cargo.jvmargs><![CDATA[${cargo.jmx.activation}]]></cargo.jvmargs>
-                                                        <!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
-                                                        <cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
-                                                </properties>
-                                                <configfiles>
-                                                        <configfile>
-                                                                <file>${project.basedir}/src/main/etc/jetty-rewrite.xml</file>
-                                                                <todir>etc</todir>
-                                                        </configfile>
-                                                        <configfile>
-                                                                <file>${project.basedir}/src/main/etc/rewrite.ini</file>
-                                                                <todir>start.d</todir>
-                                                        </configfile>
-                                                </configfiles>
-                                        </configuration>
-                                        <deployables>
-                                                <deployable>
-                                                        <groupId>${project.groupId}</groupId>
-                                                        <artifactId>${project.artifactId}</artifactId>
-                                                        <type>war</type>
-                                                        <properties>
-                                                                <context>/</context>
-                                                        </properties>
-                                                        <pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
-                                                        <pingTimeout>60000</pingTimeout>
-                                                </deployable>
-                                        </deployables>
-                                </configuration>
-                                <executions>
-                                        <execution>
-                                                <id>start-container</id>
-                                                <phase>pre-integration-test</phase>
-                                                <goals>
-                                                        <goal>start</goal>
-                                                </goals>
-                                                <configuration>
-                                                        <configuration>
-                                                                <properties>
-                                                                        <cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
-                                                                </properties>
-                                                        </configuration>
-                                                </configuration>
-                                        </execution>
-                                        <execution>
-                                                <id>stop-container</id>
-                                                <phase>post-integration-test</phase>
-                                                <goals>
-                                                        <goal>stop</goal>
-                                                </goals>
-                                        </execution>
-                                </executions>
-                        </plugin>
+			<!-- for automatic running of integration tests with Jetty -->
+			<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>${maven.cargo.maven2.plugin.version}</version>
+				<configuration>
+					<wait>${cargo.wait}</wait>
+					<container>
+						<timeout>180000</timeout> <!-- 5 minutes -->
+						<!--<containerId>${cargo.container}</containerId> -->
+						<!--<type>${cargo.container.type}</type> -->
+					</container>
+					<configuration>
+						<!--<type>${cargo.configuration.type}</type> -->
+						<!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
+						<properties>
+							<!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
+							<cargo.hostname>${cargo.host}</cargo.hostname>
+							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
+							<cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
+							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+							<cargo.logging>high</cargo.logging>
+							<cargo.jvmargs><![CDATA[${cargo.jmx.activation}]]></cargo.jvmargs>
+							<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
+							<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
+						</properties>
+						<configfiles>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-rewrite.xml</file>
+								<todir>etc</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-gzip.xml</file>
+								<todir>etc</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-https.xml</file>
+								<todir>etc</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/webapps/test.xml</file>
+								<todir>webapps</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/start.ini</file>
+								<todir></todir>
+							</configfile>
+							<!--
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/keystore</file>
+								<todir>etc</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/jetty.csr</file>
+								<todir>etc</todir>
+							</configfile>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/etc/rewrite.ini</file>
+								<todir>start.d</todir>
+							</configfile>
+							-->
+						</configfiles>
+					</configuration>
+					<deployables>
+						<deployable>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>${project.artifactId}</artifactId>
+							<type>war</type>
+							<properties>
+								<context>/test</context>
+							</properties>
+							<pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
+							<pingTimeout>60000</pingTimeout>
+						</deployable>
+					</deployables>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-container</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+						<configuration>
+							<configuration>
+								<properties>
+									<cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
+								</properties>
+							</configuration>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-container</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
             <!-- launch mvn clean install jetty:run-war -->
                         <plugin>
                                 <groupId>org.eclipse.jetty</groupId>
@@ -462,133 +547,156 @@
                         <!--host>localhost</host-->
                         <port>${jetty.port}</port>
                     </httpConnector>
-                                        <stopPort>${jetty.stop.port}</stopPort>
-                                        <stopKey>STOP</stopKey>
-                                </configuration>
-                                <!-- TODO
-                                <dependencies>
-                                        <dependency>
-                                                <groupId>org.eclipse.jetty</groupId>
-                                                <artifactId>jetty-http</artifactId>
-                                                <version>${jetty.version}</version>
-                                                <type>jar</type>
-                                                <scope>runtime</scope>
-                                        </dependency>
-                                        <dependency>
-                                                <groupId>org.eclipse.jetty</groupId>
-                                                <artifactId>jetty-rewrite</artifactId>
-                                                <version>${jetty.version}</version>
-                                                <type>jar</type>
-                                                <scope>runtime</scope>
-                                        </dependency>
-                                </dependencies>
-                -->
-                        </plugin>
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-dependency-plugin</artifactId>
-                                <version>${maven.dependency.plugin.version}</version>
-                                <executions>
-                                        <execution>
-                                                <phase>package</phase>
-                                                <goals>
-                                                        <goal>copy</goal>
-                                                </goals>
-                                                <configuration>
-                                                        <artifactItems>
-                                                                <artifactItem>
-                                                                        <groupId>org.mortbay.jetty</groupId>
-                                                                        <artifactId>jetty-runner</artifactId>
-                                                                        <version>${jetty.runner.version}</version>
-                                                                        <destFileName>jetty-runner.jar</destFileName>
-                                                                </artifactItem>
-                                                        </artifactItems>
-                                                </configuration>
-                                        </execution>
-                                </executions>
-                        </plugin>
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-shade-plugin</artifactId>
-                                <configuration>
-                                        <createDependencyReducedPom>true</createDependencyReducedPom>
-                                        <filters>
-                                        <filter>
-                                                <artifact>*:*</artifact>
-                                                <excludes>
-                                                <exclude>META-INF/*.SF</exclude>
-                                                <exclude>META-INF/*.DSA</exclude>
-                                                <exclude>META-INF/*.RSA</exclude>
-                                                </excludes>
-                                        </filter>
-                                        </filters>
-                                </configuration>
+					<stopPort>${jetty.stop.port}</stopPort>
+					<stopKey>STOP</stopKey>
+					<!--
+					<systemProperties>
+						<systemProperty>
+							<name>fooprop</name>
+							<value>222</value>
+						</systemProperty>
+					</systemProperties>
+					-->
+					<webApp>
+						<contextPath>/test</contextPath>
+						<tempDirectory>${project.build.directory}/work</tempDirectory>
+						<!--
+						<sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
+							<sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
+								<storeDirectory>${basedir}/target/sessions</storeDirectory>
+							</sessionManager>
+						</sessionHandler>
+						-->
+					</webApp>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-client</artifactId>
+						<version>${jetty9.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-servlets</artifactId>
+						<version>${jetty9.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-http</artifactId>
+						<version>${jetty9.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-rewrite</artifactId>
+						<version>${jetty9.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven.dependency.plugin.version}</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.mortbay.jetty</groupId>
+									<artifactId>jetty-runner</artifactId>
+									<version>${jetty.runner.version}</version>
+									<destFileName>jetty-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<configuration>
+					<createDependencyReducedPom>true</createDependencyReducedPom>
+					<filters>
+					<filter>
+						<artifact>*:*</artifact>
+						<excludes>
+						<exclude>META-INF/*.SF</exclude>
+						<exclude>META-INF/*.DSA</exclude>
+						<exclude>META-INF/*.RSA</exclude>
+						</excludes>
+					</filter>
+					</filters>
+				</configuration>
 
-                                <executions>
-                                        <execution>
-                                        <phase>package</phase>
-                                        <goals>
-                                                <goal>shade</goal>
-                                        </goals>
-                                        <configuration>
-                                                <transformers>
-                                                <transformer
-                                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                                <transformer
-                                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                                        <manifestEntries>
-                                                        <Main-Class>com.test.project.sample.App</Main-Class>
-                                                        </manifestEntries>
-                                                </transformer>
-                                                </transformers>
-                                        </configuration>
-                                        </execution>
-                                </executions>
-                        </plugin>
-                        <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-antrun-plugin</artifactId>
-                                <executions>
-                                        <execution>
-                                        <id>lcovFileForSonar</id>
-                                        <phase>package</phase>
-                                        <goals>
-                                            <goal>run</goal>
-                                        </goals>
-                                        <configuration>
-                                            <target>
-                                                <echo message="Copying LCOV file lcov-karma.info for Sonar purpose to target directory" />
-                                                <copy todir="${basedir}/target" flatten="true">
-                                                    <fileset dir="${basedir}/target/">
-                                                        <include name="karma-coverage/lcov-karma.info" />
-                                                    </fileset>
-                                                </copy>
-                
-                                                <path id="sourceDirectory.path">
-                                                  <pathelement location="${basedir}/app/scripts" />
-                                                </path>
-                
-                                                <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
-                                                  <map from="${basedir}/" to="" />
-                                                </pathconvert>
-                
-                                                                                <echo message="Base dir: ${basedir} " />
-                                                                                <echo message="Source directory: ${project.build.sourceDirectory}" />
-                                                                                <echo message="Relative source directory: ${relativeSourceDirectory}" />
-                                                                                <echo message="Fixing a problem with a path to the JavaScript path" />
-                                                <replaceregexp byline="true">
-                                                    <regexp pattern="SF:\./todo/(.*)" />
-                                                    <substitution expression="SF:${relativeSourceDirectory}/\1" />
-                                                    <fileset dir="target">
-                                                        <include name="lcov-karma.info" />
-                                                    </fileset>
-                                                </replaceregexp>
-                
-                                            </target>
-                                        </configuration>
-                                    </execution>
-                                </executions>
-                        </plugin>
+				<executions>
+					<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>shade</goal>
+					</goals>
+					<configuration>
+						<transformers>
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+						<transformer
+							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<manifestEntries>
+							<Main-Class>com.test.project.sample.App</Main-Class>
+							</manifestEntries>
+						</transformer>
+						</transformers>
+					</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+                        <id>lcovFileForSonar</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+								<echo message="Copying LCOV file lcov.info for Sonar purpose to target directory" />
+                                <copy todir="${basedir}/target" flatten="true">
+                                    <fileset dir="${basedir}/target">
+                                        <include name="karma-coverage/lcov-karma.info" />
+                                    </fileset>
+                                </copy>
+
+                                <path id="sourceDirectory.path">
+                                  <pathelement location="${basedir}/app/scripts" />
+                                </path>
+
+                                <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
+                                  <map from="${basedir}/" to="" />
+                                </pathconvert>
+
+								<echo message="Base dir: ${basedir} " />
+								<echo message="Source directory: ${project.build.sourceDirectory}" />
+								<echo message="Relative source directory: ${relativeSourceDirectory}" />
+								<echo message="Fixing a problem with a path to the JavaScript path" />
+                                <replaceregexp byline="true">
+                                    <regexp pattern="SF:\./todo/(.*)" />
+                                    <substitution expression="SF:${relativeSourceDirectory}/\1" />
+                                    <fileset dir="target">
+                                        <include name="lcov-karma.info" />
+                                    </fileset>
+                                </replaceregexp>
+
+                            </target>
+                        </configuration>
+                    </execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 

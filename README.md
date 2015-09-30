@@ -96,12 +96,11 @@ In order to be activated it must be reached once : http://localhost:9090/login
 Even though it is strongly advice to run this project behind an apache.
 Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order to install this project behind an apache.
 
-## Run war in jetty or cargo
+## Run war in jetty or using cargo
 
 ```
 mvn jetty:run-war
-mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
--Dserver=jetty9x
+mvn install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
 
 ## ZaProxy

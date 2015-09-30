@@ -6,7 +6,8 @@ exports.config = {
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['e2e/example/*_test.js', 'test/e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
-  baseUrl: 'http://localhost:' + process.env.JETTY_PORT || 9090,
+  //baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9090,
+  baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9014,
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
   //baseUrl: 'http://localhost:8001', //default test port with Yeoman
   //directConnect: true,  //bypass selenium
@@ -21,6 +22,9 @@ exports.config = {
     'browserName': 'chrome',
     //  'browserName': 'firefox',
     //  'browserName': 'phantomjs',
+    'chromeOptions': {
+        'args': ['incognito', 'disable-extensions', 'start-maximized']
+    },
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
 	//	args: [],
@@ -56,6 +60,12 @@ exports.config = {
           filePrefix: 'TEST-default-Protractor',
           savePath: 'target/surefire-reports'
       }));
+
+      //https://github.com/angular/protractor/issues/1978
+      browser.driver.manage().window().maximize();
+      //return browser.get('http://localhost:' + process.env.SERVER_PORT || 9190);
+      return browser.get('http://localhost:9014');
+
   },
   //multiCapabilities: [{
   //  'browserName': 'firefox'

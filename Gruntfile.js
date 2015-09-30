@@ -38,8 +38,10 @@ module.exports = function(grunt) {
   //console.log('ZAP_HOST : ' + ZAP_HOST);
   var SERVER_HOST = process.env.SERVER_HOST || 'localhost';
   //console.log('SERVER_HOST : ' + SERVER_HOST);
-  var SERVER_PORT = process.env.JETTY_PORT || 9090;
+  var SERVER_PROD_PORT = process.env.JETTY_PORT || 9090;
+  var SERVER_PORT = 9014;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
+  var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
   var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_CONTEXT = '/';
 
@@ -313,6 +315,26 @@ module.exports = function(grunt) {
           }
         }
       },
+      coverageE2E: {
+        options: {
+          port: 9014,
+          open: true,
+          //livereload: false,
+          base: '<%= config.instrumentedE2E %>/app',
+          middleware: function(connect) {
+            return [
+              connect.static('.tmp'),
+              connect.static('test'),
+              connect().use(
+                '/bower_components',
+                connect.static('./bower_components')
+              ),
+              connect.static(appConfig.instrumentedE2E + '/app')
+              //connect.static(config.app)
+            ];
+          }
+        }
+      },
       dist: {
         options: {
           //port: 9003,
@@ -347,16 +369,19 @@ module.exports = function(grunt) {
             configFile: 'test/protractor.conf.js', // Default config file
             keepAlive: true,
             noColor: false,
-            coverageDir: '<%= config.instrumentedE2E %>',
-            args: {}
-            //args: {
-            //    baseUrl: 'http://localhost:9000'
-            //}
+            //debug: true,
+            verbose: true,
+            //noInject: true,
+            coverageDir: '<%= config.instrumentedE2E %>/',
+            //args: {}
+            args: {
+                baseUrl: SERVER_URL + SERVER_CONTEXT
+            }
         },
         phantom: {
             options: {
                 args: {
-                    baseUrl: 'http://localhost:' + process.env.JETTY_PORT || 9190 + '/',
+                    //baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9190 + '/',
                     // Arguments passed to the command
                     'browser': 'phantomjs'
                 }
@@ -365,7 +390,7 @@ module.exports = function(grunt) {
         chrome: {
             options: {
                 args: {
-                    baseUrl: 'http://localhost:' + process.env.JETTY_PORT || 9190 + '/',
+                    //baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9190 + '/',
                     // Arguments passed to the command
                     'browser': 'chrome'
                 }
@@ -928,11 +953,14 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: '<%= config.app %>',
-          dest: '<%= config.e2e %>/instrumented/app',
+          dest: '<%= config.instrumentedE2E %>/app',
           src: [
             '*.{ico,png,txt}',
+            'images/{,*/}*.{webp}',
+            '{,*/}*.html',
+            //'styles/fonts/{,*/}*.*'
             '.htaccess',
-            'bower_components/**/*',
+            //'../bower_components/**/*',
             'images/**/*',
             'fonts/**/*',
             'views/**/*',
@@ -940,8 +968,18 @@ module.exports = function(grunt) {
           ]
         }, {
           expand: true,
+          cwd: '.',
+          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          dest: '<%= config.instrumentedE2E %>/app'
+        }, {
+          expand: true,
+          cwd: '.',
+          src: 'bower_components/font-awesome/fonts/*',
+          dest: '<%= config.instrumentedE2E %>/app'
+        }, {
+          expand: true,
           cwd: '.tmp/images',
-          dest: '<%= config.e2e %>/instrumented/app/images',
+          dest: '<%= config.instrumentedE2E %>/app/images',
           src: ['generated/*']
         }]
       },
@@ -1076,9 +1114,9 @@ module.exports = function(grunt) {
         //format: 'junit',
         //ruleset: 'yblog',
         cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
-        threshold: '\'{"overall": "C", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "F", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
-        urls: [SERVER_URL + SERVER_CONTEXT,
-               SERVER_URL + SERVER_CONTEXT + '#/about'],
+        threshold: '\'{"overall": "C", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "C", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
+        urls: [SERVER_PROD_URL + SERVER_CONTEXT,
+               SERVER_PROD_URL + SERVER_CONTEXT + '#/about'],
         //headers: '\'{"Cookie": "'JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
         //reports: ['target/surefire-reports/yslow-main.xml',
         //          'target/surefire-reports/yslow-about.xml']
@@ -1109,7 +1147,7 @@ module.exports = function(grunt) {
             verbose: true,
             debug: true
           },
-          url: SERVER_URL + SERVER_CONTEXT,
+          url: SERVER_PROD_URL + SERVER_CONTEXT,
           buildUi: true
         }
       }
@@ -1119,7 +1157,7 @@ module.exports = function(grunt) {
       options: {},
         desktop: {
             options: {
-                baseUrl: SERVER_URL + SERVER_CONTEXT,
+                baseUrl: SERVER_PROD_URL + SERVER_CONTEXT,
                 cleanupComparisonImages: false,
                 //viewportSize: [1024, 768], //desktop
                 viewportSize: [320, 400], //mobile
@@ -1137,7 +1175,7 @@ module.exports = function(grunt) {
         screenshotRoot: 'screenshots/',
         tolerance: 10,
         //url: 'http://0.0.0.0:8000/dist',
-        url: SERVER_URL + SERVER_CONTEXT,
+        url: SERVER_PROD_URL + SERVER_CONTEXT,
         //debug: true,
         gm: false
 
@@ -1360,6 +1398,14 @@ module.exports = function(grunt) {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     }
 
+    if (target === 'test') {
+      return grunt.task.run(['build', 'connect:test:keepalive']);
+    }
+
+    if (target === 'coverageE2E') {
+      return grunt.task.run(['build', 'connect:coverageE2E:keepalive']);
+    }
+
     grunt.task.run([
       'clean:server',
       //'wiredep:server', if we do not use uncss below
@@ -1414,7 +1460,10 @@ module.exports = function(grunt) {
    **/
   grunt.registerTask('zap', [
     //'zap_start',
-    'acceptance-test',
+    'connect:coverageE2E',
+    //'acceptance-test',
+    'protractor_coverage:chrome',
+    'makeReport',
     'zap_spider',
     'zap_scan',
     'zap_alert',
@@ -1438,13 +1487,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('integration-test', [
-    'clean:coverageE2E',
-    'copy:coverageE2E',
-    'instrument',
-    //'express:coverageE2E',
-    'zap',
-    'protractor_coverage:chrome',
-    'makeReport'
+    'zap'
   ]);
 
   grunt.registerTask('test', [
@@ -1496,6 +1539,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'clean:coverageE2E',
     //'wiredep:app', //remove boostrap after the test
     'wiredep',
     //'ngconstant:prod',
@@ -1516,7 +1560,9 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
-    'usebanner'
+    'usebanner',
+    'copy:coverageE2E',
+    'instrument'
   ]);
 
   grunt.registerTask('docs', [
