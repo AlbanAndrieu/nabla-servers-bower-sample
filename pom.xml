@@ -1,379 +1,378 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-        <parent>
-                <groupId>com.nabla.project.servers.sample</groupId>
-                <artifactId>sample</artifactId>
-                <version>1.0.1-SNAPSHOT</version>
-        </parent>
+	<parent>
+		<groupId>com.nabla.project.servers.sample</groupId>
+		<artifactId>sample</artifactId>
+		<version>1.0.1-SNAPSHOT</version>
+	</parent>
 
-        <modelVersion>4.0.0</modelVersion>
-        <artifactId>bower-sample</artifactId>
-        <packaging>war</packaging>
-        <name>Nabla Bower Sample</name>
-        <description>Bower sample components</description>
-        <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>bower-sample</artifactId>
+	<packaging>war</packaging>
+	<name>Nabla Bower Sample</name>
+	<description>Bower sample components</description>
+	<url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
 
-        <scm>
-                <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
-                <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
-                <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
-        </scm>
+	<scm>
+		<connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
+		<developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
+		<url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+	</scm>
 
-        <ciManagement>
-                <system>Jenkins</system>
-                <url>${JOB_URL}</url>
-        </ciManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>${JOB_URL}</url>
+	</ciManagement>
 
-        <issueManagement>
-                <url>https://github.com/AlbanAndrieu/nabla-servers-bower/issues</url>
-                <system>GitHub Issues</system>
-        </issueManagement>
+	<issueManagement>
+		<url>https://github.com/AlbanAndrieu/nabla-servers-bower/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
 
-        <properties>
-                <!--<node.version>0.12.7</node.version>-->
-                <node.version>0.10.32</node.version>
-                <npm.version>2.13.0</npm.version>
-                <!--<npm.version>2.11.3</npm.version>-->
-                <jersey.version>2.21</jersey.version>
-                <jersey.bom.version>2.21</jersey.bom.version>
-                <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
-                <validation.api.version>1.1.0.Final</validation.api.version>
+	<properties>
+		<!--<node.version>0.12.7</node.version> -->
+		<node.version>0.10.32</node.version>
+		<npm.version>2.13.0</npm.version>
+		<!--<npm.version>2.11.3</npm.version> -->
+		<jersey.version>2.21</jersey.version>
+		<jersey.bom.version>2.21</jersey.bom.version>
+		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+		<validation.api.version>1.1.0.Final</validation.api.version>
 
-                <appsensor.core.version>2.1.0</appsensor.core.version>
+		<appsensor.core.version>2.1.0</appsensor.core.version>
 
-                <!--<jetty9.version>9.2.3.v20140905</jetty9.version>-->
-                <jetty9.version>9.3.3.v20150827</jetty9.version>
+		<!--<jetty9.version>9.2.3.v20140905</jetty9.version> -->
+		<jetty9.version>9.3.3.v20150827</jetty9.version>
 
-                <cargo.protocol>http</cargo.protocol>
-        </properties>
+		<cargo.protocol>http</cargo.protocol>
+	</properties>
 
-    <dependencyManagement>
-                <dependencies>
-                        <dependency>
-                                <groupId>org.glassfish.jersey</groupId>
-                                <artifactId>jersey-bom</artifactId>
-                                <version>${jersey.bom.version}</version>
-                                <type>pom</type>
-                                <scope>import</scope>
-                        </dependency>
-                </dependencies>
-    </dependencyManagement>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${jersey.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-        <dependencies>
-                <!--
-                <dependency>
-                        <groupId>com.sun.faces</groupId>
-                        <artifactId>jsf-api</artifactId>
-                        <scope>${scope.tomcat.never.type}</scope>
-                </dependency>
-                <dependency>
-                        <groupId>com.sun.faces</groupId>
-                        <artifactId>jsf-impl</artifactId>
-                        <scope>${scope.tomcat.never.type}</scope>
-                </dependency>
-                -->
-                <dependency>
-                        <groupId>org.glassfish.jersey.core</groupId>
-                        <artifactId>jersey-server</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>org.glassfish.jersey.containers</groupId>
-                        <artifactId>jersey-container-servlet-core</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>org.glassfish.jersey.containers</groupId>
-                        <artifactId>jersey-container-jetty-http</artifactId>
-                </dependency>
-                <dependency>
-                        <groupId>org.glassfish.jersey.media</groupId>
-                        <artifactId>jersey-media-moxy</artifactId>
-                </dependency>
+	<dependencies>
+        <!--
+        <dependency>
+                <groupId>com.sun.faces</groupId>
+                <artifactId>jsf-api</artifactId>
+                <scope>${scope.tomcat.never.type}</scope>
+        </dependency>
+        <dependency>
+                <groupId>com.sun.faces</groupId>
+                <artifactId>jsf-impl</artifactId>
+                <scope>${scope.tomcat.never.type}</scope>
+        </dependency>
+        -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-jetty-http</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+		</dependency>
 
-                <!--  Jersey Client required for test *and runtime* due to Jersey bug : https://java.net/jira/browse/JERSEY-2104 -->
-                <!--  This dependency can be scoped to test when Jersey is upgraded to >=2.4 -->
-                <dependency>
-                        <groupId>org.glassfish.jersey.core</groupId>
-                        <artifactId>jersey-client</artifactId>
-            <!--<scope>test</scope>-->
-                </dependency>
+		<!-- Jersey Client required for test *and runtime* due to Jersey bug : 
+			https://java.net/jira/browse/JERSEY-2104 -->
+		<!-- This dependency can be scoped to test when Jersey is upgraded to >=2.4 -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<!--<scope>test</scope> -->
+		</dependency>
 
-	        <dependency>
-	            <groupId>org.codehaus.groovy</groupId>
-	            <artifactId>groovy-all</artifactId>
-	            <!--<scope>test</scope>-->
-	        </dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<!--<scope>test</scope> -->
+		</dependency>
 
-                <dependency>
-                        <groupId>org.codehaus.groovy.modules.http-builder</groupId>
-                        <artifactId>http-builder</artifactId>
-                        <scope>test</scope>
-                </dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
+			<artifactId>http-builder</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
 
-                <dependency>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>javax.servlet-api</artifactId>
-                </dependency>
-                        <!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
-                        <!-- https://github.com/mdeimel/jetty-proxy -->
-                <dependency>
-                    <groupId>org.eclipse.jetty</groupId>
-                    <artifactId>jetty-proxy</artifactId>
-                    <version>${jetty.version}</version>
-                    <scope>compile</scope>
-                </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
+		<!-- https://github.com/mdeimel/jetty-proxy -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-proxy</artifactId>
+			<version>${jetty.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-http</artifactId>
-                        <version>${jetty.version}</version>
-                        <type>jar</type>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-rewrite</artifactId>
-                        <version>${jetty.version}</version>
-                        <type>jar</type>
-                        <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-server</artifactId>
-                        <version>${jetty.version}</version>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-servlet</artifactId>
-                        <version>${jetty.version}</version>
-                </dependency>
-                <dependency>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-servlets</artifactId>
-                        <version>${jetty.version}</version>
-                        <type>jar</type>
-                        <scope>runtime</scope>
-                </dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-http</artifactId>
+			<version>${jetty.version}</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-rewrite</artifactId>
+			<version>${jetty.version}</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<version>${jetty.version}</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
 
-                <dependency>
-                        <groupId>com.google.code.findbugs</groupId>
-                        <artifactId>jsr305</artifactId>
-                        <optional>true</optional><!-- needed only for annotations -->
-                </dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<optional>true</optional><!-- needed only for annotations -->
+		</dependency>
 
-                <!-- test dependencies -->
-                <dependency>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                        <scope>test</scope>
-                </dependency>
-                <!-- jmockit musr be after junit in the classpath -->
-                <dependency>
-                     <groupId>org.jmockit</groupId>
-                     <artifactId>jmockit</artifactId>
-                     <scope>test</scope>
-                </dependency>
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- jmockit musr be after junit in the classpath -->
+		<dependency>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-                <!-- this is just one of the appsensor dependencies you'll need - see step below called pluggable components -->
-                <dependency>
-                        <groupId>org.owasp.appsensor</groupId>
-                        <artifactId>appsensor-core</artifactId>
-                        <version>${appsensor.core.version}</version>
-                </dependency>
-   </dependencies>
+		<!-- this is just one of the appsensor dependencies you'll need - see step 
+			below called pluggable components -->
+		<dependency>
+			<groupId>org.owasp.appsensor</groupId>
+			<artifactId>appsensor-core</artifactId>
+			<version>${appsensor.core.version}</version>
+		</dependency>
+	</dependencies>
 
-   <build>
-                <!--
-                <sourceDirectory>app</sourceDirectory>
-                <testSourceDirectory>test</testSourceDirectory>
-                -->
-                <finalName>test</finalName>
+	<build>
+        <!--
+        <sourceDirectory>app</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+        -->
+		<finalName>test</finalName>
 
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>${lifecycle.mapping.version}</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.github.eirslett</groupId>
+										<artifactId>frontend-maven-plugin</artifactId>
+										<versionRange>[${maven.frontend.plugin.version},)</versionRange>
+										<goals>
+											<goal>install-node-and-npm</goal>
+											<goal>npm</goal>
+											<goal>grunt</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.owasp</groupId>
+										<artifactId>dependency-check-maven</artifactId>
+										<versionRange>[${maven.dependency.check.plugin.version},)</versionRange>
+										<goals>
+											<goal>check</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 
-        <pluginManagement>
-                <plugins>
-                        <!--This plugin's configuration is used to store Eclipse m2e settings
-                                only. It has no influence on the Maven build itself. -->
-                        <plugin>
-                                <groupId>org.eclipse.m2e</groupId>
-                                <artifactId>lifecycle-mapping</artifactId>
-                                <version>${lifecycle.mapping.version}</version>
-                                <configuration>
-                                        <lifecycleMappingMetadata>
-                                                <pluginExecutions>
-                                                        <pluginExecution>
-                                                                <pluginExecutionFilter>
-                                                                        <groupId>com.github.eirslett</groupId>
-                                                                        <artifactId>frontend-maven-plugin</artifactId>
-                                                                        <versionRange>[${maven.frontend.plugin.version},)</versionRange>
-                                                                        <goals>
-                                                                                <goal>install-node-and-npm</goal>
-                                                                                <goal>npm</goal>
-                                                                                <goal>grunt</goal>
-                                                                        </goals>
-                                                                </pluginExecutionFilter>
-                                                                <action>
-                                                                        <ignore></ignore>
-                                                                </action>
-                                                        </pluginExecution>
-                                                        <pluginExecution>
-                                                                <pluginExecutionFilter>
-                                                                        <groupId>org.owasp</groupId>
-                                                                        <artifactId>dependency-check-maven</artifactId>
-                                                                        <versionRange>[${maven.dependency.check.plugin.version},)</versionRange>
-                                                                        <goals>
-                                                                                <goal>check</goal>
-                                                                        </goals>
-                                                                </pluginExecutionFilter>
-                                                                <action>
-                                                                        <ignore />
-                                                                </action>
-                                                </pluginExecution>
-                                        </pluginExecutions>
-                                        </lifecycleMappingMetadata>
-                                </configuration>
-                        </plugin>
-                </plugins>
-        </pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven.clean.plugin.version}</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.basedir}</directory>
+							<includes>
+								<include>.bower/</include>
+								<include>.node_cache/</include>
+								<include>.node_tmp/</include>
+								<include>.tmp/</include>
+								<include>node_modules/</include>
+								<include>node/</include>
+								<include>bower_components/</include>
+								<include>lib/</include>
+								<!--<include>build/</include> -->
+								<include>docs/</include>
+								<include>dist/</include>
+							</includes>
+							<excludes>
+								<!-- Allow mvn clean install > install.log -->
+								<exclude>**/build.log</exclude>
+								<exclude>**/install.log</exclude>
+							</excludes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>${maven.frontend.plugin.version}</version>
 
-        <plugins>
-            <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven.clean.plugin.version}</version>
-                    <configuration>
-                            <filesets>
-                                    <fileset>
-                                            <directory>${project.basedir}</directory>
-                                            <includes>
-                                                    <include>.bower/</include>
-                                                    <include>.node_cache/</include>
-                                                    <include>.node_tmp/</include>
-                                                    <include>.tmp/</include>
-                                                    <include>node_modules/</include>
-                                                    <include>node/</include>
-                                                    <include>bower_components/</include>
-                                                    <include>lib/</include>
-                                                    <!--<include>build/</include>-->
-                                                    <include>docs/</include>
-                                                    <include>dist/</include>
-                                            </includes>
-                                            <excludes>
-                                                    <!-- Allow mvn clean install > install.log -->
-                                                    <exclude>**/build.log</exclude>
-                                                    <exclude>**/install.log</exclude>
-                                            </excludes>
-                                            <followSymlinks>false</followSymlinks>
-                                    </fileset>
-                            </filesets>
-                    </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${maven.frontend.plugin.version}</version>
+				<configuration>
+					<nodeVersion>v${node.version}</nodeVersion>
+					<npmVersion>${npm.version}</npmVersion>
+					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot> 
+						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
+				</configuration>
 
-                <configuration>
-                    <nodeVersion>v${node.version}</nodeVersion>
-                    <npmVersion>${npm.version}</npmVersion>
-                    <!--
-                    <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
-                                        <npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
-                                        -->
-                </configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
 
-                <executions>
-                                        <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                                                <phase>validate</phase>
-                    </execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<phase>initialize</phase>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
 
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                                                <phase>initialize</phase>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
+					<execution>
+						<id>grunt bower</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<arguments>prepare</arguments>
+						</configuration>
+					</execution>
 
-                    <execution>
-                        <id>grunt bower</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                                                <phase>generate-sources</phase>
-                        <configuration>
-                            <arguments>prepare</arguments>
-                        </configuration>
-                    </execution>
+					<execution>
+						<id>grunt check</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>compile</phase>
+						<configuration>
+							<arguments>check</arguments>
+						</configuration>
+					</execution>
 
-                    <execution>
-                        <id>grunt check</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                                                <phase>compile</phase>
-                        <configuration>
-                            <arguments>check</arguments>
-                        </configuration>
-                    </execution>
+					<execution>
+						<id>grunt unit-test</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>test</phase>
+						<configuration>
+							<arguments>unit-test</arguments>
+						</configuration>
+					</execution>
 
-                    <execution>
-                        <id>grunt unit-test</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                                                <phase>test</phase>
-                        <configuration>
-                            <arguments>unit-test</arguments>
-                        </configuration>
-                    </execution>
-
-                    <execution>
-                        <id>grunt prepare-package</id>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                                                <phase>prepare-package</phase>
-                        <configuration>
-                            <arguments>package</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+					<execution>
+						<id>grunt prepare-package</id>
+						<goals>
+							<goal>grunt</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<arguments>package</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
-				<execution>
-					<phase>package</phase>
-					<goals>
-					<goal>single</goal>
-					</goals>
-					<configuration>
-					<descriptorRefs>
-						<descriptorRef>config</descriptorRef>
-					</descriptorRefs>
-					<descriptors>
-						<descriptor>src/main/assembly/web-bundle.xml</descriptor>
-					</descriptors>
-					<archive>
-						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-					</archive>
-					</configuration>
-				</execution>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>config</descriptorRef>
+							</descriptorRefs>
+							<descriptors>
+								<descriptor>src/main/assembly/web-bundle.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+							</archive>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -409,30 +408,25 @@
 				</executions>
 			</plugin>
 			<!-- also make this webapp an osgi bundle -->
-            <plugin>
-                                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                                        <webResources>
-                                                <resource>
-                                                        <directory>dist</directory>
-                                                </resource>
-                                        </webResources>
-                    <webApp>
-                        <contextPath>/test</contextPath>
-                    </webApp>
-                                        <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                        <pomPropertiesFile>false</pomPropertiesFile>
-                        <!--
-						<manifest>
-							<addClasspath>true</addClasspath>
-						</manifest>
-						-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>dist</directory>
+						</resource>
+					</webResources>
+					<webApp>
+						<contextPath>/test</contextPath>
+					</webApp>
+					<archive>
+						<addMavenDescriptor>false</addMavenDescriptor>
+						<pomPropertiesFile>false</pomPropertiesFile>
 						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
-                </configuration>
-            </plugin>
+				</configuration>
+			</plugin>
 			<!-- for automatic running of integration tests with Jetty -->
 			<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
 			<plugin>
@@ -450,7 +444,7 @@
 						<!--<type>${cargo.configuration.type}</type> -->
 						<!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
 						<properties>
-							<!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
+							<!--<cargo.protocol>${cargo.protocol}</cargo.protocol> -->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -535,18 +529,18 @@
 					</execution>
 				</executions>
 			</plugin>
-            <!-- launch mvn clean install jetty:run-war -->
-                        <plugin>
-                                <groupId>org.eclipse.jetty</groupId>
-                                <artifactId>jetty-maven-plugin</artifactId>
-                                <version>${maven.jetty.eclipse.plugin.version}</version>
-                                <configuration>
-                                        <scanIntervalSeconds>10</scanIntervalSeconds>
-                                        <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig>-->
-                    <httpConnector>
-                        <!--host>localhost</host-->
-                        <port>${jetty.port}</port>
-                    </httpConnector>
+			<!-- launch mvn clean install jetty:run-war -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${maven.jetty.eclipse.plugin.version}</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
+					<httpConnector>
+						<!--host>localhost</host -->
+						<port>${jetty.port}</port>
+					</httpConnector>
 					<stopPort>${jetty.stop.port}</stopPort>
 					<stopKey>STOP</stopKey>
 					<!--
@@ -562,7 +556,7 @@
 						<tempDirectory>${project.build.directory}/work</tempDirectory>
 						<!--
 						<sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
-							<sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
+							<sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager"> 
 								<storeDirectory>${basedir}/target/sessions</storeDirectory>
 							</sessionManager>
 						</sessionHandler>
@@ -621,35 +615,35 @@
 				<configuration>
 					<createDependencyReducedPom>true</createDependencyReducedPom>
 					<filters>
-					<filter>
-						<artifact>*:*</artifact>
-						<excludes>
-						<exclude>META-INF/*.SF</exclude>
-						<exclude>META-INF/*.DSA</exclude>
-						<exclude>META-INF/*.RSA</exclude>
-						</excludes>
-					</filter>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
 					</filters>
 				</configuration>
 
 				<executions>
 					<execution>
-					<phase>package</phase>
-					<goals>
-						<goal>shade</goal>
-					</goals>
-					<configuration>
-						<transformers>
-						<transformer
-							implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-						<transformer
-							implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-							<manifestEntries>
-							<Main-Class>com.test.project.sample.App</Main-Class>
-							</manifestEntries>
-						</transformer>
-						</transformers>
-					</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>com.test.project.sample.App</Main-Class>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -658,175 +652,168 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
-                        <id>lcovFileForSonar</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <target>
-								<echo message="Copying LCOV file lcov.info for Sonar purpose to target directory" />
-                                <copy todir="${basedir}/target" flatten="true">
-                                    <fileset dir="${basedir}/target">
-                                        <include name="karma-coverage/lcov-karma.info" />
-                                    </fileset>
-                                </copy>
+						<id>lcovFileForSonar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<echo
+									message="Copying LCOV file lcov-karma.info for Sonar purpose to target directory" />
+								<copy todir="${basedir}/target" flatten="true">
+									<fileset dir="${basedir}/target">
+										<include name="karma-coverage/lcov-karma.info" />
+									</fileset>
+								</copy>
 
-                                <path id="sourceDirectory.path">
-                                  <pathelement location="${basedir}/app/scripts" />
-                                </path>
+								<path id="sourceDirectory.path">
+									<pathelement location="${basedir}/app/scripts" />
+								</path>
 
-                                <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
-                                  <map from="${basedir}/" to="" />
-                                </pathconvert>
+								<pathconvert targetos="unix" property="relativeSourceDirectory"
+									refid="sourceDirectory.path">
+									<map from="${basedir}/" to="" />
+								</pathconvert>
 
 								<echo message="Base dir: ${basedir} " />
 								<echo message="Source directory: ${project.build.sourceDirectory}" />
 								<echo message="Relative source directory: ${relativeSourceDirectory}" />
 								<echo message="Fixing a problem with a path to the JavaScript path" />
-                                <replaceregexp byline="true">
-                                    <regexp pattern="SF:\./todo/(.*)" />
-                                    <substitution expression="SF:${relativeSourceDirectory}/\1" />
-                                    <fileset dir="target">
-                                        <include name="lcov-karma.info" />
-                                    </fileset>
-                                </replaceregexp>
+								<replaceregexp byline="true">
+									<regexp pattern="SF:\./todo/(.*)" />
+									<substitution expression="SF:${relativeSourceDirectory}/\1" />
+									<fileset dir="target">
+										<include name="lcov-karma.info" />
+									</fileset>
+								</replaceregexp>
 
-                            </target>
-                        </configuration>
-                    </execution>
+							</target>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
-        </plugins>
-    </build>
+		</plugins>
+	</build>
 
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                        <property>
-                             <name>!profile.activation</name>
-                        </property>
-            </activation>
-            <properties>
-                <!--<sonar.language>js</sonar.language>-->
-                <!--<sonar.exclusions>${basedir}/src/main/webapp/lib/**</sonar.exclusions>-->
-                <sonar.sources>src/main,app</sonar.sources>
-                <sonar.tests>src/test,test</sonar.tests>
-                <!--
-                <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-                <sonar.javascript.lcov.reportPath>${basedir}/target/lcov*.info</sonar.javascript.lcov.reportPath>
-                -->
-                </properties>
-             </profile>
-         <!-- Jenkins by default defines a property BUILD_NUMBER which is used to enable the profile. -->
-         <profile>
-             <id>jenkins</id>
-             <activation>
-                 <property>
-                     <name>BUILD_NUMBER</name>
-                 </property>
-             </activation>
-             <properties>
-                <maven.test.failure.skip>false</maven.test.failure.skip>
-                <maven.test.skip>false</maven.test.skip>
-             </properties>
-                    <build>
-                                <plugins>
-                                        <plugin>
-                                                <groupId>org.owasp</groupId>
-                                                <artifactId>dependency-check-maven</artifactId>
-                                                <version>${maven.dependency.check.plugin.version}</version>
-                                                <configuration>
-                                                        <format>XML</format>
-                                                </configuration>
-                                                <executions>
-                                                        <execution>
-                                                                <phase>compile</phase>
-                                                                <goals>
-                                                                        <goal>check</goal>
-                                                                </goals>
-                                                        </execution>
-                                                </executions>
-                                        </plugin>
-                                        <plugin>
-                                                <groupId>com.github.eirslett</groupId>
-                                                <artifactId>frontend-maven-plugin</artifactId>
-                                                <version>${maven.frontend.plugin.version}</version>
+	<profiles>
+		<profile>
+			<id>sonar</id>
+			<activation>
+				<property>
+					<name>!profile.activation</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.sources>src/main,app</sonar.sources>
+				<sonar.tests>src/test,test</sonar.tests>
+			</properties>
+		</profile>
+		<!-- Jenkins by default defines a property BUILD_NUMBER which is used to 
+			enable the profile. -->
+		<profile>
+			<id>jenkins</id>
+			<activation>
+				<property>
+					<name>BUILD_NUMBER</name>
+				</property>
+			</activation>
+			<properties>
+				<maven.test.failure.skip>false</maven.test.failure.skip>
+				<maven.test.skip>false</maven.test.skip>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${maven.dependency.check.plugin.version}</version>
+						<configuration>
+							<format>XML</format>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>${maven.frontend.plugin.version}</version>
 
-                                                <configuration>
-                                                        <nodeVersion>v${node.version}</nodeVersion>
-                                                        <npmVersion>${npm.version}</npmVersion>
-                                                        <!--
-                                                        <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
-                                                        <npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
-                                                        -->
-                                                </configuration>
+						<configuration>
+							<nodeVersion>v${node.version}</nodeVersion>
+							<npmVersion>${npm.version}</npmVersion>
+						</configuration>
 
-                                                <executions>
-                                                        <execution>
-                                                                <id>grunt integration-test</id>
-                                                                <goals>
-                                                                        <goal>grunt</goal>
-                                                                </goals>
-                                                                <phase>integration-test</phase>
-                                                                <configuration>
-                                                                        <arguments>integration-test</arguments>
-                                                                </configuration>
-                                                        </execution>
+						<executions>
+							<execution>
+								<id>grunt integration-test</id>
+								<goals>
+									<goal>grunt</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<configuration>
+									<arguments>integration-test</arguments>
+								</configuration>
+							</execution>
 
-                                                        <execution>
-                                                                <id>grunt site</id>
-                                                                <goals>
-                                                                        <goal>grunt</goal>
-                                                                </goals>
-                                                                <phase>site</phase>
-                                                                <configuration>
-                                                                        <arguments>site</arguments>
-                                                                </configuration>
-                                                        </execution>
-                                                </executions>
+							<execution>
+								<id>grunt site</id>
+								<goals>
+									<goal>grunt</goal>
+								</goals>
+								<phase>site</phase>
+								<configuration>
+									<arguments>site</arguments>
+								</configuration>
+							</execution>
+						</executions>
 
-                                        </plugin>
-                                </plugins>
-                    </build>
-         </profile>
-         <profile>
-             <id>logback</id>
-             <activation>
-                             <property>
-                                     <name>!profile.activation</name>
-                                 </property>
-                     </activation>
-             <dependencies>
-                 <dependency>
-                     <groupId>ch.qos.logback</groupId>
-                     <artifactId>logback-classic</artifactId>
-                     <version>${logback.version}</version>
-                     <scope>runtime</scope>
-                 </dependency>
-                 <dependency>
-                     <groupId>ch.qos.logback</groupId>
-                     <artifactId>logback-core</artifactId>
-                     <version>${logback.version}</version>
-                     <scope>runtime</scope>
-                 </dependency>
-             </dependencies>
-         </profile>
-         <profile>
-             <id>log4j</id>
-             <dependencies>
-                 <dependency>
-                     <groupId>org.slf4j</groupId>
-                     <artifactId>slf4j-log4j12</artifactId>
-                     <scope>runtime</scope>
-                 </dependency>
-                 <dependency>
-                     <groupId>log4j</groupId>
-                     <artifactId>log4j</artifactId>
-                     <scope>runtime</scope>
-                 </dependency>
-             </dependencies>
-         </profile>
-    </profiles>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>logback</id>
+			<activation>
+				<property>
+					<name>!profile.activation</name>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+					<version>${logback.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-core</artifactId>
+					<version>${logback.version}</version>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>log4j</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
