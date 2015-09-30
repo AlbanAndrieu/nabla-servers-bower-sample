@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+	<New id="RewriteHandler" class="org.eclipse.jetty.rewrite.handler.RewriteHandler">
+
+		<Set name="rules">
+			<Array type="org.eclipse.jetty.rewrite.handler.Rule">
+
+				<!-- <Item> <New id="rewrite" class="org.eclipse.jetty.rewrite.handler.RewritePatternRule"> 
+					<Set name="pattern">/*</Set> <Set name="replacement">/test</Set> </New> </Item> -->
+
+				<Item>
+					<New id="response" class="org.eclipse.jetty.rewrite.handler.ResponsePatternRule">
+						<Set name="pattern">/session/</Set>
+						<Set name="code">400</Set>
+						<Set name="reason">Setting error code 400</Set>
+					</New>
+				</Item>
+
+				<!-- <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
+					<Set name="pattern">*.jsp</Set> <Set name="name">server</Set> <Set name="value">Test 
+					webserver</Set> </New> </Item> <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
+					<Set name="pattern">*.jsp</Set> <Set name="name">title</Set> <Set name="value">driven 
+					header purpose</Set> </New> </Item> -->
+
+				<!-- Security rules from https://www.owasp.org/index.php/List_of_useful_HTTP_headers -->
+
+				<Item>
+					<New id="header-jsp" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+						<Set name="pattern">*.jsp</Set>
+						<Set name="name">X-Frame-Options</Set>
+						<Set name="value">DENY</Set>
+					</New>
+				</Item>
+
+				<!-- no cache -->
+				<Item>
+					<New id="header-cache" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+						<Set name="pattern">/*</Set>
+						<Set name="name">Cache-Control</Set>
+						<Set name="value">no-cache,no-store,must-revalidate</Set>
+					</New>
+				</Item>
+
+				<!-- pragma -->
+				<Item>
+					<New id="header-pragma" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+						<Set name="pattern">/*</Set>
+						<Set name="name">Pragma</Set>
+						<Set name="value">no-cache</Set>
+					</New>
+				</Item>
+
+				<!-- expires -->
+				<!-- https://stevesouders.com/hpws/rule-expires.php -->
+				<!-- http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21 -->
+				<Item>
+					<New id="header-expires" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+						<Set name="pattern">/*</Set>
+						<Set name="name">Expires</Set>
+						<!--<Set name="value">1</Set> -->
+						<Set name="value">Sun, 19 Jul 2020 18:06:32 GMT</Set>
+					</New>
+				</Item>
+
+				<!-- X-XSS-Protection -->
+				<Item>
+					<New id="header-xss" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+						<Set name="pattern">/*</Set>
+						<Set name="name">X-XSS-Protection</Set>
+						<Set name="value">1;mode=block</Set>
+					</New>
+				</Item>
+
+				<!-- X-Content-Type-Options -->
+				<!-- TODO Chrome has started implementing security : Code is not working 
+					in chrome but works fine in firefox <Item> <New id="header-nosniff" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
+					<Set name="pattern">/*</Set> <Set name="name">X-Content-Type-Options</Set> 
+					<Set name="value">nosniff</Set> </New> </Item> -->
+
+				<Item>
+					<New id="redirect" class="org.eclipse.jetty.rewrite.handler.RedirectPatternRule">
+						<Set name="pattern">/test/dispatch</Set>
+						<Set name="location">http://jetty.eclipse.org</Set>
+					</New>
+				</Item>
+
+				<Item>
+					<New id="regexRewrite" class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+						<Set name="regex">/test-jaas/$</Set>
+						<Set name="replacement">/demo</Set>
+					</New>
+				</Item>
+
+				<Item>
+					<New id="forwardedHttps"
+						class="org.eclipse.jetty.rewrite.handler.ForwardedSchemeHeaderRule">
+						<Set name="header">X-Forwarded-Scheme</Set>
+						<Set name="headerValue">https</Set>
+						<Set name="scheme">https</Set>
+					</New>
+				</Item>
+
+				<Item>
+					<New id="virtualHost"
+						class="org.eclipse.jetty.rewrite.handler.VirtualHostRuleContainer">
+
+						<Set name="virtualHosts">
+							<Array type="java.lang.String">
+								<Item>eclipse.com</Item>
+								<Item>www.eclipse.com</Item>
+								<Item>eclipse.org</Item>
+								<Item>www.eclipse.org</Item>
+							</Array>
+						</Set>
+
+						<Call name="addRule">
+							<Arg>
+								<New class="org.eclipse.jetty.rewrite.handler.CookiePatternRule">
+									<Set name="pattern">/*</Set>
+									<Set name="name">CookiePatternRule</Set>
+									<Set name="value">1</Set>
+								</New>
+							</Arg>
+						</Call>
+
+					</New>
+				</Item>
+
+			</Array>
+		</Set>
+	</New>
+
+	<Set name="handler">
+		<New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
+			<Set name="handlers">
+				<Array type="org.eclipse.jetty.server.Handler">
+					<Item>
+						<Ref refid="RewriteHandler" />
+					</Item>
+					<Item>
+						<New id="Contexts"
+							class="org.eclipse.jetty.server.handler.ContextHandlerCollection" />
+					</Item>
+					<Item>
+						<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler" />
+					</Item>
+					<Item>
+						<New id="RequestLog" class="org.eclipse.jetty.server.handler.RequestLogHandler" />
+					</Item>
+				</Array>
+			</Set>
+		</New>
+	</Set>
+
+</Configure>
