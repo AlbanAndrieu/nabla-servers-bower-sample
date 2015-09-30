@@ -375,6 +375,20 @@
 					</execution>
 				</executions>
 			</plugin>
+                        <plugin>
+                                <groupId>org.codehaus.mojo</groupId>
+                                <artifactId>build-helper-maven-plugin</artifactId>
+                                <version>${maven.build.helper.plugin.version}</version>
+                                <executions>
+					<execution>
+						<id>set-osgi-version</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+					</execution>
+                                </executions>                                
+                        </plugin>			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
