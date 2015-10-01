@@ -1474,7 +1474,7 @@ module.exports = function(grunt) {
     'pagespeed_junit',
     'sitespeedio',
     'phantomas',
-    'wpt',
+    //'wpt',
     'perfbudget',
     'resemble',
     //'zap_stop'
