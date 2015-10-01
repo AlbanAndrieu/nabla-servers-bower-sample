@@ -1277,7 +1277,7 @@ module.exports = function(grunt) {
 
     wpt: {
       options: {
-        locations: ['Tokyo'],
+        locations: ['Paris_wpt'],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
