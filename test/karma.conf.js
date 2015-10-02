@@ -30,6 +30,9 @@ module.exports = function(config) {
       'bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
       'bower_components/social-likes/src/social-likes.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+      'bower_components/angular-audio/app/angular.audio.js',
+      'bower_components/jquery.nicescroll/jquery.nicescroll.js',
+      'bower_components/angular-nicescroll/angular-nicescroll.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

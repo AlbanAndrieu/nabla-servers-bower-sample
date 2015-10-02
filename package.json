@@ -36,7 +36,7 @@
     "apache-server-configs": "^2.7.1",
     "async": "1.4.2",
     "autoprefixer": "6.0.2",
-    "bower": "1.5.2",
+    "bower": "1.5.3",
     "codeclimate-test-reporter": "0.1.0",
     "cssnano": "3.0.1",
     "engine.io": "^1.5.4",
