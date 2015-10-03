@@ -911,6 +911,16 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>/images',
           src: ['generated/*']
         }, {
+          expand: true,
+          cwd: 'bower_components/nabla-styles/app',
+          src: 'images/*',
+          dest: '<%= config.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/nabla-styles/app',
+          src: 'views/*',
+          dest: '<%= config.dist %>'
+        }, {
           src: 'node_modules/apache-server-configs/dist/.htaccess',
           dest: '<%= config.dist %>/.htaccess'
         }, {

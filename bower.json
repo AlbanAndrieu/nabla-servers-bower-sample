@@ -39,7 +39,7 @@
   "moduleName": "myTestApp",
   "resolutions": {
     "angular": "1.4.7",
-    "angular-cookies": ">=1.2.26 <=1.5",
+    "angular-cookies": "^1.4.7",
     "angular-sanitize": "^1.4.7",
     "angular-route": "^1.4.7",
     "angular-resource": "^1.4.7",
