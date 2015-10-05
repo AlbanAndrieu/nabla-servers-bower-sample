@@ -26,16 +26,16 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-	<!--
+    <!--
     <div id="nabla-header" header-view title="Application Header" appid="test">
     </div>
     -->
 
     <!-- Add your site or application content here -->
 
-	<div id="app-loading-wrapper" shown-when-loading>
-	  <div class="app-loading"></div>
-	</div>
+    <div id="app-loading-wrapper" shown-when-loading>
+      <div class="app-loading"></div>
+    </div>
 
     <div class="page-wrapper" hidden-when-loading>
 
@@ -45,16 +45,16 @@
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
           <!--<div class="container clearfix">-->
           <div class="container-fluid">
-			<!--
+            <!--
             <div class="pull-right">
               <div ng-translate-language-select></div>
             </div>
             -->
 
-			<!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
               <a class="navbar-brand" href="#/">
-				<!--http://svgporn.com/logos/angular.svg-->
+                <!--http://svgporn.com/logos/angular.svg-->
                 <img style="max-width:50px; margin-top: -7px;" alt="Brand" src="images/angular.svg">
               </a>
               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -80,21 +80,21 @@
                 <li class="dropdown">
                   <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"views.index.Other" | translate}} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-					<li ng-class="{active: currentPath === '/blog'}">
-						<a ng-href="#/blog">{{"views.index.Blog" | translate}}</a>
-					</li>
-					<li ng-class="{active: currentPath === '/sample'}">
-						<a ng-href="#/sample">{{"views.index.Sample" | translate}}</a>
-					</li>
-					<li ng-class="{active: currentPath === '/yeoman'}">
-						<a ng-href="#/yeoman">Yeoman</a>
-					</li>
-					<li ng-class="{active: currentPath === '/boostrap'}">
-						<a ng-href="#/boostrap">Boostrap</a>
-					</li>
-					<li ng-class="{active: currentPath === '/about'}">
-						<a ng-href="#/about">{{"views.index.About" | translate}}</a>
-					</li>
+                    <li ng-class="{active: currentPath === '/blog'}">
+                        <a ng-href="#/blog">{{"views.index.Blog" | translate}}</a>
+                    </li>
+                    <li ng-class="{active: currentPath === '/sample'}">
+                        <a ng-href="#/sample">{{"views.index.Sample" | translate}}</a>
+                    </li>
+                    <li ng-class="{active: currentPath === '/yeoman'}">
+                        <a ng-href="#/yeoman">Yeoman</a>
+                    </li>
+                    <li ng-class="{active: currentPath === '/boostrap'}">
+                        <a ng-href="#/boostrap">Boostrap</a>
+                    </li>
+                    <li ng-class="{active: currentPath === '/about'}">
+                        <a ng-href="#/about">{{"views.index.About" | translate}}</a>
+                    </li>
                     <li role="separator" class="divider"></li>
                     <li ng-class="{active: currentPath === '/contacts'}">
                       <a ng-href="#/contacts">{{"views.index.Contact" | translate}}</a>
@@ -111,7 +111,7 @@
 
               <form class="nav navbar-nav navbar-right" role="language">
                 <li>
-					<!--<div ng-controller="DropdownProfileController">-->
+                    <!--<div ng-controller="DropdownProfileController">-->
                       <li class="dropdown">
                         <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="glyphicon" gravatar-src="'alban.andrieu@free.fr'" gravatar-size="20"></img><span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
@@ -119,26 +119,26 @@
                           <li role="menuitem"><a href="#"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{"views.index.Login" | translate}}</a></li>
                         </ul>
                       </li>
-				    <!--</div>-->
-				</li>
-				<!--
+                    <!--</div>-->
+                </li>
+                <!--
                 <li>
-					<div ng-controller="DropdownController">
-						<li class="dropdown">
-							<a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{"views.index.Language" | translate}} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
-								<li role="menuitem"><a href="#">Action</a></li>
-								<li role="menuitem"><a href="#">Another action</a></li>
-								<li role="menuitem"><a href="#">Something else here</a></li>
-							</ul>
-						</li>
-					</div>
+                    <div ng-controller="DropdownController">
+                        <li class="dropdown">
+                            <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{"views.index.Language" | translate}} <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
+                                <li role="menuitem"><a href="#">Action</a></li>
+                                <li role="menuitem"><a href="#">Another action</a></li>
+                                <li role="menuitem"><a href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                    </div>
                 </li>
                 -->
                 <li>
                 <!--<div class="">-->
                    <!-- <input type="text" class="form-control" placeholder="{{'views.index.Language' | translate}}">-->
-					<div class="form-group" class="language-select" ng-translate-language-select></div>
+                    <div class="form-group" class="language-select" ng-translate-language-select></div>
                 <!--</div>-->
                 </li>
               </form>
@@ -150,9 +150,9 @@
 
 <!-- header
 ================================================== -->
-     <br/>
-     <br/>
-     <br/>
+      <br/>
+      <br/>
+      <br/>
 <!-- main
 ================================================== -->
 
@@ -161,22 +161,21 @@
 <!-- footer
 ================================================== -->
 
-
       <!-- FOOTER -->
       <footer>
-		<div class="footer">
-			<div class="container">
-			<div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
-				<div class="facebook" title="Share link on Facebook">Facebook</div>
-				<div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
-				<div class="plusone" title="Share link on Google+">Google+</div>
-				<div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
-			</div>
-			<p class="pull-right"><a ng-click="scrollTo('top')">Back to top</a></p>
-			<p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-			<p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
-			</div>
-		</div>
+        <div class="footer">
+            <div class="container">
+            <div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
+                <div class="facebook" title="Share link on Facebook">Facebook</div>
+                <div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
+                <div class="plusone" title="Share link on Google+">Google+</div>
+                <div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
+            </div>
+            <p class="pull-right"><a ng-click="scrollTo('top')">Back to top</a></p>
+            <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
+            </div>
+        </div>
       </footer>
     </div>
 
