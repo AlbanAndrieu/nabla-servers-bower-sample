@@ -224,7 +224,7 @@ module.exports = function(grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 8001,
+        port: 8002,
         // Change this to '0.0.0.0' to access the server from outside.
         //hostname: '*',
         hostname: 'localhost',
@@ -593,7 +593,7 @@ module.exports = function(grunt) {
         online: false,
         //browser: ["google chrome", "firefox"],
         //server: '<%= config.app %>'
-        proxy: 'localhost:8001'
+        proxy: 'localhost:8002'
         //proxy: SERVER_HOST + ":" + SERVER_PORT
       }
     },
@@ -928,16 +928,6 @@ module.exports = function(grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= config.dist %>'
-        //}, {
-        //  expand: true,
-        //  cwd: 'bower_components/nabla-header',
-        //  src: 'images/*',
-        //  dest: '<%= config.dist %>'
-        //}, {
-        //  expand: true,
-        //  cwd: 'bower_components/nabla-notification',
-        //  src: 'images/*',
-        //  dest: '<%= config.dist %>'
         }, {
           expand: true,
           cwd: '.',
@@ -1040,15 +1030,15 @@ module.exports = function(grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'copy:styles',
+        //'copy:styles',
         'compass:server'
       ],
       test: [
-        'copy:styles',
+        //'copy:styles',
         'compass'
       ],
       dist: [
-        'copy:styles',
+        //'copy:styles',
         'compass:dist',
         'imagemin',
         'svgmin'

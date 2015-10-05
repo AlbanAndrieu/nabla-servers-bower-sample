@@ -1,5 +1,14 @@
+
 $icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
+
+//Issue if bootstrap is before font-awesome below
+//Check order in bower.json
+
+// bower:scss
+@import "font-awesome/scss/font-awesome.scss";
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
 
 @import "nabla-styles/app/styles/nabla-bootstrap.scss";
 
@@ -7,6 +16,13 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import "components/header";
 @import "views/about";
 @import "components/loading";
+
+//Workaround for bad position of warning
+/*
+.has-error label ~ .form-control-feedback {
+  top: 45px;
+}
+*/
 
 .browsehappy {
   margin: 0.2em 0;
@@ -74,10 +90,11 @@ body {
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
+/*
   .container {
     max-width: 768px;
   }
-
+*/
   /* Remove the padding we set earlier */
   .header,
   .marketing,
