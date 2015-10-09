@@ -31,6 +31,8 @@
 		<system>GitHub Issues</system>
 	</issueManagement>
 
+   <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
+
 	<properties>
 		<!--<node.version>0.12.7</node.version> -->
 		<node.version>0.10.32</node.version>
@@ -91,7 +93,7 @@
 			<artifactId>jersey-media-moxy</artifactId>
 		</dependency>
 
-		<!-- Jersey Client required for test *and runtime* due to Jersey bug : 
+		<!-- Jersey Client required for test *and runtime* due to Jersey bug :
 			https://java.net/jira/browse/JERSEY-2104 -->
 		<!-- This dependency can be scoped to test when Jersey is upgraded to >=2.4 -->
 		<dependency>
@@ -181,7 +183,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- this is just one of the appsensor dependencies you'll need - see step 
+		<!-- this is just one of the appsensor dependencies you'll need - see step
 			below called pluggable components -->
 		<dependency>
 			<groupId>org.owasp.appsensor</groupId>
@@ -199,7 +201,7 @@
 
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -283,7 +285,7 @@
 				<configuration>
 					<nodeVersion>v${node.version}</nodeVersion>
 					<npmVersion>${npm.version}</npmVersion>
-					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot> 
+					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
 				</configuration>
 
@@ -387,8 +389,8 @@
 							<goal>parse-version</goal>
 						</goals>
 					</execution>
-                                </executions>                                
-                        </plugin>			
+                                </executions>
+                        </plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -471,40 +473,31 @@
 						</properties>
 						<configfiles>
 							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-rewrite.xml</file>
+								<file>${project.basedir}/src/main/config/demo-base/etc</file>
 								<todir>etc</todir>
 							</configfile>
 							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-gzip.xml</file>
-								<todir>etc</todir>
+								<file>${project.basedir}/src/main/config/demo-base/start.d</file>
+								<todir>start.d</todir>
 							</configfile>
 							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/jetty-https.xml</file>
-								<todir>etc</todir>
-							</configfile>
-							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/webapps/test.xml</file>
+								<file>${project.basedir}/src/main/config/demo-base/webapps</file>
 								<todir>webapps</todir>
 							</configfile>
 							<configfile>
 								<file>${project.basedir}/src/main/config/demo-base/start.ini</file>
 								<todir></todir>
 							</configfile>
-							<!--
-							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/keystore</file>
-								<todir>etc</todir>
-							</configfile>
-							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/jetty.csr</file>
-								<todir>etc</todir>
-							</configfile>
-							<configfile>
-								<file>${project.basedir}/src/main/config/demo-base/etc/rewrite.ini</file>
-								<todir>start.d</todir>
-							</configfile>
-							-->
 						</configfiles>
+						<!-- https://codehaus-cargo.github.io/cargo/Maven2+Plugin+Reference+Guide.html#Maven2PluginReferenceGuide-file -->
+                        <files>
+							<configfile>
+								<file>${project.basedir}/src/main/config/demo-base/keystore</file>
+								<todir>etc</todir>
+								<configfile>false</configfile>
+								<overwrite>true</overwrite>
+							</configfile>
+                        </files>
 					</configuration>
 					<deployables>
 						<deployable>
@@ -570,7 +563,7 @@
 						<tempDirectory>${project.build.directory}/work</tempDirectory>
 						<!--
 						<sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
-							<sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager"> 
+							<sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
 								<storeDirectory>${basedir}/target/sessions</storeDirectory>
 							</sessionManager>
 						</sessionHandler>
@@ -723,7 +716,7 @@
 				<sonar.tests>src/test,test</sonar.tests>
 			</properties>
 		</profile>
-		<!-- Jenkins by default defines a property BUILD_NUMBER which is used to 
+		<!-- Jenkins by default defines a property BUILD_NUMBER which is used to
 			enable the profile. -->
 		<profile>
 			<id>jenkins</id>
