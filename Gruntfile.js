@@ -366,7 +366,7 @@ module.exports = function(grunt) {
 
     'protractor_coverage': {
         options: {
-            configFile: 'test/protractor.conf.js', // Default config file
+            configFile: 'protractor.conf.js', // Default config file
             keepAlive: true,
             noColor: false,
             //debug: true,
@@ -381,7 +381,7 @@ module.exports = function(grunt) {
         phantom: {
             options: {
                 args: {
-                    //baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9190 + '/',
+                    //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9190 ) + '/',
                     // Arguments passed to the command
                     'browser': 'phantomjs'
                 }
@@ -390,7 +390,7 @@ module.exports = function(grunt) {
         chrome: {
             options: {
                 args: {
-                    //baseUrl: 'http://localhost:' + process.env.SERVER_PORT || 9190 + '/',
+                    //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9190 ) + '/',
                     // Arguments passed to the command
                     'browser': 'chrome'
                 }
@@ -1090,7 +1090,7 @@ module.exports = function(grunt) {
     protractor: {
       options: {
         //keepAlive: true,
-        configFile: 'test/protractor.conf.js',
+        configFile: 'protractor.conf.js',
         args: {
           //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
           //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
