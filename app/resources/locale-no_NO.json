@@ -43,7 +43,9 @@
 
   "views.contacts.Follow me on": "Følg meg på",
   "views.contacts.My": "Mitt",
-
+  "views.contacts.Mail me": "Mail meg",
+  "views.contacts.Call me": "Call meg",
+  "views.contacts.Find me": "Find meg",
 
   "directives.language-select.Language": "Språk"
 }

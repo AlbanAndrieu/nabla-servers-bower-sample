@@ -44,7 +44,8 @@
 
   "views.contacts.Follow me on": "Follow me on",
   "views.contacts.My": "My",
-  "views.contacts.Send mail": "Send mail",
+  "views.contacts.Mail me": "Mail me",
+  "views.contacts.Call me": "Call me",
   "views.contacts.Find me": "Find me",
 
   "directives.language-select.Language": "{{views.index.Language}}"
