@@ -452,7 +452,7 @@
 				<configuration>
 					<wait>${cargo.wait}</wait>
 					<container>
-						<timeout>180000</timeout> <!-- 5 minutes -->
+						<timeout>300000</timeout> <!-- 5 minutes -->
 						<!--<containerId>${cargo.container}</containerId> -->
 						<!--<type>${cargo.container.type}</type> -->
 					</container>
