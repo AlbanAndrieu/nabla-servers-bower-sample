@@ -149,7 +149,7 @@ ssh -X jenkins@home.nabla.mobi
 #export DISPLAY=localhost:99.0 && nohup java -jar /jenkins/selenium-server-standalone-2.45.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
 export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=40.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=43.0.2357.125,chrome_binary=/usr/bin/google-chrome,maxInstances=1,platform=LINUX clean install -Dserver=jetty9x -Dsurefire.useFile=false -Psample,jacoco,integration,run-its,arq-weld-ee-embedded -Darquillian=arq-weld-ee-embedded -Darquillian.launch=arq-weld-ee-embedded -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -debug > selenum-hub.out 2>&1 &
 multitail nohup.out selenum-hub.out
- 
+
 curl http://localhost:4444/grid/api/proxy?id=http://172.17.42.1:5555
 curl http://home.nabla.mobi:4444/grid/console
 
@@ -261,3 +261,9 @@ Project Properties | Validation | Project specific settings | Web Resources Vali
 Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
 
 See https://github.com/oasp/oasp4js/issues/24 for more details
+
+## Other resources
+
+Yo generator :
+https://github.com/peterhendrick/openSource
+
