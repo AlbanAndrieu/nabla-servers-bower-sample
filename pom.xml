@@ -594,6 +594,24 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>com.sinapsi.memtracker</groupId>
+				<artifactId>mem-tracker-maven-plugin</artifactId>
+				<version>${maven.mem.tracker.maven.plugin.version}</version>
+				<configuration>
+					<host>localhost</host>
+					<port>${cargo.monitoring.jmx.rmi.port}</port>
+				</configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>track</goal>
+						</goals>
+						<phase>integration-test</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>${maven.dependency.plugin.version}</version>
