@@ -50,6 +50,18 @@
     </FilesMatch>
 </IfModule>
 
+# Don't allow any pages to be framed - Defends against CSRF
+Header set X-Frame-Options DENY
+
+# Turn on IE8-IE9 XSS prevention tools
+Header set X-XSS-Protection "1; mode=block"
+
+# Only allow JavaScript from the same domain to be run.
+# Don't allow inline JavaScript to run.
+Header set X-Content-Security-Policy "allow 'self';"
+
+# prevent mime based attacks
+Header set X-Content-Type-Options "nosniff"
 
 # ##############################################################################
 # # ERRORS                                                                     #
