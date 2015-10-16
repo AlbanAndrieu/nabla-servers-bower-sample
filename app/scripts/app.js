@@ -16,6 +16,7 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'angular-nicescroll',
     'pascalprecht.translate',// angular-translate
     'tmh.dynamicLocale',// angular-dynamic-locale
     'ui.gravatar',
@@ -89,6 +90,10 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  })
+  // Angular Reduce the number of $apply() calls
+  .config(function($httpProvider) {
+    $httpProvider.useApplyAsync(true);
   })
   // Angular debug info
   .config(function($compileProvider, DEBUG_MODE) {
