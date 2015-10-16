@@ -4,7 +4,7 @@ exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
   framework: 'jasmine2',
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
-  specs: ['e2e/example/*_test.js', 'test/e2e/example/*_test.js'],
+  specs: ['e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9090 ),
   baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
@@ -23,18 +23,27 @@ exports.config = {
     //  'browserName': 'firefox',
     //  'browserName': 'phantomjs',
     'chromeOptions': {
-        'args': ['incognito', 'disable-extensions', 'start-maximized']
+        'args': ['--incognito', '--disable-extensions', '--start-maximized', '--no-sandbox', '--ignore-certificate-errors', '--disable-popup-blocking', '--disable-translate', '--disable-web-security', '--test-type=browser'],
+        'prefs': {
+                'downloads': {
+                    'prompt_for_download': false,
+                    'directory_upgrade': true,
+                    'default_directory': '/tmp/downloads/'
+                }
+        }
     },
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
 	//	args: [],
 	//	extensions: [],
 	//},
+	//acceptSslCerts: true,
+	ensureCleanSession: true,
     proxy: {
+       //proxyType: 'autodetect'
        proxyType: 'manual',
-       httpProxy: 'localhost:8090',
-       //httpProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
-       sslProxy: '',
+       httpProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
+       sslProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
        noProxy: ''
     }
   },
@@ -45,6 +54,23 @@ exports.config = {
   //seleniumServerJar: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
 
   onPrepare: function() {
+	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
+
+      /* global angular: false, browser: false, jasmine: false */
+
+      // Disable animations so e2e tests run more quickly
+      var disableNgAnimate = function() {
+        angular.module('disableNgAnimate', []).run(['$animate', function($animate) {
+          $animate.enabled(false);
+        }]);
+      };
+
+      browser.addMockModule('disableNgAnimate', disableNgAnimate);
+
+      // Store the name of the browser that's currently being used.
+      browser.getCapabilities().then(function(caps) {
+        browser.params.browser = caps.get('browserName');
+      });
 
       //var failFast = require('jasmine-fail-fast');
       //jasmine.getEnv().addReporter(failFast.init());
@@ -68,7 +94,8 @@ exports.config = {
       //https://github.com/angular/protractor/issues/1978
       browser.driver.manage().window().maximize();
       //return browser.get('http://localhost:' + ( process.env.SERVER_PORT || 9014 ));
-      return browser.get('http://localhost:9014');
+      return browser.get('https://localhost:' + ( process.env.SERVER_SECURE_PORT || 8443 ));
+      //return browser.get('http://localhost:9014');
 
   },
   //multiCapabilities: [{
@@ -83,7 +110,9 @@ exports.config = {
   // ----- Options to be passed to minijasminenode -----
   jasmineNodeOpts: {
       // If true, print colors to the terminal.
-      showColors: true,
+      showColors: true, // Use colors in the command line report
+      isVerbose: true, // List all tests in the console
+      showTiming: true,
       // Default time to wait in ms before a test fails.
       defaultTimeoutInterval: 30000,
       // Function called to print jasmine results.
