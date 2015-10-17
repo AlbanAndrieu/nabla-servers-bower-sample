@@ -40,9 +40,11 @@ module.exports = function(grunt) {
   //console.log('SERVER_HOST : ' + SERVER_HOST);
   var SERVER_PROD_PORT = process.env.JETTY_PORT || 9090;
   var SERVER_PORT = 9014;
+  var SERVER_SECURE_PORT = 8443;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
   var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
+  var SERVER_SECURE_URL = 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
   var SERVER_CONTEXT = '/';
 
   // Load grunt tasks automatically
@@ -55,23 +57,24 @@ module.exports = function(grunt) {
   //require('load-grunt-tasks')(grunt);
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
-	bower: 'grunt-bower-task',
-	versioncheck: 'grunt-version-check',
-	configureProxies: 'grunt-connect-proxy',
-	'zap_start': 'grunt-zaproxy',
-	'zap_spider': 'grunt-zaproxy',
-	'zap_scan': 'grunt-zaproxy',
-	'zap_alert': 'grunt-zaproxy',
-	'zap_report': 'grunt-zaproxy',
-	'zap_stop': 'grunt-zaproxy',
-	'zap_results': 'grunt-zaproxy',
-	'validate-package': 'grunt-nsp-package',
-	resemble: 'grunt-resemble-cli',
+    bower: 'grunt-bower-task',
+    versioncheck: 'grunt-version-check',
+    configureProxies: 'grunt-connect-proxy',
+    'zap_start': 'grunt-zaproxy',
+    'zap_spider': 'grunt-zaproxy',
+    'zap_scan': 'grunt-zaproxy',
+    'zap_alert': 'grunt-zaproxy',
+    'zap_report': 'grunt-zaproxy',
+    'zap_stop': 'grunt-zaproxy',
+    'zap_results': 'grunt-zaproxy',
+    'validate-package': 'grunt-nsp-package',
+    resemble: 'grunt-resemble-cli',
     'protractor_coverage': 'grunt-protractor-coverage',
     instrument: 'grunt-istanbul',
     makeReport: 'grunt-istanbul',
-	usebanner: 'grunt-banner',
-	replace: 'grunt-text-replace',
+    //phantomcss: 'grunt-phantomcss',
+    usebanner: 'grunt-banner',
+    replace: 'grunt-text-replace',
     express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
@@ -80,8 +83,8 @@ module.exports = function(grunt) {
     buildcontrol: 'grunt-build-control'
   });
 
-  var async = require('async'),
-      request = require('request');
+  //var async = require('async'),
+  //    request = require('request');
 
   //grunt.loadNpmTasks('grunt-uncss');
   ////TODO http://grunt-tasks.com/grunt-purifycss/
@@ -225,6 +228,7 @@ module.exports = function(grunt) {
     connect: {
       options: {
         port: 8002,
+        //protocol: 'https',
         // Change this to '0.0.0.0' to access the server from outside.
         //hostname: '*',
         hostname: 'localhost',
@@ -257,7 +261,8 @@ module.exports = function(grunt) {
             connect.static(options.base[0]),
             connect.directory(options.base[0]),
             proxy,
-            mountFolder(connect, 'instrumented'),
+            //mountFolder(connect, 'instrumented'),
+            mountFolder(connect, 'coverage/e2e/instrumented'),
             mountFolder(connect, '.......')
           ];
         }
@@ -265,6 +270,7 @@ module.exports = function(grunt) {
       livereload: {
         options: {
           open: true,
+          debug: true,
           middleware: function(connect, options) {
 
             if (!Array.isArray(options.base)) {
@@ -301,7 +307,8 @@ module.exports = function(grunt) {
       },
       test: {
         options: {
-          port: 9002,
+          port: SERVER_SECURE_PORT,
+          protocol: 'https',
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
@@ -317,14 +324,16 @@ module.exports = function(grunt) {
       },
       coverageE2E: {
         options: {
-          port: 9014,
-          open: true,
+          port: SERVER_SECURE_PORT,
+          protocol: 'https',
+          //open: true,
           //livereload: false,
-          base: '<%= config.instrumentedE2E %>/app',
+          singleRun: true,
+          //base: '<%= config.instrumentedE2E %>/app',
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
-              connect.static('test'),
+              //connect.static('test'),
               connect().use(
                 '/bower_components',
                 connect.static('./bower_components')
@@ -357,10 +366,12 @@ module.exports = function(grunt) {
 
     instrument: {
         //files: ['lib/**/*.js', '<%= config.app %>/scripts/**/*.js'],
-        files: ['<%= config.app %>/scripts/**/*.js'],
+        files: ['app/scripts/test/**/*.js'],
         options: {
-			lazy: true,
-            basePath: '<%= config.instrumentedE2E %>/'
+			//cwd: 'app/',
+			//lazy: true,
+            basePath: '<%= config.instrumentedE2E %>'
+            //basePath: './coverage/e2e/instrumented/'
         }
     },
 
@@ -375,7 +386,7 @@ module.exports = function(grunt) {
             coverageDir: '<%= config.instrumentedE2E %>/',
             //args: {}
             args: {
-                baseUrl: SERVER_URL + SERVER_CONTEXT
+                baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
             }
         },
         phantom: {
@@ -543,6 +554,7 @@ module.exports = function(grunt) {
       sass: {
         src: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
+        //exclude: ['font-awesome', 'bootstrap-sass-official']
       }
     },
 
@@ -960,6 +972,7 @@ module.exports = function(grunt) {
             '*.{ico,png,txt}',
             'images/{,*/}*.{webp}',
             '{,*/}*.html',
+            'scripts/**/*.js',
             //'styles/fonts/{,*/}*.*'
             '.htaccess',
             //'../bower_components/**/*',
@@ -1030,7 +1043,7 @@ module.exports = function(grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        //'copy:styles',
+        'copy:styles',
         'compass:server'
       ],
       test: [
@@ -1038,7 +1051,7 @@ module.exports = function(grunt) {
         'compass'
       ],
       dist: [
-        //'copy:styles',
+        'copy:styles',
         'compass:dist',
         'imagemin',
         'svgmin'
@@ -1224,6 +1237,74 @@ module.exports = function(grunt) {
       }
     },
 
+    phantomcss: {
+        options: {
+			mismatchTolerance: 0.05,
+			screenshots: 'screenshots',
+			results: './build/phantomcss/',
+			viewportSize: [1280, 800]
+          },
+          src: [
+             'phantomcss.js'
+          ]
+    },
+
+    'phantomflow': {
+        app: {
+            /*
+                How many threads would you like to parallelise on?
+                Default value is 4
+            */
+            threads: 4,
+
+            /*
+                Any command line options to be passed down to casper?
+                Example: ['--cookies-file=testcookies.txt']
+                Default value is []
+            */
+            casperArgs: [],
+
+            /*
+                Should a report/visualisation be generated after
+                the test run? Default value is false
+            */
+            createReport: false,
+
+            /*
+                Should the report output live somewhere else, e.g. for
+                proxying through a real webserver?
+                Example: '../visualtest/htdocs'
+                Default value is undefined.
+                If unset, the default set by PhantomFlow will be used.
+            */
+            reports: null,
+
+            /*
+                Do you have scripts to include?
+                Default value is ./include
+            */
+            includes: './include',
+
+            /*
+                Where do the tests live?
+                Default value is ./test
+            */
+            tests: './test',
+
+            /*
+                Where should the results go?
+                Default value is ./test-results
+            */
+            results: './test-results',
+
+            /*
+                Hide elements in the page
+            */
+            hideElements: ['img', 'input'],
+            remoteDebugPort: 8002 // default 9000
+        }
+    },
+
     sitespeedio: {
       default: {
         options: {
@@ -1240,9 +1321,9 @@ module.exports = function(grunt) {
         //url: 'http://home.nabla.mobi/alban/'
         //url: 'alban-andrieu.com'
         //url: 'alban-andrieu.eu'
-		//url: 'alban-andrieu.fr'
-		//url: 'bababou.fr'
-		//url: 'bababou.eu'
+        //url: 'alban-andrieu.fr'
+        //url: 'bababou.fr'
+        //url: 'bababou.eu'
         url: 'http://home.nabla.mobi:9090/'
       },
       //prod: {
@@ -1320,14 +1401,14 @@ module.exports = function(grunt) {
     },
     'zap_spider': {
       options: {
-        url: SERVER_URL,
+        url: SERVER_SECURE_URL,
         host: ZAP_HOST,
         port: ZAP_PORT
       }
     },
     'zap_scan': {
       options: {
-        url: SERVER_URL,
+        url: SERVER_SECURE_URL,
         host: ZAP_HOST,
         port: ZAP_PORT
       }
@@ -1431,26 +1512,37 @@ module.exports = function(grunt) {
    * Run acceptance tests to teach ZAProxy how to use the app.
    **/
   grunt.registerTask('acceptance-test', function() {
-    var done = this.async();
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-    // make sure requests are proxied through ZAP
-    var r = request.defaults({'proxy': SERVER_URL});
-
-    async.series([
-      function(callback) {
-        r.get(SERVER_URL + '/' + SERVER_CONTEXT + '/index.html', callback);
-      }
-      // Add more requests to navigate through parts of the application
-    ], function(err) {
-      if (err) {
-        grunt.fail.warn('Acceptance test failed: ' + JSON.stringify(err, null, 2));
-        grunt.fail.warn('Is zaproxy still running?');
-        grunt.task.run(['zap_stop']);
-        return;
-      }
-      grunt.log.ok();
-      done();
-    });
+    //var done = this.async();
+    //
+    //// make sure requests are proxied through ZAP
+    //var r = request.defaults({
+	//		//'proxy': 'https://' + SERVER_HOST + ':' + ZAP_PORT,
+	//		'baseUrl': SERVER_SECURE_URL
+	//	});
+    //
+    //async.series([
+    //  function(callback) {
+    //    //r.get('index.html', callback);
+    //    r.get({'url': 'index.html',
+	//		followAllRedirects: true
+	//		//agentOptions: {
+	//		//	secureProtocol: 'SSLv3_method'
+	//		//}
+	//		}, callback);
+    //  }
+    //  // Add more requests to navigate through parts of the application
+    //], function(err) {
+    //  if (err) {
+    //    grunt.fail.warn('Acceptance test failed: ' + JSON.stringify(err, null, 2) + ' ' + err);
+    //    grunt.fail.warn('Is zaproxy still running?');
+    //    grunt.task.run(['zap_stop']);
+    //    return;
+    //  }
+    //  grunt.log.ok();
+    //  done();
+    //});
 
     grunt.task.run(['protractor:run']);
   });
