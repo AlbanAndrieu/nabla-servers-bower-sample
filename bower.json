@@ -7,7 +7,11 @@
   "main": "src/index.js",
   "ignore": [
     ".jshintrc",
-    "**/*.txt"
+    "**/*.txt",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
   ],
   "dependencies": {
     "angular": "^1.4.7",
