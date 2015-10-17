@@ -49,6 +49,16 @@
 		<jetty9.version>9.3.3.v20150827</jetty9.version>
 
 		<cargo.protocol>http</cargo.protocol>
+		<cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote=true
+-Dcom.sun.management.jmxremote.ssl=true
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.port=${cargo.monitoring.jmx.rmi.port}
+        </cargo.jetty.jmx.activation>
+		<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
+
+		<maven.jaxrs.analyzer.plugin.version>0.5</maven.jaxrs.analyzer.plugin.version>
+		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
+		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 	</properties>
 
 	<dependencyManagement>
@@ -276,6 +286,22 @@
 						</fileset>
 					</filesets>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.sebastian-daschner</groupId>
+				<artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+				<version>${maven.jaxrs.analyzer.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>analyze-jaxrs</goal>
+						</goals>
+						<configuration>
+							<backend>plaintext</backend>
+							<deployedDomain>localhost</deployedDomain>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
@@ -598,7 +624,7 @@
 				<artifactId>mem-tracker-maven-plugin</artifactId>
 				<version>${maven.mem.tracker.maven.plugin.version}</version>
 				<configuration>
-					<host>localhost</host>
+					<!--<host>127.0.0.1</host>-->
 					<port>${cargo.monitoring.jmx.rmi.port}</port>
 				</configuration>
 				<executions>
@@ -608,6 +634,31 @@
 							<goal>track</goal>
 						</goals>
 						<phase>integration-test</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- groovydoc -->
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<version>${maven.gmavenplus.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<version>${groovy.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<groovydocJavaSources>false</groovydocJavaSources>
+					<groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>groovydoc</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -716,6 +767,30 @@
 							</target>
 						</configuration>
 					</execution>
+					<!--
+					<execution>
+						<id>wait</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+									<echo message="Sleeping now for 5 seconds:" />
+									<sleep seconds="1" />
+									<echo message="1" />
+									<sleep seconds="2" />
+									<echo message="2" />
+									<sleep seconds="3" />
+									<echo message="3" />
+									<sleep seconds="4" />
+									<echo message="4" />
+									<sleep seconds="5" />
+									<echo message="5" />
+							</target>
+						</configuration>
+					</execution>
+					-->
 				</executions>
 			</plugin>
 		</plugins>
