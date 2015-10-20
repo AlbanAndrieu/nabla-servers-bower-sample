@@ -324,7 +324,7 @@ module.exports = function(grunt) {
       },
       coverageE2E: {
         options: {
-          port: SERVER_SECURE_PORT,
+          port: SERVER_PORT,
           protocol: 'https',
           //open: true,
           //livereload: false,
@@ -1156,8 +1156,10 @@ module.exports = function(grunt) {
             }
           },
           indexPath: './build/phantomas/',
+          //See https://github.com/macbre/phantomas#parameters
           options: {
             timeout: 30,
+            'ignore-ssl-errors': true,
             //cookie: ''JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
             verbose: true,
             debug: true
