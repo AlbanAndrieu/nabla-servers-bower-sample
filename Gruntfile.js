@@ -6,9 +6,6 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
-var mountFolder = function(connect, dir) {
-  return connect.static(require('path').resolve(dir));
-};
 
 module.exports = function(grunt) {
   var localConfig;
@@ -85,6 +82,11 @@ module.exports = function(grunt) {
 
   //var async = require('async'),
   //    request = require('request');
+  var serveStatic = require('serve-static');
+
+  var mountFolder = function(connect, dir) {
+	return serveStatic(require('path').resolve(dir));
+  };
 
   //grunt.loadNpmTasks('grunt-uncss');
   ////TODO http://grunt-tasks.com/grunt-purifycss/
@@ -258,7 +260,7 @@ module.exports = function(grunt) {
               res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate');
               return next();
             },
-            connect.static(options.base[0]),
+            serveStatic(options.base[0]),
             connect.directory(options.base[0]),
             proxy,
             //mountFolder(connect, 'instrumented'),
@@ -282,7 +284,7 @@ module.exports = function(grunt) {
 
             // Serve static files.
             options.base.forEach(function(base) {
-                middlewares.push(connect.static(base));
+                middlewares.push(serveStatic(base));
             });
 
             // Make directory browse-able.
@@ -291,16 +293,16 @@ module.exports = function(grunt) {
 
             return [
               middlewares,
-              connect.static('.tmp'),
+              serveStatic('.tmp'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
               connect().use(
                 '/app/styles',
-                connect.static('./app/styles')
+                serveStatic('./app/styles')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -309,15 +311,15 @@ module.exports = function(grunt) {
         options: {
           port: SERVER_SECURE_PORT,
           protocol: 'https',
-          middleware: function(connect) {
+          middleware: function(connect, options, middlewares) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -332,14 +334,14 @@ module.exports = function(grunt) {
           //base: '<%= config.instrumentedE2E %>/app',
           middleware: function(connect) {
             return [
-              connect.static('.tmp'),
-              //connect.static('test'),
+              serveStatic('.tmp'),
+              //serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.instrumentedE2E + '/app')
-              //connect.static(config.app)
+              serveStatic(appConfig.instrumentedE2E + '/app')
+              //serveStatic(config.app)
             ];
           }
         }
