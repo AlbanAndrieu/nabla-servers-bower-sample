@@ -369,7 +369,7 @@
 					</execution>
 
 					<execution>
-						<id>grunt prepare-package</id>
+						<id>grunt package</id>
 						<goals>
 							<goal>grunt</goal>
 						</goals>
