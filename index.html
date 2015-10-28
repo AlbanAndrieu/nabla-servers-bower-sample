@@ -1,4 +1,11 @@
-<!DOCTYPE html> <html class="no-js app-loading" ng-app=myTestApp> <head> <meta charset=utf-8> <title ng-bind=pageTitle>i18n for your AngularJS applications</title> <meta name=description ng-attr-content={{pageContent}} content="How to translate your AngularJS applications without page reload with angular-translate"> <meta name=viewport content="width=device-width"> <link rel="shortcut icon" href=/favicon.ico> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <style type=text/css>html {
+<!DOCTYPE html> <html class="no-js app-loading" ng-app=myTestApp> <head> <meta charset=utf-8> <title ng-bind=pageTitle>i18n for your AngularJS applications</title> <meta name=description ng-attr-content={{pageContent}} content="How to translate your AngularJS applications without page reload with angular-translate"> <meta name=viewport content="width=device-width"> <link rel="shortcut icon" href=/favicon.ico> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <style type=text/css>.pull-right {
+  float: right;
+}
+
+
+
+
+html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -7,6 +14,9 @@
 
 body {
   margin: 0;
+}
+footer{
+  display: block;
 }
 
 
@@ -23,6 +33,18 @@ h1 {
 
 img {
   border: 0;
+}
+
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+
+code{
+  font-family: monospace, monospace;
+  font-size: 1em;
 }
 
 
@@ -81,6 +103,11 @@ input {
 }
 
 
+.glyphicon-heart:before {
+  content: "\e005";
+}
+
+
 .glyphicon-user:before {
   content: "\e008";
 }
@@ -88,6 +115,16 @@ input {
 
 .glyphicon-off:before {
   content: "\e017";
+}
+
+
+.glyphicon-chevron-left:before {
+  content: "\e079";
+}
+
+
+.glyphicon-chevron-right:before {
+  content: "\e080";
 }
 
 
@@ -137,6 +174,26 @@ img {
 }
 
 
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+.img-circle {
+  border-radius: 50%;
+}
+
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eeeeee;
+}
+
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -154,7 +211,7 @@ img {
 }
 
 
-h1{
+h1, h2{
   font-family: inherit;
   font-weight: 500;
   line-height: 1.1;
@@ -162,7 +219,8 @@ h1{
 }
 
 
-h1{
+h1,
+h2{
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -173,18 +231,57 @@ h1{
 }
 
 
+h2{
+  font-size: 30px;
+}
+
+
 p {
   margin: 0 0 10px;
 }
 
 
-ul{
+.lead {
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  
+  .lead {
+    font-size: 21px;
+  }
+}
+
+
+.text-muted {
+  color: #777777;
+}
+
+
+ul,
+ol {
   margin-top: 0;
   margin-bottom: 10px;
 }
 
 ul ul{
   margin-bottom: 0;
+}
+
+
+code{
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+
+code {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #c7254e;
+  background-color: #f9f2f4;
+  border-radius: 4px;
 }
 
 
@@ -237,6 +334,59 @@ ul ul{
 
 .container-fluid:after {
   clear: both;
+}
+
+
+.row {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.row:before, .row:after {
+  content: " ";
+  display: table;
+}
+
+.row:after {
+  clear: both;
+} .col-lg-4, .col-md-5, .col-md-7{
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 992px) { .col-md-5, .col-md-7{
+    float: left;
+  }
+
+  
+  .col-md-5 {
+    width: 41.6666666667%;
+  }
+
+  
+  .col-md-7 {
+    width: 58.3333333333%;
+  }
+
+  
+  .col-md-pull-7 {
+    right: 58.3333333333%;
+  }
+
+  
+  .col-md-push-5 {
+    left: 41.6666666667%;
+  }
+}
+@media (min-width: 1200px) { .col-lg-4{
+    float: left;
+  }
+
+  
+  .col-lg-4 {
+    width: 33.3333333333%;
+  }
 }
 
 
@@ -690,11 +840,6 @@ ul ul{
   color: #777;
 }
 
-.navbar-default .navbar-nav > .active > a{
-  color: #555;
-  background-color: #e7e7e7;
-}
-
 .navbar-default .navbar-toggle {
   border-color: #ddd;
 }
@@ -706,6 +851,18 @@ ul ul{
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
   border-color: #e7e7e7;
+}
+
+
+.carousel {
+  position: relative;
+}
+
+
+.carousel-inner {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
 }
 
 .carousel-inner > .item {
@@ -729,7 +886,97 @@ ul ul{
     backface-visibility: hidden;
     -webkit-perspective: 1000px;
     perspective: 1000px;
+  } .carousel-inner > .item.active {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    left: 0;
   }
+}
+
+.carousel-inner > .active{
+  display: block;
+}
+
+.carousel-inner > .active {
+  left: 0;
+}
+
+
+.carousel-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 15%;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.carousel-control.left {
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+}
+
+.carousel-control.right {
+  left: auto;
+  right: 0;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
+}
+.carousel-control .glyphicon-chevron-left,
+.carousel-control .glyphicon-chevron-right {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  z-index: 5;
+  display: inline-block;
+}
+.carousel-control .glyphicon-chevron-left {
+  left: 50%;
+  margin-left: -10px;
+}
+.carousel-control .glyphicon-chevron-right {
+  right: 50%;
+  margin-right: -10px;
+}
+
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  z-index: 15;
+  width: 60%;
+  margin-left: -30%;
+  padding-left: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.carousel-indicators li {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 1px;
+  text-indent: -999px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #000 \9;
+  background-color: transparent;
+}
+
+.carousel-indicators .active {
+  margin: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
 }
 
 
@@ -751,6 +998,22 @@ ul ul{
 }
 
 @media screen and (min-width: 768px) {
+  
+  .carousel-control .glyphicon-chevron-left,
+  .carousel-control .glyphicon-chevron-right{
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    font-size: 30px;
+  }
+  
+  .carousel-control .glyphicon-chevron-left{
+    margin-left: -15px;
+  }
+  
+  .carousel-control .glyphicon-chevron-right{
+    margin-right: -15px;
+  }
 
   
   .carousel-caption {
@@ -758,6 +1021,23 @@ ul ul{
     right: 20%;
     padding-bottom: 30px;
   }
+
+  
+  .carousel-indicators {
+    bottom: 20px;
+  }
+}
+
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.pull-right {
+  float: right !important;
 }
 
 
@@ -815,6 +1095,13 @@ button {
   margin: 5px 0px;
 }
 
+
+code {
+  font-size: 12px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
 .navbar-header .navbar-toggle {
   float: left;
   margin-left: 15px;
@@ -832,7 +1119,7 @@ button {
 }
 
 
-html:not(.app-loading) [shown-when-loading]{
+html.app-loading [hidden-when-loading]{
   display: none !important;
 }
 
@@ -843,7 +1130,9 @@ body {
 
 
 
-.header{
+.header,
+.marketing,
+.footer {
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -857,11 +1146,27 @@ body {
 }
 
 
+
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+
+
+.marketing {
+  margin: 40px 0;
+}
+
+
 @media screen and (min-width: 768px) {
   
   
   
-  .header{
+  .header,
+  .marketing,
+  .footer {
     padding-left: 0;
     padding-right: 0;
   }
@@ -904,7 +1209,8 @@ body {
   color: #555;
 }
 
-h1{
+h1,
+h2{
   margin-top: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
@@ -928,6 +1234,15 @@ body {
   color: #5a5a5a;
 }
 
+
+
+
+
+.carousel {
+  height: 500px;
+  margin-bottom: 60px;
+}
+
 .carousel-caption {
   z-index: 10;
 }
@@ -948,6 +1263,36 @@ body {
 
 
 
+
+.marketing .col-lg-4 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .col-lg-4 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+
+
+.featurette-divider {
+  margin: 80px 0; 
+}
+
+
+.featurette-heading {
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+
+
+
 @media (min-width: 768px) {
 
   
@@ -955,6 +1300,16 @@ body {
     margin-bottom: 20px;
     font-size: 21px;
     line-height: 1.4;
+  }
+
+  .featurette-heading {
+    font-size: 50px;
+  }
+}
+
+@media (min-width: 992px) {
+  .featurette-heading {
+    margin-top: 120px;
   }
 }</style> <script>(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['styles/vendor.dfeff107.css','styles/main.f7ef2a6a.css']));</script> <noscript><link rel="stylesheet" href="styles/vendor.dfeff107.css"> <link rel="stylesheet" href="styles/main.f7ef2a6a.css"></noscript>  <body ng-controller=AppController id=top> <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -988,4 +1343,4 @@ body {
        }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
        ga('create', 'UA-56011797-1');
-       ga('send', 'pageview');</script> <script src=scripts/vendor.c2741d1b.js></script> <script src=scripts/scripts.99647d28.js></script>  
+       ga('send', 'pageview');</script> <script src=scripts/vendor.c2741d1b.js></script> <script src=scripts/scripts.ac0207b0.js></script>  
