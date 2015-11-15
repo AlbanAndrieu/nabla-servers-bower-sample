@@ -1,4 +1,4 @@
-<!DOCTYPE html> <html class="no-js app-loading" ng-app=myTestApp> <head> <meta charset=utf-8> <title ng-bind=pageTitle>i18n for your AngularJS applications</title> <meta name=description ng-attr-content={{pageContent}} content="How to translate your AngularJS applications without page reload with angular-translate"> <meta name=viewport content="width=device-width"> <link rel="shortcut icon" href=/favicon.ico> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <style type=text/css>html {
+<!DOCTYPE html> <html class="no-js app-loading" ng-app=myTestApp> <head> <meta charset=utf-8> <title ng-bind=pageTitle>i18n for your AngularJS applications</title> <meta name=description ng-attr-content={{pageContent}} content="How to translate your AngularJS applications without page reload with angular-translate"> <meta name=viewport content="width=device-width"> <link rel="shortcut icon" href=./favicon.ico> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <style type=text/css>html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -64,8 +64,8 @@ input {
 }
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
-  src: url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
+  src: url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("/.tmp/styles/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -725,6 +725,7 @@ ul ul{
   .carousel-inner > .item {
     transition: -webkit-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out;
+    transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     -webkit-perspective: 1000px;
@@ -956,7 +957,7 @@ body {
     font-size: 21px;
     line-height: 1.4;
   }
-}</style> <script>(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['styles/vendor.dfeff107.css','styles/main.f7ef2a6a.css']));</script> <noscript><link rel="stylesheet" href="styles/vendor.dfeff107.css"> <link rel="stylesheet" href="styles/main.f7ef2a6a.css"></noscript>  <body ng-controller=AppController id=top> <!--[if lt IE 10]>
+}</style> <script>(function(u){function loadCSS(e,t,n){"use strict";function r(){for(var t,i=0;i<d.length;i++)d[i].href&&d[i].href.indexOf(e)>-1&&(t=!0);t?o.media=n||"all":setTimeout(r)}var o=window.document.createElement("link"),i=t||window.document.getElementsByTagName("script")[0],d=window.document.styleSheets;return o.rel="stylesheet",o.href=e,o.media="only x",i.parentNode.insertBefore(o,i),r(),o}for(var i in u){loadCSS(u[i]);}}(['styles/vendor.dfeff107.css','styles/main.8db2cb67.css']));</script> <noscript> <link rel=stylesheet href=styles/vendor.dfeff107.css> <link rel=stylesheet href=styles/main.8db2cb67.css> </noscript>  <body ng-controller=AppController id=top> <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]--> <!--
     <div id="nabla-header" header-view title="Application Header" appid="test">
@@ -988,4 +989,4 @@ body {
        }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
        ga('create', 'UA-56011797-1');
-       ga('send', 'pageview');</script> <script src=scripts/vendor.c2741d1b.js></script> <script src=scripts/scripts.5acf6018.js></script>  
+       ga('send', 'pageview');</script> <script src=scripts/vendor.c2741d1b.js></script> <script src=scripts/scripts.c73e27e7.js></script>  
