@@ -6,6 +6,7 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+var path = require('path');
 
 module.exports = function(grunt) {
   var localConfig;
@@ -73,6 +74,7 @@ module.exports = function(grunt) {
     usebanner: 'grunt-banner',
     replace: 'grunt-text-replace',
     express: 'grunt-express-server',
+    //express: 'grunt-express',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
@@ -85,7 +87,7 @@ module.exports = function(grunt) {
   var serveStatic = require('serve-static');
 
   var mountFolder = function(connect, dir) {
-	return serveStatic(require('path').resolve(dir));
+    return serveStatic(path.resolve(dir));
   };
 
   //grunt.loadNpmTasks('grunt-uncss');
@@ -152,7 +154,7 @@ module.exports = function(grunt) {
   };
 
   var VERSION = getVersion();
-  console.log('VERSION : ' + VERSION);
+  //console.log('VERSION : ' + VERSION);
 
   // Configurable paths for the application
   var appConfig = {
@@ -370,8 +372,8 @@ module.exports = function(grunt) {
         //files: ['lib/**/*.js', '<%= config.app %>/scripts/**/*.js'],
         files: ['app/scripts/test/**/*.js'],
         options: {
-			//cwd: 'app/',
-			//lazy: true,
+            //cwd: 'app/',
+            //lazy: true,
             basePath: '<%= config.instrumentedE2E %>'
             //basePath: './coverage/e2e/instrumented/'
         }
@@ -949,6 +951,11 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>'
         //}, {
         //  expand: true,
+        //  cwd: 'bower_components/bootstrap-sass-official/assets/fonts/',
+        //  src: '**/*',
+        //  dest: '<%= config.dist %>/fonts'
+        //}, {
+        //  expand: true,
         //  cwd: 'bower_components/font-awesome/fonts/',
         //  src: '**/*',
         //  dest: '<%= config.dist %>/fonts'
@@ -957,11 +964,6 @@ module.exports = function(grunt) {
           cwd: 'bower_components/angular-i18n/',
           src: '*.js',
           dest: '<%= config.dist %>/bower_components/angular-i18n'
-        //}, {
-        //  expand: true,
-        //  cwd: 'bower_components/bootstrap/dist',
-        //  src: 'fonts/*',
-        //  dest: '<%= config.dist %>'
         }]
       },
       coverageE2E: {
@@ -1078,6 +1080,16 @@ module.exports = function(grunt) {
     },
 
     replace: {
+      //replace the font file path
+      //dist: {
+      //    src: ['<%= config.dist %>/styles//*.css'],
+      //    overwrite: true,                 // overwrite matched source files
+      //    replacements: [{
+      //        from: '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+      //        to: '../fonts/'
+      //    }]
+      //    //bower_components/font-awesome/fonts/*
+      //},
       // Sets DEBUG_MODE to FALSE in dist
       debugMode: {
         src: ['<%= config.dist %>/scripts/scripts.js'],
@@ -1245,10 +1257,10 @@ module.exports = function(grunt) {
 
     phantomcss: {
         options: {
-			mismatchTolerance: 0.05,
-			screenshots: 'screenshots',
-			results: './build/phantomcss/',
-			viewportSize: [1280, 800]
+            mismatchTolerance: 0.05,
+            screenshots: 'screenshots',
+            results: './build/phantomcss/',
+            viewportSize: [1280, 800]
           },
           src: [
              'phantomcss.js'
@@ -1477,6 +1489,22 @@ module.exports = function(grunt) {
     }
   });
 
+  // Used for delaying livereload until after server has restarted
+  grunt.registerTask('wait', function() {
+    grunt.log.ok('Waiting for server reload...');
+
+    var done = this.async();
+
+    setTimeout(function() {
+      grunt.log.writeln('Done waiting!');
+      done();
+    }, 1500);
+  });
+
+  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+    this.async();
+  });
+
   grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function(target) {
     if (grunt.option('allow-remote')) {
       grunt.config.set('connect.options.hostname', '0.0.0.0');
@@ -1524,19 +1552,19 @@ module.exports = function(grunt) {
     //
     //// make sure requests are proxied through ZAP
     //var r = request.defaults({
-	//		//'proxy': 'https://' + SERVER_HOST + ':' + ZAP_PORT,
-	//		'baseUrl': SERVER_SECURE_URL
-	//	});
+    //      //'proxy': 'https://' + SERVER_HOST + ':' + ZAP_PORT,
+    //      'baseUrl': SERVER_SECURE_URL
+    //  });
     //
     //async.series([
     //  function(callback) {
     //    //r.get('index.html', callback);
     //    r.get({'url': 'index.html',
-	//		followAllRedirects: true
-	//		//agentOptions: {
-	//		//	secureProtocol: 'SSLv3_method'
-	//		//}
-	//		}, callback);
+    //      followAllRedirects: true
+    //      //agentOptions: {
+    //      //  secureProtocol: 'SSLv3_method'
+    //      //}
+    //      }, callback);
     //  }
     //  // Add more requests to navigate through parts of the application
     //], function(err) {
@@ -1658,6 +1686,7 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
+    //'replace:dist',
     'usebanner',
     'copy:coverageE2E',
     'instrument'

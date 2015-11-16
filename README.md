@@ -182,13 +182,22 @@ sudo nano /etc/init/jenkins.conf
     export PATH=$PATH:$ZAPROXY_HOME
 ```
 
+## Screenshot
+
+```
+rm test.png
+phantomjs --ignore-ssl-errors=true --cookies-file=./cookies.txt rasterize.js http://localhost:9090/ test.png
+phantomjs --ignore-ssl-errors=true --cookies-file=./cookies.txt netsniff.js http://localhost:9090/ > speed.har
+#http://www.softwareishard.com/blog/har-viewer/
+```
+
 ## Yslow Psi WebPageTest
 
 Run yslow, Psi or webpagetest
 
 ```
 grunt yslow
-phantomjs yslow.js --info basic --format plain http://localhost:9090/
+phantomjs --ignore-ssl-errors=yes yslow.js --info basic --format plain http://localhost:9090/
 grunt pagespeed
 grunt wpt
 ```
@@ -198,6 +207,19 @@ grunt wpt
 Page deployed at :
 
 http://albanandrieu.github.io/nabla-servers-bower-sample/
+
+In order to workaround issue of bower_components (cssmin) absolute path instead of releatif :
+http://ignaciosuay.com/how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster/
+https://github.com/yeoman/generator-angular/issues/1011
+
+```
+#VirtualHost *
+sudo nano /etc/apache2/sites-available/awstats.conf
+#VirtualHost *:7075
+sudo nano /etc/apache2/sites-available/sample.conf
+#Add the following
+Alias /bower_components "/var/www/sample/bower_components"
+```
 
 ## Performance improvements
 
