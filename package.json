@@ -29,7 +29,7 @@
   "engines": {
     "node": ">=0.10.34",
     "npm": ">=2.9.1",
-    "node-gyp": ">=2.0.1"
+    "node-gyp": ">=2.0.2"
   },
   "engineStrict": true,
   "dependencies": {
