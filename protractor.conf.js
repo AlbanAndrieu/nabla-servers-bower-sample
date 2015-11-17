@@ -2,7 +2,7 @@
 
 exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
-  framework: 'jasmine2',
+  framework: 'jasmine',
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['test/e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
@@ -32,13 +32,14 @@ exports.config = {
                 }
         }
     },
+    'phantomjs.cli.args': ['--cookies-file=cookies.txt', '--web-security=false', '--ignore-ssl-errors=true', '--webdriver-loglevel=DEBUG'],
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
 	//	args: [],
 	//	extensions: [],
 	//},
 	//acceptSslCerts: true,
-	ensureCleanSession: true,
+	//ensureCleanSession: true,
     proxy: {
        //proxyType: 'autodetect'
        proxyType: 'manual',
@@ -80,16 +81,18 @@ exports.config = {
       // The require statement must be down here, since jasmine-reporters@1.0
       // expects jasmine to be in the global and protractor does not guarantee
       // this until inside the onPrepare function.
-      //require('jasmine-reporters');
-      //jasmine.getEnv().addReporter(
-      //    new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
-      //);
-      var jasmineReporters = require('jasmine-reporters');
-      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-          consolidateAll: true,
-          filePrefix: 'TEST-default-Protractor',
-          savePath: 'target/surefire-reports'
-      }));
+      require('jasmine-reporters');
+      jasmine.getEnv().addReporter(
+          new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
+      );
+      //var jasmineReporters = require('jasmine-reporters');
+      //jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+      //    consolidateAll: true,
+      //    filePrefix: 'TEST-default-Protractor',
+      //    savePath: 'target/surefire-reports'
+      //}));
+
+     //browser.ignoreSynchronization = true; //enable for non angular
 
       //https://github.com/angular/protractor/issues/1978
       browser.driver.manage().window().maximize();
