@@ -248,6 +248,21 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+										<pluginExecutionFilter>
+											<groupId>com.sebastian-daschner</groupId>
+											<artifactId>jaxrs-analyzer-maven-plugin</artifactId>
+											<versionRange>
+												[${maven.jaxrs.analyzer.plugin.version},)
+											</versionRange>
+											<goals>
+												<goal>analyze-jaxrs</goal>
+											</goals>
+										</pluginExecutionFilter>
+										<action>
+											<ignore></ignore>
+										</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
