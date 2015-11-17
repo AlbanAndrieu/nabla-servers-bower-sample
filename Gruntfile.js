@@ -1083,16 +1083,19 @@ module.exports = function(grunt) {
     },
 
     replace: {
-      //replace the font file path
-      //dist: {
-      //    src: ['<%= config.dist %>/styles//*.css'],
-      //    overwrite: true,                 // overwrite matched source files
-      //    replacements: [{
-      //        from: '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
-      //        to: '../fonts/'
-      //    }]
-      //    //bower_components/font-awesome/fonts/*
-      //},
+      //replace the font file path for critical
+      dist: {
+          //src: ['<%= config.dist %>/styles//*.css'],
+          src: ['<%= config.dist %>/index.html'],
+          overwrite: true,                 // overwrite matched source files
+          replacements: [{
+              from: '.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+              to: '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/'
+          },{
+              from: '/.tmp/bower_components/font-awesome/fonts/',
+              to: '../bower_components/font-awesome/fonts/'
+          }]
+      },
       // Sets DEBUG_MODE to FALSE in dist
       debugMode: {
         src: ['<%= config.dist %>/scripts/scripts.js'],
@@ -1687,7 +1690,7 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
-    //'replace:dist',
+    'replace:dist',
     'usebanner',
     'copy:coverageE2E',
     'instrument'
