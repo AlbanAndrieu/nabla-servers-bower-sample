@@ -126,7 +126,7 @@ exports.config = {
       print: function() {},
       // If set, only execute specs whose names match the pattern, which is
       // internally compiled to a RegExp.
-      grep: 'pattern',
+      //grep: 'pattern',
       // Inverts 'grep' matches
       invertGrep: false
   }
