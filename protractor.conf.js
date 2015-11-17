@@ -2,7 +2,7 @@
 
 exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
-  framework: 'jasmine',
+  framework: 'jasmine2',
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['test/e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
@@ -81,16 +81,20 @@ exports.config = {
       // The require statement must be down here, since jasmine-reporters@1.0
       // expects jasmine to be in the global and protractor does not guarantee
       // this until inside the onPrepare function.
-      require('jasmine-reporters');
-      jasmine.getEnv().addReporter(
-          new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
-      );
-      //var jasmineReporters = require('jasmine-reporters');
-      //jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-      //    consolidateAll: true,
-      //    filePrefix: 'TEST-default-Protractor',
-      //    savePath: 'target/surefire-reports'
-      //}));
+      //require('jasmine-reporters');
+      //jasmine.getEnv().addReporter(
+      //    new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
+      //);
+      var jasmineReporters = require('jasmine-reporters');
+      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+          consolidateAll: true,
+          filePrefix: 'TEST-default-Protractor',
+          savePath: 'target/surefire-reports'
+      }));
+
+	  var SpecReporter = require('jasmine-spec-reporter');
+      // add jasmine spec reporter
+      jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
      //browser.ignoreSynchronization = true; //enable for non angular
 
@@ -114,8 +118,8 @@ exports.config = {
   jasmineNodeOpts: {
       // If true, print colors to the terminal.
       showColors: true, // Use colors in the command line report
-      isVerbose: true, // List all tests in the console
-      showTiming: true,
+      //isVerbose: true, // List all tests in the console
+      //showTiming: true,
       // Default time to wait in ms before a test fails.
       defaultTimeoutInterval: 30000,
       // Function called to print jasmine results.
