@@ -185,9 +185,12 @@ sudo nano /etc/init/jenkins.conf
 ## Screenshot
 
 ```
-rm test.png
-phantomjs --ignore-ssl-errors=true --cookies-file=./cookies.txt rasterize.js http://localhost:9090/ test.png
-phantomjs --ignore-ssl-errors=true --cookies-file=./cookies.txt netsniff.js http://localhost:9090/ > speed.har
+# First generate cookies file using protractor
+grunt protractor
+chmod 444 cookies.txt
+rm ./target/test.png
+phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-file=./cookies.txt rasterize.js http://localhost:9090/ ./target/test.png
+phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-file=./cookies.txt netsniff.js http://localhost:9090/ > ./target/speed.har
 #http://www.softwareishard.com/blog/har-viewer/
 ```
 

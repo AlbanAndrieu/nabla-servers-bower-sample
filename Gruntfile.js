@@ -1,4 +1,4 @@
-// Generated on 2015-03-19 using generator-angular 0.11.1
+  // Generated on 2015-03-19 using generator-angular 0.11.1
 'use strict';
 
 // # Globbing
@@ -1144,6 +1144,7 @@ module.exports = function(grunt) {
 
     'yslow_test': {
       options: {
+		args: ' --web-security=false --ignore-ssl-errors=yes ',
         info: 'grade',
         format: 'tap',
         //format: 'junit',
@@ -1180,6 +1181,7 @@ module.exports = function(grunt) {
           options: {
             timeout: 30,
             'ignore-ssl-errors': true,
+            'web-security': false,
             //cookie: ''JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
             verbose: true,
             debug: true
