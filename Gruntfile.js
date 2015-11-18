@@ -1594,7 +1594,7 @@ module.exports = function(grunt) {
    **/
   grunt.registerTask('zap', [
     //'zap_start',
-    'connect:coverageE2E',
+    //'connect:coverageE2E',
     //'acceptance-test',
     'protractor_coverage:chrome',
     'makeReport',
