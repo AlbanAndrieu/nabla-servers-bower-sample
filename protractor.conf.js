@@ -19,9 +19,9 @@ exports.config = {
   },
   capabilities: {
     //'browserName': 'chromium',
-    'browserName': 'chrome',
+    //'browserName': 'chrome',
     //  'browserName': 'firefox',
-    //  'browserName': 'phantomjs',
+    'browserName': 'phantomjs',
     'chromeOptions': {
         'args': ['--incognito', '--disable-extensions', '--start-maximized', '--no-sandbox', '--ignore-certificate-errors', '--disable-popup-blocking', '--disable-translate', '--disable-web-security', '--test-type=browser'],
         'prefs': {
@@ -32,7 +32,7 @@ exports.config = {
                 }
         }
     },
-    'phantomjs.cli.args': ['--cookies-file=cookies.txt', '--web-security=false', '--ignore-ssl-errors=true', '--webdriver-loglevel=DEBUG'],
+    'phantomjs.cli.args': ['--cookies-file=./target/cookies.txt', '--web-security=false', '--ignore-ssl-errors=true', '--webdriver-loglevel=DEBUG'],
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
 	//	args: [],
@@ -75,8 +75,8 @@ exports.config = {
 
       //var failFast = require('jasmine-fail-fast');
       //jasmine.getEnv().addReporter(failFast.init());
-      require('jasmine-bail-fast');
-      jasmine.getEnv().bailFast();
+      //require('jasmine-bail-fast');
+      //jasmine.getEnv().bailFast();
 
       // The require statement must be down here, since jasmine-reporters@1.0
       // expects jasmine to be in the global and protractor does not guarantee
