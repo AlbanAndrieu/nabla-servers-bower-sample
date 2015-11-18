@@ -6,7 +6,7 @@
   describe('Controller: MainCtrl', function() {
 
     // load the controller's module
-    beforeEach(module('myTestApp.controllers.MainCtrl'));
+    beforeEach(module('myTestApp.controllers.MainController'));
 
     var MainCtrl,
       scope,
