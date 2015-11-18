@@ -42,9 +42,9 @@ module.exports = function(grunt) {
   var SERVER_SECURE_PORT = 8443;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
-  var SERVER_URL = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
-  var SERVER_SECURE_URL = 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
-  var SERVER_CONTEXT = '/';
+  var SERVER_URL =  process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
+  var SERVER_SECURE_URL = process.env.SERVER_SECURE_URL || 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
+  var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/';
 
   // Load grunt tasks automatically
   //require('load-grunt-tasks')(grunt);
@@ -607,7 +607,7 @@ module.exports = function(grunt) {
       },
       options: {
         watchTask: true,
-        online: false,
+        //online: false,
         //browser: ["google chrome", "firefox"],
         //server: '<%= config.app %>'
         proxy: 'localhost:8002'
