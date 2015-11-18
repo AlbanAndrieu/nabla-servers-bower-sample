@@ -37,7 +37,8 @@ module.exports = function(grunt) {
   var SERVER_HOST = process.env.SERVER_HOST || 'localhost';
   //console.log('SERVER_HOST : ' + SERVER_HOST);
   var SERVER_PROD_PORT = process.env.JETTY_PORT || 9090;
-  var SERVER_PORT = 9014;
+  //var SERVER_PORT = 9014;
+  var SERVER_PORT = SERVER_PROD_PORT;
   var SERVER_SECURE_PORT = 8443;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
@@ -1179,6 +1180,7 @@ module.exports = function(grunt) {
           indexPath: './build/phantomas/',
           //See https://github.com/macbre/phantomas#parameters
           options: {
+			'cookies-file': './target/cookies.txt',
             timeout: 30,
             'ignore-ssl-errors': true,
             'web-security': false,
@@ -1285,7 +1287,7 @@ module.exports = function(grunt) {
 
             /*
                 Any command line options to be passed down to casper?
-                Example: ['--cookies-file=testcookies.txt']
+                Example: ['--cookies-file=./target/cookies.txt']
                 Default value is []
             */
             casperArgs: [],
@@ -1631,7 +1633,7 @@ module.exports = function(grunt) {
   grunt.registerTask('unit-test', function(target) {
     if (target !== 'watch') {
       grunt.task.run([
-        'check',
+        //'check',
         'clean:server',
         'wiredep:test',
         //'ngconstant:dev',
