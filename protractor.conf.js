@@ -33,10 +33,10 @@ exports.config = {
         }
     },
     'phantomjs.cli.args': ['--cookies-file=./target/cookies.txt',
-                           '--web-security=false',
+                           //'--web-security=false',
                            '--ignore-ssl-errors=true',
                            '--webdriver-loglevel=DEBUG',
-                           '--proxy=localhost:' + ( process.env.ZAP_PORT || 8090 ),
+                           '--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
                            ],
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
