@@ -7,7 +7,7 @@ exports.config = {
   specs: ['test/e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9090 ),
-  baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
+  //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
   //baseUrl: 'http://localhost:8001', //default test port with Yeoman
   //directConnect: true,  //bypass selenium
@@ -32,7 +32,12 @@ exports.config = {
                 }
         }
     },
-    'phantomjs.cli.args': ['--cookies-file=./target/cookies.txt', '--web-security=false', '--ignore-ssl-errors=true', '--webdriver-loglevel=DEBUG'],
+    'phantomjs.cli.args': ['--cookies-file=./target/cookies.txt',
+                           '--web-security=false',
+                           '--ignore-ssl-errors=true',
+                           '--webdriver-loglevel=DEBUG',
+                           '--proxy=localhost:' + ( process.env.ZAP_PORT || 8090 ),
+                           ],
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',
 	//	args: [],
