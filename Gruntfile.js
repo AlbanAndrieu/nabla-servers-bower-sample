@@ -1126,7 +1126,7 @@ module.exports = function(grunt) {
         //keepAlive: true,
         configFile: 'protractor.conf.js',
         args: {
-		  baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
+          baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
           //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
           //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
         }
@@ -1146,7 +1146,7 @@ module.exports = function(grunt) {
 
     'yslow_test': {
       options: {
-		args: ' --web-security=false --ignore-ssl-errors=yes ',
+        args: ' --web-security=false --ignore-ssl-errors=yes ',
         info: 'grade',
         format: 'tap',
         //format: 'junit',
@@ -1179,7 +1179,7 @@ module.exports = function(grunt) {
           indexPath: './build/phantomas/',
           //See https://github.com/macbre/phantomas#parameters
           options: {
-			'cookies-file': './target/cookies.txt',
+            'cookies-file': './target/cookies.txt',
             timeout: 30,
             'ignore-ssl-errors': true,
             'web-security': false,
