@@ -1126,6 +1126,7 @@ module.exports = function(grunt) {
         //keepAlive: true,
         configFile: 'protractor.conf.js',
         args: {
+		  baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
           //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
           //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
         }
@@ -1541,6 +1542,9 @@ module.exports = function(grunt) {
       'postcss',
       'configureProxies:server',
       'connect:livereload',
+      //'express:dev',
+      //'wait',
+      //'open',
       'browserSync',
       'watch'
     ]);
@@ -1596,10 +1600,11 @@ module.exports = function(grunt) {
    **/
   grunt.registerTask('zap', [
     //'zap_start',
+    //'connect:test',
     //'connect:coverageE2E',
-    //'acceptance-test',
-    'protractor_coverage:chrome',
-    'makeReport',
+    'acceptance-test',
+    //'protractor_coverage:chrome',
+    //'makeReport',
     'zap_spider',
     'zap_scan',
     'zap_alert',
