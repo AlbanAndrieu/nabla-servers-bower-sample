@@ -137,7 +137,8 @@ tail -f zap.log
 How to start selenium grid
 
 ```
-ssh -X root@home.nabla.mobi
+#ssh -X root@home.nabla.mobi
+sudo su - jenkins
 #start by hand selenium grid
 rm nohup.out
 nohup java -jar /workspace/selenium-server-standalone-2.47.1.jar -role hub -port 4444 -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -debug &
@@ -193,6 +194,9 @@ phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-f
 phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-file=./cookies.txt netsniff.js http://localhost:9090/ > ./target/speed.har
 #http://www.softwareishard.com/blog/har-viewer/
 ```
+
+ls -lrta ~/.config/chromium/Default/Cookies
+ls -lrta ~/.config/google-chrome/Default
 
 ## Yslow Psi WebPageTest
 

@@ -14,13 +14,13 @@
     "test"
   ],
   "dependencies": {
-    "angular": "^1.4.7",
-    "angular-animate": "^1.4.7",
-    "angular-cookies": "^1.4.7",
-    "angular-resource": "^1.4.7",
-    "angular-route": "^1.4.7",
-    "angular-sanitize": "^1.4.7",
-    "angular-touch": "^1.4.7",
+    "angular": "^1.4.8",
+    "angular-animate": "^1.4.8",
+    "angular-cookies": "^1.4.8",
+    "angular-resource": "^1.4.8",
+    "angular-route": "^1.4.8",
+    "angular-sanitize": "^1.4.8",
+    "angular-touch": "^1.4.8",
     "angular-translate": "^2.7.2",
     "angular-translate-loader-static-files": "^2.7.2",
     "angular-translate-storage-local": "^2.7.2",
@@ -34,18 +34,18 @@
     "nabla-styles": "~1.0.1"
   },
   "devDependencies": {
-    "angular-mocks": "^1.4.7"
+    "angular-mocks": "^1.4.8"
   },
   "appPath": "app",
   "testPath": "test",
   "moduleName": "myTestApp",
   "resolutions": {
-    "angular": "1.4.7",
-    "angular-cookies": "^1.4.7",
-    "angular-sanitize": "^1.4.7",
-    "angular-route": "^1.4.7",
-    "angular-resource": "^1.4.7",
-    "angular-animate": "^1.4.7",
-    "angular-touch": "^1.4.7"
+    "angular": "1.4.8",
+    "angular-cookies": "^1.4.8",
+    "angular-sanitize": "^1.4.8",
+    "angular-route": "^1.4.8",
+    "angular-resource": "^1.4.8",
+    "angular-animate": "^1.4.8",
+    "angular-touch": "^1.4.8"
   }
 }
