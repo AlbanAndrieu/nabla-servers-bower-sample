@@ -1185,6 +1185,7 @@ module.exports = function(grunt) {
             timeout: 30,
             'ignore-ssl-errors': true,
             'web-security': false,
+            'har': './target/phantomas.har',
             //cookie: ''JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
             verbose: true,
             debug: true
