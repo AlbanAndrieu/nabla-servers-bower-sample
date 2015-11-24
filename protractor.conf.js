@@ -19,9 +19,9 @@ exports.config = {
   },
   capabilities: {
     //'browserName': 'chromium',
-    //'browserName': 'chrome',
+    'browserName': 'chrome',
     //  'browserName': 'firefox',
-    'browserName': 'phantomjs',
+    //'browserName': 'phantomjs',
     'chromeOptions': {
         'args': ['--incognito', '--disable-extensions', '--start-maximized', '--no-sandbox', '--ignore-certificate-errors', '--disable-popup-blocking', '--disable-translate', '--disable-web-security', '--test-type=browser'],
         'prefs': {
@@ -36,7 +36,7 @@ exports.config = {
                            //'--web-security=false',
                            '--ignore-ssl-errors=true',
                            '--webdriver-loglevel=DEBUG',
-                           '--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
+                           //'--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
                            ],
 	//chromeOptions: {
 	//	binary: '/usr/bin/google-chrome',

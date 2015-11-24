@@ -24,11 +24,12 @@ describe('Protractor Demo Sample', function() {
 
   it('should have a text', function() {
 
-    //browser.get('/');
+    browser.get('#/project');
 
-    var data = element(by.css('.jumbotron.ng-scope'));
-    var header = data.element(by.tagName('h1'));
-    expect(header.getText()).toContain('\'Allo, \'Allo!');
+    //var data = element(by.css('.jumbotron.ng-scope'));
+    var data = element(by.css('.jumbotron'));
+    var header = data.element(by.tagName('h2'));
+    expect(header.getText()).toContain('i18n for your AngularJS applications');
   });
 
   //it('should have an about page', function() {
