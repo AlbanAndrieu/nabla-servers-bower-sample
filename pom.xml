@@ -56,7 +56,6 @@
         </cargo.jetty.jmx.activation>
 		<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
 
-		<maven.jaxrs.analyzer.plugin.version>0.5</maven.jaxrs.analyzer.plugin.version>
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 	</properties>
