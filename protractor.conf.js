@@ -124,7 +124,7 @@ exports.config = {
       // If true, print colors to the terminal.
       showColors: true, // Use colors in the command line report
       //isVerbose: true, // List all tests in the console
-      //showTiming: true,
+      showTiming: true,
       // Default time to wait in ms before a test fails.
       defaultTimeoutInterval: 30000,
       // Function called to print jasmine results.
