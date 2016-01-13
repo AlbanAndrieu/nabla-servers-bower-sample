@@ -1378,7 +1378,7 @@ module.exports = function(grunt) {
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 70,
-        ruleThreshold: 10
+        ruleThreshold: 12
       }
     },
 
