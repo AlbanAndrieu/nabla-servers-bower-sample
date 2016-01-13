@@ -507,7 +507,7 @@
 							<cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
 							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
 							<cargo.logging>high</cargo.logging>
-							<cargo.start.jvmargs><![CDATA[${cargo.jmx.activation}]]></cargo.start.jvmargs>
+							<cargo.start.jvmargs><![CDATA[${jacoco.agent.it.arg} ${cargo.jmx.activation}]]></cargo.start.jvmargs>
 							<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
 							<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
 						</properties>
@@ -562,7 +562,7 @@
 						<configuration>
 							<configuration>
 								<properties>
-									<cargo.start.jvmargs>${jacoco.agent.it.arg}</cargo.start.jvmargs>
+									<cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
 								</properties>
 							</configuration>
 						</configuration>
