@@ -93,7 +93,7 @@ exports.config = {
       var jasmineReporters = require('jasmine-reporters');
       jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
           consolidateAll: true,
-          filePrefix: 'TEST-default-Protractor',
+          filePrefix: 'TEST-com.test.project.sample.Protractor',
           savePath: 'target/surefire-reports'
       }));
 
