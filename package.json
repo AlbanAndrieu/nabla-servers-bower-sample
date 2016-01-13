@@ -33,7 +33,6 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "grunt-karma": "0.12.1",
     "passport": "0.3.2",
     "express": "4.13.3",
     "passport-local": "1.0.0",
