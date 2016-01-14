@@ -507,7 +507,7 @@
 							<cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
 							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
 							<cargo.logging>high</cargo.logging>
-							<cargo.start.jvmargs><![CDATA[${jacoco.agent.it.arg} ${cargo.jmx.activation}]]></cargo.start.jvmargs>
+							<cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs>
 							<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
 							<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
 						</properties>
@@ -554,25 +554,37 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>start-container</id>
+						<id>start-container-overrided</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>start</goal>
 						</goals>
 						<configuration>
+							<timeout>240000</timeout>
+							<!--
 							<configuration>
 								<properties>
 									<cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
 								</properties>
 							</configuration>
+							-->
 						</configuration>
 					</execution>
 					<execution>
-						<id>stop-container</id>
+						<id>stop-container-overrided</id>
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>stop</goal>
 						</goals>
+						<timeout>60000</timeout>
+						<configuration>
+							<properties>
+								<cargo.jmx.activation></cargo.jmx.activation>
+								<cargo.start.jvmargs></cargo.start.jvmargs>
+								<cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
+							</properties>
+						</configuration>
+					  </configuration>
 					</execution>
 				</executions>
 			</plugin>
