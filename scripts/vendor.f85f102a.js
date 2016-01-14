@@ -1,6 +1,6 @@
 /**
  * bower-sample
- * @version v1.0.1 - 2016-01-13
+ * @version v1.0.1 - 2016-01-14
  * @link http://home.nabla.mobi
  * @author Alban Andrieu <alban.andrieu@nabla.mobi>
  * @license MIT License, http://www.opensource.org/licenses/MIT
