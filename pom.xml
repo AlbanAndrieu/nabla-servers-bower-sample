@@ -576,15 +576,16 @@
 						<goals>
 							<goal>stop</goal>
 						</goals>
-						<timeout>60000</timeout>
 						<configuration>
-							<properties>
-								<cargo.jmx.activation></cargo.jmx.activation>
-								<cargo.start.jvmargs></cargo.start.jvmargs>
-								<cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
-							</properties>
+							<timeout>60000</timeout>
+							<configuration>
+								<properties>
+									<cargo.jmx.activation></cargo.jmx.activation>
+									<cargo.start.jvmargs></cargo.start.jvmargs>
+									<cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
+								</properties>
+							</configuration>
 						</configuration>
-					  </configuration>
 					</execution>
 				</executions>
 			</plugin>
