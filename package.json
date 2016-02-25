@@ -93,7 +93,7 @@
     "grunt-pagespeed-junit": "0.3.1",
     "grunt-penthouse": "0.3.0",
     "grunt-perfbudget": "0.1.8",
-    "grunt-phantomas": "^0.12.0",
+    "grunt-phantomas": "0.13.0",
     "grunt-phantomcss-gitdiff": "0.0.7",
     "grunt-phantomflow": "^0.2.7",
     "grunt-postcss": "0.7.1",
