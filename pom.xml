@@ -34,6 +34,8 @@
    <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 
 	<properties>
+		<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>
+
 		<!--<node.version>0.12.7</node.version> -->
 		<node.version>0.10.32</node.version>
 		<npm.version>2.13.0</npm.version>
@@ -327,6 +329,12 @@
 					<npmVersion>${npm.version}</npmVersion>
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
+					<srcdir>${basedir}/app</srcdir>
+					<outputdir>${project.build.directory}/build</outputdir>
+					<triggerfiles>
+						<triggerfile>Gruntfile.js</triggerfile>
+						<triggerfile>package.json</triggerfile>
+					</triggerfiles>
 				</configuration>
 
 				<executions>
