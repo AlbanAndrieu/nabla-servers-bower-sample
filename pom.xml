@@ -36,12 +36,6 @@
 	<properties>
 		<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>
 
-		<!--<node.version>0.12.7</node.version> -->
-		<!--
-		<node.version>0.10.32</node.version>
-		<npm.version>2.13.0</npm.version>
-		-->
-
 		<npm.version>2.14.12</npm.version>
         <node.version>4.3.1</node.version>
 

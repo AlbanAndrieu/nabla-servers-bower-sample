@@ -5,6 +5,7 @@
  * # LanguageSelectDirective
  * Directive to append language select and set its view and behavior
  */
+/*jshint strict: false */
 angular.module('myTestApp')
   .directive('ngTranslateLanguageSelect', function(LocaleService) {
     'use strict';
