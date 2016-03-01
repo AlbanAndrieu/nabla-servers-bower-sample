@@ -37,9 +37,14 @@
 		<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>
 
 		<!--<node.version>0.12.7</node.version> -->
+		<!--
 		<node.version>0.10.32</node.version>
 		<npm.version>2.13.0</npm.version>
-		<!--<npm.version>2.11.3</npm.version> -->
+		-->
+
+		<npm.version>2.14.12</npm.version>
+        <node.version>4.3.1</node.version>
+
 		<jersey.version>2.21</jersey.version>
 		<jersey.bom.version>2.21</jersey.bom.version>
 		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
@@ -330,7 +335,7 @@
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
 					<srcdir>${basedir}/app</srcdir>
-					<outputdir>${project.build.directory}/build</outputdir>
+					<outputdir>${project.build.directory}/dist</outputdir>
 					<triggerfiles>
 						<triggerfile>Gruntfile.js</triggerfile>
 						<triggerfile>package.json</triggerfile>

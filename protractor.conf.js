@@ -56,8 +56,8 @@ exports.config = {
 
   chromeDriver: './node_modules/protractor/selenium/chromedriver',
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
-  //seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
-  //seleniumServerJar: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/selenium-server-standalone-2.45.0.jar',
+  //seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
+  //seleniumServerJar: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
 
   onPrepare: function() {
 	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
