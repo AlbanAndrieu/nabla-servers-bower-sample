@@ -86,6 +86,7 @@ module.exports = function(grunt) {
   //var async = require('async'),
   //    request = require('request');
   var serveStatic = require('serve-static');
+  var serveIndex = require('serve-index');
 
   var mountFolder = function(connect, dir) {
     return serveStatic(path.resolve(dir));
@@ -178,14 +179,34 @@ module.exports = function(grunt) {
             ' * <%= pkg.name %>\n' +
             ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
             ' * @link <%= pkg.homepage %>\n' +
-            ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>>\n' +
-            ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
+            ' * @author <%= pkg.author.name %> <%= pkg.author.email %>\n' +
+            ' * @license <%= pkg.licenses.type %>, <%= pkg.licenses.url %>\n' +
             ' */\n',
 
     // Install bower dependencies
     bower: {
       bower: require('./bower.json'),
       verbose: true
+    },
+
+    replace: {
+      dist: {
+        options: {
+          patterns: [
+            {
+              match: 'undefined-version',
+              replacement: VERSION
+            }
+          ]
+        },
+        files: [
+          {expand: true, flatten: true, src: ['<%= config.dist %>/index.html'], dest: 'dist'}
+        ]
+      }
+    },
+
+    nsp: {
+      package: grunt.file.readJSON('package.json')
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -264,7 +285,7 @@ module.exports = function(grunt) {
               return next();
             },
             serveStatic(options.base[0]),
-            connect.directory(options.base[0]),
+            serveIndex(options.base[0]),
             proxy,
             //mountFolder(connect, 'instrumented'),
             mountFolder(connect, 'coverage/e2e/instrumented'),
@@ -292,7 +313,7 @@ module.exports = function(grunt) {
 
             // Make directory browse-able.
             var directory = options.directory || options.base[options.base.length - 1];
-            middlewares.push(connect.directory(directory));
+            middlewares.push(serveIndex(directory));
 
             return [
               middlewares,
@@ -1701,6 +1722,7 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
+    'replace',
     'replace:dist',
     'usebanner',
     'copy:coverageE2E',
