@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * @ngdoc directive
  * @name square
@@ -14,7 +12,9 @@
  * @example
    TODO add a sample
  */
-/*jshint unused:false*/
+/*jshint strict: false */
+/*jshint unused: false */
 function square(n) {
+  'use strict';
   return n * n;
 }

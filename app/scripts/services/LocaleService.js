@@ -5,6 +5,7 @@
  * # LocaleService
  * Service for setting/getting current locale
  */
+/*jshint strict: false */
 angular.module('myTestApp')
   .service('LocaleService', function($translate, LOCALES, $rootScope, tmhDynamicLocale) {
     'use strict';

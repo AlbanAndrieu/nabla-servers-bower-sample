@@ -73,6 +73,7 @@ module.exports = function(grunt) {
     makeReport: 'grunt-istanbul',
     //phantomcss: 'grunt-phantomcss',
     usebanner: 'grunt-banner',
+    replaceHtml: 'grunt-replace',
     replace: 'grunt-text-replace',
     express: 'grunt-express-server',
     //express: 'grunt-express',
@@ -189,7 +190,7 @@ module.exports = function(grunt) {
       verbose: true
     },
 
-    replace: {
+    replaceHtml: {
       dist: {
         options: {
           patterns: [
@@ -1722,7 +1723,7 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
-    'replace',
+    'replaceHtml',
     'replace:dist',
     'usebanner',
     'copy:coverageE2E',
