@@ -73,7 +73,7 @@ module.exports = function(grunt) {
     makeReport: 'grunt-istanbul',
     //phantomcss: 'grunt-phantomcss',
     usebanner: 'grunt-banner',
-    replaceHtml: 'grunt-replace',
+    //replaceHtml: 'grunt-replace',
     replace: 'grunt-text-replace',
     express: 'grunt-express-server',
     //express: 'grunt-express',
@@ -190,21 +190,21 @@ module.exports = function(grunt) {
       verbose: true
     },
 
-    replaceHtml: {
-      dist: {
-        options: {
-          patterns: [
-            {
-              match: 'undefined-version',
-              replacement: VERSION
-            }
-          ]
-        },
-        files: [
-          {expand: true, flatten: true, src: ['<%= config.dist %>/index.html'], dest: 'dist'}
-        ]
-      }
-    },
+    //replaceHtml: {
+    //  dist: {
+    //    options: {
+    //      patterns: [
+    //        {
+    //          match: 'undefined-version',
+    //          replacement: VERSION
+    //        }
+    //      ]
+    //    },
+    //    files: [
+    //      {expand: true, flatten: true, src: ['<%= config.dist %>/index.html'], dest: 'dist'}
+    //    ]
+    //  }
+    //},
 
     nsp: {
       package: grunt.file.readJSON('package.json')
@@ -1117,6 +1117,9 @@ module.exports = function(grunt) {
           },{
               from: '/.tmp/bower_components/font-awesome/fonts/',
               to: '../bower_components/font-awesome/fonts/'
+          },{
+              from: '@@undefined-version',
+              to: VERSION
           }]
       },
       // Sets DEBUG_MODE to FALSE in dist
@@ -1723,7 +1726,7 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
-    'replaceHtml',
+    //'replaceHtml',
     'replace:dist',
     'usebanner',
     'copy:coverageE2E',
