@@ -44,6 +44,9 @@
 		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
 		<validation.api.version>1.1.0.Final</validation.api.version>
 
+		<logback.version>1.0.13</logback.version>
+		<slf4j.version>1.7.13</slf4j.version>
+
 		<appsensor.core.version>2.1.0</appsensor.core.version>
 
 		<!--<jetty9.version>9.2.3.v20140905</jetty9.version> -->
@@ -328,6 +331,7 @@
 					<npmVersion>${npm.version}</npmVersion>
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
+                    <workingDirectory>./</workingDirectory>
 					<srcdir>${basedir}/app</srcdir>
 					<outputdir>${project.build.directory}/dist</outputdir>
 					<triggerfiles>
@@ -357,7 +361,7 @@
 					</execution>
 
 					<execution>
-						<id>grunt bower</id>
+						<id>grunt prepare</id>
 						<goals>
 							<goal>grunt</goal>
 						</goals>
@@ -801,30 +805,6 @@
 							</target>
 						</configuration>
 					</execution>
-					<!--
-					<execution>
-						<id>wait</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-									<echo message="Sleeping now for 5 seconds:" />
-									<sleep seconds="1" />
-									<echo message="1" />
-									<sleep seconds="2" />
-									<echo message="2" />
-									<sleep seconds="3" />
-									<echo message="3" />
-									<sleep seconds="4" />
-									<echo message="4" />
-									<sleep seconds="5" />
-									<echo message="5" />
-							</target>
-						</configuration>
-					</execution>
-					-->
 				</executions>
 			</plugin>
 		</plugins>
