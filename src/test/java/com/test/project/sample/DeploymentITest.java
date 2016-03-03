@@ -124,8 +124,7 @@ public class DeploymentITest
         //assertEquals(responseTest.getStatus(), 200);
         //System.out.println("Response : " + responseTest.readEntity(String.class));
 
-        WebTarget helloworldWebTargetWithQueryParam = booksTarget.queryParam("test",
-                "10");
+        //WebTarget helloworldWebTargetWithQueryParam = booksTarget.queryParam("test", "10");
 
         Invocation.Builder invocationBuilder = booksTestTarget
                 .request(MediaType.TEXT_PLAIN_TYPE);

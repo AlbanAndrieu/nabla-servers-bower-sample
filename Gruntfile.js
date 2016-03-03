@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     'zap_report': 'grunt-zaproxy',
     'zap_stop': 'grunt-zaproxy',
     'zap_results': 'grunt-zaproxy',
-    'validate-package': 'grunt-nsp-package',
+    //'validate-package': 'grunt-nsp-package',
     resemble: 'grunt-resemble-cli',
     'protractor_coverage': 'grunt-protractor-coverage',
     instrument: 'grunt-istanbul',

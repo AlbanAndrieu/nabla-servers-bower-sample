@@ -29,9 +29,9 @@
   "engines": {
     "node": ">=4.3.1",
     "npm": ">=2.14.12",
-    "node-gyp": ">=2.0.2"
+    "node-gyp": ">=3.0.3"
   },
-  "engineStrict": true,
+  "engine-strict": true,
   "dependencies": {
     "passport": "0.3.2",
     "express": "4.13.3",
@@ -48,7 +48,7 @@
     "engine.io": "1.5.4",
     "engine.io-client": "1.5.4",
     "gemini": "2.0.3",
-    "grunt": "^0.4.5",
+    "grunt": "0.4.5",
     "grunt-angular-templates": "1.0.3",
     "grunt-autoprefixer": "3.0.4",
     "grunt-banner": "0.6.0",
@@ -79,7 +79,7 @@
     "grunt-gh-pages": "1.0.0",
     "grunt-google-cdn": "0.4.3",
     "grunt-installed-check": "0.1.0",
-    "grunt-istanbul": "0.6.1",
+    "grunt-istanbul": "0.7.0",
     "grunt-jscs": "2.7.0",
     "grunt-karma": "0.12.1",
     "grunt-mocha": "0.4.15",
@@ -88,7 +88,6 @@
     "grunt-ng-constant": "2.0.1",
     "grunt-ngdocs": "0.2.9",
     "grunt-nsp": "2.1.2",
-    "grunt-nsp-package": "0.0.5",
     "grunt-pagespeed": "2.0.0",
     "grunt-pagespeed-junit": "0.3.1",
     "grunt-penthouse": "0.3.0",
@@ -112,7 +111,6 @@
     "grunt-wpt": "3.1.1",
     "grunt-yslow-test": "0.1.0",
     "jasmine-bail-fast": "0.0.1",
-    "jasmine-core": "2.3.4",
     "jasmine-reporters": "2.1.1",
     "jasmine-spec-reporter": "2.4.0",
     "jit-grunt": "0.10.0",
@@ -131,7 +129,7 @@
     "karma-tapfile-reporter": "0.0.1",
     "load-grunt-tasks": "3.1.0",
     "nue": "0.7.1",
-    "phantomjs": "1.9.19",
+    "phantomjs-prebuilt": "2.1.4",
     "pixrem": "3.0.0",
     "protractor": "3.1.1",
     "qs": "6.1.0",
@@ -149,7 +147,6 @@
   },
   "scripts": {
     "start": "./node/node server/app.js",
-    "install": "./node/node node_modules/protractor/bin/webdriver-manager update",
     "update-webdriver": "./node/node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "pretest": "./node_modules/phantomjs/bin/phantomjs yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' t.co",
     "test": "grunt test",
