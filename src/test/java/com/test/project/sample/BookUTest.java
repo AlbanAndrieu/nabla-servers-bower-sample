@@ -23,7 +23,7 @@ public class BookUTest {
     public final void testProductNull()
     {
 
-        @SuppressWarnings("null")
+        //@SuppressWarnings("null")
         final Book book = new Book(null, null, null);
         Assert.assertNotNull(book);
 
