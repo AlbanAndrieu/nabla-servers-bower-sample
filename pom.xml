@@ -34,11 +34,10 @@
    <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 
 	<properties>
-		<!--<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>-->
-		<maven.frontend.plugin.version>0.0.22</maven.frontend.plugin.version>
+		<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>
 
 		<npm.version>2.14.12</npm.version>
-        	<node.version>4.3.1</node.version>
+        <node.version>4.3.1</node.version>
 
 		<jersey.version>2.21</jersey.version>
 		<jersey.bom.version>2.21</jersey.bom.version>
