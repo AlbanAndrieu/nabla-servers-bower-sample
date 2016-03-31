@@ -33,7 +33,7 @@ exports.config = {
         }
     },
     'phantomjs.cli.args': ['--cookies-file=./target/cookies.txt',
-                           //'--web-security=false',
+                           '--web-security=false',
                            '--ignore-ssl-errors=true',
                            '--webdriver-loglevel=DEBUG',
                            //'--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
@@ -54,10 +54,13 @@ exports.config = {
     }
   },
 
-  chromeDriver: './node_modules/protractor/selenium/chromedriver',
+  //chromeDriver: './node_modules/protractor/selenium/chromedriver',
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
   //seleniumServerJar: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
+  chromeDriver: '/usr/lib/chromium-browser/chromedriver',
+  //chromeDriver: '/workspace/chrome-driver/chromedriver',
+  seleniumServerJar: '/workspace/selenium-server-standalone-2.53.0.jar',
 
   onPrepare: function() {
 	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
