@@ -564,6 +564,17 @@ FileETag None
 #    Header set X-Content-Type-Options: nosniff
     Header set X-WebKit-CSP: "default-src 'self'"
     Header set X-Permitted-Cross-Domain-Policies: "master-only"
-    Header unset Server
-    Header unset X-Powered-By
+    Header always unset Server
+    Header always unset Date
+    Header always unset Connection
+    Header always unset Keep-Alive
+    Header always unset X-Powered-By
+    Header set ProcessingTime "%D"
+    Header set Server albandri
+</IfModule>
+
+<IfModule security2_module>
+    SecRuleEngine on
+    ServerTokens Full
+    SecServerSignature "Microsoft-IIS/6.0"
 </IfModule>
