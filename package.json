@@ -129,7 +129,7 @@
     "karma-tapfile-reporter": "0.0.1",
     "load-grunt-tasks": "3.4.1",
     "nue": "0.7.1",
-    "phantomjs-prebuilt": "2.1.4",
+    "phantomjs-prebuilt": "2.1.7",
     "pixrem": "3.0.0",
     "protractor": "3.1.1",
     "qs": "6.1.0",
