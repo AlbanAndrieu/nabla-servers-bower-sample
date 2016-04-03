@@ -1631,10 +1631,10 @@ module.exports = function(grunt) {
     'acceptance-test',
     //'protractor_coverage:chrome',
     //'makeReport',
-    'zap_spider',
-    'zap_scan',
-    'zap_alert',
-    'zap_report',
+    //'zap_spider',
+    //'zap_scan',
+    //'zap_alert',
+    //'zap_report',
     //'penthouse',
     'yslow_test',
     'pagespeed',
@@ -1643,9 +1643,9 @@ module.exports = function(grunt) {
     'phantomas',
     //'wpt',
     'perfbudget',
-    'resemble',
+    'resemble'
     //'zap_stop'
-    'zap_results'
+    //'zap_results'
   ]);
 
   grunt.registerTask('prepare', [
