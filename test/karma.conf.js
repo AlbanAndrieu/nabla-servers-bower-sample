@@ -31,7 +31,6 @@ module.exports = function(config) {
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular-audio/app/angular.audio.js',
-      'bower_components/jquery.nicescroll/jquery.nicescroll.js',
       'bower_components/angular-nicescroll/angular-nicescroll.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower

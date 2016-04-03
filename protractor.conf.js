@@ -6,6 +6,7 @@ exports.config = {
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
   specs: ['test/e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
+  baseUrl: 'https://localhost:' + ( process.env.SERVER_SECURE_PORT || 8443 ),
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9090 ),
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
