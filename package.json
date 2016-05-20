@@ -46,8 +46,9 @@
     "bower": "1.7.7",
     "codeclimate-test-reporter": "0.1.1",
     "cssnano": "3.5.2",
-    "engine.io": "1.6.8",
-    "engine.io-client": "1.6.8",
+    "engine.io": "1.6.9",
+    "engine.io-client": "1.6.9",
+    "fs-extra": "0.30.0",
     "gemini": "2.0.3",
     "grunt": "0.4.5",
     "grunt-angular-templates": "1.0.3",
@@ -137,7 +138,7 @@
     "semver": "5.0.1",
     "serve-index": "1.7.3",
     "serve-static": "1.10.2",
-    "socket.io-client": "1.3.7",
+    "socket.io-client": "1.4.6",
     "time-grunt": "1.0.0",
     "vinyl-fs": "2.3.4",
     "webpagetest": "0.3.4",
@@ -146,6 +147,7 @@
     "yo": "1.7.1"
   },
   "scripts": {
+    "install": "./node/node node_modules/protractor/bin/webdriver-manager update",
     "pretest": "./node_modules/phantomjs/bin/phantomjs yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' t.co",
     "test": "grunt test",
     "webpagetest": "./node_modules/webpagetest/bin/webpagetest test t.co --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec"

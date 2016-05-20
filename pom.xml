@@ -6,6 +6,7 @@
 		<groupId>com.nabla.project.servers.sample</groupId>
 		<artifactId>sample</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
+		<relativePath/>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -51,6 +52,8 @@
 
 		<!--<jetty9.version>9.2.3.v20140905</jetty9.version> -->
 		<jetty9.version>9.3.3.v20150827</jetty9.version>
+
+		<!--<jetty.ssl.port>9443</jetty.ssl.port>--> <!-- 8443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 
 		<cargo.protocol>http</cargo.protocol>
 		<cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote=true
