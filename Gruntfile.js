@@ -39,7 +39,7 @@ module.exports = function(grunt) {
   var SERVER_PROD_PORT = process.env.JETTY_PORT || 9090;
   //var SERVER_PORT = 9014;
   var SERVER_PORT = SERVER_PROD_PORT;
-  var SERVER_SECURE_PORT = 8443;
+  var SERVER_SECURE_PORT = 9443;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
   var SERVER_URL =  process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
   ////grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
 
   var parseVersionFromPomXml = function() {
-      var fs = require('fs');
+      var fs = require('fs-extra');
       var parseString = require('xml2js').parseString;
       var version;
       var pomFile = 'pom.xml';
@@ -1674,7 +1674,7 @@ module.exports = function(grunt) {
     }
 
     grunt.task.run([
-      'connect:test',
+      //'connect:test',
       //'mocha',
       'karma'
     ]);

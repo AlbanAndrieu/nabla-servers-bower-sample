@@ -1,7 +1,7 @@
 # nabla-servers-bower-sample
 
 [![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
-[![Jenkins Build Status](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8380/jenkins/job/nabla-servers-bower-sample-nightly)
+[![Jenkins Build Status](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly)
 [![Quality Gate](http://home.nabla.mobi:9000/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample:master)](http://home.nabla.mobi:9000/dashboard/index/com.nabla.project.servers.sample:bower-sample:master)
 
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample) [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)

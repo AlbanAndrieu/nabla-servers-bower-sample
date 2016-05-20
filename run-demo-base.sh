@@ -17,4 +17,4 @@ cd ${JETTY_HOME}
 java -jar ${JETTY_HOME}/start.jar -Djetty.home=${JETTY_HOME} -Djetty.base=${JETTY_BASE}
 #--daemon
 
-echo "https://localhost:8443/"
+echo "https://localhost:9443/"
