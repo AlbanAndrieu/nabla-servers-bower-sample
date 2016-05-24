@@ -138,6 +138,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope> <!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class -->
 		</dependency>
 		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
 		<!-- https://github.com/mdeimel/jetty-proxy -->
@@ -662,6 +663,48 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+          <!-- Allow this web application to be started with the command : 'mvn
+                tomcat7:run' -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${maven.tomcat7.plugin.version}</version>
+                <configuration>
+                    <!-- http port -->
+                    <port>${tomcat.port}</port>
+                    <path>/test</path>
+                    <!--<contextFile>${basedir}/src/main/webapp/META-INF/context.xml</contextFile> -->
+                    <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
+            <!--
+            <systemProperties>
+                <java.security.auth.login.config>${basedir}/conf/jaas.config</java.security.auth.login.config>
+            </systemProperties>
+            -->
+                    <url>${deploy.url}</url>
+                    <username>${cargo.remote.user}</username>
+                    <password>${cargo.remote.password}</password>
+                    <addContextWarDependencies>true</addContextWarDependencies>
+                    <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
+                    <!--<configurationDir>${basedir}</configurationDir>-->
+                    <!--<server>nabla-tomcat</server>-->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>${project.artifactId}</artifactId>
+                        <version>${project.version}</version>
+                        <type>war</type>
+                    </dependency>
+                    <!--
+                    <dependency>
+                        <groupId>${jdbc.groupId}</groupId>
+                        <artifactId>${jdbc.client.artifactId}</artifactId>
+                        <version>${jdbc.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    -->
+                </dependencies>
+            </plugin>
 			<plugin>
 				<groupId>com.sinapsi.memtracker</groupId>
 				<artifactId>mem-tracker-maven-plugin</artifactId>
