@@ -564,6 +564,12 @@ FileETag None
 #    Header set X-Content-Type-Options: nosniff
     Header set X-WebKit-CSP: "default-src 'self'"
     Header set X-Permitted-Cross-Domain-Policies: "master-only"
+    Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    Header always set Pragma "no-cache"
+	Header always set Expires "-1"
+	Header always set Content-Security-Policy: "frame-src 'self' *.nabla.mobi nabla.mobi *.freeboxos.fr freeboxos.fr;"
+	# Guarantee HTTPS for 1 Year including Sub Domains
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     Header always unset Server
     Header always unset Date
     Header always unset Connection
