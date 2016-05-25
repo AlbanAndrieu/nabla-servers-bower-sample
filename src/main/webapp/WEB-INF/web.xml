@@ -12,22 +12,6 @@
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
-  <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/ -->
-  <filter>
-      <filter-name>GzipFilter</filter-name>
-      <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
-
-      <async-supported>true</async-supported>
-      <init-param>
-        <param-name>mimeTypes</param-name>
-        <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
-      </init-param>
-  </filter>
-  <filter-mapping>
-      <filter-name>GzipFilter</filter-name>
-      <url-pattern>/*</url-pattern>
-  </filter-mapping>
-
   <servlet>
        <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -89,4 +73,84 @@
       <servlet-name>proxy-apidocs</servlet-name>
       <url-pattern>/apidocs/*</url-pattern>
   </servlet-mapping>
+
+  <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/ -->
+  <filter>
+      <filter-name>GzipFilter</filter-name>
+      <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
+
+      <async-supported>true</async-supported>
+      <init-param>
+        <param-name>mimeTypes</param-name>
+        <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
+      </init-param>
+  </filter>
+  <filter-mapping>
+      <filter-name>GzipFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <!-- rest/ping -->
+  <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html -->
+  <security-constraint>
+    <web-resource-collection>
+	  <web-resource-name>Restricted methods</web-resource-name>
+      <url-pattern>/*</url-pattern>
+      <http-method>PUT</http-method>
+      <!--<http-method>POST</http-method>-->
+      <http-method>DELETE</http-method>
+      <http-method>OPTIONS</http-method>
+      <http-method>TRACE</http-method>
+    </web-resource-collection>
+    <auth-constraint />
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Administration</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+   <!-- Redirecting http requests to https -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Entire Application</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+   <!-- allow Favicons -->
+   <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>NonSecureConnectionOK</web-resource-name>
+			<url-pattern>*.ico</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+   </security-constraint>
+
+  <!-- Session Configuration -->
+  <session-config>
+	<session-timeout>60</session-timeout>
+	<tracking-mode>COOKIE</tracking-mode>
+  </session-config>
+
+  <session-config>
+    <cookie-config>
+		<http-only>true</http-only>
+		<secure>true</secure>
+    </cookie-config>
+  </session-config>
+
 </web-app>

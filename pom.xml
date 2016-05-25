@@ -138,7 +138,7 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope> <!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class -->
+			<scope>provided</scope> <!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
 		</dependency>
 		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
 		<!-- https://github.com/mdeimel/jetty-proxy -->
@@ -953,6 +953,13 @@
 					<artifactId>logback-classic</artifactId>
 					<version>${logback.version}</version>
 					<scope>runtime</scope>
+		            <exclusions>
+		                <!-- circular dependency -->
+		                <exclusion>
+		                    <groupId>org.slf4j</groupId>
+            			    <artifactId>slf4j-api</artifactId>
+		                </exclusion>
+		            </exclusions>
 				</dependency>
 				<dependency>
 					<groupId>ch.qos.logback</groupId>
@@ -969,6 +976,13 @@
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
 					<scope>runtime</scope>
+		             <exclusions>
+		                <!-- circular dependency -->
+		                <exclusion>
+		                    <groupId>org.slf4j</groupId>
+            			    <artifactId>slf4j-api</artifactId>
+		                </exclusion>
+		             </exclusions>
 				</dependency>
 				<dependency>
 					<groupId>log4j</groupId>
