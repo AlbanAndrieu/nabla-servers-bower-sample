@@ -24,7 +24,7 @@ $provide.value("$locale", {
       "S.M.",
       "TM"
     ],
-    "FIRSTDAYOFWEEK": 0,
+    "FIRSTDAYOFWEEK": 6,
     "MONTH": [
       "Januari",
       "Februari",
@@ -90,7 +90,7 @@ $provide.value("$locale", {
     "shortTime": "h:mm a"
   },
   "NUMBER_FORMATS": {
-    "CURRENCY_SYM": "RM",
+    "CURRENCY_SYM": "$",
     "DECIMAL_SEP": ".",
     "GROUP_SEP": ",",
     "PATTERNS": [
@@ -118,8 +118,8 @@ $provide.value("$locale", {
       }
     ]
   },
-  "id": "ms-my",
-  "localeID": "ms_MY",
+  "id": "ms-sg",
+  "localeID": "ms_SG",
   "pluralCat": function(n, opt_precision) {  return PLURAL_CATEGORY.OTHER;}
 });
 }]);
