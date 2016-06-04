@@ -107,7 +107,7 @@
     "grunt-text-replace": "0.4.0",
     "grunt-uncss": "0.5.0",
     "grunt-usemin": "3.1.1",
-    "grunt-version-check": "0.3.6",
+    "grunt-version-check": "0.3.2",
     "grunt-wiredep": "2.0.0",
     "grunt-wpt": "3.1.1",
     "grunt-yslow-test": "0.1.0",

@@ -130,7 +130,7 @@ exports.config = {
       //isVerbose: true, // List all tests in the console
       showTiming: true,
       // Default time to wait in ms before a test fails.
-      defaultTimeoutInterval: 90000,
+      defaultTimeoutInterval: 60000,
       // Function called to print jasmine results.
       print: function() {},
       // If set, only execute specs whose names match the pattern, which is
