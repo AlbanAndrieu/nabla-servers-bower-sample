@@ -91,7 +91,7 @@
   </filter-mapping>
 
   <!-- rest/ping -->
-  <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html
+  <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html -->
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Restricted methods</web-resource-name>
@@ -104,7 +104,6 @@
     </web-resource-collection>
     <auth-constraint />
   </security-constraint>
-  -->
 
   <security-constraint>
     <web-resource-collection>
@@ -118,7 +117,7 @@
     </auth-constraint>
   </security-constraint>
 
-   <!-- Redirecting http requests to https
+  <!-- Redirecting http requests to https
   <security-constraint>
     <web-resource-collection>
         <web-resource-name>Entire Application</web-resource-name>
@@ -130,7 +129,7 @@
   </security-constraint>
   -->
 
-  <!-- allow Favicons
+  <!-- allow Favicons -->
   <security-constraint>
     <web-resource-collection>
         <web-resource-name>NonSecureConnectionOK</web-resource-name>
@@ -140,7 +139,6 @@
         <transport-guarantee>NONE</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  -->
 
   <!-- Session Configuration -->
   <session-config>
