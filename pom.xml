@@ -62,18 +62,24 @@
 		<!--<jetty.ssl.port>9443</jetty.ssl.port>--> <!-- 8443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 
 		<cargo.protocol>http</cargo.protocol>
-		<cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote=true
--Dcom.sun.management.jmxremote.ssl=true
+		<cargo.monitoring.jmx.rmi.port>10088</cargo.monitoring.jmx.rmi.port>
+
+		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
+		<jetty.jmxremote.rmiport>3099</jetty.jmxremote.rmiport>
+
+		<cargo.jetty.jmx.activation><![CDATA[
+-Dcom.sun.management.jmxremote=true
+-Dcom.sun.management.jmxremote.ssl=false
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.port=${cargo.monitoring.jmx.rmi.port}
-        </cargo.jetty.jmx.activation>
+-Djetty.jmxrmihost=${jetty.jmxremote.rmihost}
+-Djetty.jmxrmiport=${jetty.jmxremote.rmiport}
+]]></cargo.jetty.jmx.activation>
+
 		<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
 
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
-
-		<cargo.core.uberjar.version>1.4.18-SNAPSHOT</cargo.core.uberjar.version>
-		<maven.cargo.maven2.plugin.version>${cargo.core.uberjar.version}</maven.cargo.maven2.plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -546,6 +552,25 @@
 						<timeout>300000</timeout> <!-- 5 minutes -->
 						<!--<containerId>${cargo.container}</containerId> -->
 						<!--<type>${cargo.container.type}</type> -->
+                        <log>${project.build.directory}/cargo.log</log>
+						<logLevel>debug</logLevel>
+						<systemProperties>
+							<log4j.debug>true</log4j.debug>
+						</systemProperties>
+						<dependencies>
+							<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-api</artifactId>
+							</dependency>
+							<dependency>
+								<groupId>org.slf4j</groupId>
+								<artifactId>slf4j-log4j12</artifactId>
+							</dependency>
+							<dependency>
+								<groupId>log4j</groupId>
+								<artifactId>log4j</artifactId>
+							</dependency>
+						</dependencies>
 					</container>
 					<configuration>
 						<!--<type>${cargo.configuration.type}</type> -->
@@ -629,6 +654,7 @@
 						</goals>
 						<configuration>
 							<timeout>60000</timeout>
+							<!--
 							<configuration>
 								<properties>
 									<cargo.jmx.activation></cargo.jmx.activation>
@@ -636,6 +662,7 @@
 									<cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
 								</properties>
 							</configuration>
+							-->
 						</configuration>
 					</execution>
 				</executions>
