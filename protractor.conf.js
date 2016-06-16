@@ -44,15 +44,15 @@ exports.config = {
 	//	args: [],
 	//	extensions: [],
 	//},
-	//acceptSslCerts: true,
-	//ensureCleanSession: true,
-    proxy: {
-       //proxyType: 'autodetect'
-       proxyType: 'manual',
-       httpProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
-       sslProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
-       noProxy: ''
-    }
+	acceptSslCerts: true,
+	ensureCleanSession: true,
+    //proxy: {
+    //   //proxyType: 'autodetect'
+    //   proxyType: 'manual',
+    //   httpProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
+    //   sslProxy: 'localhost:' + ( process.env.ZAP_PORT || 8090 ),
+    //   noProxy: ''
+    //}
   },
 
   //chromeDriver: './node_modules/protractor/selenium/chromedriver',
