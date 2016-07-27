@@ -168,6 +168,10 @@ module.exports = function(grunt) {
     instrumentedE2E: 'coverage/e2e/instrumented'
   };
 
+  //const imagemin = require('imagemin');
+  //const imageminMozjpeg = require('imagemin-mozjpeg');
+  //const imageminPngquant = require('imagemin-pngquant');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -812,14 +816,14 @@ module.exports = function(grunt) {
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
-        files: [{
+			files: [{
           expand: true,
           cwd: '<%= config.app %>/images',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
           dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
+			}]
+		}
+	},
 
     svgmin: {
       dist: {
@@ -1429,7 +1433,7 @@ module.exports = function(grunt) {
       default: {
         options: {
           url: 'http://home.nabla.mobi:9090/',
-          timeout: 300,
+          timeout: 500,
           key: process.env.WPT_API_KEY,
           budget: {
             render: '2000',
