@@ -37,8 +37,13 @@
 	<properties>
 		<maven.frontend.plugin.version>0.0.28</maven.frontend.plugin.version>
 
+		<!-- upgrade make resemble plugin no more working
 		<npm.version>3.9.5</npm.version>
         <node.version>4.4.1</node.version>
+        -->
+
+		<npm.version>2.14.12</npm.version>
+		<node.version>4.3.1</node.version>
 
 		<!--
 		<jersey.version>2.21</jersey.version>
@@ -53,8 +58,6 @@
 		<logback.version>1.0.13</logback.version>
 		<slf4j.version>1.7.13</slf4j.version>
 		-->
-
-		<appsensor.core.version>2.1.0</appsensor.core.version>
 
 		<!--<jetty9.version>9.2.3.v20140905</jetty9.version> -->
 		<jetty9.version>9.3.3.v20150827</jetty9.version>
@@ -223,7 +226,7 @@
 		</dependency>
 
 		<!-- this is just one of the appsensor dependencies you'll need - see step
-			below called pluggable components -->
+			below called pluggable components
 		<dependency>
 			<groupId>org.owasp.appsensor</groupId>
 			<artifactId>appsensor-core</artifactId>
@@ -247,6 +250,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		-->
 	</dependencies>
 
 	<build>
@@ -255,67 +259,6 @@
         <testSourceDirectory>test</testSourceDirectory>
         -->
 		<finalName>test</finalName>
-
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>${lifecycle.mapping.version}</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.github.eirslett</groupId>
-										<artifactId>frontend-maven-plugin</artifactId>
-										<versionRange>[${maven.frontend.plugin.version},)</versionRange>
-										<goals>
-											<goal>install-node-and-npm</goal>
-											<goal>npm</goal>
-											<goal>grunt</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.owasp</groupId>
-										<artifactId>dependency-check-maven</artifactId>
-										<versionRange>[${maven.dependency.check.plugin.version},)</versionRange>
-										<goals>
-											<goal>check</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-										<pluginExecutionFilter>
-											<groupId>com.sebastian-daschner</groupId>
-											<artifactId>jaxrs-analyzer-maven-plugin</artifactId>
-											<versionRange>
-												[${maven.jaxrs.analyzer.plugin.version},)
-											</versionRange>
-											<goals>
-												<goal>analyze-jaxrs</goal>
-											</goals>
-										</pluginExecutionFilter>
-										<action>
-											<ignore></ignore>
-										</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 
 		<plugins>
 			<plugin>
