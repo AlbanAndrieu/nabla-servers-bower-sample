@@ -5,149 +5,211 @@
           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-  <display-name>Sample Application</display-name>
-  <description>Sample Application</description>
+   <display-name>Sample Application</display-name>
+   <description>Sample Application</description>
 
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
+   <welcome-file-list>
+     <welcome-file>index.html</welcome-file>
+   </welcome-file-list>
 
-  <servlet>
-       <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
-       <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+   <servlet>
+        <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.test.project.sample.MyApplication</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+       <servlet-name>proxy-login</servlet-name>
+       <!-- <servlet-class>com.test.project.sample.LoginProxyServlet$Transparent</servlet-class>-->
+       <servlet-class>org.eclipse.jetty.proxy.ProxyServlet$Transparent</servlet-class>
+       <!-- <async-supported>true</async-supported> -->
+
        <init-param>
-           <param-name>javax.ws.rs.Application</param-name>
-           <param-value>com.test.project.sample.MyApplication</param-value>
+         <param-name>proxyTo</param-name>
+         <param-value>http://home.nabla.mobi:8080/login</param-value>
        </init-param>
+
+       <init-param>
+         <param-name>prefix</param-name>
+         <param-value>/login</param-value>
+       </init-param>
+
        <load-on-startup>1</load-on-startup>
    </servlet>
+
    <servlet-mapping>
-       <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>
-       <url-pattern>/rest/*</url-pattern>
+       <servlet-name>proxy-login</servlet-name>
+       <url-pattern>/login/*</url-pattern>
    </servlet-mapping>
 
+    <servlet>
+       <servlet-name>proxy-apidocs</servlet-name>
+       <!-- <servlet-class>com.test.project.sample.LoginProxyServlet$Transparent</servlet-class>-->
+       <servlet-class>org.eclipse.jetty.proxy.ProxyServlet$Transparent</servlet-class>
+       <!-- <async-supported>true</async-supported> -->
+
+       <init-param>
+         <param-name>proxyTo</param-name>
+         <param-value>http://home.nabla.mobi:8080/apidocs</param-value>
+       </init-param>
+
+       <init-param>
+         <param-name>prefix</param-name>
+         <param-value>/apidocs</param-value>
+       </init-param>
+
+       <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+       <servlet-name>proxy-apidocs</servlet-name>
+       <url-pattern>/apidocs/*</url-pattern>
+   </servlet-mapping>
+
+   <!-- disable directory listing -->
    <servlet>
-      <servlet-name>proxy-login</servlet-name>
-      <!-- <servlet-class>com.test.project.sample.LoginProxyServlet$Transparent</servlet-class>-->
-      <servlet-class>org.eclipse.jetty.proxy.ProxyServlet$Transparent</servlet-class>
-      <!-- <async-supported>true</async-supported> -->
+       <servlet-name>default</servlet-name>
+       <servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
+       <init-param>
+           <param-name>dirAllowed</param-name>
+           <param-value>false</param-value>
+       </init-param>
+   </servlet>
 
-      <init-param>
-        <param-name>proxyTo</param-name>
-        <param-value>http://home.nabla.mobi:8080/login</param-value>
-      </init-param>
+   <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/ -->
+   <filter>
+       <filter-name>GzipFilter</filter-name>
+       <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
 
-      <init-param>
-        <param-name>prefix</param-name>
-        <param-value>/login</param-value>
-      </init-param>
+       <async-supported>true</async-supported>
+       <init-param>
+         <param-name>mimeTypes</param-name>
+         <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
+       </init-param>
+   </filter>
+   <filter-mapping>
+       <filter-name>GzipFilter</filter-name>
+       <url-pattern>/*</url-pattern>
+   </filter-mapping>
 
-      <load-on-startup>1</load-on-startup>
-  </servlet>
 
-  <servlet-mapping>
-      <servlet-name>proxy-login</servlet-name>
-      <url-pattern>/login/*</url-pattern>
-  </servlet-mapping>
-
-   <servlet>
-      <servlet-name>proxy-apidocs</servlet-name>
-      <!-- <servlet-class>com.test.project.sample.LoginProxyServlet$Transparent</servlet-class>-->
-      <servlet-class>org.eclipse.jetty.proxy.ProxyServlet$Transparent</servlet-class>
-      <!-- <async-supported>true</async-supported> -->
-
-      <init-param>
-        <param-name>proxyTo</param-name>
-        <param-value>http://home.nabla.mobi:8080/apidocs</param-value>
-      </init-param>
-
-      <init-param>
-        <param-name>prefix</param-name>
-        <param-value>/apidocs</param-value>
-      </init-param>
-
-      <load-on-startup>1</load-on-startup>
-  </servlet>
-
-  <servlet-mapping>
-      <servlet-name>proxy-apidocs</servlet-name>
-      <url-pattern>/apidocs/*</url-pattern>
-  </servlet-mapping>
-
-  <!-- http://www.jayway.com/2015/06/05/gzipping-in-pedestal-jetty-9-3/ -->
   <filter>
-      <filter-name>GzipFilter</filter-name>
-      <filter-class>org.eclipse.jetty.servlets.GzipFilter</filter-class>
-
-      <async-supported>true</async-supported>
-      <init-param>
-        <param-name>mimeTypes</param-name>
-        <param-value>text/html,text/plain,text/xml,application/xhtml+xml,application/xml,text/css,application/javascript,image/svg+xml,application/json,application/xml; charset=UTF-8</param-value>
-      </init-param>
+    <filter-name>DoSFilter</filter-name>
+    <filter-class>org.eclipse.jetty.servlets.DoSFilter</filter-class>
+    <init-param>
+      <param-name>maxRequestsPerSec</param-name>
+      <param-value>30</param-value>
+    </init-param>
   </filter>
+
   <filter-mapping>
-      <filter-name>GzipFilter</filter-name>
-      <url-pattern>/*</url-pattern>
+    <filter-name>DoSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- rest/ping -->
-  <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html -->
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>Restricted methods</web-resource-name>
-      <url-pattern>/*</url-pattern>
-      <http-method>PUT</http-method>
-      <http-method>POST</http-method>
-      <http-method>DELETE</http-method>
-      <http-method>OPTIONS</http-method>
-      <http-method>TRACE</http-method>
-    </web-resource-collection>
-    <auth-constraint />
-  </security-constraint>
+  <filter>
+    <filter-name>QoSFilter</filter-name>
+    <filter-class>org.eclipse.jetty.servlets.QoSFilter</filter-class>
+    <init-param>
+      <param-name>maxRequests</param-name>
+      <param-value>50</param-value>
+    </init-param>
+  </filter>
 
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>Administration</web-resource-name>
-      <url-pattern>/admin/*</url-pattern>
-      <http-method>GET</http-method>
-      <http-method>POST</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>admin</role-name>
-    </auth-constraint>
-  </security-constraint>
+  <filter-mapping>
+    <filter-name>QoSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
-  <!-- Redirecting http requests to https
-  <security-constraint>
-    <web-resource-collection>
-        <web-resource-name>Entire Application</web-resource-name>
-        <url-pattern>/*</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
+  <!--
+  <filter>
+    <filter-name>cross-origin</filter-name>
+    <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class>
+    <init-param>
+        <param-name>allowedOrigins</param-name>
+        <param-value>*</param-value>
+    </init-param>
+    <init-param>
+        <param-name>allowedMethods</param-name>
+        <param-value>GET,POST,OPTIONS,DELETE,PUT,HEAD</param-value>
+    </init-param>
+    <init-param>
+        <param-name>allowedHeaders</param-name>
+        <param-value>origin, Content-Type, accept, authorization, GET, OPTIONS, X-XSRF-TOKEN</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>cross-origin</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   -->
 
-  <!-- allow Favicons -->
-  <security-constraint>
-    <web-resource-collection>
-        <web-resource-name>NonSecureConnectionOK</web-resource-name>
-        <url-pattern>*.ico</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-        <transport-guarantee>NONE</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
+   <!-- rest/ping -->
+   <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html -->
+   <security-constraint>
+     <web-resource-collection>
+       <web-resource-name>Restricted methods</web-resource-name>
+       <url-pattern>/*</url-pattern>
+       <http-method>PUT</http-method>
+       <http-method>POST</http-method>
+       <http-method>DELETE</http-method>
+       <http-method>OPTIONS</http-method>
+       <http-method>TRACE</http-method>
+     </web-resource-collection>
+     <auth-constraint />
+   </security-constraint>
 
-  <!-- Session Configuration -->
-  <session-config>
-    <session-timeout>60</session-timeout>
-    <cookie-config>
-        <http-only>true</http-only>
-        <!--<secure>true</secure>-->
-    </cookie-config>
-    <tracking-mode>COOKIE</tracking-mode>
-  </session-config>
+   <security-constraint>
+     <web-resource-collection>
+       <web-resource-name>Administration</web-resource-name>
+       <url-pattern>/admin/*</url-pattern>
+       <http-method>GET</http-method>
+       <http-method>POST</http-method>
+     </web-resource-collection>
+     <auth-constraint>
+       <role-name>admin</role-name>
+     </auth-constraint>
+   </security-constraint>
+
+   <!-- Redirecting http requests to https
+   <security-constraint>
+     <web-resource-collection>
+         <web-resource-name>Entire Application</web-resource-name>
+         <url-pattern>/*</url-pattern>
+     </web-resource-collection>
+     <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+     </user-data-constraint>
+   </security-constraint>
+   -->
+
+   <!-- allow Favicons -->
+   <security-constraint>
+     <web-resource-collection>
+         <web-resource-name>NonSecureConnectionOK</web-resource-name>
+         <url-pattern>*.ico</url-pattern>
+     </web-resource-collection>
+     <user-data-constraint>
+         <transport-guarantee>NONE</transport-guarantee>
+     </user-data-constraint>
+   </security-constraint>
+
+   <!-- Session Configuration -->
+   <session-config>
+     <session-timeout>60</session-timeout>
+     <cookie-config>
+         <http-only>true</http-only>
+         <!--<secure>true</secure>-->
+     </cookie-config>
+     <tracking-mode>COOKIE</tracking-mode>
+   </session-config>
 
 </web-app>
