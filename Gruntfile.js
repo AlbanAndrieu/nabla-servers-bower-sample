@@ -67,7 +67,7 @@ module.exports = function(grunt) {
     'zap_stop': 'grunt-zaproxy',
     'zap_results': 'grunt-zaproxy',
     //'validate-package': 'grunt-nsp-package',
-    resemble: 'grunt-resemble-cli',
+    qunit: 'grunt-phantomjs-basil',
     'protractor_coverage': 'grunt-protractor-coverage',
     instrument: 'grunt-istanbul',
     makeReport: 'grunt-istanbul',
@@ -1240,57 +1240,24 @@ module.exports = function(grunt) {
         }
     },
 
-    resemble: {
+    qunit: {
       options: {
-        screenshotRoot: 'screenshots/',
-        tolerance: 10,
-        //url: 'http://0.0.0.0:8000/dist',
-        url: SERVER_PROD_URL + SERVER_CONTEXT,
-        //debug: true,
-        gm: false
+        urls: [
+         SERVER_PROD_URL + SERVER_CONTEXT
+        ],
+        screenshotOnFail: true,
+        viewportSize: {
+         width: 1100,
+         height: 768
+        },
+        screenshotPath: '.tmp/screenshots',
+        originalScreenshotPath: '.tmp/original_screenshots',
+        diffScreenshotPath: '.tmp/diff_screenshots',
+        errorDiffPath: '.tmp/screenshots/error',
+        resemble: {
+         errorType: 'movement'
+        }
 
-      },
-      desktop: {
-        options: {
-          width: 1100
-        },
-        files: [
-         {
-           cwd: 'dist/',
-           //expand: true,
-           //src: ['**/*.html'],
-           src: ['*.html'],
-           dest: 'desktop'
-         }
-        ]
-      },
-      //desktop: {
-      //  options: {
-      //    width: 1100,
-      //  },
-      //  src: ['dist/about', 'dist/contact', 'dist/customers', 'dist/customers/customer-stories'],
-      //  dest: 'desktop',
-      //},
-      //tablet: {
-      //  options: {
-      //    width: 800,
-      //  },
-      //  src: ['dist/**/*.html'],
-      //  dest: 'tablet',
-      //},
-      mobile: {
-        options: {
-          width: 450
-        },
-        files: [
-         {
-           cwd: 'dist/',
-           //expand: true,
-           //src: ['**/*.html'],
-           src: ['*.html'],
-           dest: 'mobile'
-         }
-        ]
       }
     },
 
@@ -1645,7 +1612,7 @@ module.exports = function(grunt) {
     'phantomas',
     //'wpt',
     'perfbudget',
-    'resemble'
+    'qunit'
     //'zap_stop'
     //'zap_results'
   ]);

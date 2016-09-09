@@ -1,4 +1,5 @@
 # nabla-servers-bower-sample
+![nabla-projects-interview-visma](http://home.nabla.mobi/sample/images/mroizo.1f00120c.png)
 
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -19,8 +20,8 @@ Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndri
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample)
 [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
 
-[![OpenCollective](https://opencollective.com/angular-fullstack/backers/badge.svg)](#backers)
-[![OpenCollective](https://opencollective.com/angular-fullstack/sponsors/badge.svg)](#sponsors)
+[![OpenCollective](https://opencollective.com/nabla-servers-bower-sample/backers/badge.svg)](#backers)
+[![OpenCollective](https://opencollective.com/nabla-servers-bower-sample/sponsors/badge.svg)](#sponsors)
 
 [![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)
 
