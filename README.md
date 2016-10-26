@@ -19,6 +19,7 @@ Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndri
 
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample)
 [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
+[![Known Vulnerabilities](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample/badge.svg)](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample)
 
 [![OpenCollective](https://opencollective.com/nabla-servers-bower-sample/backers/badge.svg)](#backers)
 [![OpenCollective](https://opencollective.com/nabla-servers-bower-sample/sponsors/badge.svg)](#sponsors)
