@@ -1613,8 +1613,8 @@ module.exports = function(grunt) {
     'sitespeedio',
     'phantomas',
     //'wpt',
-    'perfbudget',
-    'qunit'
+    'perfbudget'
+    //'qunit'
     //'zap_stop'
     //'zap_results'
   ]);

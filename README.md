@@ -1,6 +1,7 @@
 # nabla-servers-bower-sample
 ![nabla-projects-interview-visma](http://home.nabla.mobi/sample/images/mroizo.1f00120c.png)
 
+[![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Javascript project
@@ -309,6 +310,11 @@ Project Properties | Validation | Project specific settings | Web Resources Vali
 Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
 
 See https://github.com/oasp/oasp4js/issues/24 for more details
+
+License
+-------
+
+Apache v2
 
 ## Other resources
 

@@ -49,7 +49,7 @@
     "engine.io": "1.6.9",
     "engine.io-client": "1.6.9",
     "fs-extra": "0.30.0",
-    "grunt": "0.4.5",
+    "grunt": "1.0.1",
     "grunt-angular-templates": "1.0.4",
     "grunt-autoprefixer": "3.0.4",
     "grunt-banner": "0.6.0",
