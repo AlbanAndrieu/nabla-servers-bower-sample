@@ -1225,22 +1225,22 @@ module.exports = function(grunt) {
       }
     },
 
-    'phantomcss-gitdiff': {
-      options: {},
-        desktop: {
-            options: {
-                baseUrl: SERVER_PROD_URL + SERVER_CONTEXT,
-                cleanupComparisonImages: false,
-                //viewportSize: [1024, 768], //desktop
-                viewportSize: [320, 400], //mobile
-                gitDiff: true
-            },
-            files: [{
-              cwd: 'dist/',
-              src: '*.html'
-            }]
-        }
-    },
+    //'phantomcss-gitdiff': {
+    //  options: {},
+    //    desktop: {
+    //        options: {
+    //            baseUrl: SERVER_PROD_URL + SERVER_CONTEXT,
+    //            cleanupComparisonImages: false,
+    //            //viewportSize: [1024, 768], //desktop
+    //            viewportSize: [320, 400], //mobile
+    //            gitDiff: true
+    //        },
+    //        files: [{
+    //          cwd: 'dist/',
+    //          src: '*.html'
+    //        }]
+    //    }
+    //},
 
     qunit: {
       options: {
@@ -1294,7 +1294,7 @@ module.exports = function(grunt) {
                 Should a report/visualisation be generated after
                 the test run? Default value is false
             */
-            createReport: false,
+            createReport: true,
 
             /*
                 Should the report output live somewhere else, e.g. for
@@ -1321,7 +1321,7 @@ module.exports = function(grunt) {
                 Where should the results go?
                 Default value is ./test-results
             */
-            results: './test-results',
+            results: './build/test-results',
 
             /*
                 Hide elements in the page
@@ -1613,10 +1613,14 @@ module.exports = function(grunt) {
     'sitespeedio',
     'phantomas',
     //'wpt',
-    'perfbudget'
-    //'qunit'
+    'perfbudget',
+    'qunit'
     //'zap_stop'
     //'zap_results'
+  ]);
+
+  grunt.registerTask('qunit', [
+    'qunit'
   ]);
 
   grunt.registerTask('prepare', [
