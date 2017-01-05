@@ -4,7 +4,7 @@
 
   "XSS_TEST": "{{username}}",
 
-  "views.Fork me on": "Fork me on",
+  "views.Fork me on": "Fork moi sur",
 
   "views.index.Project": "Nabla",
   "views.index.Project version": "1.0",
@@ -39,13 +39,13 @@
   "views.about.My name is...": "Mon nom est Alban Andrieu.",
   "views.about.I'm Web Developer and...": "Je suis un Developer Web et un ingénieur en informatique avec une vaste experience dans les domains suivant Front-End, Back-End, DevOps, Sysadmin, Security, Build, Release, QA.",
   "views.about.Author of": "Auteur de ce project disponible gratuitement sur",
-  "views.about.Have successful experience...": "Have successful experience creating Mobile Web Applications from scratch to more than 50k. downloads (as Manager, Developer, Tester and Publisher).",
+  "views.about.Have successful experience...": "J'ai de l'experience pour réaliser des applications Mobile Web du début a plus de 50k téléchargement (en tant que Manager, Developpeur, Testeur et Administrateur).",
   "views.about.JS, HTML and CSS enthusiast...": "JS, HTML et CSS enthousiast. Amusez-vous bien :)",
 
   "views.contacts.Follow me on": "Suis moi sur",
   "views.contacts.My": "Moi",
   "views.contacts.Mail me": "Ecrivez moi",
-  "views.contacts.Call me": "Appelez me",
+  "views.contacts.Call me": "Appelez moi",
   "views.contacts.Find me": "Où me trouver",
 
   "directives.language-select.Language": "{{views.index.Language}}"
