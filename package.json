@@ -12,6 +12,7 @@
     "email": "alban.andrieu@nabla.mobi",
     "url": "http://home.nabla.mobi"
   },
+  "license": "MIT",  
   "licenses": [
     {
       "type": "MIT",
