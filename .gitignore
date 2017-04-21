@@ -1,9 +1,10 @@
 .project
 .settings/
 .classpath
-target/
-target-eclipse/
 .tern-project
+.checkstyle
+target/
+target-eclipse
 /build/
 .DS_Store
 .idea/workspace.xml

@@ -24,7 +24,18 @@ exports.config = {
     //  'browserName': 'firefox',
     //'browserName': 'phantomjs',
     'chromeOptions': {
-        'args': ['--incognito', '--disable-extensions', '--start-maximized', '--no-sandbox', '--ignore-certificate-errors', '--disable-popup-blocking', '--disable-translate', '--disable-web-security', '--test-type=browser'],
+        'args': ['--incognito',
+                 '--disable-extensions',
+                 '--start-maximized',
+                 '--no-sandbox',
+                 '--ignore-certificate-errors',
+                 '--disable-popup-blocking',
+                 '--disable-translate',
+                 '--disable-web-security',
+                 '--test-type=browser',
+                 '--enable-file-cookies',
+                 '--allow-file-access-from-files'
+                 ],
         'prefs': {
                 'downloads': {
                     'prompt_for_download': false,
