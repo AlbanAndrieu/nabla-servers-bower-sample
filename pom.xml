@@ -50,6 +50,7 @@
 		-->
 		<npm.version>4.2.0</npm.version>
 		<node.version>7.8.0</node.version>
+		<yarn.version>0.16.1</yarn.version>
 
 		<!--
 		<jersey.version>2.21</jersey.version>
@@ -324,8 +325,10 @@
 				<configuration>
 					<nodeVersion>v${node.version}</nodeVersion>
 					<npmVersion>${npm.version}</npmVersion>
+					<yarnVersion>v${yarn.version}</yarnVersion>
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
-						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot> -->
+						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
+						<yarnDownloadRoot>http://home.nabla.mobi/html/download//yarn/</yarnDownloadRoot>   -->
                     			<workingDirectory>./</workingDirectory>
 					<srcdir>${basedir}/app</srcdir>
 					<outputdir>${project.build.directory}/dist</outputdir>
@@ -928,6 +931,7 @@
 						<configuration>
 							<nodeVersion>v${node.version}</nodeVersion>
 							<npmVersion>${npm.version}</npmVersion>
+							<yarnVersion>v${yarn.version}</yarnVersion>
 							<workingDirectory>./</workingDirectory>
 						</configuration>
 
