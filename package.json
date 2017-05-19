@@ -12,7 +12,7 @@
     "email": "alban.andrieu@nabla.mobi",
     "url": "http://home.nabla.mobi"
   },
-  "license": "MIT",  
+  "license": "MIT",
   "licenses": [
     {
       "type": "MIT",
@@ -35,7 +35,7 @@
   },
   "engine-strict": true,
   "dependencies": {
-    "express": "4.14.0",
+    "express": "4.15.3",
     "lodash": "4.0.0",
     "passport": "0.3.2",
     "passport-local": "1.0.0"
