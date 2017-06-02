@@ -38,8 +38,7 @@ Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndri
 ## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) [![Requirements](https://requires.io/github/pycontribs/jira/requirements.svg?branch=master)](https://requires.io/github/nabla-servers-bower-sample/jira/requirements/?branch=master)
 ## Why? [![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
 
-[![Inline docs](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME}.svg?branch=master)](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME})
-
+<!--[![Inline docs](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME}.svg?branch=master)](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME})-->
 <!--[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)-->
 [![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://alban-andrieu.com)
 
