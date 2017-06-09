@@ -4,7 +4,7 @@
   "version": "1.0.1",
   "author": "Nabla Core Team <dev@home.nabla.mobi>",
   "private": "false",
-  "main": "src/index.js",
+  "main": "app/scripts/app.js",
   "ignore": [
     ".jshintrc",
     "**/*.txt",

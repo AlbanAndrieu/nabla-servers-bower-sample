@@ -328,4 +328,3 @@ Apache v2
 
 Yo generator :
 https://github.com/peterhendrick/openSource
-
