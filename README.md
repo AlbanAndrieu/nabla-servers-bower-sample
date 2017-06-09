@@ -6,23 +6,41 @@
 
 Javascript project
 
-[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![Jenkins Build Status](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly)
+[![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
 [![Quality Gate](http://home.nabla.mobi:9000/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample:master)](http://home.nabla.mobi:9000/dashboard/index/com.nabla.project.servers.sample:bower-sample:master)
+[![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
+[![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
 Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndrieu)
 
+<!--[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)-->
 [![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
+[![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
 
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample)
 [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample/badge.svg)](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample)
+[![NSP Status](https://nodesecurity.io/orgs/nabla/projects/09223c07-0122-47bd-ab24-f0a4b6b6a38a/badge)](https://nodesecurity.io/orgs/nabla/projects/09223c07-0122-47bd-ab24-f0a4b6b6a38a)
 
-[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)
+[![Branch](http://img.shields.io/github/tag/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/tree/master)
+[![Platforms](http://img.shields.io/badge/platforms-ubuntu-lightgrey.svg?style=flat)](#)
+
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=AlbanAndrieu&url=https://github.com/AlbanAndrieu/nabla-servers-bower-sample&title=nabla-servers-bower-sample&language=en_GB&tags=github&category=software)
+[![Donate](https://img.shields.io/gratipay/AlbanAndrieu.svg?style=flat)](https://www.gratipay.com/~AlbanAndrieu)
+[![bounties](https://img.shields.io/bountysource/team/pycontribs/activity.svg)](https://www.bountysource.com/teams/nabla-servers-bower-sample/issues?tracker_ids=3650997)
+
+[![Issues](https://img.shields.io/github/issues/badges/shields.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues)
+## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) [![Requirements](https://requires.io/github/pycontribs/jira/requirements.svg?branch=master)](https://requires.io/github/nabla-servers-bower-sample/jira/requirements/?branch=master)
+## Why? [![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
+
+<!--[![Inline docs](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME}.svg?branch=master)](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME})-->
+<!--[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)-->
+[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://alban-andrieu.com)
 
 A bower project sample.
 =============
@@ -319,4 +337,3 @@ Apache v2
 
 Yo generator :
 https://github.com/peterhendrick/openSource
-
