@@ -246,6 +246,7 @@
 						<fileset>
 							<directory>${project.basedir}</directory>
 							<includes>
+								<!--
 								<include>.bower/</include>
 								<include>.node_cache/</include>
 								<include>.node_tmp/</include>
@@ -253,10 +254,11 @@
 								<include>node_modules/</include>
 								<include>node/</include>
 								<include>bower_components/</include>
-								<include>lib/</include>
-								<!--<include>build/</include> -->
+								-->
+								<include>lib/</include>								
 								<include>docs/</include>
 								<include>dist/</include>
+								<!--<include>build/</include> -->
 							</includes>
 							<excludes>
 								<!-- Allow mvn clean install > install.log -->
@@ -289,6 +291,7 @@
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>${maven.frontend.plugin.version}</version>
 				<executions>
+					<!--
 					<execution>
 						<id>install node and yarn</id>
 						<phase>generate-resources</phase>
@@ -303,6 +306,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 					</execution>
+					-->
 					<execution>
 						<id>npm install</id>
 						<phase>initialize</phase>
