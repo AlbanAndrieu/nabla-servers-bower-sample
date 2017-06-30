@@ -140,8 +140,13 @@
                 <li>
                 <!--<div class="">-->
                    <!-- <input type="text" class="form-control" placeholder="{{'views.index.Language' | translate}}">-->
-                    <div class="form-group" class="language-select" ng-translate-language-select></div>
+                    <!--<div class="form-group" class="language-select" ng-translate-language-select></div>-->
                 <!--</div>-->
+                    <div id="google_translate_element"></div><script type="text/javascript">
+                    function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-56011797-1'}, 'google_translate_element');
+                    }
+                    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                 </li>
               </form>
 
