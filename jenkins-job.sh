@@ -59,7 +59,7 @@ fi
 
 ######################
 #TODO maven
-#mvn -B -U -e -Dsurefire.useFile=false clean install -Dcargo.rmi.port=$CARGO_RMI_PORT -Djetty.port=$JETTY_PORT
+#mvn -B -U -e -Dsurefire.useFile=false clean install -Dcargo.rmi.port=$CARGO_RMI_PORT -Djetty.port=$JETTY_PORT -Dserver=jetty9x
 
 ######################
 #Post Steps
