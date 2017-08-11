@@ -367,7 +367,7 @@
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
 						<yarnDownloadRoot>http://home.nabla.mobi/html/download//yarn/</yarnDownloadRoot>   -->
-					<workingDirectory>./</workingDirectory>
+					<!--<workingDirectory>./</workingDirectory>-->
 					<srcdir>${basedir}/app</srcdir>
 					<outputdir>${project.build.directory}/dist</outputdir>
 					<triggerfiles>
