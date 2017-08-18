@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="styles/carousel.css">
     <!-- endbuild -->
 
+    <link rel="stylesheet" href="https://unpkg.com/social-likes-next/dist/social-likes_birman.css">
   </head>
   <body ng-controller="AppController" id="top">
 
@@ -167,13 +168,15 @@
         <div class="footer">
             <div class="container">
             <div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
-                <div class="facebook" title="Share link on Facebook">Facebook</div>
-                <div class="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
-                <div class="plusone" title="Share link on Google+">Google+</div>
-                <div class="pinterest" title="Share image on Pinterest" data-media="">Pinterest</div>
+                <div data-service="facebook" title="Share link on Facebook">Facebook</div>
+                <div data-service="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
+                <div data-service="plusone" title="Share link on Google+">Google+</div>
+                <div data-service="pinterest" title="Share link on Pinterest" data-media="image link, required">Pinterest</div>
+              	<div data-service="vkontakte" title="Share link on Vkontakte">Vkontakte</div>
+              	<div data-service="odnoklassniki" title="Share link on Odnoklassniki">Odnoklassniki</div>
             </div>
             <p class="pull-right"><a ng-click="scrollTo('top')">Back to top</a></p>
-            <p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            <p>&copy; 2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
             <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
             </div>
         </div>
@@ -190,6 +193,8 @@
        ga('create', 'UA-56011797-1');
        ga('send', 'pageview');
     </script>
+
+    <script src="https://unpkg.com/social-likes-next/dist/social-likes.min.js"></script>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
