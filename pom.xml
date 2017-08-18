@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
+    	<!-- @formatter:off -->		
 	<parent>
 		<artifactId>sample</artifactId>
 		<groupId>com.nabla.project.servers.sample</groupId>
@@ -299,6 +301,7 @@
 							<goal>install-node-and-yarn</goal>
 						</goals>
 					</execution>
+					-->					
 					<execution>
 						<id>install node and npm</id>
 						<phase>validate</phase>
@@ -306,7 +309,6 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 					</execution>
-					-->
 					<execution>
 						<id>npm install</id>
 						<phase>initialize</phase>
@@ -365,7 +367,7 @@
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
 						<yarnDownloadRoot>http://home.nabla.mobi/html/download//yarn/</yarnDownloadRoot>   -->
-					<workingDirectory>./</workingDirectory>
+					<!--<workingDirectory>./</workingDirectory>-->
 					<srcdir>${basedir}/app</srcdir>
 					<outputdir>${project.build.directory}/dist</outputdir>
 					<triggerfiles>

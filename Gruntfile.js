@@ -266,11 +266,11 @@ module.exports = function(grunt) {
         livereload: 35730,
         analytics: {
           account: 'UA-56011797-1',
-          domainName: 'nabla.mobi'
+          domainName: 'nabla.freeboxos.fr'
         },
         discussions: {
           shortName: 'nabla',
-          url: 'http://home.nabla.mobi',
+          url: 'https://nabla.freeboxos.fr',
           dev: false
         },
         middleware: function(connect, options) {
