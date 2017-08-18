@@ -301,6 +301,7 @@
 							<goal>install-node-and-yarn</goal>
 						</goals>
 					</execution>
+					-->					
 					<execution>
 						<id>install node and npm</id>
 						<phase>validate</phase>
@@ -308,7 +309,6 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 					</execution>
-					-->
 					<execution>
 						<id>npm install</id>
 						<phase>initialize</phase>
