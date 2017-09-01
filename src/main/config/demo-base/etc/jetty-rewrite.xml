@@ -8,7 +8,7 @@
 		<Set name="rules">
 			<Array type="org.eclipse.jetty.rewrite.handler.Rule">
 
-				<!-- <Item> <New id="rewrite" class="org.eclipse.jetty.rewrite.handler.RewritePatternRule"> 
+				<!-- <Item> <New id="rewrite" class="org.eclipse.jetty.rewrite.handler.RewritePatternRule">
 					<Set name="pattern">/*</Set> <Set name="replacement">/test</Set> </New> </Item> -->
 
 				<Item>
@@ -19,10 +19,10 @@
 					</New>
 				</Item>
 
-				<!-- <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
-					<Set name="pattern">*.jsp</Set> <Set name="name">server</Set> <Set name="value">Test 
-					webserver</Set> </New> </Item> <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
-					<Set name="pattern">*.jsp</Set> <Set name="name">title</Set> <Set name="value">driven 
+				<!-- <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+					<Set name="pattern">*.jsp</Set> <Set name="name">server</Set> <Set name="value">Test
+					webserver</Set> </New> </Item> <Item> <New id="header" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+					<Set name="pattern">*.jsp</Set> <Set name="name">title</Set> <Set name="value">driven
 					header purpose</Set> </New> </Item> -->
 
 				<!-- Security rules from https://www.owasp.org/index.php/List_of_useful_HTTP_headers -->
@@ -75,9 +75,9 @@
 				</Item>
 
 				<!-- X-Content-Type-Options -->
-				<!-- TODO Chrome has started implementing security : Code is not working 
-					in chrome but works fine in firefox <Item> <New id="header-nosniff" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule"> 
-					<Set name="pattern">/*</Set> <Set name="name">X-Content-Type-Options</Set> 
+				<!-- TODO Chrome has started implementing security : Code is not working
+					in chrome but works fine in firefox <Item> <New id="header-nosniff" class="org.eclipse.jetty.rewrite.handler.HeaderPatternRule">
+					<Set name="pattern">/*</Set> <Set name="name">X-Content-Type-Options</Set>
 					<Set name="value">nosniff</Set> </New> </Item> -->
 
 				<Item>

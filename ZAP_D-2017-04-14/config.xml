@@ -6,17 +6,17 @@
 		<proxyChain>
 			<hostName/>
 			<port>8080</port>
-			
+
 			<realm/>
 			<userName/>
-			<password/>		
+			<password/>
 			<prompt>false</prompt>
 		<enabled>false</enabled>
 <confirmRemoveExcludedDomain>true</confirmRemoveExcludedDomain>
 <authEnabled>false</authEnabled>
 </proxyChain>
 		<auth/>
-		
+
 	<timeoutInSecs>20</timeoutInSecs>
 <singleCookieRequestHeader>true</singleCookieRequestHeader>
 
@@ -33,12 +33,12 @@
 		<ip>localhost</ip>
 		<port>8090</port>
 		<reverseProxy>
-			<use>0</use>	
+			<use>0</use>
 			<ip>150.151.160.25</ip>
 			<httpPort>80</httpPort>
 			<httpsPort>443</httpsPort>
-		</reverseProxy>		
-		
+		</reverseProxy>
+
 	<modifyAcceptEncoding>true</modifyAcceptEncoding>
 <decodeGzip>true</decodeGzip>
 
@@ -234,7 +234,7 @@
 <spider>
 		<thread>2</thread>
 		<maxDepth>5</maxDepth>
-		
+
 		<postform>true</postform>
 		<processform>true</processform>
 		<sendCookies>false</sendCookies>

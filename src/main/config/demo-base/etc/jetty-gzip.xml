@@ -48,16 +48,15 @@
 				</Array>
 			</Set>
 
-			<!-- <Set name="excludedPaths"> <Array type="String"> <Item>*.gz</Item> 
+			<!-- <Set name="excludedPaths"> <Array type="String"> <Item>*.gz</Item>
 				</Array> </Set> -->
 
-			<!-- <Call name="addIncludedMimeTypes"> <Arg><Array type="String"> <Item>some/type</Item> 
+			<!-- <Call name="addIncludedMimeTypes"> <Arg><Array type="String"> <Item>some/type</Item>
 				</Array></Arg> </Call> -->
 
-			<!-- <Call name="addExcludedMimeTypes"> <Arg><Array type="String"> <Item>some/type</Item> 
+			<!-- <Call name="addExcludedMimeTypes"> <Arg><Array type="String"> <Item>some/type</Item>
 				</Array></Arg> </Call> -->
 
 		</New>
 	</Set>
 </Configure>
-

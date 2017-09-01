@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
-    	<!-- @formatter:off -->		
+    	<!-- @formatter:off -->
 	<parent>
 		<artifactId>sample</artifactId>
 		<groupId>com.nabla.project.servers.sample</groupId>
@@ -30,7 +30,8 @@
 	</ciManagement>
 	<!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 	<properties>
-		<maven.frontend.plugin.version>1.4</maven.frontend.plugin.version>
+		<maven.frontend.plugin.version>1.5</maven.frontend.plugin.version>
+		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 		<!-- upgrade make resemble plugin no more working-->
 		<!--
 		<npm.version>3.9.5</npm.version>
@@ -41,7 +42,7 @@
 		<node.version>4.3.1</node.version>
 		-->
 		<npm.version>5.3.0</npm.version>
-        <node.version>8.1.4</node.version> 
+        <node.version>8.1.4</node.version>
 		<yarn.version>0.16.1</yarn.version>
 		<!--
 		<jersey.version>2.21</jersey.version>
@@ -124,6 +125,7 @@
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
+			<version>${groovy.version}</version>
 			<!--<scope>test</scope> -->
 		</dependency>
 		<dependency>
@@ -147,45 +149,6 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
-		</dependency>
-		<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
-		<!-- https://github.com/mdeimel/jetty-proxy -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-proxy</artifactId>
-			<version>${jetty.version}</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-http</artifactId>
-			<version>${jetty.version}</version>
-			<type>jar</type>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-rewrite</artifactId>
-			<version>${jetty.version}</version>
-			<type>jar</type>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
-			<version>${jetty.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${jetty.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
-			<version>${jetty.version}</version>
-			<type>jar</type>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
@@ -238,6 +201,21 @@
         <testSourceDirectory>test</testSourceDirectory>
         -->
 		<finalName>test</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<dependencies>
+						<dependency>
+							<groupId>org.eclipse.jetty.toolchain</groupId>
+							<artifactId>jetty-assembly-descriptors</artifactId>
+							<version>1.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -257,7 +235,7 @@
 								<include>node/</include>
 								<include>bower_components/</include>
 								-->
-								<include>lib/</include>								
+								<include>lib/</include>
 								<include>docs/</include>
 								<include>dist/</include>
 								<!--<include>build/</include> -->
@@ -350,7 +328,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>grunt package</id>
+						<id>grunt prepare-package</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>grunt</goal>
@@ -417,6 +395,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${maven.bundle.plugin.version}</version>
 				<extensions>true</extensions>
 				<executions>
 					<execution>
@@ -468,6 +447,7 @@
 			</plugin>
 			<!-- for automatic running of integration tests with Jetty -->
 			<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
+			<!--
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
@@ -481,13 +461,6 @@
 						</goals>
 						<configuration>
 							<timeout>240000</timeout>
-							<!--
-							<configuration>
-								<properties>
-									<cargo.jvmargs>${jacoco.agent.it.arg}</cargo.jvmargs>
-								</properties>
-							</configuration>
-							-->
 						</configuration>
 					</execution>
 					<execution>
@@ -498,15 +471,6 @@
 						</goals>
 						<configuration>
 							<timeout>60000</timeout>
-							<!--
-							<configuration>
-								<properties>
-									<cargo.jmx.activation></cargo.jmx.activation>
-									<cargo.start.jvmargs></cargo.start.jvmargs>
-									<cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
-								</properties>
-							</configuration>
-							-->
 						</configuration>
 					</execution>
 				</executions>
@@ -514,9 +478,6 @@
 					<wait>${cargo.wait}</wait>
 					<container>
 						<timeout>300000</timeout>
-						<!-- 5 minutes -->
-						<!--<containerId>${cargo.container}</containerId> -->
-						<!--<type>${cargo.container.type}</type> -->
 						<log>${project.build.directory}/cargo.log</log>
 						<logLevel>debug</logLevel>
 						<systemProperties>
@@ -538,10 +499,7 @@
 						</dependencies>
 					</container>
 					<configuration>
-						<!--<type>${cargo.configuration.type}</type> -->
-						<!--<home>${project.build.directory}/cargo/installs/jboss-as-dist-7.1.1.Final/jboss-as-7.1.1.Final/standalone/</home> -->
 						<properties>
-							<!--<cargo.protocol>${cargo.protocol}</cargo.protocol> -->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -549,7 +507,6 @@
 							<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
 							<cargo.logging>high</cargo.logging>
 							<cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs>
-							<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
 							<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
 						</properties>
 						<configfiles>
@@ -570,7 +527,6 @@
 								<todir></todir>
 							</configfile>
 						</configfiles>
-						<!-- https://codehaus-cargo.github.io/cargo/Maven2+Plugin+Reference+Guide.html#Maven2PluginReferenceGuide-file -->
 						<files>
 							<configfile>
 								<file>${project.basedir}/src/main/config/demo-base/keystore</file>
@@ -594,6 +550,7 @@
 					</deployables>
 				</configuration>
 			</plugin>
+			-->
 			<!-- launch mvn clean install jetty:run-war -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
@@ -603,22 +560,22 @@
 					<dependency>
 						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-client</artifactId>
-						<version>${jetty9.version}</version>
+						<version>${jetty.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-servlets</artifactId>
-						<version>${jetty9.version}</version>
+						<version>${jetty.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-http</artifactId>
-						<version>${jetty9.version}</version>
+						<version>${jetty.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>org.eclipse.jetty</groupId>
 						<artifactId>jetty-rewrite</artifactId>
-						<version>${jetty9.version}</version>
+						<version>${jetty.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -740,6 +697,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>${maven.dependency.plugin.version}</version>
+				<!--$NO-MVN-MAN-VER$-->
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -762,6 +720,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven.shade.plugin.version}</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -838,6 +797,35 @@
 	</build>
 	<profiles>
 		<profile>
+			<id>config</id>
+			<activation>
+				<file>
+					<exists>src/main/config</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+								<configuration>
+									<descriptorRefs>
+										<descriptorRef>config</descriptorRef>
+									</descriptorRefs>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>sonar</id>
 			<activation>
 				<property>
@@ -859,6 +847,7 @@
 			</activation>
 			<build>
 				<plugins>
+					<!-- DISABLE because it is too slow -->
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
@@ -913,6 +902,123 @@
 			<properties>
 				<maven.test.failure.skip>false</maven.test.failure.skip>
 				<maven.test.skip>false</maven.test.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>jetty9x</id>
+			<activation>
+				<property>
+					<name>server</name>
+					<value>jetty9x</value>
+					<!-- <name>!server</name>-->
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
+					<plugin>
+						<groupId>org.codehaus.cargo</groupId>
+						<artifactId>cargo-maven2-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>start-container</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>start</goal>
+								</goals>
+								<configuration>
+									<configuration>
+										<properties>
+											<cargo.start.jvmargs>${jacoco.agent.it.arg}</cargo.start.jvmargs>
+										</properties>
+									</configuration>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-container</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<container>
+								<containerId>${cargo.container}</containerId>
+								<artifactInstaller>
+									<groupId>org.eclipse.jetty</groupId>
+									<artifactId>jetty-distribution</artifactId>
+									<version>${server.version}</version>
+								</artifactInstaller>
+							</container>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
+				<!-- https://github.com/mdeimel/jetty-proxy -->
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-proxy</artifactId>
+					<version>${jetty.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-http</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-rewrite</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-server</artifactId>
+					<version>${jetty.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-servlet</artifactId>
+					<version>${jetty.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-continuation</artifactId>
+					<version>${jetty.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-servlets</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+			<properties>
+				<server.home></server.home>
+				<jetty.version>${jetty9.version}</jetty.version>
+				<server.version>${jetty.version}</server.version>
+				<server.name>${product.name}</server.name>
+				<server.port></server.port>
+				<datasource>${datasource.name}</datasource>
+				<cargo.container>jetty9x</cargo.container>
+				<cargo.container.home>${project.build.directory}/jetty</cargo.container.home>
+				<!--<cargo.container.url>TODOjetty9</cargo.container.url>-->
+				<cargo.container.type>installed</cargo.container.type>
+				<cargo.configuration.type>standalone</cargo.configuration.type>
+				<cargo.deployables.type></cargo.deployables.type>
+				<cargo.port>${jetty.port}</cargo.port>
+				<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
+				<scope.type>${scope.compile}</scope.type>
+				<scope.tomcat.only.type>${scope.compile}</scope.tomcat.only.type>
+				<scope.tomcat.never.type>${scope.provided}</scope.tomcat.never.type>
 			</properties>
 		</profile>
 		<profile>

@@ -24,12 +24,12 @@ public class BookResource {
     public Collection<Book> list() {
         return books;
     }
-    
+
     @GET
     @Path("test")
     @Produces(MediaType.TEXT_PLAIN)
     public String test() {
         return "Test";
     }
-    
+
 }
