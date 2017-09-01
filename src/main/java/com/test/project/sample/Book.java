@@ -17,13 +17,13 @@ public class Book {
 
         this.isbn = aIsbn;
         this.title = aTitle;
-        this.author = anAuthor;        
-    	
+        this.author = anAuthor;
+
         if (null == this.isbn)
         {
             throw new IllegalArgumentException("ISBN cannot be null");
         }
-                
+
     }
 
     public String getTitle() {

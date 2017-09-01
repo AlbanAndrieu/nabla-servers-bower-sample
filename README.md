@@ -98,6 +98,14 @@ https://scotch.io/tutorials/internationalization-of-angularjs-applications
 
 https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean...master
 
+## Quality tools
+
+See [pre-commit](http://pre-commit.com/)
+Run `pre-commit install`
+Run `pre-commit autoupdate`
+
+RUn `pre-commit run --all-files`
+
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
