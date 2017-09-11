@@ -4,12 +4,21 @@
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
     -   id: autopep8-wrapper
+    -   id: check-added-large-files
+    -   id: check-case-conflict
     -   id: check-docstring-first
+    -   id: check-executables-have-shebangs
     -   id: check-json
+    -   id: check-xml
     -   id: check-yaml
     -   id: debug-statements
+    -   id: detect-private-key
+    -   id: double-quote-string-fixer
     -   id: name-tests-test
+    -   id: end-of-file-fixer
+    -   id: fix-encoding-pragma
     -   id: requirements-txt-fixer
+    -   id: sort-simple-yaml
     -   id: flake8
 -   repo: https://github.com/pre-commit/pre-commit.git
     sha: v0.14.1
@@ -21,3 +30,10 @@
     hooks:
     -   id: reorder-python-imports
         language_version: python2.7
+#-   repo: https://github.com/Lucas-C/pre-commit-hooks-html
+#    sha: v1.3.5
+#    hooks:
+#    -   id: htmlhint
+#        # optional custom config:
+#        args: [--config, .htmlhintrc]
+#    -   id: htmllint
