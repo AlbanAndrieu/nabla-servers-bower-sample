@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import re
 import sys
 from subprocess import check_output
@@ -12,7 +13,7 @@ if len(sys.argv) > 3:
     commit_hash = sys.argv[3]
 else:
     commit_hash = ''
-print("prepare-commit-msg: File: %s\nType: %s\nHash: %s") % (commit_msg_filepath,
+print('prepare-commit-msg: File: %s\nType: %s\nHash: %s') % (commit_msg_filepath,
                                                              commit_type, commit_hash)
 # Figure out which branch we're on
 branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
@@ -27,4 +28,4 @@ if branch.startswith('feature/NABLA-'):
     with open(commit_msg_filepath, 'r+') as f:
         content = f.read()
         f.seek(0, 0)
-        f.write("NABLA-%s : %s" % (issue_number, content))
+        f.write('NABLA-%s : %s' % (issue_number, content))
