@@ -66,14 +66,15 @@ exports.config = {
     //}
   },
 
-  chromeDriver: './node_modules/protractor/selenium/chromedriver_2.21',
-  //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
-  seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
+  //seleniumServerJar: './node_modules/protractor/selenium/selenium-server-standalone-2.52.0.jar',
   //seleniumServerJar: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/selenium-server-standalone-2.51.0.jar',
-  //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
-  //chromeDriver: '/workspace/chrome-driver/chromedriver',
   //seleniumServerJar: '/workspace/selenium-server-standalone-2.53.0.jar',
-
+  //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.6.0.jar'
+  //chromeDriver: './node_modules/protractor/selenium/chromedriver_2.21',
+  //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',  
+  //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
+  //chromeDriver: '/usr/local/bin/chromedriver',
+  
   onPrepare: function() {
 	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
 
