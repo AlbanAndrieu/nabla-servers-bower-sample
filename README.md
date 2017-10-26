@@ -7,9 +7,9 @@
 Javascript project
 
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
-[![Jenkins Build Status](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:7072/jenkins/job/nabla-servers-bower-sample-nightly)
+[![Jenkins Build Status](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly)
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
-[![Quality Gate](http://home.nabla.mobi:9000/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample:master)](http://home.nabla.mobi:9000/dashboard/index/com.nabla.project.servers.sample:bower-sample:master)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample%3Avisma%3Amaster)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample:bower-sample%3Avisma%3A)
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
