@@ -76,7 +76,7 @@
     "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-uglify": "2.3.0",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-critical": "0.3.0",
+    "grunt-critical": "0.2.1",
     "grunt-express": "1.4.1",
     "grunt-filerev": "2.3.1",
     "grunt-gh-pages": "1.1.0",
