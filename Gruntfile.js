@@ -1,4 +1,4 @@
-  // Generated on 2015-03-19 using generator-angular 0.11.1
+// Generated on 2015-03-19 using generator-angular 0.11.1
 'use strict';
 
 // # Globbing
@@ -250,7 +250,8 @@ module.exports = function(grunt) {
           '<%= config.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.app %>/resources/{,*/}*.json'
+          '<%= config.app %>/resources/{,*/}*.json',
+          '<%= config.app %>/scripts/{,*/}*.js'
         ]
       }
     },
@@ -327,10 +328,10 @@ module.exports = function(grunt) {
                 '/bower_components',
                 serveStatic('./bower_components')
               ),
-              connect().use(
-                '/app/styles',
-                serveStatic('./app/styles')
-              ),
+              //connect().use(
+              //  '/app/styles',
+              //  serveStatic('./app/styles')
+              //),
               serveStatic(appConfig.app)
             ];
           }
@@ -546,7 +547,8 @@ module.exports = function(grunt) {
                    //'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded if used by uncss
                    'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
                    'bower_components/social-likes/social-likes_classic.css',
-                   'bower_components/social-likes/social-likes_birman.css'
+                   'bower_components/social-likes/social-likes_birman.css',
+                   'bower_components/nabla-styles/views/styles.html'
                    //'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css', // notneeded if used by uncss
                    //'/swagger-ui/',
                    ///bootstrap-sass-official/,
@@ -597,7 +599,7 @@ module.exports = function(grunt) {
         generatedImagesDir: '.tmp/images/generated',
         imagesDir: '<%= config.app %>/images',
         javascriptsDir: '<%= config.app %>/scripts',
-        fontsDir: '<%= config.app %>/styles/fonts',
+        fontsDir: '<%= config.app %>/../bower_components/font-awesome/fonts',
         importPath: '<%= config.app %>/../bower_components',
         httpImagesPath: '/images',
         httpGeneratedImagesPath: '/images/generated',
@@ -626,6 +628,8 @@ module.exports = function(grunt) {
             '<%= config.app %>/**/*.json',
             '<%= config.app %>/styles/**/*.css',
             '<%= config.app %>/scripts/**/*.js',
+            '<%= config.dist %>/fonts/**/*',
+            'bower_components/**/*',
             '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
             '.tmp/**/*.{css,js}'
           ]
@@ -909,7 +913,7 @@ module.exports = function(grunt) {
             // This should be the name of your apps angular module
             module: require('./bower.json').moduleName,
             //module: require('./bower.json').name + 'App',
-            usemin: 'scripts/app.js',
+            usemin: '<%= config.app %>/scripts/app.js',
             htmlmin:  {
                 removeCommentsFromCDATA: true,
                 // https://github.com/yeoman/grunt-usemin/issues/44
@@ -969,31 +973,31 @@ module.exports = function(grunt) {
         }, {
           src: 'node_modules/apache-server-configs/dist/.htaccess',
           dest: '<%= config.dist %>/.htaccess'
-        }, {
-          expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= config.dist %>'
-        }, {
-          expand: true,
-          cwd: '.',
-          src: 'bower_components/font-awesome/fonts/*',
-          dest: '<%= config.dist %>'
         //}, {
         //  expand: true,
-        //  cwd: 'bower_components/bootstrap-sass-official/assets/fonts/',
-        //  src: '**/*',
-        //  dest: '<%= config.dist %>/fonts'
+        //  cwd: '.',
+        //  src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+        //  dest: '<%= config.dist %>'
         //}, {
         //  expand: true,
-        //  cwd: 'bower_components/font-awesome/fonts/',
-        //  src: '**/*',
-        //  dest: '<%= config.dist %>/fonts'
+        //  cwd: '.',
+        //  src: 'bower_components/font-awesome/fonts/*',
+        //  dest: '<%= config.dist %>'
         }, {
           expand: true,
-          cwd: 'bower_components/angular-i18n/',
-          src: '*.js',
-          dest: '<%= config.dist %>/bower_components/angular-i18n'
+          cwd: 'bower_components/bootstrap-sass-official/assets/fonts/',
+          src: '**/*',
+          dest: '<%= config.dist %>/fonts'
+        }, {
+          expand: true,
+          cwd: 'bower_components/font-awesome/fonts/',
+          src: '**/*',
+          dest: '<%= config.dist %>/fonts'
+        //}, {
+        //  expand: true,
+        //  cwd: 'bower_components/angular-i18n/',
+        //  src: '*.js',
+        //  dest: '<%= config.dist %>/bower_components/angular-i18n'
         }]
       },
       coverageE2E: {
