@@ -113,11 +113,10 @@ exports.config = {
           savePath: 'target/surefire-reports'
       }));
 
-	  var SpecReporter = require('jasmine-spec-reporter');
-      // add jasmine spec reporter
-      jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
+	  //var SpecReporter = require('jasmine-spec-reporter');
+      //jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
-     //browser.ignoreSynchronization = true; //enable for non angular
+      //browser.ignoreSynchronization = true; //enable for non angular
 
       //https://github.com/angular/protractor/issues/1978
       browser.driver.manage().window().maximize();
