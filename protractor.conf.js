@@ -71,10 +71,10 @@ exports.config = {
   //seleniumServerJar: '/workspace/selenium-server-standalone-2.53.0.jar',
   //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.6.0.jar'
   //chromeDriver: './node_modules/protractor/selenium/chromedriver_2.21',
-  //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',  
+  //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
   //chromeDriver: '/usr/local/bin/chromedriver',
-  
+
   onPrepare: function() {
 	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
 
@@ -113,14 +113,13 @@ exports.config = {
           savePath: 'target/surefire-reports'
       }));
 
-	  var SpecReporter = require('jasmine-spec-reporter');
-      // add jasmine spec reporter
-      jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
+	  //var SpecReporter = require('jasmine-spec-reporter');
+      //jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
      //browser.ignoreSynchronization = true; //enable for non angular
 
       //https://github.com/angular/protractor/issues/1978
-      browser.driver.manage().window().maximize();
+      //browser.driver.manage().window().maximize();
       //return browser.get('http://localhost:' + ( process.env.SERVER_PORT || 9014 ));
       return browser.get('https://localhost:' + ( process.env.SERVER_SECURE_PORT || 9443 ));
       //return browser.get('http://localhost:9014');
