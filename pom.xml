@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
-    <!-- @formatter:off -->
+        <!-- @formatter:off -->
 	<parent>
 		<artifactId>sample</artifactId>
 		<groupId>com.nabla.project.servers.sample</groupId>
@@ -30,7 +30,8 @@
 	</ciManagement>
 	<!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 	<properties>
-		<maven.frontend.plugin.version>1.5</maven.frontend.plugin.version>
+		<maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
+		<maven.cargo.maven2.plugin.version>1.6.5</maven.cargo.maven2.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 		<!-- upgrade make resemble plugin no more working-->
 		<!--
@@ -56,10 +57,9 @@
 		<logback.version>1.0.13</logback.version>
 		<slf4j.version>1.7.13</slf4j.version>
 		-->
-		<!--<jetty9.version>9.2.3.v20140905</jetty9.version> -->
-		<jetty9.version>9.3.3.v20150827</jetty9.version>
-		<!--<jetty.ssl.port>9443</jetty.ssl.port>-->
-		<!-- 8443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
+		<jetty9.version>9.3.22.v20171030</jetty9.version>
+		<jetty.ssl.port>9443</jetty.ssl.port>
+		<!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 		<cargo.protocol>http</cargo.protocol>
 		<cargo.monitoring.jmx.rmi.port>10088</cargo.monitoring.jmx.rmi.port>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
