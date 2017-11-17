@@ -1,0 +1,30 @@
+@Library('NablaGlobal@master') _
+
+build.mavenBuildInsideDocker([
+        normalizeWorkspace: true,
+        docker: [image: 'nabla/ansible-jenkins-slave-docker'],
+        mvn: [
+                globalSettingsId: 'nabla-default',
+                settingsId: 'nabla-default',
+                goalsAndOptions: 'clean install -Denforcer.skip=true -Pjacoco,run-integration-test -T3 -Dsun.zip.disableMemoryMapping=true -Djacoco.outputDir=./target',
+                sonarGoalsAndOptions : " sonar:sonar -Dsonar.branch=${BRANCH_NAME} -Djacoco.outputDir=./target -Dsonar.organization=nabla -Dsonar.pitest.mode=skip -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false -Psonar,jacoco,run-integration-test",
+                sonarBranch: '.+',
+                dependencyCheckBranch: '.+',
+        ],
+        cleanup: true,
+        sonar: true,
+        sonarStatus: [
+            enabled: false,
+            qualityGate: false,
+            referenceDate: '2017/01/01',
+            checkTimeout: 600,
+            checkInterval: 30,
+            dependencyKeys: 'TODO'
+        ],
+        dependencyCheck: true,
+        deploy: true,
+        artifacts: [files: [
+            '**/target/*SNAPSHOT.jar, **/target/*test.jar, **/target/*.swf, **/target/*SNAPSHOT.war,**/target/*SNAPSHOT*.zip, *_VERSION.TXT, **/target/*.log, reports/*',
+            [paths: 'Jenkinsfile', onlyIfSuccessful: false]]
+        ],
+        notify: 'alban.andrieu@free.fr'])
