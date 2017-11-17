@@ -338,3 +338,20 @@ Apache v2
 
 Yo generator :
 https://github.com/peterhendrick/openSource
+
+Thanks for reading!
+
+# Contributing
+
+The [issue tracker](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+
+For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+
+License
+-------
+
+[Apache v2](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+***
+
+Alban Andrieu [linkedin](fr.linkedin.com/in/nabla/)
