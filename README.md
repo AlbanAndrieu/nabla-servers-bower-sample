@@ -16,6 +16,7 @@ Javascript project
 Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndrieu)
 
 <!--[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)-->
+[![Minimal java version](https://img.shields.io/badge/java-1.8-yellow.svg)](https://img.shields.io/badge/java-1.8-yellow.svg)
 [![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
 [![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)

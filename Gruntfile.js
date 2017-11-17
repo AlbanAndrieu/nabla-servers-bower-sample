@@ -1158,7 +1158,10 @@ module.exports = function(grunt) {
       options: {
         //keepAlive: true,
         configFile: 'protractor.conf.js',
+        //debug: true,
         args: {
+          //directConnect: true,
+          verbose: true,
           baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
           //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
           //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
