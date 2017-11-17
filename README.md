@@ -16,6 +16,7 @@ Javascript project
 Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndrieu)
 
 <!--[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)-->
+[![Minimal java version](https://img.shields.io/badge/java-1.8-yellow.svg)](https://img.shields.io/badge/java-1.8-yellow.svg)
 [![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
 [![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
@@ -34,9 +35,15 @@ Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndri
 [![Donate](https://img.shields.io/gratipay/AlbanAndrieu.svg?style=flat)](https://www.gratipay.com/~AlbanAndrieu)
 [![bounties](https://img.shields.io/bountysource/team/pycontribs/activity.svg)](https://www.bountysource.com/teams/nabla-servers-bower-sample/issues?tracker_ids=3650997)
 
-[![Issues](https://img.shields.io/github/issues/badges/shields.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues)
+[![Last deployed](https://img.shields.io/github/last-commit/AlbanAndrieu/nabla-projects-interview-visma/gh-pages.svg?label=last%20deployed)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/commits/gh-pages)
+
+[![Issues](https://img.shields.io/github/issues/AlbanAndrieu/nabla-projects-interview-visma/good%20first%20issue.svg](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues)
+[![GitHub issues by-label](https://img.shields.io/github/issues/AlbanAndrieu/nabla-projects-interview-visma/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![GitHub pull requests by-label](https://img.shields.io/github/issues-pr/AlbanAndrieu/nabla-projects-interview-visma/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/pulls?q=is%3Apr+is%3Aopen+label%3A%22good+first+issue%22)
+
 ## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) [![Requirements](https://requires.io/github/pycontribs/jira/requirements.svg?branch=master)](https://requires.io/github/nabla-servers-bower-sample/jira/requirements/?branch=master)
 ## Why? [![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
+
 
 <!--[![Inline docs](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME}.svg?branch=master)](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME})-->
 <!--[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)-->
