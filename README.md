@@ -6,19 +6,19 @@
 
 Javascript project
 
+## Build
+
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![Jenkins Build Status](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly)
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
+
+## Quality
+
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample%3Avisma%3Amaster)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample:bower-sample%3Avisma%3A)
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
-Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndrieu)
-
-<!--[![Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)-->
-[![Minimal java version](https://img.shields.io/badge/java-1.8-yellow.svg)](https://img.shields.io/badge/java-1.8-yellow.svg)
 [![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
-[![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
@@ -32,6 +32,7 @@ Dependency Status using [versioneye](https://www.versioneye.com/users/AlbanAndri
 [![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)]()
 
 <!--[![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)-->
+
 [![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://alban-andrieu.com)
 
 A bower project sample.
