@@ -36,12 +36,12 @@ Javascript project
 [![Branch](http://img.shields.io/github/tag/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/tree/master)
 [![Platforms](http://img.shields.io/badge/platforms-ubuntu-lightgrey.svg?style=flat)](#)
 
-[![Last deployed](https://img.shields.io/github/last-commit/AlbanAndrieu/nabla-projects-interview-visma/gh-pages.svg?label=last%20deployed)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/commits/gh-pages)
+[![Last deployed](https://img.shields.io/github/last-commit/AlbanAndrieu/nabla-servers-bower-sample/gh-pages.svg?label=last%20deployed)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/commits/gh-pages)
 
 ## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) [![Requirements](https://requires.io/github/pycontribs/jira/requirements.svg?branch=master)](https://requires.io/github/nabla-servers-bower-sample/jira/requirements/?branch=master) [![Donate](https://img.shields.io/gratipay/AlbanAndrieu.svg?style=flat)](https://www.gratipay.com/~AlbanAndrieu) [![bounties](https://img.shields.io/bountysource/team/pycontribs/activity.svg)](https://www.bountysource.com/teams/nabla-servers-bower-sample/issues?tracker_ids=3650997)
 
-[![GitHub issues by-label](https://img.shields.io/github/issues/AlbanAndrieu/nabla-projects-interview-visma/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-[![GitHub pull requests by-label](https://img.shields.io/github/issues-pr/AlbanAndrieu/nabla-projects-interview-visma/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-projects-interview-visma/pulls?q=is%3Apr+is%3Aopen+label%3A%22good+first+issue%22)
+[![GitHub issues by-label](https://img.shields.io/github/issues/AlbanAndrieu/nabla-servers-bower-sample/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![GitHub pull requests by-label](https://img.shields.io/github/issues-pr/AlbanAndrieu/nabla-servers-bower-sample/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/pulls?q=is%3Apr+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Why? [![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
 
@@ -356,3 +356,20 @@ Apache v2
 
 Yo generator :
 https://github.com/peterhendrick/openSource
+
+Thanks for reading!
+
+# Contributing
+
+The [issue tracker](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+
+For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+
+License
+-------
+
+[Apache v2](http://www.apache.org/licenses/LICENSE-2.0.html)
+
+***
+
+Alban Andrieu [linkedin](fr.linkedin.com/in/nabla/)
