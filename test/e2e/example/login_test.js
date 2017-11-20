@@ -3,7 +3,7 @@
 //browser.ignoreSynchronization = false;
 
 describe('Protractor Demo Sample', function() {
-  browser.driver.manage().window().maximize();
+  //browser.driver.manage().window().maximize();
 
   browser.sleep(10000);
   //browser.waitForAngular();
