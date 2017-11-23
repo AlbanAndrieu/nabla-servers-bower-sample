@@ -57,7 +57,8 @@
 		<logback.version>1.0.13</logback.version>
 		<slf4j.version>1.7.13</slf4j.version>
 		-->
-		<jetty9.version>9.3.22.v20171030</jetty9.version>
+		<!--<jetty9.version>9.3.22.v20171030</jetty9.version> NOK-->
+		<jetty9.version>9.2.3.v20140905</jetty9.version>
 		<jetty.ssl.port>9443</jetty.ssl.port>
 		<!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 		<cargo.protocol>http</cargo.protocol>
