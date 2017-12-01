@@ -7,7 +7,6 @@
 		<artifactId>sample</artifactId>
 		<groupId>com.nabla.project.servers.sample</groupId>
 		<version>1.0.1-SNAPSHOT</version>
-		<relativePath></relativePath>
 	</parent>
 	<artifactId>bower-sample</artifactId>
 	<packaging>war</packaging>
