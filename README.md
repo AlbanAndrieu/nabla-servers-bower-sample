@@ -117,7 +117,9 @@ See [pre-commit](http://pre-commit.com/)
 Run `pre-commit install`
 Run `pre-commit autoupdate`
 
-RUn `pre-commit run --all-files`
+Run `pre-commit run --all-files`
+
+Commit `git commit -am 'TEST' --no-verify` 
 
 ## Build & development
 
