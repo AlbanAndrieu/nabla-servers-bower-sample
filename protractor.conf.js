@@ -11,7 +11,7 @@ exports.config = {
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
   //baseUrl: 'http://localhost:8001', //default test port with Yeoman
-  //directConnect: true,  //bypass selenium
+  directConnect: true,  //bypass selenium
   params: {
     userName: 'nabla',
     userPassword: 'microsoft',
@@ -26,7 +26,7 @@ exports.config = {
     'chromeOptions': {
         'args': ['--incognito',
                  '--disable-extensions',
-                 '--start-maximized',
+//                 '--start-maximized',
                  '--no-sandbox',
                  '--headless',
                  '--disable-gpu',
@@ -79,6 +79,8 @@ exports.config = {
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
   //chromeDriver: '/usr/local/bin/chromedriver',
+  seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium',
+  chromeDriver: './node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.33',
 
   onPrepare: function() {
 	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');

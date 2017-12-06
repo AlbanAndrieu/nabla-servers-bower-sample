@@ -43,6 +43,8 @@ Javascript project
 [![GitHub issues by-label](https://img.shields.io/github/issues/AlbanAndrieu/nabla-servers-bower-sample/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 [![GitHub pull requests by-label](https://img.shields.io/github/issues-pr/AlbanAndrieu/nabla-servers-bower-sample/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/pulls?q=is%3Apr+is%3Aopen+label%3A%22good+first+issue%22)
 
+[![Maintainers Wanted](https://img.shields.io/badge/maintainers-wanted-red.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/)
+
 ## Why? [![start with why](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action)
 
 <!--
@@ -115,7 +117,9 @@ See [pre-commit](http://pre-commit.com/)
 Run `pre-commit install`
 Run `pre-commit autoupdate`
 
-RUn `pre-commit run --all-files`
+Run `pre-commit run --all-files`
+
+Commit `git commit -am 'TEST' --no-verify` 
 
 ## Build & development
 
