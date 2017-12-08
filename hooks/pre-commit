@@ -45,8 +45,6 @@ if [ ! -f "$CONF_FILE" ]; then
 	fi
 fi
 
-
-
 # Run pre-commit
 if ! "$exe" $run_args run $args --config .pre-commit-config.yaml; then
     retv=1
