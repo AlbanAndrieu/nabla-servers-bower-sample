@@ -290,7 +290,8 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>install --no-optional</arguments>
+							<!--install \-\-no-optional-->
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<execution>
