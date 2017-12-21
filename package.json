@@ -98,7 +98,7 @@
     "grunt-perfbudget": "0.2.0",
     "grunt-phantomas": "0.14.0",
     "grunt-phantomflow": "1.1.1",
-    "grunt-postcss": "0.8.0",
+    "grunt-postcss": "0.9.0",
     "grunt-protractor-coverage": "0.2.18",
     "grunt-protractor-runner": "3.2.0",
     "grunt-qunit-kimchi": "0.1.1",

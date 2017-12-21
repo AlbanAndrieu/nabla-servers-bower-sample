@@ -90,8 +90,12 @@ jmeter, gatling, mutation testing and arquillian are available in other sample p
 
 as local user
 ```
-npm install generator-angular
-npm install generator-angular-fullstack
+#npm install generator-angular
+#npm install generator-angular-fullstack
+yarn config set "strict-ssl" false -g
+#yarn config set cafile ~/NABLA.crt
+set NODE_TLS_REJECT_UNAUTHORIZED=0
+yarn install
 ```
 
 as local user
@@ -119,7 +123,7 @@ Run `pre-commit autoupdate`
 
 Run `pre-commit run --all-files`
 
-Commit `git commit -am 'TEST' --no-verify` 
+Commit `git commit -am 'TEST' --no-verify`
 
 ## Build & development
 

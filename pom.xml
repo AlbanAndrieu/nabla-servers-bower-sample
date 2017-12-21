@@ -32,13 +32,12 @@
 		<maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.6.5</maven.cargo.maven2.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
-		<node.version>9.2.0</node.version>
-		<npm.version>5.4.2</npm.version>
-		<!--
-
-        <node.version>8.5.0 </node.version>
-        -->
-		<yarn.version>0.16.1</yarn.version>
+		<!--<node.version>9.2.0</node.version> NOK -->
+		<!--<node.version>8.9.3</node.version> NOK -->
+		<!--<npm.version>5.4.2</npm.version>-->
+		<node.version>7.8.0</node.version>
+		<npm.version>5.6.0</npm.version>
+		<yarn.version>0.27.5</yarn.version>
 		<!--
 		<jersey.version>2.21</jersey.version>
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
@@ -337,7 +336,7 @@
 				</executions>
 				<configuration>
 					<nodeVersion>v${node.version}</nodeVersion>
-					<npmVersion>${npm.version}</npmVersion>
+					<!--<npmVersion>${npm.version}</npmVersion>-->
 					<yarnVersion>v${yarn.version}</yarnVersion>
 					<!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
 						<npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
@@ -889,7 +888,7 @@
 						</executions>
 						<configuration>
 							<nodeVersion>v${node.version}</nodeVersion>
-							<npmVersion>${npm.version}</npmVersion>
+							<!--<npmVersion>${npm.version}</npmVersion>-->
 							<yarnVersion>v${yarn.version}</yarnVersion>
 							<workingDirectory>./</workingDirectory>
 						</configuration>
