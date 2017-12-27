@@ -111,6 +111,7 @@ Run `grunt` for building and `grunt serve` for preview.
 
 ```
 mvn clean install -Dserver=jetty9x
+#mvn clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
 mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
 npm ls --licenses
 ```

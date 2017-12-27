@@ -2,4 +2,5 @@ cache = .node_cache
 tmp = .node_tmp
 #registry = http://home.nabla.mobi:8085/nexus/content/repositories/registry.npmjs.org/
 #phantomjs_cdnurl = http://home.nabla.mobi/html/download/phantomjs
+#slimerjs_cdnurl = http://home.nabla.mobi/html/download/slimerjs
 strict-ssl = false
