@@ -266,36 +266,50 @@
 				<artifactId>frontend-maven-plugin</artifactId>
 				<version>${maven.frontend.plugin.version}</version>
 				<executions>
-					<!--
-					<execution>
-						<id>install node and yarn</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>install-node-and-yarn</goal>
-						</goals>
-					</execution>
-					-->
 					<execution>
 						<id>install node and npm</id>
-						<phase>validate</phase>
+						<!--<phase>validate</phase>-->
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
 					</execution>
+					<!--install \-\-no-optional -->
 					<execution>
 						<id>npm install</id>
-						<phase>initialize</phase>
+						<!--<phase>initialize</phase>-->
+						<phase>process-sources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<!--install \-\-no-optional-->
+
 							<arguments>install</arguments>
 						</configuration>
 					</execution>
+					<!--
+					<execution>
+						<id>install node and yarn</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-node-and-yarn</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>yarn install</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					-->
 					<execution>
 						<id>grunt prepare</id>
-						<phase>generate-sources</phase>
+						<!--<phase>generate-sources</phase>-->
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>grunt</goal>
 						</goals>
@@ -791,6 +805,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<profiles>
 		<profile>
 			<id>config</id>
