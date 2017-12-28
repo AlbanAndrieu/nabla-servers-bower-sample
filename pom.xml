@@ -32,10 +32,9 @@
 		<maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.6.5</maven.cargo.maven2.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
-		<!--<node.version>9.2.0</node.version> NOK -->
+		<node.version>9.3.0</node.version><!-- FreeNas -->
 		<!--<node.version>8.9.3</node.version> NOK -->
-		<!--<npm.version>5.4.2</npm.version>-->
-		<node.version>7.8.0</node.version>
+		<!--<node.version>7.8.0</node.version> Ubuntu -->
 		<npm.version>5.6.0</npm.version>
 		<yarn.version>0.27.5</yarn.version>
 		<!--
