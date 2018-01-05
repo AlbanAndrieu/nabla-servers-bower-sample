@@ -58,7 +58,7 @@ module.exports = function(grunt) {
   require('jit-grunt')(grunt, {
     bower: 'grunt-bower-task',
     versioncheck: 'grunt-version-check',
-    configureProxies: 'grunt-connect-proxy',
+    //configureProxies: 'grunt-connect-proxy',
     'zap_start': 'grunt-zaproxy',
     'zap_spider': 'grunt-zaproxy',
     'zap_scan': 'grunt-zaproxy',
@@ -75,8 +75,6 @@ module.exports = function(grunt) {
     usebanner: 'grunt-banner',
     //replaceHtml: 'grunt-replace',
     replace: 'grunt-text-replace',
-    express: 'grunt-express-server',
-    //express: 'grunt-express',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
@@ -275,9 +273,8 @@ module.exports = function(grunt) {
           dev: false
         },
         middleware: function(connect, options) {
-          var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
+          //var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
           return [
-
             function(req, res, next) {
               res.setHeader('Access-Control-Allow-Origin', '*');
               res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -292,7 +289,7 @@ module.exports = function(grunt) {
             },
             serveStatic(options.base[0]),
             serveIndex(options.base[0]),
-            proxy,
+            //proxy,
             //mountFolder(connect, 'instrumented'),
             mountFolder(connect, 'coverage/e2e/instrumented'),
             mountFolder(connect, '.......')
@@ -303,23 +300,11 @@ module.exports = function(grunt) {
         options: {
           open: true,
           debug: true,
-          middleware: function(connect, options) {
+          middleware: function(connect, options, middlewares) {
 
             if (!Array.isArray(options.base)) {
                 options.base = [options.base];
             }
-
-            // Setup the proxy
-            var middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest];
-
-            // Serve static files.
-            options.base.forEach(function(base) {
-                middlewares.push(serveStatic(base));
-            });
-
-            // Make directory browse-able.
-            var directory = options.directory || options.base[options.base.length - 1];
-            middlewares.push(serveIndex(directory));
 
             return [
               middlewares,
@@ -1163,8 +1148,6 @@ module.exports = function(grunt) {
           //directConnect: true,
           verbose: true,
           baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
-          //seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.39.0.jar',
-          //chromeDriver: 'node_modules/protractor/selenium/chromedriver.exe'
         }
       },
       run: {}
@@ -1514,10 +1497,6 @@ module.exports = function(grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
-    this.async();
-  });
-
   grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function(target) {
     if (grunt.option('allow-remote')) {
       grunt.config.set('connect.options.hostname', '0.0.0.0');
@@ -1542,11 +1521,7 @@ module.exports = function(grunt) {
       'concurrent:server',
       //'uncss',
       'postcss',
-      'configureProxies:server',
       'connect:livereload',
-      //'express:dev',
-      //'wait',
-      //'open',
       'browserSync',
       'watch'
     ]);
@@ -1660,21 +1635,13 @@ module.exports = function(grunt) {
     ]);
   });
 
-  grunt.registerTask('check', function(target) {
+  grunt.registerTask('check', function() {
     grunt.task.run([
     'newer:jshint',
     'newer:jscs',
     'checkDependencies',
     'versioncheck'
     ]);
-
-    if (typeof process.env.MVN_RELEASE_VERSION !== 'undefined') {
-    //if (target === 'release') {
-      grunt.task.run([
-        //'validate-package',
-        'installed_check'
-      ]);
-    }
   });
 
   grunt.registerTask('package', [
