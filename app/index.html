@@ -60,11 +60,9 @@
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
           <!--<div class="container clearfix">-->
           <div class="container-fluid">
-            <!--
             <div class="pull-right">
               <div ng-translate-language-select></div>
             </div>
-            -->
 
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -205,14 +203,16 @@
       </footer>
     </div>
 
-	<!--
+	  <!--
     <script src="https://unpkg.com/social-likes-next/dist/social-likes.min.js"></script>
     -->
+    <!--WARNING jquery must be loaded before angular -->
+    <!--<script src="bower_components/jquery/dist/jquery.js"></script> -->  
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -248,6 +248,11 @@
     <script src="scripts/test/square.js"></script>
     <script src="scripts/test/sample-component.js"></script>
     <!-- endbuild -->
+
+    <script src="bower_components/angular-i18n/angular-locale_en.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_en-us.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_ru-ru.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script>
 
   </body>
 </html>
