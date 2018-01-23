@@ -136,6 +136,18 @@ mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
 npm ls --licenses
 ```
 
+as root
+```
+npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
+```
+
+## Fix imagemin upgrade
+
+```
+npm install optipng-bin@3.1.4
+grunt imagemin:dist
+```
+
 ## Testing
 
 test (dev mode)
