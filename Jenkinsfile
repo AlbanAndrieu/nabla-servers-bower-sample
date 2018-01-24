@@ -5,10 +5,10 @@
 */
 pipeline {
     agent { label 'javascript' }
-    //triggers {
-    //    cron('H */4 * * 1-5')
-    //    pollSCM('H 4/* 0 0 1-5')
-    //}
+    triggers {
+        cron '@daily'
+        pollSCM '@hourly'
+    }
     parameters {
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT')
@@ -276,7 +276,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
 							// Run the maven build
-							sh "mvn org.owasp:dependency-check-maven:check"
+							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                             //sh "nsp check"
                         } //withMaven
                     }
@@ -294,7 +294,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn site"
+                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                             //sh "grunt ngdocs"
                         } // withMaven
                     }
@@ -313,7 +313,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn deploy"
+                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                             //sh "npm run publish:all"
                         } // withMaven
                     }
@@ -409,14 +409,16 @@ exit 0
     post {
         // always means, well, always run.
         always {
-          echo "Hi there"
-          def content = '${SCRIPT, template="groovy-html-cut-pipeline.template"}'
-          emailext attachLog: true,
-              body: ("${TARGET_PROJECT}: build on branch ${BRANCH_NAME} resulted in ${currentBuild.result}"),
-              subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
-                   compressLog: true,
-              to: "${GIT_AUTHOR_EMAIL}",
-              body: content
+            echo "Hi there"
+		    steps {
+		    	def content = '${SCRIPT, template="groovy-html-cut-pipeline.template"}'
+		    	emailext attachLog: true,
+		    			body: ("${TARGET_PROJECT}: build on branch ${BRANCH_NAME} resulted in ${currentBuild.result}"),
+		    			//body: content,
+		    			subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
+		    			compressLog: true,
+		    			to: "${GIT_AUTHOR_EMAIL}"
+		    }
         }
         failure {
             echo "I'm failing"

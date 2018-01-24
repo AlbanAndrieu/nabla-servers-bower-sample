@@ -136,6 +136,8 @@ mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
 npm ls --licenses
 ```
 
+Run `mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
+
 as root
 ```
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
