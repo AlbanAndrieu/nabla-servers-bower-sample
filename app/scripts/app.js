@@ -106,20 +106,20 @@ angular
       $translateProvider.useMissingTranslationHandlerLog();// warns about missing translates
     }
 
-    //var translations = {
-    //  HEADLINE: 'XSS possible!',
-    //  PARAGRAPH: 'Hello {{username}}!',
-    //};
-    //$translateProvider.translations('en', translations);
+    var translations = {
+      HEADLINE: 'XSS possible!',
+      PARAGRAPH: 'Hello {{username}}!'
+    };
+    $translateProvider.translations('en', translations);
 
     $translateProvider.useStaticFilesLoader({
-      prefix: 'resources/locale-',
-      suffix: '.json'
+      prefix: 'resources/locale-', // path to translations files
+      suffix: '.json' // suffix, currently- extension of the translations
     });
 
-    $translateProvider.preferredLanguage(LOCALES.preferredLocale);
+    $translateProvider.preferredLanguage(LOCALES.preferredLocale); // is applied on first load
     //$translateProvider.preferredLanguage('en');
-    $translateProvider.useLocalStorage();
+    $translateProvider.useLocalStorage(); // saves selected language to localStorage
 
     // Enable sanitize of HTML
     $translateProvider.useSanitizeValueStrategy('sanitizeParameters');

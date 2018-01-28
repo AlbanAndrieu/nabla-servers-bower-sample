@@ -248,7 +248,7 @@ module.exports = function(grunt) {
           '<%= config.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
           '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.app %>/resources/{,*/}*.json',
+          '<%= config.app %>/resources/{,*/}*.json', //for angular-translate
           '<%= config.app %>/scripts/{,*/}*.js'
         ]
       }
@@ -978,11 +978,11 @@ module.exports = function(grunt) {
           cwd: 'bower_components/font-awesome/fonts/',
           src: '**/*',
           dest: '<%= config.dist %>/fonts'
-        //}, {
-        //  expand: true,
-        //  cwd: 'bower_components/angular-i18n/',
-        //  src: '*.js',
-        //  dest: '<%= config.dist %>/bower_components/angular-i18n'
+        }, { //angular-translate
+          expand: true,
+          cwd: 'bower_components/angular-i18n/',
+          src: '*.js',
+          dest: '<%= config.dist %>/bower_components/angular-i18n'
         }]
       },
       coverageE2E: {

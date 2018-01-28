@@ -22,6 +22,8 @@ angular.module('myTestApp')
       _LOCALES_DISPLAY_NAMES.push(localesObj[locale]);
     });
 
+    console.log('\'translate \'me!');
+
     var currentLocale = $translate.proposedLanguage();// because of async loading
 
     // METHODS
@@ -55,12 +57,15 @@ angular.module('myTestApp')
 
     // EVENTS
     $rootScope.$on('$translateChangeSuccess', function(event, data) {
+      console.log("It entered translateChangeSuccess");
       document.documentElement.setAttribute('lang', data.language);// sets "lang" attribute to html
 
+      // asking angular-dynamic-locale to load and apply proper AngularJS $locale setting
       tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));// load Angular locale
     });
 
     $rootScope.$on('$localeChangeSuccess', function() {
+      console.log('Event received if jquery is loaded before angular in index.html');
       stopLoadingAnimation();
     });
 
