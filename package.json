@@ -38,9 +38,7 @@
   },
   "engine-strict": true,
   "dependencies": {
-    "lodash": "4.0.0",
-    "passport": "0.4.0",
-    "passport-local": "1.0.0",
+    "cli": "^1.0.1",
     "social-likes-next": "^1.1.0"
   },
   "devDependencies": {
@@ -105,7 +103,6 @@
     "grunt-qunit-kimchi": "0.1.1",
     "grunt-release": "0.14.0",
     "grunt-replace": "1.0.1",
-    "grunt-sitespeedio": "0.10.5",
     "grunt-svgmin": "5.0.0",
     "grunt-text-replace": "0.4.0",
     "grunt-uncss": "0.8.0",
@@ -144,7 +141,6 @@
     "semver": "5.0.1",
     "serve-index": "1.9.1",
     "serve-static": "1.13.1",
-    "slimerjs": "0.10.3",
     "snyk": "1.65.1",
     "socket.io-client": "1.4.6",
     "time-grunt": "1.4.0",

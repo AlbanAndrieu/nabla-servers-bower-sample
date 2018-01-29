@@ -4,3 +4,4 @@ tmp = .node_tmp
 #phantomjs_cdnurl = http://home.nabla.mobi/html/download/phantomjs
 #slimerjs_cdnurl = http://home.nabla.mobi/html/download/slimerjs
 strict-ssl = false
+chromedriver_version=2.35
