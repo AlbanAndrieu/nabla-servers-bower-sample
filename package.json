@@ -38,9 +38,7 @@
   },
   "engine-strict": true,
   "dependencies": {
-    "lodash": "4.0.0",
-    "passport": "0.4.0",
-    "passport-local": "1.0.0",
+    "cli": "^1.0.1",
     "social-likes-next": "^1.1.0"
   },
   "devDependencies": {
@@ -105,7 +103,6 @@
     "grunt-qunit-kimchi": "0.1.1",
     "grunt-release": "0.14.0",
     "grunt-replace": "1.0.1",
-    "grunt-sitespeedio": "0.10.5",
     "grunt-svgmin": "5.0.0",
     "grunt-text-replace": "0.4.0",
     "grunt-uncss": "0.8.0",

@@ -5,3 +5,4 @@ registry = http://nabla.freeboxos.fr:8085/nexus/content/npm/registry.npmjs.org/
 #phantomjs_cdnurl = http://home.nabla.mobi/html/download/phantomjs
 #slimerjs_cdnurl = http://home.nabla.mobi/html/download/slimerjs
 strict-ssl = false
+chromedriver_version=2.35

@@ -280,12 +280,123 @@
                     </execution>
                 </executions>
             </plugin>
+           <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-bower-install</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>bower</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-grunt-prepare</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+							<executable>grunt</executable>
+                            <arguments>prepare</arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>                        
+                    </execution>                    
+                    <execution>
+                        <id>exec-grunt-check</id>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>check</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <!--
+                    <execution>
+                        <id>exec-grunt-default</id>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>default</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    -->
+                    <execution>
+                        <id>exec-grunt-default</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>default</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-grunt-unit-test</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+								<argument>unit-test</argument>
+								<argument>--skipTests=${maven.test.skip}</argument>                            
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-grunt-package</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>package</arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${maven.frontend.plugin.version}</version>
                 <executions>
-                    <!--install \-\-no-optional -->
+					-->
+                    <!--install \-\-no-optional 
                     <execution>
                         <id>install node and npm</id>
                         <phase>generate-sources</phase>
@@ -303,6 +414,7 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
+                    -->
                     <!--
                     <execution>
                         <id>install node and yarn</id>
@@ -322,6 +434,7 @@
                         </configuration>
                     </execution>
                     -->
+                    <!--
                     <execution>
                         <id>grunt prepare</id>
                         <phase>generate-resources</phase>
@@ -364,23 +477,23 @@
                     </execution>
                 </executions>
                 <configuration>
-			<!--
                     <nodeVersion>v${node.version}</nodeVersion>
                     <yarnVersion>v${yarn.version}</yarnVersion>
-			-->
+                    -->
                     <!-- <nodeDownloadRoot>http://home.nabla.mobi/html/download/nodejs/</nodeDownloadRoot>
                         <npmDownloadRoot>http://home.nabla.mobi/html/download/npm/-/</npmDownloadRoot>
                         <yarnDownloadRoot>http://home.nabla.mobi/html/download//yarn/</yarnDownloadRoot>   -->
                     <!--<workingDirectory>./</workingDirectory>-->
+                    <!--
                     <srcdir>${basedir}/app</srcdir>
                     <outputdir>${project.build.directory}/dist</outputdir>
                     <triggerfiles>
                         <triggerfile>Gruntfile.js</triggerfile>
                         <triggerfile>package.json</triggerfile>
                     </triggerfiles>
-                    <!--<installDirectory>target</installDirectory>-->
                 </configuration>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

@@ -105,6 +105,32 @@ Run `pre-commit run --all-files`
 
 Commit `git commit -am 'TEST' --no-verify`
 
+## NODE/NPM Installation
+
+```
+#npm cache clean -f
+npm install -g n
+#n stable
+n 8.9.4
+node -v
+/usr/local/bin/node -v
+npm install -g npm@5.5.1
+```
+
+## Installation
+
+Install NPM modules.
+
+```js
+sudo npm install.
+```
+
+Install Javascript dependencies.
+
+```js
+bower install
+```
+
 ## Build & development
 
 Run `grunt` for building and `grunt serve` for preview.
