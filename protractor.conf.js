@@ -28,8 +28,8 @@ exports.config = {
                  '--disable-extensions',
 //                 '--start-maximized',
                  '--no-sandbox',
-                 '--headless',
-                 '--disable-gpu',
+//                 '--headless',
+//                 '--disable-gpu',
                  '--ignore-certificate-errors',
                  '--disable-popup-blocking',
                  '--disable-translate',
@@ -37,6 +37,7 @@ exports.config = {
                  '--test-type=browser',
                  '--enable-file-cookies',
                  '--allow-file-access-from-files'
+                 //--proxy-server=host:port
                  ],
         'prefs': {
                 'downloads': {
@@ -55,13 +56,13 @@ exports.config = {
                            //'--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
                            //'--proxy-type=none',
                            ],
-	//chromeOptions: {
-	//	binary: '/usr/bin/google-chrome',
-	//	args: [],
-	//	extensions: [],
-	//},
-	acceptSslCerts: true,
-	ensureCleanSession: true,
+    //chromeOptions: {
+    //  binary: '/usr/bin/google-chrome',
+    //  args: [],
+    //  extensions: [],
+    //},
+    acceptSslCerts: true,
+    ensureCleanSession: true,
     //proxy: {
     //   //proxyType: 'autodetect'
     //   proxyType: 'manual',
@@ -79,11 +80,11 @@ exports.config = {
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
   //chromeDriver: '/usr/local/bin/chromedriver',
-  seleniumServerJar: './node_modules/webdriver-manager/selenium',
-  chromeDriver: './node_modules/webdriver-manager/selenium/chromedriver_2.34',
+  //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.8.1.jar',
+  //chromeDriver: './node_modules/webdriver-manager/selenium/chromedriver_2.35',
 
   onPrepare: function() {
-	  browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
+      browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
 
       /* global angular: false, browser: false, jasmine: false */
 
@@ -116,28 +117,28 @@ exports.config = {
 
       let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
 
-	  exports.config = {
-	     // your config here ...
+      exports.config = {
+         // your config here ...
 
-	    onPrepare: function () {
-	  	jasmine.getEnv().addReporter(new SpecReporter({
-	  	  spec: {
-	  		displayStacktrace: true
-	  	  }
+        onPrepare: function () {
+        jasmine.getEnv().addReporter(new SpecReporter({
+          spec: {
+            displayStacktrace: true
+          }
       }));
-	    }
+        }
 
-	  }
+      }
 
       var reporters = require('jasmine-reporters');
       var junitReporter = new reporters.JUnitXmlReporter({
-		  consolidateAll: false,
-	      filePrefix: 'TEST-com.test.project.sample.Protractor',
-	      savePath: 'target/surefire-reports'
-	  });
-	  jasmine.getEnv().addReporter(junitReporter);
+          consolidateAll: false,
+          filePrefix: 'TEST-com.test.project.sample.Protractor',
+          savePath: 'target/surefire-reports'
+      });
+      jasmine.getEnv().addReporter(junitReporter);
 
-	  //var SpecReporter = require('jasmine-spec-reporter');
+      //var SpecReporter = require('jasmine-spec-reporter');
       //jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
       //browser.ignoreSynchronization = true; //enable for non angular
