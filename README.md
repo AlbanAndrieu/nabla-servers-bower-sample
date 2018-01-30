@@ -115,6 +115,8 @@ n 8.9.4
 node -v
 /usr/local/bin/node -v
 npm install -g npm@5.5.1
+env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g puppeteer@0.12.0
+env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn global add puppeteer
 ```
 
 ## Installation
