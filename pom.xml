@@ -314,13 +314,15 @@
                         <id>exec-grunt-prepare</id>
                         <phase>generate-resources</phase>
                         <configuration>
-							<executable>grunt</executable>
-                            <arguments>prepare</arguments>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>prepare</argument>
+                            </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>
-                        </goals>                        
-                    </execution>                    
+                        </goals>
+                    </execution>
                     <execution>
                         <id>exec-grunt-check</id>
                         <phase>process-resources</phase>
@@ -368,8 +370,8 @@
                         <configuration>
                             <executable>grunt</executable>
                             <arguments>
-								<argument>unit-test</argument>
-								<argument>--skipTests=${maven.test.skip}</argument>                            
+                                <argument>unit-test</argument>
+                                <argument>--skipTests=${maven.test.skip}</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -381,7 +383,9 @@
                         <phase>package</phase>
                         <configuration>
                             <executable>grunt</executable>
-                            <arguments>package</arguments>
+                            <arguments>
+                                <argument>package</argument>
+                            </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>
@@ -395,8 +399,8 @@
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${maven.frontend.plugin.version}</version>
                 <executions>
-					-->
-                    <!--install \-\-no-optional 
+                    -->
+                    <!--install \-\-no-optional
                     <execution>
                         <id>install node and npm</id>
                         <phase>generate-sources</phase>
@@ -518,27 +522,27 @@
                 </executions>
             </plugin>
             <!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-toolchains-plugin</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>toolchain</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<toolchains>
-						<jdk>
-							<version>1.8</version>
-							<vendor>oracle</vendor>
-						</jdk>
-					</toolchains>
-				</configuration>
-			</plugin>    
-			-->                    
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>toolchain</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <toolchains>
+                        <jdk>
+                            <version>1.8</version>
+                            <vendor>oracle</vendor>
+                        </jdk>
+                    </toolchains>
+                </configuration>
+            </plugin>
+            -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
