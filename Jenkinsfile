@@ -198,6 +198,7 @@ exit 0
             }
             steps {
                 script {
+                    //sh "npm run build"
                     // Maven opts
                     String MAVEN_OPTS = ["-Djava.awt.headless=true",
                     "-Dsun.zip.disableMemoryMapping=true",
@@ -276,9 +277,9 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
 							// Run the maven build
-							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                            //sh "nsp check"
+							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
                         } //withMaven
+                        //sh "nsp check"
                     }
                 } //script
             }
@@ -294,9 +295,9 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                            //sh "grunt ngdocs"
+                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
                         } // withMaven
+                        //sh "grunt ngdocs"
                     }
                 } //script
             }
@@ -304,8 +305,8 @@ exit 0
 
         stage('Deploy') {
             when {
-                expression { BRANCH_NAME ==~ /(release|master)/ }
-                anyOf { branch 'develop'; branch 'deploy' }
+                expression { BRANCH_NAME ==~ /(release|master|develop)/ }
+                //anyOf { branch 'develop'; branch 'deploy' } 
             }
             steps {
                 script {
@@ -313,14 +314,13 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                            //sh "npm run publish:all"
+                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
                         } // withMaven
+			//sh "npm run publish:all"
                     }
                 } //script
             }
         }/ / stage Deploy
-
         stage('Results') {
             steps {
                 //warnings canComputeNew: false, canResolveRelativePaths: false, categoriesPattern: '', consoleParsers: [[parserName: 'Java Compiler (javac)'], [parserName: 'Maven']], defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', unHealthy: ''
@@ -370,7 +370,7 @@ exit 0
             steps {
                 script {
                     sshagent(['jenkins-ssh']) {
-                        String versionInfo = "${TARGET_PROJECT}: BUILD: ${BUILD_ID} SHA1: ${GIT_COMMIT} BRANCH: ${BRANCH_NAME}"
+                        String versionInfo = "${TARGET_PROJECT}: BUILD: ${BUILD_ID} BRANCH: ${BRANCH_NAME} SHA1: ${GIT_COMMIT}"
                         String versionFile = "${env.WORKSPACE}/${TARGET_PROJECT}_VERSION.TXT"
                         sh "echo ${versionInfo} > ${versionFile}"
                     }
@@ -410,15 +410,7 @@ exit 0
         // always means, well, always run.
         always {
             echo "Hi there"
-		    steps {
-		    	def content = '${SCRIPT, template="groovy-html-cut-pipeline.template"}'
-		    	emailext attachLog: true,
-		    			body: ("${TARGET_PROJECT}: build on branch ${BRANCH_NAME} resulted in ${currentBuild.result}"),
-		    			//body: content,
-		    			subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
-		    			compressLog: true,
-		    			to: "${GIT_AUTHOR_EMAIL}"
-		    }
+		    notifyMe()
         }
         failure {
             echo "I'm failing"
@@ -446,4 +438,29 @@ exit 0
           //archive "**/*"
         }
     }
+}
+
+def notifyMe() {
+  // send to Slack
+  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //
+  //// send to HipChat
+  //hipchatSend (color: 'YELLOW', notify: true,
+  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+  //)
+ 
+  //def content = '${SCRIPT, template="groovy-html-cut-pipeline.template"}'
+  //to: "${GIT_AUTHOR_EMAIL}"
+  //body: content
+							
+  // send to email
+  emailext (
+      //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
+      body: """<p>${TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
+        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+      attachLog: false,
+	  compressLog: true,        
+      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    )
 }
