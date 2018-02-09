@@ -1016,16 +1016,82 @@
                 <sonar.tests>src/test,test</sonar.tests>
             </properties>
         </profile>
-        <!-- Jenkins by default defines a property BUILD_NUMBER which is used to enable the profile. -->
-        <profile>
-            <id>jenkins</id>
+		<profile>
+            <id>run-integration-test</id>
+            <!--
             <activation>
                 <property>
-                    <name>BUILD_NUMBER</name>
+                    <name>!profile.activation</name>
                 </property>
             </activation>
+            -->
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.cargo</groupId>
+                        <artifactId>cargo-maven2-plugin</artifactId>
+                        <inherited>true</inherited>
+                        <executions>
+                            <execution>
+                                <id>start-container</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <timeout>240000</timeout>
+                                    <!--
+                                    <properties>
+                                        <cargo.start.jvmargs>${jacoco.agent.it.arg}</cargo.start.jvmargs>
+                                    </properties>
+                                    -->
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-container</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                                <configuration>
+                                    <!--<timeout>60000</timeout>-->
+                                    <!--
+                                    <configuration>
+                                        <properties>
+                                            <cargo.jmx.activation></cargo.jmx.activation>
+                                            <cargo.start.jvmargs></cargo.start.jvmargs>
+                                            <cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
+                                        </properties>
+                                    </configuration>
+                                    -->
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <properties>
+                                <!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
+                                <cargo.hostname>${cargo.host}</cargo.hostname>
+                                <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+                                <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
+                                <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
+                                <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
+                                <cargo.logging>high</cargo.logging>
+                                <!-- <cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs>-->
+                                <!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
+                                <cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
+                            </properties>
+                            <container>
+                                <timeout>300000</timeout>
+                                <!-- 5 minutes -->
+                                <containerId>${cargo.container}</containerId>
+                                <artifactInstaller>
+                                    <groupId>org.eclipse.jetty</groupId>
+                                    <artifactId>jetty-distribution</artifactId>
+                                    <version>${server.version}</version>
+                                </artifactInstaller>
+                            </container>
+                        </configuration>
+                    </plugin>
                     <!-- DISABLE because it is too slow
                     <plugin>
                         <groupId>org.owasp</groupId>
@@ -1041,6 +1107,14 @@
                         </executions>
                         <configuration>
                             <format>XML</format>
+                            <skipProvidedScope>true</skipProvidedScope>
+                            <skipRuntimeScope>true</skipRuntimeScope>
+                            <skipSystemScope>true</skipSystemScope>
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                            <cveUrl12Modified>https://kgrdb01/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                            <cveUrl20Modified>https://kgrdb01/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                            <cveUrl12Base>https://kgrdb01/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                            <cveUrl20Base>https://kgrdb01/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
                         </configuration>
                     </plugin>
                     -->
@@ -1059,30 +1133,18 @@
                                     <arguments>integration-test</arguments>
                                 </configuration>
                             </execution>
-                            <execution>
-                                <id>grunt site</id>
-                                <phase>site</phase>
-                                <goals>
-                                    <goal>grunt</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>site</arguments>
-                                </configuration>
-                            </execution>
                         </executions>
                         <configuration>
-                            <nodeVersion>v${node.version}</nodeVersion>
-                            <!--<npmVersion>${npm.version}</npmVersion>-->
+                            <!--
+                            <nodeVersion>${node.version}</nodeVersion>
                             <yarnVersion>v${yarn.version}</yarnVersion>
+                            <downloadRoot>http://kgrdb01/download/nodejs/</downloadRoot>
+                            -->
                             <workingDirectory>./</workingDirectory>
                         </configuration>
                     </plugin>
                 </plugins>
             </build>
-            <properties>
-                <maven.test.failure.skip>false</maven.test.failure.skip>
-                <maven.test.skip>false</maven.test.skip>
-            </properties>
         </profile>
         <profile>
             <id>jetty9x</id>
@@ -1093,48 +1155,6 @@
                     <!-- <name>!server</name>-->
                 </property>
             </activation>
-            <build>
-                <plugins>
-                    <!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
-                    <plugin>
-                        <groupId>org.codehaus.cargo</groupId>
-                        <artifactId>cargo-maven2-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-container</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>start</goal>
-                                </goals>
-                                <configuration>
-                                    <configuration>
-                                        <properties>
-                                            <cargo.start.jvmargs>${jacoco.agent.it.arg}</cargo.start.jvmargs>
-                                        </properties>
-                                    </configuration>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop-container</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <container>
-                                <containerId>${cargo.container}</containerId>
-                                <artifactInstaller>
-                                    <groupId>org.eclipse.jetty</groupId>
-                                    <artifactId>jetty-distribution</artifactId>
-                                    <version>${server.version}</version>
-                                </artifactInstaller>
-                            </container>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
             <dependencies>
                 <!-- http://blog.anvard.org/articles/2013/10/06/jetty-proxy-servlet.html -->
                 <!-- https://github.com/mdeimel/jetty-proxy -->
