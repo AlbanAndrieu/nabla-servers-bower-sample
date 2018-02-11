@@ -14,7 +14,7 @@ Javascript project
 
 ## Quality
 
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=com.nabla.project.servers.sample:bower-sample%3Avisma%3Amaster)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample:bower-sample%3Avisma%3A)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample%3Abower-sample)
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
