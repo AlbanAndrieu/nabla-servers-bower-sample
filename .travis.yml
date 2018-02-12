@@ -53,3 +53,9 @@ install:
 - sudo apt-get install -y ruby-compass
 - travis_retry npm install
 - bower install
+- grunt prepare
+- grunt check
+- grunt default
+- grunt unit-test
+- grunt package
+#- grunt integration-test
