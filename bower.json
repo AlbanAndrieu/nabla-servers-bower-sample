@@ -1,7 +1,7 @@
 {
   "name": "bower-sample",
   "description": "Sample bower component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Nabla Core Team <dev@home.nabla.mobi>",
   "license": "MIT",
   "private": "false",
@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "jquery": "2.1.4",
-    "nabla-styles": "~1.0.1",
+    "nabla-styles": "~1.0.2",
     "bootstrap-sass-official": "3.3.7",
     "angular": "1.4.8",
     "font-awesome": "4.7.0",
