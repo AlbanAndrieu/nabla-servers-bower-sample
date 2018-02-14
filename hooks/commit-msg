@@ -23,7 +23,7 @@ if re.match(regex, branch):
         try:
             from jira import JIRA
             options = {'server': 'https://home.nabla.mobi/jira'}
-            jira = JIRA(options, basic_auth=('test', 'TODO'))
+            jira = JIRA(options, verify=False, basic_auth=('test', 'TODO'))
             issue_to_check = jira.issue(issue)
             print(issue_to_check.fields.project.key)             # 'JRA'
             print(issue_to_check.fields.issuetype.name)          # 'New Feature'
