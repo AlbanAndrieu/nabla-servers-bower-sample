@@ -36,6 +36,7 @@
     hooks:
     -   id: ansible-lint
         files: \.(yaml|yml)$
+        exclude: '.travis.yml'        
 #-   repo: https://github.com/Lucas-C/pre-commit-hooks-html
 #    sha: v1.3.5
 #    hooks:
