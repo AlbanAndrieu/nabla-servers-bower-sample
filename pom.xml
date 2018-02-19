@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>bower-sample</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Nabla Bower Sample</name>
     <description>Bower sample components</description>
@@ -336,21 +337,6 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!--
-                    <execution>
-                        <id>exec-grunt-default</id>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <executable>grunt</executable>
-                            <arguments>
-                                <argument>default</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    -->
                     <execution>
                         <id>exec-grunt-default</id>
                         <phase>compile</phase>
@@ -358,28 +344,13 @@
                             <executable>grunt</executable>
                             <arguments>
                                 <argument>default</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    <!--
-                    <execution>
-                        <id>exec-grunt-unit-test</id>
-                        <phase>test</phase>
-                        <configuration>
-                            <executable>grunt</executable>
-                            <arguments>
-                                <argument>unit-test</argument>
                                 <argument>--skipTests=${maven.test.skip}</argument>
                             </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>
                         </goals>
-                    </execution>
-                    -->
+                    </execution>                    
                     <execution>
                         <id>exec-grunt-package</id>
                         <phase>package</phase>
@@ -407,7 +378,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>exec-grunt-package</id>
+                        <id>exec-grunt-site</id>
                         <phase>site</phase>
                         <configuration>
                             <executable>grunt</executable>
@@ -1169,7 +1140,7 @@
                             </goals>
                         </execution>
                         <execution>
-                            <id>exec-grunt-package</id>
+                            <id>exec-grunt-site</id>
                             <phase>site</phase>
                             <configuration>
                                 <executable>grunt</executable>
