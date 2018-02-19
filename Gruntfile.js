@@ -958,16 +958,16 @@ module.exports = function(grunt) {
         }, {
           src: 'node_modules/apache-server-configs/dist/.htaccess',
           dest: '<%= config.dist %>/.htaccess'
-        //}, {
-        //  expand: true,
-        //  cwd: '.',
-        //  src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-        //  dest: '<%= config.dist %>'
-        //}, {
-        //  expand: true,
-        //  cwd: '.',
-        //  src: 'bower_components/font-awesome/fonts/*',
-        //  dest: '<%= config.dist %>'
+        }, {
+          expand: true,
+          cwd: '.',
+          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          dest: '<%= config.dist %>'
+        }, {
+          expand: true,
+          cwd: '.',
+          src: 'bower_components/font-awesome/fonts/*',
+          dest: '<%= config.dist %>'
         }, {
           expand: true,
           cwd: 'bower_components/bootstrap-sass-official/assets/fonts/',
