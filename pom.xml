@@ -364,6 +364,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <!--
                     <execution>
                         <id>exec-grunt-unit-test</id>
                         <phase>test</phase>
@@ -378,6 +379,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    -->
                     <execution>
                         <id>exec-grunt-package</id>
                         <phase>package</phase>
@@ -391,15 +393,41 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>exec-grunt-integration-test</id>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>integration-test</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-grunt-package</id>
+                        <phase>site</phase>
+                        <configuration>
+                            <executable>grunt</executable>
+                            <arguments>
+                                <argument>site</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                 </executions>
-				<configuration>
-					<environmentVariables>
-						<!-- The following parameters create an NPM sandbox for CI -->
-						<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-						<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-						<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-					</environmentVariables>
-				</configuration>                
+                <configuration>
+                    <environmentVariables>
+                        <!-- The following parameters create an NPM sandbox for CI -->
+                        <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
+                        <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                        <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+                    </environmentVariables>
+                </configuration>
             </plugin>
             <!--
             <plugin>
@@ -1020,7 +1048,7 @@
                 <sonar.tests>src/test,test</sonar.tests>
             </properties>
         </profile>
-		<profile>
+        <profile>
             <id>run-integration-test</id>
             <!--
             <activation>
@@ -1122,47 +1150,48 @@
                         </configuration>
                     </plugin>
                     -->
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>exec-maven-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>exec-grunt-integration-test</id>
-							<phase>integration-test</phase>
-							<configuration>
-								<executable>grunt</executable>
-								<arguments>
-									<argument>integration-test</argument>
-								</arguments>
-							</configuration>
-							<goals>
-								<goal>exec</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>exec-grunt-package</id>
-							<phase>site</phase>
-							<configuration>
-								<executable>grunt</executable>
-								<arguments>
-									<argument>site</argument>
-								</arguments>
-							</configuration>
-							<goals>
-								<goal>exec</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<environmentVariables>
-							<!-- The following parameters create an NPM sandbox for CI -->
-							<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-							<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-							<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-						</environmentVariables>
-					</configuration>                
-				</plugin>
-					<!--
+                    <!--
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>exec-grunt-integration-test</id>
+                            <phase>integration-test</phase>
+                            <configuration>
+                                <executable>grunt</executable>
+                                <arguments>
+                                    <argument>integration-test</argument>
+                                </arguments>
+                            </configuration>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>exec-grunt-package</id>
+                            <phase>site</phase>
+                            <configuration>
+                                <executable>grunt</executable>
+                                <arguments>
+                                    <argument>site</argument>
+                                </arguments>
+                            </configuration>
+                            <goals>
+                                <goal>exec</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <environmentVariables>
+                            <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
+                            <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                            <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+                        </environmentVariables>
+                    </configuration>
+                </plugin>
+                -->
+                    <!--
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
