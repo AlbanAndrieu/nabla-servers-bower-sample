@@ -176,7 +176,7 @@ wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280
 
 Xvfb :99 -ac -screen 0 1280x1024x24 &
 export DISPLAY=:99
-nice -n 10 x11vnc 2>&1 &
+#nice -n 10 x11vnc 2>&1 &
 
 #google-chrome --no-sandbox &
 
@@ -393,6 +393,52 @@ exit 0
 
                     if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
                         archiveArtifacts artifacts: "${ARTIFACTS}", excludes: null, fingerprint: true, onlyIfSuccessful: true
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'reports/',
+                              reportFiles: 'JENKINS_ZAP_VULNERABILITY_REPORT-${BUILD_ID}.html',
+                              reportName: "ZaProxy Report"
+                            ])
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'build/phantomas/',
+                              reportFiles: 'index.html',
+                              reportName: "Phantomas Report"
+                            ])
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'screenshots/desktop/',
+                              reportFiles: 'index.html.png',
+                              reportName: "Desktop CSS Diff Report"
+                            ])
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'screenshots/mobile/',
+                              reportFiles: 'index.html.png',
+                              reportName: "Mobile CSS Diff Report"
+                            ])
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'target/*',
+                              reportFiles: 'gc.png speed.har CHANGELOG.html',
+                              reportName: "Reports"
+                            ])
+
                         //stash includes: '${ARTIFACTS}', name: 'app'
                         //unstash 'app'
                         // tag on successfull build
@@ -438,10 +484,11 @@ exit 0
           //archive "**/*"
         }
     }
+    //} // ws
 }
 
 def notifyMe() {
-  // send to Slack
+  //// send to Slack
   //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
   //
   //// send to HipChat
@@ -449,18 +496,22 @@ def notifyMe() {
   //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
   //)
  
-  //def content = '${SCRIPT, template="groovy-html-cut-pipeline.template"}'
+  def content = '${SCRIPT, template="pipeline.template"}'
   //to: "${GIT_AUTHOR_EMAIL}"
-  //body: content
 							
   // send to email
   emailext (
       //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
-      body: """<p>${TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
-        <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+      //body: """<p>${TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
+      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+      body: content,
       attachLog: false,
 	  compressLog: true,        
-      recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+      to: emailextrecipients([
+          [$class: 'CulpritsRecipientProvider'],
+          [$class: 'DevelopersRecipientProvider'],
+          [$class: 'RequesterRecipientProvider']
+      ])
     )
 }

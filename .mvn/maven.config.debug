@@ -1,0 +1,1 @@
+-Xmx1536m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:-UsePerfData -Dsun.zip.disableMemoryMapping=true
