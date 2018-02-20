@@ -148,6 +148,12 @@
             <scope>provided</scope>
             <!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
@@ -298,6 +304,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <!--
                     <execution>
                         <id>exec-bower-install</id>
                         <phase>generate-sources</phase>
@@ -311,6 +318,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    -->
                     <execution>
                         <id>exec-grunt-prepare</id>
                         <phase>generate-resources</phase>
@@ -345,19 +353,6 @@
                             <arguments>
                                 <argument>default</argument>
                                 <argument>--skipTests=${maven.test.skip}</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>                    
-                    <execution>
-                        <id>exec-grunt-package</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <executable>grunt</executable>
-                            <arguments>
-                                <argument>package</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -505,29 +500,6 @@
                 </configuration>
             </plugin>
             -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptorRefs>
-                                <descriptorRef>config</descriptorRef>
-                            </descriptorRefs>
-                            <descriptors>
-                                <descriptor>src/main/assembly/web-bundle.xml</descriptor>
-                            </descriptors>
-                            <archive>
-                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                            </archive>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -561,6 +533,29 @@
                         <goals>
                             <goal>parse-version</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>config</descriptorRef>
+                            </descriptorRefs>
+                            <descriptors>
+                                <descriptor>src/main/assembly/web-bundle.xml</descriptor>
+                            </descriptors>
+                            <archive>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -653,6 +648,7 @@
                         <log>${project.build.directory}/cargo.log</log>
                         <logLevel>debug</logLevel>
                         <systemProperties>
+                            <java.io.tmpdir>target/tmp</java.io.tmpdir>
                             <log4j.debug>true</log4j.debug>
                         </systemProperties>
                         <dependencies>
@@ -953,20 +949,20 @@
                                     </fileset>
                                 </copy>
                                 <path id="sourceDirectory.path">
-                                    <pathelement location="${basedir}/app/scripts"></pathelement>
+                                    <pathelement location="${basedir}/app/scripts" />
                                 </path>
-                                <pathconvert property="relativeSourceDirectory" refid="sourceDirectory.path" targetos="unix">
-                                    <map from="${basedir}/" to=""></map>
+                                <pathconvert targetos="unix" property="relativeSourceDirectory" refid="sourceDirectory.path">
+                                    <map from="${basedir}/" to="" />
                                 </pathconvert>
-                                <echo message="Base dir: ${basedir} "></echo>
-                                <echo message="Source directory: ${project.build.sourceDirectory}"></echo>
-                                <echo message="Relative source directory: ${relativeSourceDirectory}"></echo>
-                                <echo message="Fixing a problem with a path to the JavaScript path"></echo>
+                                <echo message="Base dir: ${basedir} " />
+                                <echo message="Source directory: ${project.build.sourceDirectory}" />
+                                <echo message="Relative source directory: ${relativeSourceDirectory}" />
+                                <echo message="Fixing a problem with a path to the JavaScript path" />
                                 <replaceregexp byline="true">
-                                    <regexp pattern="SF:\./todo/(.*)"></regexp>
-                                    <substitution expression="SF:${relativeSourceDirectory}/\1"></substitution>
+                                    <regexp pattern="SF:\./todo/(.*)" />
+                                    <substitution expression="SF:${relativeSourceDirectory}/\1" />
                                     <fileset dir="target">
-                                        <include name="lcov-karma.info"></include>
+                                        <include name="lcov-karma.info" />
                                     </fileset>
                                 </replaceregexp>
                             </target>
