@@ -145,8 +145,9 @@ exports.config = {
 
       //https://github.com/angular/protractor/issues/1978
       //browser.driver.manage().window().maximize();
+      return browser.get(browser.baseUrl)
       //return browser.get('http://localhost:' + ( process.env.SERVER_PORT || 9014 ));
-      return browser.get('https://localhost:' + ( process.env.SERVER_SECURE_PORT || 9443 ));
+      //return browser.get('https://localhost:' + ( process.env.SERVER_SECURE_PORT || 9443 ));
   },
   //multiCapabilities: [{
   //  'browserName': 'firefox'

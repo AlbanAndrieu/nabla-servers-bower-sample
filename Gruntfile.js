@@ -44,7 +44,7 @@ module.exports = function(grunt) {
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
   var SERVER_URL =  process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_SECURE_URL = process.env.SERVER_SECURE_URL || 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
-  var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/';
+  var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/test/#/';
 
   // Load grunt tasks automatically
   //require('load-grunt-tasks')(grunt);
@@ -1147,7 +1147,7 @@ module.exports = function(grunt) {
         args: {
           //directConnect: true,
           verbose: true,
-          baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
+          baseUrl: SERVER_URL + SERVER_CONTEXT
         }
       },
       run: {}
