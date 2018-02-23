@@ -29,4 +29,11 @@
    </Array>
   </Set>
   <Set name="useCipherSuitesOrder"><Property name="jetty.sslContext.useCipherSuitesOrder" default="true"/></Set>
+	<Set name="ExcludeProtocols">
+		<Array type="java.lang.String">
+			<Item>SSLv3</Item>
+       			<Item>TLSv1</Item>
+       			<Item>TLSv1.1</Item>
+		</Array>
+	</Set>
 </Configure>

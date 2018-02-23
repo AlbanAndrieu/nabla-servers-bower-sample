@@ -1017,13 +1017,11 @@
         </profile>
         <profile>
             <id>run-integration-test</id>
-            <!--
             <activation>
                 <property>
                     <name>!profile.activation</name>
                 </property>
             </activation>
-            -->
             <build>
                 <plugins>
                     <plugin>

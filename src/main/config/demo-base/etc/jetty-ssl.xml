@@ -22,7 +22,8 @@
             <!-- uncomment to support proxy protocol
             <Item>
               <New class="org.eclipse.jetty.server.ProxyConnectionFactory"/>
-            </Item>-->
+            </Item>
+	    -->
           </Array>
         </Arg>
 
