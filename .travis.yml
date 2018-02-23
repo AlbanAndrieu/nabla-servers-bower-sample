@@ -24,14 +24,14 @@ branches:
   only:
   - master
 
-cache:
-  pip: true
-  yarn: true
-  directories:
-    - $HOME/.sonar/cache
-    - $HOME/.cache
-    - $HOME/.m2
-    - node_modules
+#cache:
+#  pip: true
+#  yarn: true
+#  directories:
+#    - $HOME/.sonar/cache
+#    - $HOME/.cache
+#    - $HOME/.m2
+#    - node_modules
 
 env:
   matrix:
