@@ -1336,7 +1336,8 @@ module.exports = function(grunt) {
     sitespeedio: {
       default: {
         options: {
-          url: 'http://home.nabla.mobi:9090/',
+          //url: 'http://home.nabla.mobi:9090/',
+          url: SERVER_PROD_URL + SERVER_CONTEXT,
           deepth: 1,
           resultBaseDir: './build/sitespeedio/'
         }
@@ -1352,7 +1353,9 @@ module.exports = function(grunt) {
         //url: 'alban-andrieu.fr'
         //url: 'bababou.fr'
         //url: 'bababou.eu'
-        url: 'http://home.nabla.mobi:9090/'
+        //url: 'http://localhost:9090/'
+        //url: SERVER_PROD_URL + SERVER_CONTEXT
+        url: 'https://nabla.freeboxos.fr/sample/'
       },
       //prod: {
       //  options: {
@@ -1374,7 +1377,8 @@ module.exports = function(grunt) {
 
     'pagespeed_junit': {
       options: {
-        urls: ['http://home.nabla.mobi:9090/'],
+        //urls: ['http://home.nabla.mobi:9090/'],
+        urls: ['https://nabla.freeboxos.fr/sample/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 70,
@@ -1390,8 +1394,9 @@ module.exports = function(grunt) {
       sideroad: {
         options: {
           url: [
-            'http://home.nabla.mobi:9090/'
-            //'http://home.nabla.mobi:8380/jenkins/'
+            //'http://home.nabla.mobi:9090/'
+            //SERVER_PROD_URL + SERVER_CONTEXT
+            'https://nabla.freeboxos.fr/sample/'
           ]
         },
         dest: './build/sideroad/'
@@ -1401,7 +1406,9 @@ module.exports = function(grunt) {
     perfbudget: {
       default: {
         options: {
-          url: 'http://home.nabla.mobi:9090/',
+          //url: 'http://home.nabla.mobi:9090/',
+          //url: SERVER_PROD_URL + SERVER_CONTEXT,
+          url: 'https://nabla.freeboxos.fr/sample/',
           timeout: 500,
           key: process.env.WPT_API_KEY,
           budget: {
@@ -1601,13 +1608,13 @@ module.exports = function(grunt) {
     //'zap_alert',
     //'zap_report',
     //'penthouse',
-    'yslow_test',
+    //'yslow_test', #buggy
     'pagespeed',
     'pagespeed_junit',
-    'sitespeedio',
+    //'sitespeedio',
     'phantomas',
     //'wpt',
-    'perfbudget',
+    //'perfbudget',
     'qunit'
     //'zap_stop'
     //'zap_results'

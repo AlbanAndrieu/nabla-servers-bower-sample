@@ -359,6 +359,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <!--
                     <execution>
                         <id>exec-grunt-integration-test</id>
                         <phase>integration-test</phase>
@@ -372,6 +373,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    -->
                     <execution>
                         <id>exec-grunt-site</id>
                         <phase>site</phase>
@@ -827,6 +829,7 @@
                     <!--<server>nabla-tomcat</server>-->
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>com.sinapsi.memtracker</groupId>
                 <artifactId>mem-tracker-maven-plugin</artifactId>
@@ -841,10 +844,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--<host>127.0.0.1</host>-->
                     <port>${cargo.monitoring.jmx.rmi.port}</port>
                 </configuration>
             </plugin>
+            -->
             <!-- groovydoc -->
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
@@ -1030,7 +1033,7 @@
                         <inherited>true</inherited>
                         <executions>
                             <execution>
-                                <id>start-container</id>
+                                <id>start-container-nabla</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>start</goal>
@@ -1045,7 +1048,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>stop-container</id>
+                                <id>stop-container-nabla</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>stop</goal>
@@ -1115,47 +1118,32 @@
                         </configuration>
                     </plugin>
                     -->
-                    <!--
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>exec-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>exec-grunt-integration-test</id>
-                            <phase>integration-test</phase>
-                            <configuration>
-                                <executable>grunt</executable>
-                                <arguments>
-                                    <argument>integration-test</argument>
-                                </arguments>
-                            </configuration>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>exec-grunt-site</id>
-                            <phase>site</phase>
-                            <configuration>
-                                <executable>grunt</executable>
-                                <arguments>
-                                    <argument>site</argument>
-                                </arguments>
-                            </configuration>
-                            <goals>
-                                <goal>exec</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <environmentVariables>
-                            <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                            <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-                            <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-                        </environmentVariables>
-                    </configuration>
-                </plugin>
-                -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>exec-grunt-integration-test</id>
+								<phase>integration-test</phase>
+								<configuration>
+									<executable>grunt</executable>
+									<arguments>
+										<argument>integration-test</argument>
+									</arguments>
+								</configuration>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<environmentVariables>
+								<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
+								<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+								<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+							</environmentVariables>
+						</configuration>
+					</plugin>
                     <!--
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
