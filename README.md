@@ -298,8 +298,9 @@ ls -lrta ~/.config/google-chrome/Default
 Run yslow, Psi or webpagetest
 
 ```
-grunt yslow_test
-phantomjs --ignore-ssl-errors=yes node_modules/grunt-yslow-test/tasks/lib/yslow.js --info basic --format plain http://localhost:9090/
+#grunt yslow_test
+npm run pretest
+phantomjs --ignore-ssl-errors=yes test/yslow.js --info basic --format plain http://localhost:9090/test/#/
 grunt pagespeed
 grunt wpt
 ```
