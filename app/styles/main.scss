@@ -1,8 +1,10 @@
 
-$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
-$fa-font-path: "/bower_components/font-awesome/fonts";
-//$icon-font-path: "/fonts/bootstrap/";
-//$fa-font-path: "/fonts";
+//$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+//$fa-font-path: "/bower_components/font-awesome/fonts";
+//coming from bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap _variables.scss $icon-font-path: if($bootstrap-sass-asset-helper, "bootstrap/", "../fonts/bootstrap/") !default;
+//$icon-font-path: "../fonts/bootstrap/";
+//coming from bower_components/font-awesome/scss/_variables.scss
+//$fa-font-path: "../fonts";
 
 //Issue if bootstrap is before font-awesome below
 //Check order in bower.json

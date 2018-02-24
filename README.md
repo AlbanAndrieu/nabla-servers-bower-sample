@@ -182,7 +182,7 @@ grunt imagemin:dist
 
 test (dev mode)
 ```
-grunt serve
+grunt serve watch -v
 ```
 
 test (deployment mode)
@@ -191,6 +191,14 @@ grunt serve:dist
 ```
 
 Running `grunt test` will run the unit tests with karma.
+
+## Livereload
+
+Run with grunt watch -v then manually edit a file listed in the watch.livereload.files array. Ensure that it is triggering the file by printing the file name to the console.
+
+Then from the browser end, ensure going to http://localhost:35730/ works and displays {"tinylr":"Welcome","version":"0.2.1"} letting you know the live reload server is running.
+
+Be sure the http://localhost:35730/livereload.js script is being loaded and you see the network socket being established.
 
 ## Proxy / Rewrite jetty
 
