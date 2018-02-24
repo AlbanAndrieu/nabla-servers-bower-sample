@@ -170,6 +170,21 @@ module.exports = function(grunt) {
   //const imageminMozjpeg = require('imagemin-mozjpeg');
   //const imageminPngquant = require('imagemin-pngquant');
 
+  var corsMiddleware = function(req, res, next) {
+    console.log('cors');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-XSS-Protection', '1;mode=block');
+    res.setHeader('Expires', '0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate');
+    next();
+  };
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -247,7 +262,8 @@ module.exports = function(grunt) {
         files: [
           '<%= config.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= config.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}',
+          '<%= config.app %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
           '<%= config.app %>/resources/{,*/}*.json', //for angular-translate
           '<%= config.app %>/scripts/{,*/}*.js'
         ]
@@ -271,29 +287,6 @@ module.exports = function(grunt) {
           shortName: 'nabla',
           url: 'https://nabla.freeboxos.fr',
           dev: false
-        },
-        middleware: function(connect, options) {
-          //var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
-          return [
-            function(req, res, next) {
-              res.setHeader('Access-Control-Allow-Origin', '*');
-              res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-              res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-              res.setHeader('X-Content-Type-Options', 'nosniff');
-              res.setHeader('X-Frame-Options', 'DENY');
-              res.setHeader('X-XSS-Protection', '1;mode=block');
-              res.setHeader('Expires', '0');
-              res.setHeader('Pragma', 'no-cache');
-              res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate');
-              return next();
-            },
-            serveStatic(options.base[0]),
-            serveIndex(options.base[0]),
-            //proxy,
-            //mountFolder(connect, 'instrumented'),
-            mountFolder(connect, 'coverage/e2e/instrumented'),
-            mountFolder(connect, '.......')
-          ];
         }
       },
       livereload: {
@@ -306,6 +299,9 @@ module.exports = function(grunt) {
                 options.base = [options.base];
             }
 
+            var directory = options.directory || options.base[options.base.length - 1];
+            middlewares.push(serveIndex(directory));
+
             return [
               middlewares,
               serveStatic('.tmp'),
@@ -313,11 +309,19 @@ module.exports = function(grunt) {
                 '/bower_components',
                 serveStatic('./bower_components')
               ),
-              //connect().use(
-              //  '/app/styles',
-              //  serveStatic('./app/styles')
-              //),
-              serveStatic(appConfig.app)
+              serveStatic(appConfig.app),
+              connect().use(
+                '/fonts',
+                serveStatic(appConfig.dist + '/fonts')
+              ),
+              connect().use(
+                '/views/styles.html',
+                serveStatic(appConfig.dist + '/views/styles.html')
+              ), //nabla-styles
+              connect().use(
+                '/images',
+                serveStatic(appConfig.dist + '/images')
+              ) //nabla-styles styles.html images
             ];
           }
         }
@@ -333,6 +337,10 @@ module.exports = function(grunt) {
               connect().use(
                 '/bower_components',
                 serveStatic('./bower_components')
+              ),
+              connect().use(
+                '/fonts',
+                serveStatic(appConfig.dist + '/fonts')
               ),
               serveStatic(appConfig.app)
             ];
@@ -354,6 +362,10 @@ module.exports = function(grunt) {
               connect().use(
                 '/bower_components',
                 serveStatic('./bower_components')
+              ),
+              connect().use(
+                '/fonts',
+                serveStatic(appConfig.dist + '/fonts')
               ),
               serveStatic(appConfig.instrumentedE2E + '/app')
               //serveStatic(config.app)
@@ -613,9 +625,9 @@ module.exports = function(grunt) {
             '<%= config.app %>/**/*.json',
             '<%= config.app %>/styles/**/*.css',
             '<%= config.app %>/scripts/**/*.js',
-            '<%= config.dist %>/fonts/**/*',
+            '<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}',
             'bower_components/**/*',
-            '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+            '<%= config.app %>/images/**/*.{ico,png,jpg,jpeg,gif,webp,svg}',
             '.tmp/**/*.{css,js}'
           ]
         }
@@ -641,8 +653,8 @@ module.exports = function(grunt) {
         src: [
           '<%= config.dist %>/scripts/{,*/}*.js',
           '<%= config.dist %>/styles/{,*/}*.css',
-          '<%= config.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '!<%= config.dist %>/images/no-filerev/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= config.dist %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
+          '!<%= config.dist %>/images/no-filerev/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
           //'<%= config.dist %>/*.{ico,png}',
           '<%= config.dist %>/styles/fonts/*'
         ]
@@ -691,18 +703,18 @@ module.exports = function(grunt) {
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
-    // cssmin: {
-    //   options: {
-    //     rebase: false
-    //   },
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
+    cssmin: {
+      options: {
+        rebase: false
+      },
+      dist: {
+        files: {
+          '<%= config.dist %>/styles/main.css': [
+            '.tmp/styles/{,*/}*.css'
+          ]
+        }
+      }
+    },
     uglify: {
       dist: {
         files: {
@@ -805,14 +817,14 @@ module.exports = function(grunt) {
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
-			files: [{
+            files: [{
           expand: true,
           cwd: '<%= config.app %>/images',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
           dest: '<%= config.dist %>/images'
-			}]
-		}
-	},
+            }]
+        }
+    },
 
     svgmin: {
       dist: {
