@@ -1612,7 +1612,7 @@ module.exports = function(grunt) {
     'pagespeed',
     'pagespeed_junit',
     //'sitespeedio',
-    'phantomas',
+    //'phantomas',
     //'wpt',
     //'perfbudget',
     'qunit'
