@@ -11,7 +11,7 @@ class TestRestClient {
     private final String server      = "localhost";
     private String port;
     private final String DEFAULT_PORT = "9090";
-    private final String productName = "rest/books";
+    private final String productName = "/test/rest/books";
 
     private RESTClient RestClient;
 
