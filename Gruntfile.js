@@ -1610,12 +1610,12 @@ module.exports = function(grunt) {
     //'penthouse',
     //'yslow_test', #buggy
     'pagespeed',
-    'pagespeed_junit',
+    'pagespeed_junit'
     //'sitespeedio',
     //'phantomas',
     //'wpt',
     //'perfbudget',
-    'qunit'
+    //'qunit'
     //'zap_stop'
     //'zap_results'
   ]);
