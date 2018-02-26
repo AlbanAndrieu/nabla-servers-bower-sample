@@ -801,7 +801,7 @@ module.exports = function(grunt) {
         //outfile: '<%= config.dist %>/styles/critical.css',
         css: '<%= config.dist %>/styles/main.*.css',
         //url: SERVER_URL + SERVER_CONTEXT,
-        url: 'http://localhost:9090/#/',
+        url: 'http://localhost:9090/test/#/',
         width: 1280,
         height: 800
       }
