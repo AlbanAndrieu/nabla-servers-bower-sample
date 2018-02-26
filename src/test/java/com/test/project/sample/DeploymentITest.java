@@ -28,7 +28,7 @@ public class DeploymentITest
 
     private final static int              MAIN_PORT       = 9090;
 
-    private static final String           DEFAULT_CONTEXT = "/test/#/";
+    private static final String           DEFAULT_CONTEXT = "test/#/";
 
     private static final String           LOGIN_CONTEXT   = "login";
 
