@@ -11,7 +11,7 @@ class TestRestClient {
     private final String server      = "localhost";
     private String port;
     private final String DEFAULT_PORT = "9090";
-    private final String productName = "/test/rest/books";
+    private final String productName = "test/rest/books";
 
     private RESTClient RestClient;
 
@@ -73,7 +73,7 @@ class TestRestClient {
     }
 
     public HttpResponseDecorator postData(final String path, final String body, final String contentTypeString, final Map headers) {
-        def http = new HTTPBuilder( "http://" + this.server + ":" + this.port + "/" + this.productName + "/test" )
+        def http = new HTTPBuilder( "http://" + this.server + ":" + this.port + "/" + this.productName )
         //http.auth.basic 'nabla', 'microsoft'
 
         http.post( path: 'Trade', body: body,
