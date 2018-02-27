@@ -7,7 +7,7 @@ import groovyx.net.http.HttpResponseException
 import org.junit.BeforeClass
 import org.junit.Test
 
-//@Ignore("fix the test")
+@Ignore("No rest service")
 class TestRestITest extends GroovyTestCase {
 
     private TestRestClient client;
@@ -20,7 +20,7 @@ class TestRestITest extends GroovyTestCase {
     @Test
     void testBasicRest() {
         // Given
-        String docUrl = "http://" + this.client.server + ":" + this.client.port + "/" + this.client.productName + "/test";
+        String docUrl = "http://" + this.client.server + ":" + this.client.port + "/" + this.client.productName;
 
         // When
         HttpResponseDecorator docResponse = getData(docUrl);
