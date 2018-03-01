@@ -79,7 +79,7 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-critical": "1.1.0",
     "grunt-filerev": "2.3.1",
-    "grunt-gh-pages": "1.1.0",
+    "grunt-gh-pages": "2.0.0",
     "grunt-google-cdn": "0.4.3",
     "grunt-istanbul": "0.8.0",
     "grunt-jscs": "3.0.1",
