@@ -7,7 +7,7 @@ import groovyx.net.http.HttpResponseException
 import org.junit.BeforeClass
 import org.junit.Test
 
-@Ignore("No rest service")
+@org.junit.Ignore("No rest service")
 class TestRestITest extends GroovyTestCase {
 
     private TestRestClient client;
