@@ -29,7 +29,7 @@ angular
       //'ru_RU': 'Русский',
       'en_US': 'English',
       'fr_FR': 'Francais',
-      'no_NO': 'Norsk'   
+      'no_NO': 'Norsk'
     },
     'preferredLocale': 'en_US'
   })
@@ -37,50 +37,50 @@ angular
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {
-		navitem: true,
-		name: 'route1',
+        navitem: true,
+        name: 'route1',
         templateUrl: 'views/main.html',
         controller: 'MainController'
       })
       .when('/about', {
-		navitem: true,
-		name: 'route2',
+        navitem: true,
+        name: 'route2',
         templateUrl: 'views/about.html',
         controller: 'AboutController'
       })
       .when('/blog', {
-		navitem: true,
-		name: 'route3',
+        navitem: true,
+        name: 'route3',
         templateUrl: 'views/blog.html',
         controller: 'BlogController'
       })
       .when('/project', {
-		navitem: true,
-		name: 'route4',
+        navitem: true,
+        name: 'route4',
         templateUrl: 'views/project.html',
         controller: 'ProjectController'
       })
       .when('/sample', {
-		navitem: true,
-		name: 'route5',
+        navitem: true,
+        name: 'route5',
         templateUrl: 'views/sample.html',
         controller: 'SampleController'
       })
       .when('/yeoman', {
-		navitem: true,
-		name: 'route6',
+        navitem: true,
+        name: 'route6',
         templateUrl: 'views/yeoman.html',
         controller: 'YeomanController'
       })
       .when('/boostrap', {
-		navitem: true,
-		name: 'route7',
+        navitem: true,
+        name: 'route7',
         templateUrl: 'views/styles.html',
         controller: 'BootstrapController'
       })
       .when('/contacts', {
-		navitem: true,
-		name: 'route8',
+        navitem: true,
+        name: 'route8',
         templateUrl: 'views/contact.html',
         controller: 'ContactController'
       })
