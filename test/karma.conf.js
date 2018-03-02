@@ -44,6 +44,7 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-ie-launcher',
       'karma-junit-reporter',
+      'karma-tapfile-reporter',
       'karma-coverage',
       'karma-jasmine'
     ],

@@ -10,7 +10,9 @@ build/
 *~
 *.swp
 node/
+node_modules/
 .bower/
+bower_components/
 lib/
 .grunt/
 dist/
@@ -22,11 +24,14 @@ dist/
 .tmp
 .sass-cache
 .sizecache.json
+.groovy/
+*.bak
 *.log
 gui/target_junit/
 *rebel.xml
 /docs/
 
+npm/
 .node_cache/
 .node_tmp/
 coverage/

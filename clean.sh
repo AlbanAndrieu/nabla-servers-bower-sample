@@ -1,6 +1,7 @@
 #!/bin/bash
 set -xv
 
-rm -Rf .node_cache/ .node_tmp/  .tmp/ .bower/ bower_components/ node node_modules/ .sass-cache/ package-lock.json yarn.lock target/
+rm -Rf .node_cache/ .node_tmp/  .tmp/ .bower/ bower_components/ node node_modules/ .sass-cache/ package-lock.json yarn.lock target/ build/phantomas/ dist/ docs/groovydocs/
+#dist/bower_components/ dist/fonts/
 
 exit 0
