@@ -172,32 +172,6 @@
             <artifactId>jmockit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- this is just one of the appsensor dependencies you'll need - see step
-            below called pluggable components
-        <dependency>
-            <groupId>org.owasp.appsensor</groupId>
-            <artifactId>appsensor-core</artifactId>
-            <version>${appsensor.core.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.inject</groupId>
-                    <artifactId>javax.inject</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>aopalliance</groupId>
-                    <artifactId>aopalliance</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        -->
     </dependencies>
     <build>
         <!--
@@ -228,10 +202,12 @@
                         <skipRuntimeScope>true</skipRuntimeScope>
                         <skipSystemScope>true</skipSystemScope>
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                        <cveUrl12Modified>https://kgrdb01/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                        <cveUrl20Modified>https://kgrdb01/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                        <cveUrl12Base>https://kgrdb01/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                        <cveUrl20Base>https://kgrdb01/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+			<!--
+                        <cveUrl12Modified>https://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                        <cveUrl20Modified>https://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                        <cveUrl12Base>https://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                        <cveUrl20Base>https://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+			-->
                     </configuration>
                 </plugin>
             </plugins>
@@ -621,6 +597,7 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>${maven.cargo.maven2.plugin.version}</version>
+		<extensions>true</extensions>
                 <executions>
                     <execution>
                         <id>start-container-overrided</id>
@@ -644,6 +621,7 @@
                     </execution>
                 </executions>
                 <configuration>
+		    <skip>${maven.test.skip}</skip>
                     <wait>${cargo.wait}</wait>
                     <container>
                         <timeout>300000</timeout>
@@ -670,6 +648,7 @@
                     </container>
                     <configuration>
                         <properties>
+			    <cargo.protocol>http</cargo.protocol>
                             <cargo.hostname>${cargo.host}</cargo.hostname>
                             <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
                             <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1033,7 +1012,7 @@
                         <inherited>true</inherited>
                         <executions>
                             <execution>
-                                <id>start-container-nabla</id>
+                                <id>start-container-integration-test</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>start</goal>
@@ -1048,7 +1027,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>stop-container-nabla</id>
+                                <id>stop-container-integration-test</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>stop</goal>
