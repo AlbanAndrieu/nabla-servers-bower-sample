@@ -19,11 +19,11 @@ function generateKeystore  {
     shift
     typeset KEYPASSWD="$STOREPASSWD"
     if [ "$ARCH" = "winnt" ]; then
-        STORE=`cygpath -wp $STORE`
+        STORE=$(cygpath -wp "${STORE}")
     fi
-    HOSTNAME=`hostname`
+    HOSTNAME=$(hostname)
     echo "Building certificates for ssl"
-    KEYSTOREDIR=$(dirname "$STORE")
+    KEYSTOREDIR=$(dirname "${STORE}")
 
 	if [ -z "$ALIAS" ]
 	then
@@ -45,7 +45,7 @@ function generateKeystore  {
 
     [[ -d "$KEYSTOREDIR" ]] || mkdir -p "$KEYSTOREDIR"
     #-ext 'SAN=dns:jetty.eclipse.org,dns:*.jetty.org'
-    ${JAVA_HOME}/${KEYTOOL_CMD} -genkey -v  -alias "$ALIAS" -keystore "$STORE" -keyalg RSA -sigalg SHA256withRSA -storepass "$STOREPASSWD" -keysize 2048 -validity 36500 << EOF
+    "${JAVA_HOME}/${KEYTOOL_CMD}" -genkey -v  -alias "$ALIAS" -keystore "$STORE" -keyalg RSA -sigalg SHA256withRSA -storepass "$STOREPASSWD" -keysize 2048 -validity 36500 << EOF
 $HTTP_URL
 Nabla Team
 Nabla
@@ -55,7 +55,7 @@ FR
 yes
 
 EOF
-    ${JAVA_HOME}/${KEYTOOL_CMD} -alias "$ALIAS" -selfcert -validity 36500 -keystore "$STORE" -storepass "$STOREPASSWD" -keypass "$KEYPASSWD"
+    "${JAVA_HOME}/${KEYTOOL_CMD}" -alias "$ALIAS" -selfcert -validity 36500 -keystore "$STORE" -storepass "$STOREPASSWD" -keypass "$KEYPASSWD"
 
 }
 

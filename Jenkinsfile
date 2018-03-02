@@ -277,7 +277,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
 							// Run the maven build
-							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
+							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } //withMaven
                         //sh "nsp check"
                     }
@@ -295,7 +295,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
+                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
                         //sh "grunt ngdocs"
                     }
@@ -306,7 +306,7 @@ exit 0
         stage('Deploy') {
             when {
                 expression { BRANCH_NAME ==~ /(release|master|develop)/ }
-                //anyOf { branch 'develop'; branch 'deploy' } 
+                //anyOf { branch 'develop'; branch 'deploy' }
             }
             steps {
                 script {
@@ -314,7 +314,7 @@ exit 0
                         //unstash 'source'
                         withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
                             // Run the maven build
-                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"                            
+                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
 			//sh "npm run publish:all"
                     }
@@ -495,10 +495,10 @@ def notifyMe() {
   //hipchatSend (color: 'YELLOW', notify: true,
   //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
   //)
- 
+
   def content = '${SCRIPT, template="pipeline.template"}'
   //to: "${GIT_AUTHOR_EMAIL}"
-							
+
   // send to email
   emailext (
       //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
@@ -507,7 +507,7 @@ def notifyMe() {
       //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
       body: content,
       attachLog: false,
-	  compressLog: true,        
+	  compressLog: true,
       to: emailextrecipients([
           [$class: 'CulpritsRecipientProvider'],
           [$class: 'DevelopersRecipientProvider'],

@@ -1,3 +1,4 @@
+#!/bin/bash -xv
 #In Jenkins
 #Add tap plugin
 #Add zapper plugin
@@ -6,22 +7,21 @@
 #Pre Steps
 
 git clean -fdx
-svn --version
-echo USER $USER
+echo "USER : ${USER}"
 bower cache clean
 npm cache clean
-echo PATH $PATH
-export PATH=/zapSource/build/zap:$PATH
-echo DISPLAY $DISPLAY
+echo "PATH : ${PATH}"
+export PATH=/zapSource/build/zap:${PATH}
+echo "DISPLAY : ${DISPLAY}"
 
 export ZAP_PORT=8090
 export JETTY_PORT=9090
 export SERVER_HOST=kgrdb01
 
-echo "ZAP_PORT : $ZAP_PORT"
-echo "CARGO_RMI_PORT : $CARGO_RMI_PORT"
-echo "JETTY_PORT : $JETTY_PORT"
-echo "SERVER_HOST : $SERVER_HOST"
+echo "ZAP_PORT : ${ZAP_PORT}"
+echo "CARGO_RMI_PORT : ${CARGO_RMI_PORT}"
+echo "JETTY_PORT : ${JETTY_PORT}"
+echo "SERVER_HOST : ${SERVER_HOST}"
 
 #browser version
 /usr/bin/firefox  -V
@@ -32,23 +32,23 @@ echo "SERVER_HOST : $SERVER_HOST"
 #npm install --global phantomjs
 phantomjs --version
 
-lsof -i :$CARGO_RMI_PORT || true
+lsof -i :"${CARGO_RMI_PORT}" || true
 
 # If Server is still running we will get its PID
-PORT_WHERE_SERVER_MIGHT_RUN=$ZAP_PORT
+PORT_WHERE_SERVER_MIGHT_RUN="${ZAP_PORT}"
 
 PID=$(lsof -t -i:$PORT_WHERE_SERVER_MIGHT_RUN) || true
 
 # -z is zero length (unset or empty string"
 # if NOT zero length => then kill it...
 if [ ! -z "$PID" ]; then
-    echo "Found running Server at port: "$PORT_WHERE_SERVER_MIGHT_RUN" (PID: "$PID")"
+    echo "Found running Server at port: ${PORT_WHERE_SERVER_MIGHT_RUN} (PID: ${PID})"
     echo "I am killing that Server. A previous build seems to have gone wrong."
     # Kill it... hooray!
 #    kill $PID
 
 else
-    echo "No running Server found at port "$PORT_WHERE_SERVER_MIGHT_RUN". This is what I'd anticipate. Great!"
+    echo "No running Server found at port ${PORT_WHERE_SERVER_MIGHT_RUN}. This is what I'd anticipate. Great!"
 fi
 
 ######################
@@ -74,20 +74,20 @@ export ZAP_PORT=8090
 echo "ZAP_PORT : $ZAP_PORT"
 
 # If Server is still running we will get its PID
-PORT_WHERE_SERVER_MIGHT_RUN=$ZAP_PORT
+PORT_WHERE_SERVER_MIGHT_RUN=${ZAP_PORT}
 
 PID=$(lsof -t -i:$PORT_WHERE_SERVER_MIGHT_RUN) || true
 
 # -z is zero length (unset or empty string"
 # if NOT zero length => then kill it...
 if [ ! -z "$PID" ]; then
-    echo "Found running Server at port: "$PORT_WHERE_SERVER_MIGHT_RUN" (PID: "$PID")"
+    echo "Found running Server at port: ${PORT_WHERE_SERVER_MIGHT_RUN} (PID: ${PID})"
     echo "I am killing that Server. A previous build seems to have gone wrong."
     # Kill it... hooray!
 #    kill $PID
 
 else
-    echo "No running Server found at port "$PORT_WHERE_SERVER_MIGHT_RUN". This is what I'd anticipate. Great!"
+    echo "No running Server found at port ${PORT_WHERE_SERVER_MIGHT_RUN}. This is what I'd anticipate. Great!"
 fi
 
 ######################
@@ -104,3 +104,5 @@ fi
 
 #Publish Performance test result report
 #**/target/**/TEST-*.xml
+
+exit 0
