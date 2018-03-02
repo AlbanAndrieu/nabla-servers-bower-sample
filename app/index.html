@@ -2,11 +2,10 @@
 <html class="no-js app-loading" ng-app="myTestApp">
   <head>
     <meta charset="utf-8">
-    <title ng-bind="pageTitle">i18n for your AngularJS applications</title>
-    <meta name="description" ng-attr-content="{{pageContent}}" content="How to translate your AngularJS applications without page reload with angular-translate">
+    <title ng-bind="pageTitle">Baby kidnapped in Norway</title>
+    <meta name="description" ng-attr-content="{{pageContent}}" content="14 months baby kidnapped in Norway by Rachael Elaine Brooke">
     <meta name="version" content="@@undefined-version">
     <meta name="viewport" content="width=device-width">
-    <!--<meta name="flattr:id" content="66nnlk">-->
     <link rel="shortcut icon" href="/images/favicon.ico">
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -93,17 +92,19 @@
                 <li class="dropdown">
                   <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{"views.index.Other" | translate}} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
+                    <!--
                     <li ng-class="{active: currentPath === '/blog'}">
                         <a ng-href="#/blog">{{"views.index.Blog" | translate}}</a>
                     </li>
                     <li ng-class="{active: currentPath === '/sample'}">
                         <a ng-href="#/sample">{{"views.index.Sample" | translate}}</a>
                     </li>
-                    <li ng-class="{active: currentPath === '/yeoman'}">
-                        <a ng-href="#/yeoman">Yeoman</a>
-                    </li>
                     <li ng-class="{active: currentPath === '/boostrap'}">
                         <a ng-href="#/boostrap">Boostrap</a>
+                    </li>                    
+                    -->
+                    <li ng-class="{active: currentPath === '/yeoman'}">
+                        <a ng-href="#/yeoman">Bababou</a>
                     </li>
                     <li ng-class="{active: currentPath === '/about'}">
                         <a ng-href="#/about">{{"views.index.About" | translate}}</a>
@@ -125,6 +126,7 @@
               -->
 
               <form class="nav navbar-nav navbar-right" role="language">
+                <!-- Disable profile/login
                     <div class="nav navbar-nav">
                       <li class="dropdown">
                         <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="glyphicon" style="top: -7px;" gravatar-src="'alban.andrieu@free.fr'" gravatar-size="20"></img><span class="caret"></span></a>
@@ -134,6 +136,7 @@
                         </ul>
                       </li>
                     </div>
+                -->
                 <!--
                 <li>
                     <div ng-controller="DropdownController">
@@ -187,6 +190,7 @@
       <footer>
         <div class="footer">
             <div class="container">
+            <!--
             <div class="social-likes social-likes_light" data-url="https://home.nabla.mobi" data-title="Nabla">
                 <div data-service="facebook" title="Share link on Facebook">Facebook</div>
                 <div data-service="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
@@ -195,8 +199,9 @@
               	<div data-service="vkontakte" title="Share link on Vkontakte">Vkontakte</div>
               	<div data-service="odnoklassniki" title="Share link on Odnoklassniki">Odnoklassniki</div>
             </div>
+            -->
             <p class="pull-right"><a ng-click="scrollTo('top')">Back to top</a></p>
-            <p>&copy; 2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+            <p>&copy; 2018 Nabla, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
             <p><span class="glyphicon glyphicon-heart"></span> {{"views.index.from the Yeoman team" | translate}}</p>
             </div>
         </div>
