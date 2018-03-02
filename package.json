@@ -134,7 +134,6 @@
     "phantomas": "1.19.0",
     "phantomjs-prebuilt": "2.1.16",
     "pixrem": "4.0.1",
-    "pre-commit": "^1.2.2",
     "protractor": "5.2.2",
     "qs": "6.5.1",
     "request": "2.83.0",
