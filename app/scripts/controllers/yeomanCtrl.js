@@ -16,5 +16,5 @@ angular.module('myTestApp')
       'AngularJS',
       'Karma'
     ];
-    $scope.today = new Date();    
+    $scope.today = new Date();
   });
