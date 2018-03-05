@@ -98,7 +98,6 @@
     "grunt-postcss": "0.9.0",
     "grunt-protractor-coverage": "0.2.18",
     "grunt-protractor-runner": "5.0.0",
-    "grunt-qunit-kimchi": "0.1.1",
     "grunt-release": "0.14.0",
     "grunt-replace": "1.0.1",
     "grunt-svgmin": "5.0.0",
