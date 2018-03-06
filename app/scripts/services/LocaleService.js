@@ -69,7 +69,9 @@ angular.module('myTestApp')
     $rootScope.$on('$localeChangeSuccess', function() {
       console.log('Event received if jquery is loaded before angular in index.html');
       stopLoadingAnimation();
-    });
+    }
+
+    );
 
     return {
       getLocaleDisplayName: function() {
