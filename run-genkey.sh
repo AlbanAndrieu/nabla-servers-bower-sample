@@ -2,7 +2,7 @@
 # This script is not used to generate keystore. It was used for testing purpose (as cargo-maven2-plugin was corrupting the keystore)
 [[ -n "$DEBUG" ]] &&  set -x
 
-cd src/main/config/demo-base/
+cd src/main/config/demo-base/ || exit
 
 echo "ARCH : ${ARCH} must be sun4sol sun4 rs6000 hprisc solaris linux cygwin winnt"
 

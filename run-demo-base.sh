@@ -14,7 +14,7 @@ export JETTY_HOME="${CARGO_HOME}/installs/jetty-distribution-${JETTY_VERSION}/je
 #Start jetty sample project
 export JETTY_BASE="${CARGO_HOME}/configurations/jetty9x"
 
-cd "${JETTY_HOME}"
+cd "${JETTY_HOME}" || exit
 java -jar "${JETTY_HOME}/start.jar -Djetty.home=${JETTY_HOME} -Djetty.base=${JETTY_BASE}"
 #--daemon
 
