@@ -38,6 +38,10 @@ Javascript project
 
 [![Last deployed](https://img.shields.io/github/last-commit/AlbanAndrieu/nabla-servers-bower-sample/gh-pages.svg?label=last%20deployed)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/commits/gh-pages)
 
+## Tools
+
+[![social-likes-next](https://data.jsdelivr.com/v1/package/npm/social-likes-next/badge)](https://www.jsdelivr.com/package/npm/social-likes-next)
+
 ## Contributing [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) [![Requirements](https://requires.io/github/pycontribs/jira/requirements.svg?branch=master)](https://requires.io/github/nabla-servers-bower-sample/jira/requirements/?branch=master) [![Donate](https://img.shields.io/gratipay/AlbanAndrieu.svg?style=flat)](https://www.gratipay.com/~AlbanAndrieu) [![bounties](https://img.shields.io/bountysource/team/pycontribs/activity.svg)](https://www.bountysource.com/teams/nabla-servers-bower-sample/issues?tracker_ids=3650997)
 
 [![GitHub issues by-label](https://img.shields.io/github/issues/AlbanAndrieu/nabla-servers-bower-sample/good%20first%20issue.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
