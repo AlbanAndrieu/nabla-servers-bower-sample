@@ -24,5 +24,4 @@ angular.module('myTestApp')
     ];
     //var Book = $resource('./rest/books/:isbn');
     //$scope.books = Book.query();
-
   });
