@@ -51,7 +51,7 @@
   "directives.language-select.Language": "{{views.index.Language}}",
 
   "views.bababou.Name": "Bababou",
-  "views.bababou.SaveMe": "Aide moi!"
+  "views.bababou.SaveMe": "Aide moi!",
   "views.bababou.Age": "Je n'avais que 14 mois!",
   "views.bababou.Age description": "Je n'avais que 14 mois, quand j'ai étais enlevé avec violence et déplacer pour Oslo.",
   "views.bababou.Lost father": "J'ai perdu mon Papa!",
