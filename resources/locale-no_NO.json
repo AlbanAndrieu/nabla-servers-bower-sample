@@ -22,9 +22,9 @@
   "views.index.Language": "Språk",
   "views.index.Search": "Søk",
 
-  "views.main.i18n for your AngularJS applications": "i18n for din AngularJS applikasjoner",
-  "views.main.I'm Yeoman": "Jeg er Yeoman",
-  "views.main.Always a pleasure scaffolding your apps.": "Always a pleasure scaffolding your apps.",
+  "views.main.Willing to contribute": "Willing to contribute!",
+  "views.main.I'm Yeoman": "Jeg er Bababou",
+  "views.main.Always a pleasure sharing experience": "Always a pleasure sharing experience.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
   "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.",
@@ -47,5 +47,14 @@
   "views.contacts.Call me": "Call meg",
   "views.contacts.Find me": "Find meg",
 
-  "directives.language-select.Language": "Språk"
+  "directives.language-select.Language": "Språk",
+
+  "views.bababou.Name": "Bababou",
+  "views.bababou.SaveMe": "Red meg!",
+  "views.bababou.Age": "Jeg var bare 14 måneder baby!",
+  "views.bababou.Age description": "Jeg var 14 måneder baby, da jeg ble bortført fra Frankrike med vold og flyttet til Oslo.",
+  "views.bababou.Lost father": "Jeg har mistet Pappa!",
+  "views.bababou.Lost father description": "Jeg har mistet pappa (og min familie) og jeg vil vokse opp uten min far i et land hvor far ikke har noen rettigheter i det hele tatt.",
+  "views.bababou.Prisoner in Norway": "Jeg er fange i Norge!",
+  "views.bababou.Prisoner in Norway description": "Jeg er fange i Norge med en voldelig mor uten familie og ingen fremtid ... Et land hvor ingen bryr seg og hvor det ikke er noen å beskytte meg."
 }
