@@ -64,10 +64,14 @@ angular.module('myTestApp')
       tmhDynamicLocale.set(data.language.toLowerCase().replace(/_/g, '-'));// load Angular locale
     });
 
+    $rootScope.today = new Date();
+
     $rootScope.$on('$localeChangeSuccess', function() {
       console.log('Event received if jquery is loaded before angular in index.html');
       stopLoadingAnimation();
-    });
+    }
+
+    );
 
     return {
       getLocaleDisplayName: function() {
