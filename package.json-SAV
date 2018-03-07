@@ -1,9 +1,9 @@
 {
   "name": "bower-sample",
   "description": "Bower sample",
-  "branchVersion": "^1.0.1",
+  "branchVersion": "^1.0.2",
   "branchPattern": "1.0.*",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": [
     "nabla"
   ],
@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "alto-saxophone": "^2.34.0",
-    "optipng-bin": "^3.1.4",
     "apache-server-configs": "2.15.0",
     "async": "2.6.0",
     "autoprefixer": "7.2.5",
@@ -79,7 +78,7 @@
     "grunt-contrib-watch": "1.0.0",
     "grunt-critical": "1.1.0",
     "grunt-filerev": "2.3.1",
-    "grunt-gh-pages": "1.1.0",
+    "grunt-gh-pages": "2.0.0",
     "grunt-google-cdn": "0.4.3",
     "grunt-istanbul": "0.8.0",
     "grunt-jscs": "3.0.1",
@@ -99,7 +98,6 @@
     "grunt-postcss": "0.9.0",
     "grunt-protractor-coverage": "0.2.18",
     "grunt-protractor-runner": "5.0.0",
-    "grunt-qunit-kimchi": "0.1.1",
     "grunt-release": "0.14.0",
     "grunt-replace": "1.0.1",
     "grunt-svgmin": "5.0.0",
@@ -130,6 +128,7 @@
     "karma-tapfile-reporter": "0.0.1",
     "load-grunt-tasks": "3.5.2",
     "nue": "0.7.1",
+    "optipng-bin": "^3.1.4",
     "phantomas": "1.19.0",
     "phantomjs-prebuilt": "2.1.16",
     "pixrem": "4.0.1",
@@ -153,8 +152,15 @@
     "install": "./node_modules/protractor/bin/webdriver-manager update --versions.chrome 2.35",
     "update-webdriver": "./node_modules/protractor/bin/webdriver-manager update",
     "postinstall": "node node_modules/phantomjs-prebuilt/install.js",
-    "pretest": "./node_modules/phantomjs/bin/phantomjs yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' t.co",
+    "pretest": "./node_modules/phantomjs-prebuilt/bin/phantomjs test/yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' http://localhost:9090/test/#/",
+    "webpagetest": "./node_modules/webpagetest/bin/webpagetest test http://localhost:9090/test/#/ --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec",
+    "prepublish": "npm-run-all test clean build",
+    "postpublish": "npm run gh-pages",
+    "clean": "rimraf lib dist",
     "test": "snyk test && grunt test",
-    "webpagetest": "./node_modules/webpagetest/bin/webpagetest test t.co --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec"
+    "build": "npm-run-all build:* build:*:*",
+	"build:grunt": "grunt",
+    "gh-pages": "npm-run-all gh-pages:*",
+    "gh-pages:site": "grunt site"
   }
 }
