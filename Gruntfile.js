@@ -944,7 +944,7 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>',
           src: [
             '*.{ico,png,txt}',
-            //'.htaccess',
+            '.htaccess',
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
@@ -967,9 +967,9 @@ module.exports = function(grunt) {
           cwd: 'bower_components/nabla-styles/app',
           src: 'views/*',
           dest: '<%= config.dist %>'
-        }, {
-          src: 'node_modules/apache-server-configs/dist/.htaccess',
-          dest: '<%= config.dist %>/.htaccess'
+        //}, {
+        //  src: 'node_modules/apache-server-configs/dist/.htaccess',
+        //  dest: '<%= config.dist %>/.htaccess'
         }, {
           expand: true,
           cwd: '.',
