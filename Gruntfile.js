@@ -1123,6 +1123,9 @@ module.exports = function(grunt) {
               from: '/.tmp/bower_components/font-awesome/fonts/',
               to: '../bower_components/font-awesome/fonts/'
           },{
+              from: '.tmp/fonts/bootstrap/',
+              to: 'fonts/bootstrap/'              
+          },{
               from: '@@undefined-version',
               to: VERSION
           }]
