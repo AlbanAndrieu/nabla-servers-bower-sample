@@ -67,13 +67,11 @@ module.exports = function(grunt) {
     'zap_stop': 'grunt-zaproxy',
     'zap_results': 'grunt-zaproxy',
     //'validate-package': 'grunt-nsp-package',
-    qunit: 'grunt-phantomjs-basil',
     'protractor_coverage': 'grunt-protractor-coverage',
     instrument: 'grunt-istanbul',
     makeReport: 'grunt-istanbul',
     //phantomcss: 'grunt-phantomcss',
     usebanner: 'grunt-banner',
-    //replaceHtml: 'grunt-replace',
     replace: 'grunt-text-replace',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
@@ -86,10 +84,6 @@ module.exports = function(grunt) {
   //    request = require('request');
   var serveStatic = require('serve-static');
   var serveIndex = require('serve-index');
-
-  var mountFolder = function(connect, dir) {
-    return serveStatic(path.resolve(dir));
-  };
 
   //grunt.loadNpmTasks('grunt-uncss');
   ////TODO http://grunt-tasks.com/grunt-purifycss/
@@ -140,6 +134,7 @@ module.exports = function(grunt) {
   var getVersion = function() {
     // TODO use https://www.npmjs.com/package/grunt-jenkins-build-info
     var POM_VERSION = parseVersionFromPomXml();
+    //console.log('POM_VERSION : ' + POM_VERSION);
     var JENKINS_VERSION = process.env.BUILD_NUMBER || '0';
     // TODO use https://www.npmjs.com/package/grunt-jenkins-build-number for 0
     var RELEASE_VERSION = process.env.MVN_RELEASE_VERSION || POM_VERSION;
@@ -206,22 +201,6 @@ module.exports = function(grunt) {
       bower: require('./bower.json'),
       verbose: true
     },
-
-    //replaceHtml: {
-    //  dist: {
-    //    options: {
-    //      patterns: [
-    //        {
-    //          match: 'undefined-version',
-    //          replacement: VERSION
-    //        }
-    //      ]
-    //    },
-    //    files: [
-    //      {expand: true, flatten: true, src: ['<%= config.dist %>/index.html'], dest: 'dist'}
-    //    ]
-    //  }
-    //},
 
     nsp: {
       package: grunt.file.readJSON('package.json')
@@ -944,7 +923,7 @@ module.exports = function(grunt) {
           dest: '<%= config.dist %>',
           src: [
             '*.{ico,png,txt}',
-            //'.htaccess',
+            '.htaccess',
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
@@ -967,9 +946,9 @@ module.exports = function(grunt) {
           cwd: 'bower_components/nabla-styles/app',
           src: 'views/*',
           dest: '<%= config.dist %>'
-        }, {
-          src: 'node_modules/apache-server-configs/dist/.htaccess',
-          dest: '<%= config.dist %>/.htaccess'
+        //}, {
+        //  src: 'node_modules/apache-server-configs/dist/.htaccess',
+        //  dest: '<%= config.dist %>/.htaccess'
         }, {
           expand: true,
           cwd: '.',
@@ -1122,6 +1101,9 @@ module.exports = function(grunt) {
           },{
               from: '/.tmp/bower_components/font-awesome/fonts/',
               to: '../bower_components/font-awesome/fonts/'
+          },{
+              from: '.tmp/fonts/bootstrap/',
+              to: 'fonts/bootstrap/'
           },{
               from: '@@undefined-version',
               to: VERSION
@@ -1696,7 +1678,6 @@ module.exports = function(grunt) {
     'usemin',
     'critical',
     'htmlmin',
-    //'replaceHtml',
     'replace:dist',
     'usebanner',
     'copy:coverageE2E',
