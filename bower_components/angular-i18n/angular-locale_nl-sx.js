@@ -80,20 +80,6 @@ $provide.value("$locale", {
       "nov.",
       "dec."
     ],
-    "STANDALONEMONTH": [
-      "januari",
-      "februari",
-      "maart",
-      "april",
-      "mei",
-      "juni",
-      "juli",
-      "augustus",
-      "september",
-      "oktober",
-      "november",
-      "december"
-    ],
     "WEEKENDRANGE": [
       5,
       6
@@ -108,7 +94,7 @@ $provide.value("$locale", {
     "shortTime": "HH:mm"
   },
   "NUMBER_FORMATS": {
-    "CURRENCY_SYM": "NAf.",
+    "CURRENCY_SYM": "ANG",
     "DECIMAL_SEP": ",",
     "GROUP_SEP": ".",
     "PATTERNS": [
@@ -129,15 +115,14 @@ $provide.value("$locale", {
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
-        "negPre": "\u00a4\u00a0-",
-        "negSuf": "",
+        "negPre": "\u00a4\u00a0",
+        "negSuf": "-",
         "posPre": "\u00a4\u00a0",
         "posSuf": ""
       }
     ]
   },
   "id": "nl-sx",
-  "localeID": "nl_SX",
   "pluralCat": function(n, opt_precision) {  var i = n | 0;  var vf = getVF(n, opt_precision);  if (i == 1 && vf.v == 0) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
 });
 }]);

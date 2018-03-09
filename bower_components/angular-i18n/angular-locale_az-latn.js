@@ -18,11 +18,11 @@ $provide.value("$locale", {
     ],
     "ERANAMES": [
       "eram\u0131zdan \u0259vv\u0259l",
-      "yeni era"
+      "bizim eram\u0131z\u0131n"
     ],
     "ERAS": [
       "e.\u0259.",
-      "y.e."
+      "b.e."
     ],
     "FIRSTDAYOFWEEK": 0,
     "MONTH": [
@@ -62,20 +62,6 @@ $provide.value("$locale", {
       "noy",
       "dek"
     ],
-    "STANDALONEMONTH": [
-      "Yanvar",
-      "Fevral",
-      "Mart",
-      "Aprel",
-      "May",
-      "\u0130yun",
-      "\u0130yul",
-      "Avqust",
-      "Sentyabr",
-      "Oktyabr",
-      "Noyabr",
-      "Dekabr"
-    ],
     "WEEKENDRANGE": [
       5,
       6
@@ -90,7 +76,7 @@ $provide.value("$locale", {
     "shortTime": "HH:mm"
   },
   "NUMBER_FORMATS": {
-    "CURRENCY_SYM": "\u20bc",
+    "CURRENCY_SYM": "\u20ac",
     "DECIMAL_SEP": ",",
     "GROUP_SEP": ".",
     "PATTERNS": [
@@ -111,7 +97,7 @@ $provide.value("$locale", {
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
-        "negPre": "-\u00a4\u00a0",
+        "negPre": "\u00a4\u00a0-",
         "negSuf": "",
         "posPre": "\u00a4\u00a0",
         "posSuf": ""
@@ -119,7 +105,6 @@ $provide.value("$locale", {
     ]
   },
   "id": "az-latn",
-  "localeID": "az_Latn",
   "pluralCat": function(n, opt_precision) {  if (n == 1) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
 });
 }]);

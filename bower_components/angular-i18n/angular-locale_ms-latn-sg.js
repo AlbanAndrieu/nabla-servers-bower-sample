@@ -62,20 +62,6 @@ $provide.value("$locale", {
       "Nov",
       "Dis"
     ],
-    "STANDALONEMONTH": [
-      "Januari",
-      "Februari",
-      "Mac",
-      "April",
-      "Mei",
-      "Jun",
-      "Julai",
-      "Ogos",
-      "September",
-      "Oktober",
-      "November",
-      "Disember"
-    ],
     "WEEKENDRANGE": [
       5,
       6
@@ -111,7 +97,7 @@ $provide.value("$locale", {
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
-        "negPre": "-\u00a4",
+        "negPre": "\u00a4-",
         "negSuf": "",
         "posPre": "\u00a4",
         "posSuf": ""
@@ -119,7 +105,6 @@ $provide.value("$locale", {
     ]
   },
   "id": "ms-latn-sg",
-  "localeID": "ms_Latn_SG",
   "pluralCat": function(n, opt_precision) {  return PLURAL_CATEGORY.OTHER;}
 });
 }]);

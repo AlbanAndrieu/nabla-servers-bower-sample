@@ -40,50 +40,36 @@ $provide.value("$locale", {
       "Desember"
     ],
     "SHORTDAY": [
-      "So.",
-      "Ma.",
-      "Di.",
-      "Wo.",
-      "Do.",
-      "Vr.",
-      "Sa."
+      "So",
+      "Ma",
+      "Di",
+      "Wo",
+      "Do",
+      "Vr",
+      "Sa"
     ],
     "SHORTMONTH": [
       "Jan.",
       "Feb.",
       "Mrt.",
-      "Apr.",
+      "Apr",
       "Mei",
-      "Jun.",
-      "Jul.",
-      "Aug.",
-      "Sep.",
-      "Okt.",
-      "Nov.",
-      "Des."
-    ],
-    "STANDALONEMONTH": [
-      "Januarie",
-      "Februarie",
-      "Maart",
-      "April",
-      "Mei",
-      "Junie",
-      "Julie",
-      "Augustus",
-      "September",
-      "Oktober",
-      "November",
-      "Desember"
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Okt",
+      "Nov",
+      "Des"
     ],
     "WEEKENDRANGE": [
       5,
       6
     ],
-    "fullDate": "EEEE, dd MMMM y",
-    "longDate": "dd MMMM y",
-    "medium": "dd MMM y HH:mm:ss",
-    "mediumDate": "dd MMM y",
+    "fullDate": "EEEE d MMMM y",
+    "longDate": "d MMMM y",
+    "medium": "d MMM y HH:mm:ss",
+    "mediumDate": "d MMM y",
     "mediumTime": "HH:mm:ss",
     "short": "y-MM-dd HH:mm",
     "shortDate": "y-MM-dd",
@@ -111,15 +97,14 @@ $provide.value("$locale", {
         "maxFrac": 2,
         "minFrac": 2,
         "minInt": 1,
-        "negPre": "-\u00a4",
+        "negPre": "\u00a4\u00a0-",
         "negSuf": "",
-        "posPre": "\u00a4",
+        "posPre": "\u00a4\u00a0",
         "posSuf": ""
       }
     ]
   },
   "id": "af-na",
-  "localeID": "af_NA",
   "pluralCat": function(n, opt_precision) {  if (n == 1) {    return PLURAL_CATEGORY.ONE;  }  return PLURAL_CATEGORY.OTHER;}
 });
 }]);
