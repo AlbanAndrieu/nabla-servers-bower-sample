@@ -566,9 +566,9 @@ FileETag None
     Header set X-Permitted-Cross-Domain-Policies: "master-only"
     Header always set Cache-Control "no-cache, no-store, must-revalidate"
     Header always set Pragma "no-cache"
-	Header always set Expires "-1"
-	Header always set Content-Security-Policy: "frame-src 'self' *.nabla.mobi nabla.mobi *.freeboxos.fr freeboxos.fr;"
-	# Guarantee HTTPS for 1 Year including Sub Domains
+    Header always set Expires "-1"
+    Header always set Content-Security-Policy: "frame-src 'self' *.nabla.mobi nabla.mobi *.freeboxos.fr freeboxos.fr *.cdn.jsdelivr.net/npm/social-likes-next/dist/social-likes_birman.css;"
+    # Guarantee HTTPS for 1 Year including Sub Domains
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     Header always unset Server
     Header always unset Date
