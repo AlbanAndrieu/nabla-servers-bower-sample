@@ -23,9 +23,9 @@
   "views.index.Language": "Langage",
   "views.index.Search": "Recherche",
 
-  "views.main.i18n for your AngularJS applications": "i18n pour AngularJS applications",
-  "views.main.I'm Yeoman": "Je suis Yeoman",
-  "views.main.Always a pleasure scaffolding your apps.": "Toujours un plaisir d'échaffauder vos apps.",
+  "views.main.Willing to contribute": "Willing to contribute!",
+  "views.main.I'm Yeoman": "Je suis Bababou",
+  "views.main.Always a pleasure sharing experience": "Pour le plaisir de partager mon experience.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
   "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.",
@@ -48,5 +48,14 @@
   "views.contacts.Call me": "Appelez moi",
   "views.contacts.Find me": "Où me trouver",
 
-  "directives.language-select.Language": "{{views.index.Language}}"
+  "directives.language-select.Language": "{{views.index.Language}}",
+
+  "views.bababou.Name": "Bababou",
+  "views.bababou.SaveMe": "Aide moi!",
+  "views.bababou.Age": "Je n'avais que 14 mois!",
+  "views.bababou.Age description": "Je n'avais que 14 mois, quand j'ai étais enlevé avec violence et déplacer pour Oslo.",
+  "views.bababou.Lost father": "J'ai perdu mon Papa!",
+  "views.bababou.Lost father description": "J'ai perdu mon Papa (et ma famille) et je vais grandir sans mon père dans un pays où les pères n'ont aucun droits.",
+  "views.bababou.Prisoner in Norway": "Je suis prisonière en Norvège!",
+  "views.bababou.Prisoner in Norway description": "Je suis prisonière en Norvège avec un mère violente sans ma famille et sans avenir... Un pays ou personne ne s'intéresse à moi et ou personne ne peux me protéger."
 }
