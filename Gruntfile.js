@@ -1404,7 +1404,10 @@ module.exports = function(grunt) {
     'gh-pages': {
       options: {
         base: 'dist',
+        //remote: 'upstream',
         branch: 'gh-pages-bababou',
+        tag: 'bababou',
+        message: 'Auto-generated commit : bababou',
         dotfiles: true
       },
       src: ['**/*']
