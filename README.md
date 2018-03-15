@@ -415,11 +415,6 @@ Project Properties | Validation | Project specific settings | HTML Angular Synta
 
 See https://github.com/oasp/oasp4js/issues/24 for more details
 
-License
--------
-
-Apache v2
-
 ## Other resources
 
 Yo generator :
@@ -440,4 +435,4 @@ License
 
 ***
 
-Alban Andrieu [linkedin](fr.linkedin.com/in/nabla/)
+Alban Andrieu [linkedin](https://fr.linkedin.com/in/nabla/)
