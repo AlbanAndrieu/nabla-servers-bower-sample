@@ -16,5 +16,5 @@ angular.module('myTestApp')
       'AngularJS',
       'Karma'
     ];
-    $scope.today = '20140413T00:00:00';
+    $scope.bababouBirthday = '20140413T00:00:00';
   });

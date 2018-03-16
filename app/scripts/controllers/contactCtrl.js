@@ -16,4 +16,5 @@ angular.module('myTestApp')
       'AngularJS',
       'Karma'
     ];
+    $scope.aaBirthday = '19810721T00:00:00';
   });

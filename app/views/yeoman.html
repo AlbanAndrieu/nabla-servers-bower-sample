@@ -4,8 +4,8 @@
 
   <div class="clearfix">
     <div class="pull-right">
-      <span class="glyphicon glyphicon-time"></span>
-      {{ today | date:'mediumDate' }}
+      <span class="glyphicon glyphicon-gift"></span>
+      {{ bababouBirthday | date:'mediumDate' }}
     </div>
   </div>
 
@@ -13,15 +13,13 @@
     <h2>Bababou</h2>
 
     <p class="lead">
-      <img ng-src="images/no-filerev/bababou-{{locale}}.png?v={{VERSION_TAG}}" alt="{{'views.main.I\'m Yeoman' | translate}}"><br>
+      <img ng-src="images/no-filerev/bababou-{{locale}}.png?v={{VERSION_TAG}}" alt="{{'views.main.I\'m Bababou' | translate}}"><br>
       {{"views.bababou.Name" | translate}}
     </p>
 
-    <!-- TODO add button
-    <p><a class="btn btn-lg btn-success" ng-href="#/">
-      {{"views.bababou.SaveMe" | translate}}
-      <span class="glyphicon glyphicon-ok"></span></a></p>
-    -->
+    <p><a class="btn btn-lg btn-success" ng-href="#/contacts">
+      {{"views.bababou.Papapou" | translate}}
+      <span class="glyphicon glyphicon-search"></span></a></p>
   </div>
 
   <div class="row marketing">

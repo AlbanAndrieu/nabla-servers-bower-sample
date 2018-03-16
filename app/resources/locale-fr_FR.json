@@ -15,7 +15,7 @@
   "views.index.Other": "Autre",
   "views.index.About": "A propos",
   "views.index.Contact": "Contact",
-  "views.index.from the Yeoman team": "de la part de l'équipe Nabla",
+  "views.index.from the Yeoman team": "Fait avec Amour",
   "views.index.Submit": "Soumettre",
   "views.index.Profile": "Profile",
   "views.index.Login": "Connexion",
@@ -25,6 +25,8 @@
 
   "views.main.Willing to contribute": "Willing to contribute!",
   "views.main.I'm Yeoman": "Je suis Bababou",
+  "views.main.I'm Bababou": "Je suis Bababou",
+  "views.main.I'm Papapou": "Je suis ton Papa",
   "views.main.Always a pleasure sharing experience": "Pour le plaisir de partager mon experience.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
@@ -42,6 +44,10 @@
   "views.about.Have successful experience...": "J'ai de l'experience pour réaliser des applications Mobile Web du début a plus de 50k téléchargement (en tant que Manager, Developpeur, Testeur et Administrateur).",
   "views.about.JS, HTML and CSS enthusiast...": "JS, HTML et CSS enthousiast. Amusez-vous bien :)",
 
+  "views.about.ILY": "Je t'aime.",
+  "views.about.I'm waiting for you..." : "Je t'attends.",
+  "views.about.Please call me...": "Contact moi. Regardes en dessous...",
+
   "views.contacts.Follow me on": "Suis moi sur",
   "views.contacts.My": "Moi",
   "views.contacts.Mail me": "Ecrivez moi",
@@ -57,5 +63,5 @@
   "views.bababou.Lost father": "J'ai perdu mon Papa!",
   "views.bababou.Lost father description": "J'ai perdu mon Papa (et ma famille) et je vais grandir sans mon père dans un pays où les pères n'ont aucun droits.",
   "views.bababou.Prisoner in Norway": "Je suis prisonière en Norvège!",
-  "views.bababou.Prisoner in Norway description": "Je suis prisonière en Norvège avec un mère violente sans ma famille et sans avenir... Un pays ou personne ne s'intéresse à moi et ou personne ne peux me protéger."
+  "views.bababou.Prisoner in Norway description": "Je suis prisonière en Norvège avec un mère violente sans ma famille et sans avenir... Un pays où personne ne s'intéresse à moi et ou personne ne peux me protéger."
 }
