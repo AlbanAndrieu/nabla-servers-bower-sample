@@ -15,7 +15,7 @@
   "views.index.Other": "Andre",
   "views.index.About": "Omtrent",
   "views.index.Contact": "Kontakt",
-  "views.index.from the Yeoman team": "fra Nabla teamet",
+  "views.index.from the Yeoman team": "Ferdig med kjærlighet",
   "views.index.Submit": "Send inn",
   "views.index.Profile": "Profil",
   "views.index.Logout": "Logg ut",
@@ -24,6 +24,8 @@
 
   "views.main.Willing to contribute": "Willing to contribute!",
   "views.main.I'm Yeoman": "Jeg er Bababou",
+  "views.main.I'm Bababou": "Jeg er Bababou",
+  "views.main.I'm Papapou": "Jeg er pappa",
   "views.main.Always a pleasure sharing experience": "Always a pleasure sharing experience.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
@@ -41,6 +43,10 @@
   "views.about.Have successful experience...": "Have successful experience creating Mobile Web Applications from scratch to more than 50k. downloads (as Manager, Developer, Tester and Publisher).",
   "views.about.JS, HTML and CSS enthusiast...": "JS, HTML and CSS enthusiast. Enjoying life :)",
 
+  "views.about.ILY": "Jeg elsker deg",
+  "views.about.I'm waiting for you..." : "Jeg venter på deg",
+  "views.about.Please call me...": "Ring meg. Se nedenfor...",
+
   "views.contacts.Follow me on": "Følg meg på",
   "views.contacts.My": "Mitt",
   "views.contacts.Mail me": "Mail meg",
@@ -49,8 +55,8 @@
 
   "directives.language-select.Language": "Språk",
 
-  "views.bababou.Name": "Bababou",
-  "views.bababou.SaveMe": "Red meg!",
+  "views.bababou.Name": "Jeg er Bababou",
+  "views.bababou.Papapou": "Finn pappa!",
   "views.bababou.Age": "Jeg var bare 14 måneder baby!",
   "views.bababou.Age description": "Jeg var 14 måneder baby, da jeg ble bortført fra Frankrike med vold og flyttet til Oslo.",
   "views.bababou.Lost father": "Jeg har mistet Pappa!",

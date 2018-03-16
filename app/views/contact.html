@@ -1,25 +1,36 @@
 <div class="container">
 
   <br/>
-  <br/>
 
-  <div class="text">
+  <div class="text-center">
 
-    <p>
-      {{"views.about.My name is..." | translate}}
-    </p>
+    <div class="clearfix">
+      <div class="pull-right">
+        <span class="glyphicon glyphicon-gift"></span>
+        {{ aaBirthday | date:'mediumDate' }}
+      </div>
+    </div>
 
-    <p>
-      {{"views.about.I'm Web Developer and..." | translate}}
-    </p>
+    <div class="jumbotron">
+      <h2>Bababou</h2>
 
-    <p>
-      {{"views.about.Have successful experience..." | translate}}
-    </p>
+      <p class="lead">
+        <img ng-src="images/no-filerev/papapou-{{locale}}.png?v={{VERSION_TAG}}" style="height:200px" alt="{{'views.main.I\'m Papapou' | translate}}"><br>
+        {{"views.about.My name is..." | translate}}
+      </p>
 
-    <p>
-      {{"views.about.JS, HTML and CSS enthusiast..." | translate}}
-    </p>
+      <p>
+        {{"views.about.ILY" | translate}}
+      </p>
+
+      <p>
+        {{"views.about.I'm waiting for you..." | translate}}
+      </p>
+
+      <p>
+        {{"views.about.Please call me..." | translate}}
+      </p>
+    </div>
   </div>
 
   <div class="image">

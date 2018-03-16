@@ -15,7 +15,7 @@
   "views.index.Other": "Other",
   "views.index.About": "About",
   "views.index.Contact": "Contact",
-  "views.index.from the Yeoman team": "from the Nabla team",
+  "views.index.from the Yeoman team": "Done with love",
   "views.index.Submit": "Submit",
   "views.index.Profile": "Profile",
   "views.index.Login": "Login",
@@ -25,6 +25,8 @@
 
   "views.main.Willing to contribute": "Willing to contribute!",
   "views.main.I'm Yeoman": "I'm Bababou",
+  "views.main.I'm Bababou": "I'm Bababou",
+  "views.main.I'm Papapou": "I'm Daddy",
   "views.main.Always a pleasure sharing experience": "Always a pleasure sharing experience.",
   "views.main.Splendid!": "Splendid!",
   "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
@@ -42,6 +44,10 @@
   "views.about.Have successful experience...": "Have successful experience creating Mobile Web Applications from scratch to more than 50k. downloads (as Manager, Developer, Tester and Publisher).",
   "views.about.JS, HTML and CSS enthusiast...": "JS, HTML and CSS enthusiast. Enjoying life :)",
 
+  "views.about.ILY": "I love you.",
+  "views.about.I'm waiting for you..." : "I'm waiting for you.",
+  "views.about.Please call me...": "Please call me. See below...",
+
   "views.contacts.Follow me on": "Follow me on",
   "views.contacts.My": "My",
   "views.contacts.Mail me": "Mail me",
@@ -50,8 +56,8 @@
 
   "directives.language-select.Language": "{{views.index.Language}}",
 
-  "views.bababou.Name": "Bababou",
-  "views.bababou.SaveMe": "Save me!",
+  "views.bababou.Name": "I'm Bababou",
+  "views.bababou.Papapou": "Find Daddy!",
   "views.bababou.Age": "I was only a 14 months baby!",
   "views.bababou.Age description": "I was a 14 months baby, when I have been abducted from France with violence and moved to Oslo.",
   "views.bababou.Lost father": "I have lost my Daddy!",
