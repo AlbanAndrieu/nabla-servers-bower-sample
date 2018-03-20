@@ -82,7 +82,7 @@
     "grunt-contrib-jshint": "1.1.0",
     "grunt-contrib-uglify": "3.3.0",
     "grunt-contrib-watch": "1.0.0",
-    "grunt-critical": "1.1.0",
+    "grunt-critical": "1.0.1",
     "grunt-filerev": "2.3.1",
     "grunt-gh-pages": "2.0.0",
     "grunt-google-cdn": "0.4.3",
