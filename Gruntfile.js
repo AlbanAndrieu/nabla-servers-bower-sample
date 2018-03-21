@@ -1676,7 +1676,7 @@ module.exports = function(grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'critical',
+    //'critical',
     'htmlmin',
     'replace:dist',
     'usebanner',
