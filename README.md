@@ -100,24 +100,32 @@ yarn config set "strict-ssl" false -g
 #yarn config set cafile ~/NABLA.crt
 set NODE_TLS_REJECT_UNAUTHORIZED=0
 yarn install
-```
 
+```
 as local user
 ```
 yo angular translate
 ```
+
+## Tools
+
+### Internationalization
+
+[angular-internationalization-tutorials](https://scotch.io/tutorials/internationalization-of-angularjs-applications)
+
+[angular-translate-yeoman](https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean...master)
+
+### GitHub cards
+
+[GitHub cards](https://lab.lepture.com/github-cards/#AlbanAndrieu/nabla-servers-bower-sample|default)
+
+### TODO
 
 TODO use https://angular-ui.github.io/bootstrap/ for language
 TODO remvove app/styles/components/_header.scss language-select
 TODO https://github.com/rackerlabs/angular-bootstrap-nav
 SEE https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js
 SEE https://github.com/angular-ui/angular-google-maps
-
-## Internationalization
-
-https://scotch.io/tutorials/internationalization-of-angularjs-applications
-
-https://github.com/malyw/angular-translate-yeoman/compare/yeoman-angular-clean...master
 
 ## Quality tools
 
@@ -337,15 +345,9 @@ grunt wpt
 
 Page deployed at :
 
-http://albanandrieu.github.io/nabla-servers-bower-sample/
+[GitHub IO](http://albanandrieu.github.io/nabla-servers-bower-sample/)
 
-```
-git clone https://github.com/AlbanAndrieu/albanandrieu.github.io
-```
-
-In order to workaround issue of bower_components (cssmin) absolute path instead of releatif :
-http://ignaciosuay.com/how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster/
-https://github.com/yeoman/generator-angular/issues/1011
+[GitHub gh-pages](http://htmlpreview.github.io/?https://github.com/AlbanAndrieu/nabla-servers-bower-sample/blob/gh-pages/index.html)
 
 ```
 #VirtualHost *
@@ -354,6 +356,7 @@ sudo nano /etc/apache2/sites-available/awstats.conf
 sudo nano /etc/apache2/sites-available/sample.conf
 #Add the following
 Alias /bower_components "/var/www/sample/bower_components"
+Alias /fonts "/var/www/sample/fonts"
 ```
 
 ## Performance improvements
@@ -362,7 +365,11 @@ What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA
 
 ## Issues
 
-http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel
+[using-ui-bootstrap-causing-issues-with-carousel](http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel)
+
+In order to workaround issue of bower_components (cssmin) absolute path instead of releatif :
+[how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster](http://ignaciosuay.com/how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster/)
+[generator-angular](https://github.com/yeoman/generator-angular/issues/1011)
 
 ## Run End2End tests
 

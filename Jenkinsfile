@@ -1,14 +1,56 @@
 #!/usr/bin/env groovy
+//Begin : Switches for release branches
+def isReleaseBranch(){ (env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /release\/.*/) }
+string daysToKeep = isReleaseBranch() ? '30' : '10'
+string numToKeep = isReleaseBranch() ? '10' : '3'
+string artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
+string artifactNumToKeep = isReleaseBranch() ? '3' : '1'
+string cron_string = isReleaseBranch() ? 'H H * * *' : '@daily'
+string pollSCM_string = isReleaseBranch() ? '@montlhy' : '@hourly'
+def mvn_command(){ isReleaseBranch() ? 'clean deploy' : 'clean install' }
+//def npm_command(){ isReleaseBranch() ? 'npm run publish:all' : 'npm run build' }
+def ignoreTestFailures() { isReleaseBranch() ? 'false' : 'true' }
+//End : Switches for release branches
+
+//JENKINS-42369 : Docker options need to be defined outside of pipeline
+def DOCKER_OPTS = [
+//  '-v /etc/timezone:/etc/timezone:ro',
+//  '-v /etc/localtime:/etc/localtime:ro',
+//  '-v /etc/passwd:/etc/passwd',
+//  '-v /etc/group:/etc/group',
+  '-e HOME=${WORKSPACE}',
+  '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
+  '--dns-search="nabla.mobi"'
+  ].join(" ")
+def DOCKER_IMAGE = 'nabla/ansible-jenkins-slave-docker:latest'
+def DOCKER_REGISTRY = 'hub.docker.com'
+def DOCKER_REGISTRY_URL = "https://${DOCKER_REGISTRY}/"
+
+//Temp scripted code to stop triggering feature branch builds when develop builds
+//as the ignoreUpstreamTriggers does not seem to work as expected
+if (isReleaseBranch()) {
+    properties([
+        pipelineTriggers([
+            snapshotDependencies(),
+        ])
+    ])
+}
 /*
     Point of this Jenkinsfile is to:
     - build java project
 */
 pipeline {
+
     agent { label 'javascript' }
+
     triggers {
-        cron '@daily'
-        pollSCM '@hourly'
+      //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
+      cron(cron_string)
+      pollSCM(pollSCM_string)
+      //snapshotDependencies()
+      //bitbucketPush()
     }
+
     parameters {
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT')
@@ -22,6 +64,13 @@ pipeline {
         booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
         }
     environment {
+        // Maven opts
+        MAVEN_OPTS = [
+          //"-Xms1G -Xmx2G",
+          "-Djava.awt.headless=true",
+          "-Dsun.zip.disableMemoryMapping=true",
+          "-Djava.io.tmpdir=target/tmp"
+        ].join(" ")
         JENKINS_CREDENTIALS = '8aaa3139-bdc4-4774-a08d-ee6b22a7e0ac'
         GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}"
         CARGO_RMI_PORT = "${params.CARGO_RMI_PORT}"
@@ -40,22 +89,37 @@ pipeline {
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
         GIT_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         GIT_COMMIT = "TODO"
+        DOCKER_TAG=buildDockerTag("${env.BRANCH_NAME}")
         }
     options {
-            disableConcurrentBuilds()
-            timeout(time: 120, unit: 'MINUTES')
-            buildDiscarder(logRotator(numToKeepStr: '5'))
+        //disableConcurrentBuilds()
+        timeout(time: 120, unit: 'MINUTES')
+        buildDiscarder(
+            logRotator(
+                daysToKeepStr: daysToKeep,
+                numToKeepStr: numToKeep,
+                artifactDaysToKeepStr: artifactDaysToKeep,
+                artifactNumToKeepStr: artifactNumToKeep
+            )
+        )
     }
     stages {
         stage('Cleaning') {
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 //bitbucketStatusNotify ( buildState: 'INPROGRESS' )
                 script {
-            if (params.CLEAN_RUN == true) {
+                    if (params.CLEAN_RUN == true) {
                         stage('Clean everything') {
                             echo "Delete everything at start"
                             deleteDir()
-            }
+                        }
                     } else {
                         stage('Clean bower npm cache') {
                             echo "Delete bower npm cache at start"
@@ -66,6 +130,13 @@ pipeline {
             }
         }
         stage('Preparation') { // for display purposes
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 checkout scm
                 //checkout([
@@ -95,14 +166,14 @@ pipeline {
 
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: "${GIT_BRANCH_NAME}"]],
+                    branches: [[name: "${env.GIT_BRANCH_NAME}"]],
                     browser: [
                     $class: 'Stash',
-                    repoUrl: "${GIT_BROWSE_URL}"],
+                    repoUrl: "${env.GIT_BROWSE_URL}"],
                     doGenerateSubmoduleConfigurations: false,
                 extensions: [
                     [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-                    [$class: 'LocalBranch', localBranch: '${GIT_BRANCH_NAME}'],
+                    [$class: 'LocalBranch', localBranch: '${env.GIT_BRANCH_NAME}'],
                     [$class: 'RelativeTargetDirectory', relativeTargetDir: 'bm'],
                     [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
                     [$class: 'IgnoreNotifyCommit'],
@@ -111,8 +182,8 @@ pipeline {
                 gitTool: 'git-latest',
                 submoduleCfg: [],
                 userRemoteConfigs: [[
-                    credentialsId: "${JENKINS_CREDENTIALS}",
-                    url: "${GIT_URL}"]
+                    credentialsId: "${env.JENKINS_CREDENTIALS}",
+                    url: "${env.GIT_URL}"]
                 ]
                 ])
 
@@ -174,7 +245,7 @@ echo "ZAPROXY_HOME : $ZAPROXY_HOME"
 
 wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280/manager/text/undeploy?path=/test" -O -
 
-Xvfb :99 -ac -screen 0 1280x1024x24 &
+#Xvfb :99 -ac -screen 0 1280x1024x24 &
 export DISPLAY=:99
 #nice -n 10 x11vnc 2>&1 &
 
@@ -196,27 +267,34 @@ exit 0
                 MAVEN_SETTINGS_FILE = "${WORKSPACE}/${TARGET_PROJECT}/settings.xml"
                 SONAR_MAVEN_COMMANDS = "sonar:sonar"
             }
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 script {
                     //sh "npm run build"
-                    // Maven opts
-                    String MAVEN_OPTS = ["-Djava.awt.headless=true",
-                    "-Dsun.zip.disableMemoryMapping=true",
-                    "-Djava.io.tmpdir=${WORKSPACE}/target/tmp"].join(" ")
 
                     if (params.CLEAN_RUN == true) {
                         MAVEN_OPTS << " -Xmx1536m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError "
                     }
 
-                    echo "Maven OPTS have been specified: ${MAVEN_OPTS}"
+                    echo "Maven OPTS have been specified: ${env.MAVEN_OPTS}"
 
                     withMaven(
                         maven: 'maven-latest',
                         jdk: 'java-latest',
                         globalMavenSettingsConfig: 'nabla-default',
                         mavenLocalRepo: '.repository',
-                        mavenOpts: "${MAVEN_OPTS}",
-                        options: [pipelineGraphPublisher(skipDownstreamTriggers: true)]
+                        mavenOpts: "${env.MAVEN_OPTS}",
+                        options: [
+                          pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                 skipDownstreamTriggers: !isReleaseBranch(),
+                                                 lifecycleThreshold: 'deploy')
+                        ]
                     ) {
 
                         String MAVEN_GOALS = ["-B -U -e -Dsurefire.useFile=false",
@@ -271,13 +349,30 @@ exit 0
             when {
                 branch 'develop'
             }
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 script {
                     if (params.DRY_RUN == false) {
                         //unstash 'source'
-                        withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
-							// Run the maven build
-							sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                        withMaven(
+                            maven: 'maven-latest',
+                            jdk: 'java-latest',
+                            globalMavenSettingsConfig: 'nabla-default',
+                            mavenLocalRepo: '.repository',
+							options: [
+								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+													skipDownstreamTriggers: !isReleaseBranch(),
+													lifecycleThreshold: 'deploy')
+							]
+                        ) {
+                            // Run the maven build
+                            sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } //withMaven
                         //sh "nsp check"
                     }
@@ -289,11 +384,28 @@ exit 0
             when {
                 branch 'develop'
             }
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 script {
                     if (params.DRY_RUN == false) {
                         //unstash 'source'
-                        withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
+                        withMaven(
+                            maven: 'maven-latest',
+                            jdk: 'java-latest',
+                            globalMavenSettingsConfig: 'nabla-default',
+                            mavenLocalRepo: '.repository',
+							options: [
+								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+													skipDownstreamTriggers: !isReleaseBranch(),
+													lifecycleThreshold: 'deploy')
+							]
+                        ) {
                             // Run the maven build
                             sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
@@ -308,15 +420,32 @@ exit 0
                 expression { BRANCH_NAME ==~ /(release|master|develop)/ }
                 //anyOf { branch 'develop'; branch 'deploy' }
             }
+            //agent {
+            //    docker { image "${DOCKER_IMAGE}"
+            //             reuseNode true
+            //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             args "${DOCKER_OPTS}"
+            //    }
+            //}
             steps {
                 script {
                     if (params.DRY_RUN == false) {
                         //unstash 'source'
-                        withMaven(maven: 'maven-latest', jdk: 'java-latest', globalMavenSettingsConfig: 'nabla-default', mavenLocalRepo: '.repository') {
+                        withMaven(
+                            maven: 'maven-latest',
+                            jdk: 'java-latest',
+                            globalMavenSettingsConfig: 'nabla-default',
+                            mavenLocalRepo: '.repository',
+							options: [
+								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+													skipDownstreamTriggers: !isReleaseBranch(),
+													lifecycleThreshold: 'deploy')
+							]
+                        ) {
                             // Run the maven build
                             sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
-			//sh "npm run publish:all"
+            //sh "npm run publish:all"
                     }
                 } //script
             }
@@ -441,22 +570,55 @@ exit 0
 
                         //stash includes: '${ARTIFACTS}', name: 'app'
                         //unstash 'app'
-                        // tag on successfull build
-                        sshagent(['jenkins-ssh']) {
-                            sh """
-                                ./bin/tag_on_successfull_build.sh
-                            """
-                        }
                     }
                 } //script
             }
         } // stage Archive Artifacts
+
+        //stage('Package & Deploy') {
+        //  steps {
+        //    script {
+        //        sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
+        //              cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
+        //        docker_build_args="--no-cache"
+        //        docker.withRegistry('https://nabla.mobi', 'jenkins-https') {
+        //        container = docker.build("${env.DOCKER_BUILD_IMG}:${env.DOCKER_BUILD_TAG}", "${docker_build_args} -f $WORKSPACE/docker/build/Dockerfile $WORKSPACE/docker/build/")
+        //        pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
+        //      }
+        //    }
+        //  }
+        //} // stage Archive Artifacts
+
+        stage("Git Tag") {
+          steps {
+            script {
+              if (isReleaseBranch()) {
+                // tag on successfull build
+                sshagent(['jenkins-ssh']) {
+                    sh """
+                        ./bin/tag_on_successfull_build.sh
+                    """
+                }
+              }
+            }
+          }
+        }
+
+
     }
     post {
         // always means, well, always run.
         always {
             echo "Hi there"
-		    notifyMe()
+            notifyMe()
+
+            script {
+                try {
+                  sh '''docker system prune -f; docker rmi "${DOCKER_BUILD_IMG}:${DOCKER_BUILD_TAG}"'''
+                } catch(exc) {
+                  echo 'Warn: There was a problem Cleaning local docker repo. '+exc.toString()
+                }
+            }
         }
         failure {
             echo "I'm failing"
@@ -487,6 +649,23 @@ exit 0
     //} // ws
 }
 
+def buildDockerTag(branch) {
+    branch.replaceAll('/','_')+"-test"
+}
+
+def pushDockerImage(container, image, tag)
+{
+  if (isReleaseBranch()) {
+    container.push(tag)
+    try {
+      sh "docker rmi "+image+":"+tag
+    }
+    catch(exc) {
+      echo 'Warn: There was a problem Deleting local docker image. '+exc.toString()
+    }
+  }
+}
+
 def notifyMe() {
   //// send to Slack
   //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
@@ -507,7 +686,7 @@ def notifyMe() {
       //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
       body: content,
       attachLog: false,
-	  compressLog: true,
+      compressLog: true,
       to: emailextrecipients([
           [$class: 'CulpritsRecipientProvider'],
           [$class: 'DevelopersRecipientProvider'],
