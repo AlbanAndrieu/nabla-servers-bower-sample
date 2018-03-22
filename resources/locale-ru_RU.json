@@ -1,0 +1,52 @@
+{
+  "PAGE_TITLE": "i18n для ваших AngularJS приложений",
+  "PAGE_CONTENT": "Как переводить ваши AngularJS приложения без перезагрузки страницы с angular-translate",
+
+  "XSS_TEST": "{{username}}",
+
+  "views.Fork me on": "Создай Fork на",
+
+  "views.index.Nabla": "Nabla",
+  "views.index.Project version": "1.0.0",
+  "views.index.Home": "Главная",
+  "views.index.Blog": "Blog",
+  "views.index.Sample": "Sample",
+  "views.index.Project": "Project",
+  "views.index.Other": "Other",
+  "views.index.About": "Обо мне",
+  "views.index.Contact": "Контакты",
+  "views.index.from the Yeoman team": "от команды Nabla",
+  "views.index.Submit": "Submit",
+  "views.index.Profile": "Profile",
+  "views.index.Login": "Login",
+  "views.index.Logout": "Logout",
+  "views.index.Language": "Язык",
+  "views.index.Search": "Search",
+
+  "views.main.i18n for your AngularJS applications": "i18n для ваших AngularJS приложений",
+  "views.main.I'm Yeoman": "Я- Yeoman",
+  "views.main.Always a pleasure scaffolding your apps.": "Всегда приятно быть основой для ваших приложений.",
+  "views.main.Splendid!": "Отлично!",
+  "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
+  "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate- это профессиональный front-end для создания быстрых, надежных и адаптивных веб-приложений или сайтов.",
+  "views.main.Angular": "Angular",
+  "views.main.Angular description": "AngularJS- это набор инструментов для создания фреймворка, который наиболее подходит вам для разработки приложений.",
+  "views.main.Karma": "Karma",
+  "views.main.Karma description": "Великолепный инструмент для запуска JavaScript тестов.",
+  "views.main.Bootstrap": "Bootstrap",
+  "views.main.Bootstrap description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+
+  "views.about.My name is...": "Меня зовут Альбан Андриё.",
+  "views.about.I'm Web Developer and...": "Я- веб-разработчик и software инженер с большим опытом в области Front-End, Back-End, DevOps, Sysadmin, Security, Build, Release, QA.",
+  "views.about.Author of": "Author of this sample project available on",
+  "views.about.Have successful experience...": "Имею успешный опыт создания мобильного веб-приложения от идеи и до более 50 тысяч скачиваний (как менеджер, разработчик, тестер и publisher).",
+  "views.about.JS, HTML and CSS enthusiast...": "JS, HTML and CSS энтузиаст. Наслаждаюсь жизнью :)",
+
+  "views.contacts.Follow me on": "Подпишись на мой",
+  "views.contacts.My": "Мой",
+  "views.contacts.Mail me": "Mail me",
+  "views.contacts.Call me": "Call me",
+  "views.contacts.Find me": "Find me",
+
+  "directives.language-select.Language": "{{views.index.Language}}"
+}
