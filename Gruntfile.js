@@ -1335,7 +1335,7 @@ module.exports = function(grunt) {
         //url: 'bababou.eu'
         //url: 'http://localhost:9090/'
         //url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: 'https://nabla.freeboxos.fr/sample/'
+        url: 'http://nabla.freeboxos.fr/sample/'
       },
       //prod: {
       //  options: {
@@ -1350,7 +1350,7 @@ module.exports = function(grunt) {
           paths: ['#/about', '#/'],
           locale: 'en_GB',
           strategy: 'desktop',
-          threshold: 60
+          threshold: 58
         }
       }
     },
@@ -1358,10 +1358,10 @@ module.exports = function(grunt) {
     'pagespeed_junit': {
       options: {
         //urls: ['http://home.nabla.mobi:9090/'],
-        urls: ['https://nabla.freeboxos.fr/sample/'],
+        urls: ['http://nabla.freeboxos.fr/sample/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
-        threshold: 70,
+        threshold: 60,
         ruleThreshold: 12
       }
     },
