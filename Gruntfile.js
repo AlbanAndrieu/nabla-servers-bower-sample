@@ -645,7 +645,6 @@ module.exports = function(grunt) {
     // additional tasks can operate on them
     useminPrepare: {
       html: '<%= config.app %>/**/*.html',
-      //html: '<%= config.app %>/index.html',
       options: {
         dest: '<%= config.dist %>',
         flow: {
