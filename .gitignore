@@ -29,7 +29,8 @@ dist/
 *.log
 gui/target_junit/
 *rebel.xml
-/docs/
+#/docs/
+site/
 
 npm/
 .node_cache/
