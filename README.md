@@ -6,7 +6,7 @@
 
 Javascript project
 
-## Screenshot
+## Overview
 
 ![](https://raw.githubusercontent.com/AlbanAndrieu/nabla-servers-bower-sample/master/screenshot-overview.png)
 
@@ -185,6 +185,21 @@ as root
 ```
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
 ```
+
+## Documentation
+
+See [mkdocs](https://www.mkdocs.org/)
+
+Run `mkdocs` for building doc and `mkdocs serve` for preview.
+
+```bash
+mkdocs serve
+mkdocs build
+mkdocs gh-deploy
+#mkdocs gh-deploy -b docs
+```
+
+[GitHub IO Documentation](http://albanandrieu.github.io/nabla-servers-bower-sample/)
 
 ## Fix imagemin upgrade
 
