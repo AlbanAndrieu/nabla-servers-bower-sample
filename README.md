@@ -6,6 +6,10 @@
 
 Javascript project
 
+## Screenshot
+
+![](https://raw.githubusercontent.com/AlbanAndrieu/nabla-servers-bower-sample/master/screenshot-overview.png)
+
 ## Build
 
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
@@ -18,7 +22,6 @@ Javascript project
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
-[![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
