@@ -345,6 +345,16 @@ exit 0
             //}
         } // stage Build
 
+        //stage('SonarQube analysis') {
+        //    environment {
+        //        SONAR_SCANNER_OPTS = "-Xmx1g"
+        //    }
+        //    steps {
+        //        sh "pwd"
+        //        sh "/usr/local/sonar-runner/bin/sonar-scanner -D sonar-project.properties"
+        //    }
+        //}
+
         stage('Security') {
             when {
                 branch 'develop'
