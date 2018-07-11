@@ -1,12 +1,21 @@
 #!/usr/bin/env groovy
-//Begin : Switches for release branches
-def isReleaseBranch(){ (env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /release\/.*/) }
-string daysToKeep = isReleaseBranch() ? '30' : '10'
-string numToKeep = isReleaseBranch() ? '10' : '3'
-string artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
-string artifactNumToKeep = isReleaseBranch() ? '3' : '1'
-string cron_string = isReleaseBranch() ? 'H H * * *' : '@daily'
-string pollSCM_string = isReleaseBranch() ? '@montlhy' : '@hourly'
+/*
+    Point of this Jenkinsfile is to:
+    - define global behavior
+*/
+def utils
+
+def isReleaseBranch() {
+    env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /master/ || env.BRANCH_NAME ==~ /release\/.*/
+}
+
+def daysToKeep = isReleaseBranch() ? '30' : '10'
+def numToKeep = isReleaseBranch() ? '10' : '3'
+def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
+def artifactNumToKeep = isReleaseBranch() ? '3' : '1'
+def cronString = isReleaseBranch() ? 'H H(3-7) * * 1-5' : '@daily'
+def pollSCMString = isReleaseBranch() ? '@montlhy' : '@hourly'
+
 def mvn_command(){ isReleaseBranch() ? 'clean deploy' : 'clean install' }
 //def npm_command(){ isReleaseBranch() ? 'npm run publish:all' : 'npm run build' }
 def ignoreTestFailures() { isReleaseBranch() ? 'false' : 'true' }
@@ -22,9 +31,11 @@ def DOCKER_OPTS = [
   '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
   '--dns-search="nabla.mobi"'
   ].join(" ")
-def DOCKER_IMAGE = 'nabla/ansible-jenkins-slave-docker:latest'
+
 def DOCKER_REGISTRY = 'hub.docker.com'
+def DOCKER_REGISTRY_CREDENTIALSID = 'jenkins'
 def DOCKER_REGISTRY_URL = "https://${DOCKER_REGISTRY}/"
+def DOCKER_IMAGE = 'nabla/ansible-jenkins-slave-docker:latest'
 
 //Temp scripted code to stop triggering feature branch builds when develop builds
 //as the ignoreUpstreamTriggers does not seem to work as expected
@@ -35,34 +46,37 @@ if (isReleaseBranch()) {
         ])
     ])
 }
+
+def artifacts = "*_VERSION.TXT"
+
 /*
     Point of this Jenkinsfile is to:
     - build java project
 */
 pipeline {
-
-    agent { label 'javascript' }
-
+    agent {
+      label 'javascript'
+    }
     triggers {
       //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
-      cron(cron_string)
-      pollSCM(pollSCM_string)
+      cron(cronString)
+      pollSCM(pollSCMString)
       //snapshotDependencies()
-      //bitbucketPush()
+      bitbucketPush()
     }
-
     parameters {
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT')
         string(defaultValue: '', description: 'Default workspace suffix to override', name: 'WORKSPACE_SUFFIX')
         string(defaultValue: 'http://localhost:9190', description: 'Default URL used by deployment tests', name: 'SERVER_URL')
-        string(defaultValue: '/#/', description: 'Default context', name: 'SERVER_CONTEXT')
+        string(defaultValue: '/test/#/', description: 'Default context', name: 'SERVER_CONTEXT')
         string(defaultValue: 'LATEST_SUCCESSFULL', description: 'Create a TAG', name: 'TARGET_TAG')
         string(defaultValue: 'jenkins', description: 'User', name: 'TARGET_USER')
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
         booleanParam(defaultValue: false, description: 'Clean before run', name: 'CLEAN_RUN')
         booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
-        }
+        booleanParam(defaultValue: false, description: 'Debug mvnw', name: 'MVNW_VERBOSE')
+    }
     environment {
         // Maven opts
         MAVEN_OPTS = [
@@ -71,7 +85,7 @@ pipeline {
           "-Dsun.zip.disableMemoryMapping=true",
           "-Djava.io.tmpdir=target/tmp"
         ].join(" ")
-        JENKINS_CREDENTIALS = '8aaa3139-bdc4-4774-a08d-ee6b22a7e0ac'
+        JENKINS_CREDENTIALS = 'jenkins-ssh'
         GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}"
         CARGO_RMI_PORT = "${params.CARGO_RMI_PORT}"
         WORKSPACE_SUFFIX = "${params.WORKSPACE_SUFFIX}"
@@ -80,8 +94,8 @@ pipeline {
         DEBUG_RUN = "${params.DEBUG_RUN}"
         //echo "JOB_NAME: ${env.JOB_NAME} : ${env.JOB_BASE_NAME}"
         TARGET_PROJECT = sh(returnStdout: true, script: "echo ${env.JOB_NAME} | cut -d'/' -f -1").trim()
-        BRANCH_NAME = "${env.BRANCH_NAME}"
-            PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
+        BRANCH_NAME = "${env.BRANCH_NAME}".replaceAll("feature/","")
+        PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
         BUILD_ID = "${env.BUILD_ID}"
         SONAR_BRANCH = sh(returnStdout: true, script: "echo ${env.BRANCH_NAME} | cut -d'/' -f 2-").trim()
         GIT_AUTHOR_EMAIL = "${env.CHANGE_AUTHOR_EMAIL}"
@@ -115,6 +129,8 @@ pipeline {
             steps {
                 //bitbucketStatusNotify ( buildState: 'INPROGRESS' )
                 script {
+                    utils = load "Jenkinsfile-vars"
+                    if (! isReleaseBranch()) { utils.abortPreviousRunningBuilds() }
                     if (params.CLEAN_RUN == true) {
                         stage('Clean everything') {
                             echo "Delete everything at start"
@@ -127,13 +143,14 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
+            } // steps
+        } // stage Cleaning
         stage('Preparation') { // for display purposes
             //agent {
             //    docker { image "${DOCKER_IMAGE}"
             //             reuseNode true
             //             registryUrl "${DOCKER_REGISTRY_URL}"
+            //             registryCredentialsId "${DOCKER_REGISTRY_CREDENTIALSID}"
             //             args "${DOCKER_OPTS}"
             //    }
             //}
@@ -154,6 +171,8 @@ pipeline {
                 //            credentialsId: "${JENKINS_CREDENTIALS}",
                 //            url: 'https://github.com/AlbanAndrieu/nabla-servers-bower-sample.git']]])
                 script {
+                    utils = load "Jenkinsfile-vars"
+                    //properties(utils.createPropertyList())
                     sh "git rev-parse --short HEAD > .git/commit-id"
                     GIT_COMMIT = readFile('.git/commit-id')
                 }
@@ -184,69 +203,58 @@ pipeline {
                 userRemoteConfigs: [[
                     credentialsId: "${env.JENKINS_CREDENTIALS}",
                     url: "${env.GIT_URL}"]
-                ]
+                    ]
                 ])
-
-                script {
-                    currentBuild.displayName = [
-                        '#',
-                        BRANCH_NAME,
-                        ' (',
-                        GIT_COMMIT,
-                        ', ',
-                        currentBuild.displayName,
-                        ')'
-                    ].join("")
-                }
 
                 ansiColor('xterm') {
 sh '''
 set -e
 #set -xve
 
-echo USER $USER
+echo "USER : $USER"
 
 #source /etc/profile
 
 cd ./nabla/env/scripts/jenkins/
 
-./step-0-1-run-processes-cleaning.sh || exit 1
+#./step-0-1-run-processes-cleaning.sh || exit 1
 
 ./step-2-2-1-build-before-java.sh || exit 1
 
 cd ${WORKSPACE}
 
-echo NODE_PATH ${NODE_PATH}
-#export PATH=./:./node/:${PATH}
-echo PATH ${PATH}
-echo JAVA_HOME ${JAVA_HOME}
-echo DISPLAY ${DISPLAY}
-echo TARGET_PROJECT ${TARGET_PROJECT}
+echo "PATH : ${PATH}"
+echo "JAVA_HOME : ${JAVA_HOME}"
+echo "DISPLAY : ${DISPLAY}"
+echo "TARGET_PROJECT : ${TARGET_PROJECT}"
 
-#export VERBOSE=true
-
-echo BUILD_NUMBER: ${BUILD_NUMBER}
-echo BUILD_ID: ${BUILD_ID}
-echo IS_M2RELEASEBUILD: ${IS_M2RELEASEBUILD}
+echo "BUILD_NUMBER: ${BUILD_NUMBER}"
+echo "BUILD_ID: ${BUILD_ID}"
+echo "IS_M2RELEASEBUILD: ${IS_M2RELEASEBUILD}"
 
 export ZAP_PORT=8091
 export JETTY_PORT=9190
 export SERVER_HOST=localhost
 #export SERVER_URL="http://localhost:${JETTY_PORT}/"
 
-echo "ZAP_PORT : $ZAP_PORT"
-echo "CARGO_RMI_PORT : $CARGO_RMI_PORT"
-echo "JETTY_PORT : $JETTY_PORT"
-echo "SERVER_HOST : $SERVER_HOST"
-echo "SERVER_URL : $SERVER_URL"
-echo "ZAPROXY_HOME : $ZAPROXY_HOME"
+echo "ZAP_PORT : ${ZAP_PORT}"
+echo "CARGO_RMI_PORT : ${CARGO_RMI_PORT}"
+echo "JETTY_PORT : ${JETTY_PORT}"
+echo "SERVER_HOST : ${SERVER_HOST}"
+echo "SERVER_URL : ${SERVER_URL}"
+echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
+
+#TODO
+#JAVA_OPTS=-Xms64m -Xmx64m
+#SUREFIRE_OPTS=-Xms256m -Xmx256m
+#MAVEN_OPTS=-Xms128m -Xmx128m -DargLine=${env.SUREFIRE_OPTS}
 
 #curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=tomcat&password=microsoft"
 
 wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280/manager/text/undeploy?path=/test" -O -
 
 #Xvfb :99 -ac -screen 0 1280x1024x24 &
-export DISPLAY=:99
+#export DISPLAY=":99"
 #nice -n 10 x11vnc 2>&1 &
 
 #google-chrome --no-sandbox &
@@ -260,11 +268,11 @@ exit 0
             echo "${env.SONAR_BRANCH}"
             echo "${env.RELEASE_VERSION}"
             } //step
-        }
+        } // stage Preparation
+
         stage('Build') {
             environment {
                 MAVEN_ROOT_POM = "${WORKSPACE}/${TARGET_PROJECT}/pom.xml"
-                MAVEN_SETTINGS_FILE = "${WORKSPACE}/${TARGET_PROJECT}/settings.xml"
                 SONAR_MAVEN_COMMANDS = "sonar:sonar"
             }
             //agent {
@@ -278,69 +286,79 @@ exit 0
                 script {
                     //sh "npm run build"
 
-                    if (params.CLEAN_RUN == true) {
-                        MAVEN_OPTS << " -Xmx1536m -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError "
+                    if (params.DEBUG_RUN == true) {
+                        MAVEN_OPTS << "-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError "
                     }
 
                     echo "Maven OPTS have been specified: ${env.MAVEN_OPTS}"
 
-                    withMaven(
-                        maven: 'maven-latest',
-                        jdk: 'java-latest',
-                        globalMavenSettingsConfig: 'nabla-default',
-                        mavenLocalRepo: '.repository',
-                        mavenOpts: "${env.MAVEN_OPTS}",
-                        options: [
-                          pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-                                                 skipDownstreamTriggers: !isReleaseBranch(),
-                                                 lifecycleThreshold: 'deploy')
-                        ]
-                    ) {
+                    configFileProvider([configFile(fileId: 'nabla-default',  targetLocation: 'gsettings.xml', variable: 'SETTINGS_XML')]) {
+                        withMaven(
+                            maven: 'maven-latest',
+                            jdk: 'java-latest',
+                            globalMavenSettingsConfig: 'nabla-default',
+                            mavenLocalRepo: './.repository',
+                            mavenOpts: "${MAVEN_OPTS}",
+                            options: [
+                                    pipelineGraphPublisher(
+                                       ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                     skipDownstreamTriggers: !isReleaseBranch(),
+                                       lifecycleThreshold: 'deploy'
+                                    ),
+                                    artifactsPublisher(disabled: true)
+                            ]
+                        ) {
 
-                        String MAVEN_GOALS = ["-B -U -e -Dsurefire.useFile=false",
-                            //"-f ${MAVEN_ROOT_POM}",
-                            //"-s ${MAVEN_SETTINGS_FILE}",
-                            //"-T3",
-                            "clean install",
-                            //"-Dakka.test.timefactor=2",
-                            //"-Dcargo.rmi.port=${CARGO_RMI_PORT} -Djetty.http.port=9190 -Dwebdriver.base.url=http://localhost:9190/ -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -DSTOP.PORT=19097 -DSTOP.KEY=STOP",
-                            "-Djacoco.outputDir=${WORKSPACE}/target",
-                            "-Dsonar.branch=${SONAR_BRANCH}",
-                            "-Psonar,jacoco,codenarc,run-integration-test"].join(" ")
+                                releasedVersion = utils.getReleasedVersion()
+                                echo "Maven RELEASE_VERSION: ${releasedVersion}"
 
-                        if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /feature\/.*/)) {
-                                    echo "pitest added"
-                            MAVEN_GOALS << " org.pitest:pitest-maven:1.2.4:mutationCoverage "
-                                    echo "sonar added"
-                                    MAVEN_GOALS << SONAR_MAVEN_COMMANDS
-                        }
+                                manager.addShortText("${releasedVersion}")
 
-                        if (BRANCH_NAME ==~ /feature\/.*/) {
-                            MAVEN_GOALS << " -Dsonar.organization=nabla -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false "
-                            MAVEN_GOALS << " -Denforcer.skip=false -Dmaven.test.failure.ignore=false -Dmaven.test.failure.skip=false "
-                        }
+                            String MAVEN_GOALS = ["-U -e -Dsurefire.useFile=false",
+                                "clean install",
+                                //"-f ${MAVEN_ROOT_POM}",
+                                "-s ${SETTINGS_XML}",
+                                //"-T3",
+                                //"-Dakka.test.timefactor=2",
+                                //"-Dcargo.rmi.port=${CARGO_RMI_PORT} -Djetty.http.port=9190 -Dwebdriver.base.url=http://localhost:9190/ -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -DSTOP.PORT=19097 -DSTOP.KEY=STOP",
+                                "-Djacoco.outputDir=${WORKSPACE}/target",
+                                "-Dsonar.branch=${SONAR_BRANCH}",
+                                "-Psonar,jacoco,codenarc,run-integration-test"].join(" ")
 
-                                if ((BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
-                                    echo "skip test added"
-                            MAVEN_GOALS << " -Denforcer.skip=true "
-                            MAVEN_GOALS << " -Dmaven.test.failure.ignore=true -Dmaven.test.failure.skip=true "
-                        }
+                            if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /feature\/.*/)) {
+                                echo "pitest added"
+                                MAVEN_GOALS << " org.pitest:pitest-maven:1.2.4:mutationCoverage "
+                                echo "sonar added"
+                                 MAVEN_GOALS << SONAR_MAVEN_COMMANDS
+                            }
 
-                        echo "Maven GOALS have been specified: ${MAVEN_GOALS}"
+                            if (BRANCH_NAME ==~ /feature\/.*/) {
+                                MAVEN_GOALS << " -Dsonar.organization=nabla -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false "
+                                MAVEN_GOALS << " -Denforcer.skip=false -Dmaven.test.failure.ignore=false -Dmaven.test.failure.skip=false "
+                            }
 
-                        wrap([$class: 'Xvfb', autoDisplayName: true]) {
-                            // Run the maven build
-                            sh "mvn ${MAVEN_GOALS}"
-                        }
-                        stash excludes: 'target/, .bower/, .tmp/, bower_components/, node/, node_modules/, coverage/, build/', includes: '**', name: 'source'
-                        //stash includes: 'node_modules/', name: 'node_modules'
-                        //unstash 'node_modules'
-                    } //withMaven
+                            if ((BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
+                                echo "skip test added"
+                                MAVEN_GOALS << " -Denforcer.skip=true "
+                                MAVEN_GOALS << " -Dmaven.test.failure.ignore=true -Dmaven.test.failure.skip=true "
+                            }
+
+                            echo "Maven GOALS have been specified: ${MAVEN_GOALS}"
+
+                            wrap([$class: 'Xvfb', autoDisplayName: false, additionalOptions: '-pixdepths 24 4 8 15 16 32', parallelBuild: true]) {
+                                // Run the maven build
+                                sh "./mvnw ${MAVEN_GOALS}"
+                            } // Xvfb
+                            stash excludes: 'target/, .bower/, .tmp/, bower_components/, node/, node_modules/, coverage/, build/', includes: '**', name: 'source'
+                            //stash includes: 'node_modules/', name: 'node_modules'
+                            //unstash 'node_modules'
+                        } //withMaven
+                    } // configFileProvider
                 } //script
             } // steps
             //steps {
             //  withSonarQubeEnv("${env.SONAR_INSTANCE}") {
-            //  sh 'mvn -s ${WORKSPACE}/settings.xml -f ${WORKSPACE}/pom.xml ${SONAR_MAVEN_COMMANDS} ${SONAR_MAVEN_GOALS}'
+            //  sh './mvnw -s ${WORKSPACE}/settings.xml -f ${WORKSPACE}/pom.xml ${SONAR_MAVEN_COMMANDS} ${SONAR_MAVEN_GOALS}'
             //  }
             //}
         } // stage Build
@@ -375,14 +393,14 @@ exit 0
                             jdk: 'java-latest',
                             globalMavenSettingsConfig: 'nabla-default',
                             mavenLocalRepo: '.repository',
-							options: [
-								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-													skipDownstreamTriggers: !isReleaseBranch(),
-													lifecycleThreshold: 'deploy')
-							]
+                            options: [
+                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                    skipDownstreamTriggers: !isReleaseBranch(),
+                                                    lifecycleThreshold: 'deploy')
+                            ]
                         ) {
                             // Run the maven build
-                            sh "mvn org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                            sh "./mvnw org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } //withMaven
                         //sh "nsp check"
                     }
@@ -410,14 +428,14 @@ exit 0
                             jdk: 'java-latest',
                             globalMavenSettingsConfig: 'nabla-default',
                             mavenLocalRepo: '.repository',
-							options: [
-								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-													skipDownstreamTriggers: !isReleaseBranch(),
-													lifecycleThreshold: 'deploy')
-							]
+                            options: [
+                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                    skipDownstreamTriggers: !isReleaseBranch(),
+                                                    lifecycleThreshold: 'deploy')
+                            ]
                         ) {
                             // Run the maven build
-                            sh "mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                            sh "./mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
                         //sh "grunt ngdocs"
                     }
@@ -446,24 +464,44 @@ exit 0
                             jdk: 'java-latest',
                             globalMavenSettingsConfig: 'nabla-default',
                             mavenLocalRepo: '.repository',
-							options: [
-								pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-													skipDownstreamTriggers: !isReleaseBranch(),
-													lifecycleThreshold: 'deploy')
-							]
+                            options: [
+                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                    skipDownstreamTriggers: !isReleaseBranch(),
+                                                    lifecycleThreshold: 'deploy')
+                            ]
                         ) {
                             // Run the maven build
-                            sh "mvn deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                            sh "./mvnw deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
                         } // withMaven
-            //sh "npm run publish:all"
+                        //sh "npm run publish:all"
                     }
                 } //script
             }
-        }/ / stage Deploy
+            post {
+                success {
+                    script {
+                        manager.addShortText("deployed")
+                        manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+
+                        currentBuildNumber = manager.build.number
+                        if(manager.setBuildNumber(currentBuildNumber - 1)) {
+                        actions = manager.build.actions
+                            actions.each { action ->
+                                if (action.metaClass.hasProperty(action, "text") && action.text.contains("deployed")) {
+                                    actions.remove(action)
+                                }
+                            }
+                            currDate = new Date().dateTimeString
+                            manager.addShortText("undeployed: $currDate", "grey", "white", "0px", "white")
+                            manager.createSummary("gear2.gif").appendText("<h2>Undeployed: $currDate</h2>", false, false, false, "grey")
+                        }
+                    } //script
+                }
+            }
+        } // stage Deploy
+
         stage('Results') {
             steps {
-                //warnings canComputeNew: false, canResolveRelativePaths: false, categoriesPattern: '', consoleParsers: [[parserName: 'Java Compiler (javac)'], [parserName: 'Maven']], defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', unHealthy: ''
-
                 step([
                         $class: "WarningsPublisher",
                         canComputeNew: false,
@@ -475,8 +513,14 @@ exit 0
                             ],
                             [
                                 parserName: 'Maven'
+                            //],
+                            //[
+                            //    parserName: 'JSLint',
+                            //    pattern: 'pmd.xml'
                             ]
-                        ]
+                        ],
+                        //unstableTotalAll: '0',
+                        usePreviousBuildAsReference: true
                     ])
 
                 step([
@@ -493,8 +537,65 @@ exit 0
                     ])
 
                 step([
-                        $class: 'LogParserPublisher', parsingRulesPath: '/home/jenkins/deploy-log_parsing_rules', useProjectRule: false
+                        $class: 'LogParserPublisher',
+                        parsingRulesPath:
+                        '/jenkins/deploy-log_parsing_rules',
+                        failBuildOnError: false,
+                        unstableOnWarning: false,
+                        useProjectRule: false
                     ])
+
+                    step([
+                        $class: 'CoberturaPublisher',
+                        autoUpdateHealth: false,
+                        autoUpdateStability: false,
+                        coberturaReportFile: '**/coverage.xml',
+                        //coberturaReportFile: 'target/site/cobertura/coverage.xml'
+                        failUnhealthy: false,
+                        failUnstable: false,
+                        failNoReports: false,
+                        maxNumberOfBuilds: 0,
+                        onlyStable: false,
+                        sourceEncoding: 'ASCII',
+                        zoomCoverageChart: false
+                        ])
+
+                    script {
+                        //sh "npm run lint"
+                        //sh "shellcheck -f checkstyle *.sh > checkstyle.xml || true"
+                        shellcheckExitCode = sh(
+                            script: 'shellcheck -f checkstyle *.sh > checkstyle.xml',
+                            returnStdout: true,
+                            returnStatus: true
+                        )
+                        sh "echo ${shellcheckExitCode}"
+                    } // script
+
+                    step([
+                        $class: 'CheckStylePublisher',
+                        //pattern: '**/eslint.xml',
+                        pattern: '**/checkstyle.xml',
+                        unstableTotalAll: '0',
+                        usePreviousBuildAsReference: true
+                        ])
+
+                    //step([
+                    //    $class: 'RobotPublisher',
+                    //    disableArchiveOutput: false,
+                    //    logFileName: 'log.html',
+                    //    otherFiles: '**/*.png',
+                    //    outputFileName: 'output.xml',
+                    //    outputPath: '.',
+                    //    passThreshold: 100,
+                    //    reportFileName: 'report.html',
+                    //    unstableThreshold: 0
+                    //    ])
+
+                    //script {
+                    //
+                    //  utils.checkAPI()
+                    //
+                    //} //script
 
             }
             post {
@@ -505,15 +606,8 @@ exit 0
         } // stage Results
 
         stage('Archive Artifacts') {
-
             steps {
                 script {
-                    sshagent(['jenkins-ssh']) {
-                        String versionInfo = "${TARGET_PROJECT}: BUILD: ${BUILD_ID} BRANCH: ${BRANCH_NAME} SHA1: ${GIT_COMMIT}"
-                        String versionFile = "${env.WORKSPACE}/${TARGET_PROJECT}_VERSION.TXT"
-                        sh "echo ${versionInfo} > ${versionFile}"
-                    }
-
                     String ARTIFACTS = ['*_VERSION.TXT',
                                     '**/target/*.swf',
                                     '**/target/*.log',
@@ -585,44 +679,55 @@ exit 0
             }
         } // stage Archive Artifacts
 
-        //stage('Package & Deploy') {
-        //  steps {
-        //    script {
-        //        sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
-        //              cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
-        //        docker_build_args="--no-cache"
-        //        docker.withRegistry('https://nabla.mobi', 'jenkins-https') {
-        //        container = docker.build("${env.DOCKER_BUILD_IMG}:${env.DOCKER_BUILD_TAG}", "${docker_build_args} -f $WORKSPACE/docker/build/Dockerfile $WORKSPACE/docker/build/")
-        //        pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
-        //      }
+        //stage('Docker') {
+        //    steps {
+        //        script {
+        //            sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
+        //                  cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
+        //            docker_build_args="--no-cache"
+        //            docker.withRegistry('https://nabla.mobi', 'jenkins-https') {
+        //            container = docker.build("${env.DOCKER_BUILD_IMG}:${env.DOCKER_BUILD_TAG}", "${docker_build_args} -f $WORKSPACE/docker/build/Dockerfile $WORKSPACE/docker/build/")
+        //            pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
+        //          }
+        //        } // script
         //    }
-        //  }
-        //} // stage Archive Artifacts
+        //} // stage Docker
 
         stage("Git Tag") {
-          steps {
-            script {
-              if (isReleaseBranch()) {
-                // tag on successfull build
-                sshagent(['jenkins-ssh']) {
-                    sh """
-                        ./bin/tag_on_successfull_build.sh
-                    """
-                }
-              }
+            steps {
+                script {
+                    utils.gitTagLocal()
+                    utils.gitTagRemote()
+
+                    //currentBuild.displayName = [
+                    //    '#',
+                    //    BRANCH_NAME,
+                    //    ' (',
+                    //    GIT_COMMIT,
+                    //    ', ',
+                    //    currentBuild.displayName,
+                    //    ')'
+                    //].join("")
+                    utils.setBuildName()
+                    utils.createVersionTextFile("${TARGET_PROJECT}_VERSION.TXT")
+
+                    //sshagent(['jenkins-ssh']) {
+                    //    String versionInfo = "${TARGET_PROJECT}: BUILD: ${BUILD_ID} BRANCH: ${BRANCH_NAME} SHA1: ${GIT_COMMIT}"
+                    //    String versionFile = "${env.WORKSPACE}/${TARGET_PROJECT}_VERSION.TXT"
+                    //    sh "echo ${versionInfo} > ${versionFile}"
+                    //}
+
+                } // script
             }
-          }
-        }
+        } // stage Git Tag
 
-
-    }
+    } // stages
     post {
         // always means, well, always run.
         always {
             echo "Hi there"
-            notifyMe()
-
             script {
+                utils.notifyMe()
                 try {
                   sh '''docker system prune -f; docker rmi "${DOCKER_BUILD_IMG}:${DOCKER_BUILD_TAG}"'''
                 } catch(exc) {
@@ -651,13 +756,15 @@ exit 0
         }
         // success, failure, unstable all run if the current build status is successful, failed, or unstable, respectively
         success {
-          echo "I succeeded"
-          //bitbucketStatusNotify ( buildState: 'SUCCESSFUL' )
-          //archive "**/*"
+            echo "I succeeded"
+            //bitbucketStatusNotify ( buildState: 'SUCCESSFUL' )
+            //archive "**/*"
+            script {
+                if (! isReleaseBranch()) { cleanWs() }
+            }
         }
-    }
-    //} // ws
-}
+    } // post
+} // pipeline
 
 def buildDockerTag(branch) {
     branch.replaceAll('/','_')+"-test"
@@ -676,31 +783,4 @@ def pushDockerImage(container, image, tag)
   }
 }
 
-def notifyMe() {
-  //// send to Slack
-  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //
-  //// send to HipChat
-  //hipchatSend (color: 'YELLOW', notify: true,
-  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-  //)
-
-  def content = '${SCRIPT, template="pipeline.template"}'
-  //to: "${GIT_AUTHOR_EMAIL}"
-
-  // send to email
-  emailext (
-      //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      subject: ("${currentBuild.result}: ${TARGET_PROJECT} ${currentBuild.displayName}"),
-      //body: """<p>${TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
-      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      body: content,
-      attachLog: false,
-      compressLog: true,
-      to: emailextrecipients([
-          [$class: 'CulpritsRecipientProvider'],
-          [$class: 'DevelopersRecipientProvider'],
-          [$class: 'RequesterRecipientProvider']
-      ])
-    )
 }

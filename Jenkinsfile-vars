@@ -1,0 +1,151 @@
+
+def isReleaseBranch() {
+    env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /master/ || env.BRANCH_NAME ==~ /release\/.*/
+}
+
+def getReleasedVersion() {
+    return (readFile('pom.xml') =~ '<version>(.+)-SNAPSHOT</version>')[0][1]
+}
+
+def createMavenGoals() { isReleaseBranch() ? "clean install -Denforcer.skip=true" : "clean install" }
+
+def createPropertyList() {
+    def daysToKeep         = isReleaseBranch() ? '30' : '10'
+    def numToKeep          = isReleaseBranch() ? '20' : '5'
+    def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
+    def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
+    def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
+    def triggers           = isReleaseBranch() ? [snapshotDependencies(), cron(cronString)] : [cron(cronString)]
+    def propertyList = [
+        buildDiscarder(
+            logRotator(
+                daysToKeepStr:         daysToKeep,
+                numToKeepStr:          numToKeep,
+                artifactDaysToKeepStr: artifactDaysToKeep,
+                artifactNumToKeepStr:  artifactNumToKeep
+            )
+        ), pipelineTriggers(triggers)
+    ]
+    return propertyList
+}
+
+//def getDockerImage() { 'nabla/ansible-jenkins-slave-docker:latest' }
+
+//def getDockerOpts() {
+//    [
+//        '--dns-search=nabla.mobi',
+//        '-v /etc/timezone:/etc/timezone:ro',
+//        '-v /etc/localtime:/etc/localtime:ro ',
+//        '-v /etc/passwd:/etc/passwd:ro ',
+//        '-v /etc/group:/etc/group:ro '
+//    ].join(" ")
+//}
+
+def pathInBuildChangeset(def queriedPath) {
+    boolean queriedPathChanged = false
+    for (changeSetList in currentBuild.changeSets) {
+        for (changeSet in changeSetList.getItems()) {
+            for (affectedFile in changeSet.affectedFiles) {
+                   if ( affectedFile.path ==~ queriedPath  ) {
+                    queriedPathChanged = true
+                }
+            }
+        }
+    }
+    return queriedPathChanged
+}
+
+def getCommitShortSHA1() {
+    println(env.GIT_COMMIT)
+    println("***")
+    environment()
+    env.GIT_COMMIT.take(7)
+}
+
+def setBuildName() {
+    setBuildName(env.BRANCH_NAME)
+}
+
+def setBuildName(def gitBranchName) {
+    currentBuild.displayName = "#" + currentBuild.number.toString() + " " + gitBranchName + " " + getCommitShortSHA1()
+}
+
+def createVersionTextFile(def description="TEST", def filename="TEST_VERSION.TXT") {
+    build = currentBuild.number.toString()
+    commitSHA1 = getCommitShortSHA1()
+    sh """
+        echo ${description}: BUILD: ${build} SHA1:${commitSHA1} > "${env.WORKSPACE}/${filename}"
+    """
+}
+
+def gitTagLocal(def tagName="LATEST_SUCCESSFULL", def message="Jenkins local") {
+    sh """
+        cd ${env.WORKSPACE}
+        git tag -l | grep -E "^${tagName}\$" && { git tag -d $tagName ; }
+        git tag -a ${tagName} -m "${message}"
+    """
+}
+
+def gitTagRemote(def tagName="LATEST_SUCCESSFULL", def remote="origin") {
+    // Push empty reference ( :tag) to delete remote tag
+    // Assumes that remote is consistently named to origin
+    sh """
+        git push ${remote} :${tagName} || echo "Could not delete tag: does not exist or no access rights"
+        git push ${remote} ${tagName} --force || echo "Could not push tag: invalid name or no access rights"
+    """
+}
+
+
+def notifyMe() {
+  //// send to Slack
+  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //
+  //// send to HipChat
+  //hipchatSend (color: 'YELLOW', notify: true,
+  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+  //)
+
+  def content = '${SCRIPT, template="pipeline.template"}'
+  //to: "${GIT_AUTHOR_EMAIL}"
+
+  // send to email
+  emailext (
+      //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+      subject: ("${currentBuild.result}: ${env.TARGET_PROJECT} ${currentBuild.displayName}"),
+      //body: """<p>${env.TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
+      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+      body: content,
+      attachLog: false,
+      compressLog: true,
+      to: emailextrecipients([
+          [$class: 'CulpritsRecipientProvider'],
+          [$class: 'DevelopersRecipientProvider'],
+          [$class: 'RequesterRecipientProvider']
+      ])
+    )
+
+  //slackSend channel: '#general', color: 'good', message: '[${currentBuild.result}] #${env.BUILD_NUMBER} ${env.BUILD_URL}', teamDomain: 'kitconcept', token: '<ADD-TOKEN-HERE>'
+
+} // notifyMe
+
+def abortPreviousRunningBuilds() {
+  def hi = Hudson.instance
+  def pname = env.JOB_NAME.split('/')[0]
+
+  try {
+    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+    def exec = build.getExecutor()
+
+    if (build.number != currentBuild.number && exec != null) {
+      exec.interrupt(
+        Result.ABORTED,
+        new CauseOfInterruption.UserInterruption(
+          "Aborted by #${currentBuild.number}"
+        )
+      )
+      println("Aborted previous running build #${build.number} - ${env.JOB_BASE_NAME}")
+    } else {
+      println("Build ${pname} / ${env.JOB_BASE_NAME} is not running or is already built, not aborting #${build.number}")
+}
+
+return this

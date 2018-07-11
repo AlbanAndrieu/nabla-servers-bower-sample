@@ -280,6 +280,8 @@
                         <skipRuntimeScope>true</skipRuntimeScope>
                         <skipSystemScope>true</skipSystemScope>
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                        <centralAnalyzerEnabled>false</centralAnalyzerEnabled>
+                        <nexusAnalyzerEnabled>false</nexusAnalyzerEnabled>
 			<!--
                         <cveUrl12Modified>https://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
                         <cveUrl20Modified>https://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
@@ -702,7 +704,7 @@
 		    <skip>${maven.test.skip}</skip>
                     <wait>${cargo.wait}</wait>
                     <container>
-                        <timeout>300000</timeout>
+                        <timeout>600000</timeout>
                         <log>${project.build.directory}/cargo.log</log>
                         <logLevel>debug</logLevel>
                         <systemProperties>

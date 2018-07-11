@@ -5,7 +5,8 @@ set -xv
 
 ./clean.sh
 
-mvn clean install -Dserver=jetty9x
+#mvn clean install -Dserver=jetty9x
+mvnw install
 
 #sudo npm install -g npm-license
 npm-license || true
