@@ -108,6 +108,8 @@ SEE https://github.com/angular-ui/angular-google-maps
 
 ## Quality tools
 
+### pre-commit
+
 See [pre-commit](http://pre-commit.com/)
 Run `pre-commit install`
 Run `pre-commit autoupdate`
@@ -115,6 +117,14 @@ Run `pre-commit autoupdate`
 Run `pre-commit run --all-files`
 
 Commit `git commit -am 'TEST' --no-verify`
+
+### takari maven wrapper
+
+See [takari-maven-wrapper] (https://github.com/takari/maven-wrapper)
+
+```
+mvn -N io.takari:maven:wrapper
+```
 
 ## NODE/NPM Installation
 
@@ -149,13 +159,13 @@ bower install
 Run `grunt` for building and `grunt serve` for preview.
 
 ```
-mvn clean install -Dserver=jetty9x
-#mvn clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
-mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
+mvnw clean install -Dserver=jetty9x
+#mvnw clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
+mvnw verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
 npm ls --licenses
 ```
 
-Run `mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
+Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
 as root
 ```

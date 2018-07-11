@@ -13,7 +13,8 @@ repos:
         exclude: >
                   (?x)^(
                       clean.bat|
-                      build.bat
+                      build.bat|
+                      mvnw.cmd
                   )$
     -   id: check-json
     -   id: check-xml

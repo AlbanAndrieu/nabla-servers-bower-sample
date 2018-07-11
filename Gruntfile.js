@@ -46,9 +46,6 @@ module.exports = function(grunt) {
   var SERVER_SECURE_URL = process.env.SERVER_SECURE_URL || 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
   var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/test/#/';
 
-  // Load grunt tasks automatically
-  //require('load-grunt-tasks')(grunt);
-
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
@@ -84,12 +81,6 @@ module.exports = function(grunt) {
   //    request = require('request');
   var serveStatic = require('serve-static');
   var serveIndex = require('serve-index');
-
-  //grunt.loadNpmTasks('grunt-uncss');
-  ////TODO http://grunt-tasks.com/grunt-purifycss/
-  //grunt.loadNpmTasks('grunt-postcss');
-  ////grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
-  ////grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
 
   var parseVersionFromPomXml = function() {
       var fs = require('fs-extra');
@@ -187,7 +178,7 @@ module.exports = function(grunt) {
     config: appConfig,
 
     // Project meta
-    pkg: require('./package.json'),
+    pkg: grunt.file.readJSON('package.json'),
     banner: '/**\n' +
             ' * <%= pkg.name %>\n' +
             ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -309,6 +300,8 @@ module.exports = function(grunt) {
         options: {
           port: SERVER_SECURE_PORT,
           protocol: 'https',
+          //open: true,
+          singleRun: true,
           middleware: function(connect, options, middlewares) {
             return [
               serveStatic('.tmp'),

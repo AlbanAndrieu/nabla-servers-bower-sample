@@ -159,6 +159,7 @@
     "update-webdriver": "./node_modules/protractor/bin/webdriver-manager update",
     "postinstall": "node node_modules/phantomjs-prebuilt/install.js",
     "pretest": "./node_modules/phantomjs-prebuilt/bin/phantomjs test/yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' http://localhost:9090/test/#/",
+    "test": "grunt test",
     "webpagetest": "./node_modules/webpagetest/bin/webpagetest test http://localhost:9090/test/#/ --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec"
   }
 }
