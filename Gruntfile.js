@@ -16,20 +16,6 @@ module.exports = function(grunt) {
     localConfig = {};
   }
 
-  var zone;
-  var xdomainUrl;
-
-  try {
-    xdomainUrl = require('./urlConfig.js').getUrl();
-    zone = require('./urlConfig.js').getProxy();
-  } catch (e) {
-    if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
-      console.log('No urlConfig module found, going with defaults');
-      xdomainUrl = 'slave="http://home.nabla.mobi:8080/login"';
-      zone = 'home.nabla.mobi';
-    }
-  }
-
   var ZAP_PORT = process.env.ZAP_PORT || 8090;
   //console.log('ZAP_PORT : ' + ZAP_PORT);
   var ZAP_HOST = process.env.ZAP_HOST || 'localhost';
@@ -351,18 +337,7 @@ module.exports = function(grunt) {
           open: true,
           base: '<%= config.dist %>'
         }
-      },
-      proxies: [{
-        context: '/login/',
-        host: zone,
-        port: 8080,
-        changeOrigin: true
-      }, {
-        context: '/apidocs/',
-        host: zone,
-        port: 8080,
-        changeOrigin: true
-      }]
+      }
     },
 
     instrument: {
