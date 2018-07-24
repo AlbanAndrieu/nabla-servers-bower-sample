@@ -1,6 +1,5 @@
 # nabla-servers-bower-sample
 ![nabla-servers-bower-sample](http://home.nabla.mobi:7075/images/mroizo.1f00120c.png)
-![nabla-servers-bower-sample](http://home.nabla.mobi/sample/images/mroizo.1f00120c.png)
 
 [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
