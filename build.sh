@@ -2,6 +2,7 @@
 set -xv
 
 #sudo apt install phantomjs
+npm run update-webdriver
 
 ./clean.sh
 
