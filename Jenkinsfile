@@ -9,33 +9,41 @@ def isReleaseBranch() {
     env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /master/ || env.BRANCH_NAME ==~ /release\/.*/
 }
 
-def daysToKeep = isReleaseBranch() ? '30' : '10'
-def numToKeep = isReleaseBranch() ? '10' : '3'
+def daysToKeep         = isReleaseBranch() ? '30' : '10'
+def numToKeep          = isReleaseBranch() ? '20' : '5'
 def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
-def artifactNumToKeep = isReleaseBranch() ? '3' : '1'
-def cronString = isReleaseBranch() ? 'H H(3-7) * * 1-5' : '@daily'
+def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
+def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : '@daily'
 def pollSCMString = isReleaseBranch() ? '@montlhy' : '@hourly'
 
-def mvn_command(){ isReleaseBranch() ? 'clean deploy' : 'clean install' }
-//def npm_command(){ isReleaseBranch() ? 'npm run publish:all' : 'npm run build' }
-def ignoreTestFailures() { isReleaseBranch() ? 'false' : 'true' }
-//End : Switches for release branches
+def DOCKER_REGISTRY = "hub.docker.com"
+//def DOCKER_ORGANISATION="nabla"
+def DOCKER_TAG="latest"
+//def DOCKER_USERNAME="nabla"
+def DOCKERNAME="ansible-jenkins-slave-docker
+
+def DOCKER_REGISTRY_URL = "https://${DOCKER_REGISTRY}"
+//def DOCKER_IMAGE = "fusion-risk/${DOCKERNAME}:${DOCKER_TAG}"
+def DOCKER_REGISTRY_CREDENTIAL = 'jenkins'
+//def DOCKER_BUILD_TAG = "${env.DOCKER_TAG}"+"_"+"${env.BUILD_NUMBER}"
+def DOCKER_BUILD_IMG = "nabla/${DOCKERNAME}-build"
+def DOCKER_RUNTIME_IMG = "nabla/${DOCKERNAME}-runtime"
+def DOCKER_IMAGE = "${DOCKER_REGISTRY}/aandrieu/${DOCKERNAME}:${DOCKER_TAG}"
 
 //JENKINS-42369 : Docker options need to be defined outside of pipeline
 def DOCKER_OPTS = [
+    '--net=host',
+    '--pid=host',
+//    '--dns-search=nabla.mobi',
+//    '-v /home/jenkins/.m2:/home/jenkins/.m2 ',
+    '-v /home/jenkins:/home/jenkins',
+    '-v /etc/passwd:/etc/passwd:ro ',
+    '-v /etc/group:/etc/group:ro ',
 //  '-v /etc/timezone:/etc/timezone:ro',
 //  '-v /etc/localtime:/etc/localtime:ro',
-//  '-v /etc/passwd:/etc/passwd',
-//  '-v /etc/group:/etc/group',
-  '-e HOME=${WORKSPACE}',
-  '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
-  '--dns-search="nabla.mobi"'
-  ].join(" ")
-
-def DOCKER_REGISTRY = 'hub.docker.com'
-def DOCKER_REGISTRY_CREDENTIALSID = 'jenkins'
-def DOCKER_REGISTRY_URL = "https://${DOCKER_REGISTRY}/"
-def DOCKER_IMAGE = 'nabla/ansible-jenkins-slave-docker:latest'
+    '-e HOME=${WORKSPACE}',
+    '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
+].join(" ")
 
 //Temp scripted code to stop triggering feature branch builds when develop builds
 //as the ignoreUpstreamTriggers does not seem to work as expected
@@ -55,16 +63,17 @@ def artifacts = "*_VERSION.TXT"
 */
 pipeline {
     agent {
-      label 'javascript'
+      label 'docker-inside'
     }
     triggers {
-      //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
-      cron(cronString)
-      pollSCM(pollSCMString)
-      //snapshotDependencies()
-      bitbucketPush()
+        //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
+        cron(cronString)
+        pollSCM(pollSCMString)
+        //snapshotDependencies()
+        bitbucketPush()
     }
     parameters {
+        //booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT')
         string(defaultValue: '', description: 'Default workspace suffix to override', name: 'WORKSPACE_SUFFIX')
@@ -101,31 +110,34 @@ pipeline {
         GIT_AUTHOR_EMAIL = "${env.CHANGE_AUTHOR_EMAIL}"
         GIT_PROJECT = "nabla"
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
-        GIT_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}.git"
+        //GIT_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}.git"
+        GIT_URL = "ssh://git@github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         GIT_COMMIT = "TODO"
         DOCKER_TAG=buildDockerTag("${env.BRANCH_NAME}")
-        }
+    }
     options {
         //disableConcurrentBuilds()
         timeout(time: 120, unit: 'MINUTES')
         buildDiscarder(
-            logRotator(
-                daysToKeepStr: daysToKeep,
-                numToKeepStr: numToKeep,
-                artifactDaysToKeepStr: artifactDaysToKeep,
-                artifactNumToKeepStr: artifactNumToKeep
-            )
+          logRotator(
+            daysToKeepStr: daysToKeep,
+            numToKeepStr: numToKeep,
+            artifactDaysToKeepStr: artifactDaysToKeep,
+            artifactNumToKeepStr: artifactNumToKeep
+          )
         )
     }
     stages {
         stage('Cleaning') {
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
+            agent {
+              docker {
+                image DOCKER_IMAGE
+                reuseNode true
+                registryUrl DOCKER_REGISTRY_URL
+                registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                args DOCKER_OPTS
+              }
+            }
             steps {
                 //bitbucketStatusNotify ( buildState: 'INPROGRESS' )
                 script {
@@ -146,82 +158,102 @@ pipeline {
             } // steps
         } // stage Cleaning
         stage('Preparation') { // for display purposes
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             registryCredentialsId "${DOCKER_REGISTRY_CREDENTIALSID}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
-            steps {
-                checkout scm
-                //checkout([
-                //    $class: 'GitSCM',
-                //    branches: [[name: "*/master"]],
-                //    browser: [
-                //        $class: 'Stash',
-                //        repoUrl: 'https://github.com/AlbanAndrieu/nabla-servers-bower-sample/'],
-                //    doGenerateSubmoduleConfigurations: false,
-                //    extensions: [[
-                //        $class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: true, timeout: 30]],
-                //        gitTool: 'git-latest',
-                //        submoduleCfg: [],
-                //        userRemoteConfigs: [[
-                //            credentialsId: "${JENKINS_CREDENTIALS}",
-                //            url: 'https://github.com/AlbanAndrieu/nabla-servers-bower-sample.git']]])
-                script {
-                    utils = load "Jenkinsfile-vars"
-                    //properties(utils.createPropertyList())
-                    sh "git rev-parse --short HEAD > .git/commit-id"
-                    GIT_COMMIT = readFile('.git/commit-id')
-                }
+            failFast true
+            parallel {
+                //stage('Build - Docker') {
+                //    //agent {
+                //    //    docker {
+                //    //        image DOCKER_IMAGE
+                //    //        reuseNode true
+                //    //        registryUrl DOCKER_REGISTRY_URL
+                //    //        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                //    //        args DOCKER_OPTS
+                //    //    }
+                //    //}
+                //    steps {
+                //        script {
+                //            //sh '''`ls $WORKSPACE/Dockerfile*`;'''
+                //            sh(returnStdout: true, script: "echo ${env.DOCKERNAME} | cut -d'/' -f -1").trim()
+                //            docker_build_args="--no-cache --pull --build-arg JENKINS_HOME=/home/jenkins"
+                //            docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
+                //                def container = docker.build("${env.DOCKER_BUILD_IMG}:${env.DOCKER_TAG}", "${docker_build_args} -f Dockerfile-jenkins-slave-ubuntu:16.04 . ")
+                //                container.inside {
+                //                    sh 'echo test'
+                //                }
+                //            //    pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
+                //            }
+                //        }
+                //    }
+                //} // stage Build - Docker
+                //stage('SCM - Main') {
+                //    agent {
+                //      docker {
+                //        image DOCKER_IMAGE
+                //        reuseNode true
+                //        registryUrl DOCKER_REGISTRY_URL
+                //        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                //        args DOCKER_OPTS
+                //      }
+                //    }
+                //    steps {
+                //        checkout scm
+                //    }
+                //} // stage SCM Main
+                stage('SCM - Bm') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: [[name: "${env.GIT_BRANCH_NAME}"]],
+                            browser: [
+                                $class: 'Stash',
+                                repoUrl: "${env.GIT_BROWSE_URL}"],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [
+                                [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
+                                [$class: 'LocalBranch', localBranch: '${env.GIT_BRANCH_NAME}'],
+                                [$class: 'RelativeTargetDirectory', relativeTargetDir: 'bm'],
+                                [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
+                                [$class: 'IgnoreNotifyCommit'],
+                                [$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.0.0']]
+                            ],
+                            gitTool: 'git-latest',
+                            submoduleCfg: [],
+                            userRemoteConfigs: [[
+                                credentialsId: "${env.JENKINS_CREDENTIALS}",
+                                url: "${env.GIT_URL}"]
+                            ]
+                        ])
 
-                echo "GIT_COMMIT: ${GIT_COMMIT}"
-                echo "SONAR_BRANCH: ${SONAR_BRANCH}"
-                echo "PROJECT_BRANCH: ${PROJECT_BRANCH}"
-                echo "BRANCH_NAME: ${env.BRANCH_NAME}"
-                echo "GIT_BRANCH_NAME: ${env.GIT_BRANCH_NAME}"
+                        script {
+                            //properties(utils.createPropertyList())
+                            sh "git rev-parse --short HEAD > .git/commit-id"
+                            GIT_COMMIT = readFile('.git/commit-id')
+                        }
+                        echo "GIT_COMMIT: ${GIT_COMMIT}"
 
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: "${env.GIT_BRANCH_NAME}"]],
-                    browser: [
-                    $class: 'Stash',
-                    repoUrl: "${env.GIT_BROWSE_URL}"],
-                    doGenerateSubmoduleConfigurations: false,
-                extensions: [
-                    [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-                    [$class: 'LocalBranch', localBranch: '${env.GIT_BRANCH_NAME}'],
-                    [$class: 'RelativeTargetDirectory', relativeTargetDir: 'bm'],
-                    [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
-                    [$class: 'IgnoreNotifyCommit'],
-                    [$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.0.0']]
-                ],
-                gitTool: 'git-latest',
-                submoduleCfg: [],
-                userRemoteConfigs: [[
-                    credentialsId: "${env.JENKINS_CREDENTIALS}",
-                    url: "${env.GIT_URL}"]
-                    ]
-                ])
-
-                ansiColor('xterm') {
+                        ansiColor('xterm') {
 sh '''
 set -e
 #set -xve
 
 echo "USER : $USER"
 
-#source /etc/profile
+cd ./bm/Scripts/release
 
-cd ./nabla/env/scripts/jenkins/
+./step-0-prepare-branche.sh
 
 #./step-0-1-run-processes-cleaning.sh || exit 1
 
 ./step-2-2-1-build-before-java.sh || exit 1
-
-cd ${WORKSPACE}
 
 echo "PATH : ${PATH}"
 echo "JAVA_HOME : ${JAVA_HOME}"
@@ -263,480 +295,659 @@ wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280
 
 exit 0
 '''
-                } //ansiColor
-            load "${env.WORKSPACE}/bm/Scripts/release/jenkins-env.groovy"
-            echo "${env.SONAR_BRANCH}"
-            echo "${env.RELEASE_VERSION}"
-            } //step
+                            } //ansiColor
+                    } //steps
+                } // stage SCM Bm
+            } // parallel
         } // stage Preparation
-
-        stage('Build') {
-            environment {
-                MAVEN_ROOT_POM = "${WORKSPACE}/${TARGET_PROJECT}/pom.xml"
-                SONAR_MAVEN_COMMANDS = "sonar:sonar"
+        stage('Load variables') {
+            agent {
+                docker {
+                    image DOCKER_IMAGE
+                    reuseNode true
+                    registryUrl DOCKER_REGISTRY_URL
+                    registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                    args DOCKER_OPTS
+                }
             }
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
             steps {
-                script {
-                    //sh "npm run build"
 
-                    if (params.DEBUG_RUN == true) {
-                        MAVEN_OPTS << "-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError "
+                load "${env.WORKSPACE}/bm/Scripts/release/jenkins-env.groovy"
+
+                echo "SONAR_BRANCH: ${SONAR_BRANCH} - ${env.SONAR_BRANCH}"
+                echo "PROJECT_BRANCH: ${PROJECT_BRANCH}"
+                echo "BRANCH_NAME: ${env.BRANCH_NAME}"
+                echo "GIT_BRANCH_NAME: ${env.GIT_BRANCH_NAME}"
+                echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
+            } // steps
+        } // stage Load variables
+
+        stage('Main') {
+            failFast true
+            parallel {
+                stage('Build') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
                     }
+                    //environment {
+                    //    MAVEN_ROOT_POM = "${WORKSPACE}/${env.TARGET_PROJECT}/pom.xml"
+                    //}
+                    //failFast true
+                    //parallel {
+                    steps {
+                        script {
+                            stage('Build - Maven') {
+                                 script {
+                                     // Maven opts
+                                     String MAVEN_OPTS = ["-Djava.awt.headless=true",
+                                         "-Dsun.zip.disableMemoryMapping=true",
+                                         //"-Dmaven.repo.local=./.repository",
+                                         "-Xmx2G",
+                                         "-Djava.io.tmpdir=${WORKSPACE}/target/tmp"].join(" ")
 
-                    echo "Maven OPTS have been specified: ${env.MAVEN_OPTS}"
+                                     if (params.DEBUG_RUN == true) {
+                                         MAVEN_OPTS << " -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError "
+                                     }
 
-                    configFileProvider([configFile(fileId: 'nabla-default',  targetLocation: 'gsettings.xml', variable: 'SETTINGS_XML')]) {
-                        withMaven(
-                            maven: 'maven-latest',
-                            jdk: 'java-latest',
-                            globalMavenSettingsConfig: 'nabla-default',
-                            mavenLocalRepo: './.repository',
-                            mavenOpts: "${MAVEN_OPTS}",
-                            options: [
-                                    pipelineGraphPublisher(
-                                       ignoreUpstreamTriggers: !isReleaseBranch(),
+                                     echo "Maven OPTS have been specified: ${env.MAVEN_OPTS}"
+
+                                     configFileProvider([configFile(fileId: 'fr-maven-default',  targetLocation: 'gsettings.xml', variable: 'SETTINGS_XML')]) {
+                                         withMaven(
+                                             maven: 'maven-latest',
+                                             jdk: 'java-latest',
+                                             globalMavenSettingsConfig: 'fr-maven-default',
+                                             mavenLocalRepo: './.repository',
+                                             mavenOpts: "${MAVEN_OPTS}",
+                                             options: [
+                                                 pipelineGraphPublisher(
+                                                     ignoreUpstreamTriggers: !isReleaseBranch(),
                                                      skipDownstreamTriggers: !isReleaseBranch(),
-                                       lifecycleThreshold: 'deploy'
-                                    ),
-                                    artifactsPublisher(disabled: true)
-                            ]
-                        ) {
+                                                     lifecycleThreshold: 'deploy'
+                                                 ),
+                                                 artifactsPublisher(disabled: true)
+                                             ]
+                                         ) {
 
-                                releasedVersion = utils.getReleasedVersion()
-                                echo "Maven RELEASE_VERSION: ${releasedVersion}"
+                                             releasedVersion = utils.getReleasedVersion()
+                                             echo "Maven RELEASE_VERSION: ${releasedVersion}"
 
-                                manager.addShortText("${releasedVersion}")
+                                             manager.addShortText("${releasedVersion}")
 
-                            String MAVEN_GOALS = ["-U -e -Dsurefire.useFile=false",
-                                "clean install",
-                                //"-f ${MAVEN_ROOT_POM}",
-                                "-s ${SETTINGS_XML}",
-                                //"-T3",
-                                //"-Dakka.test.timefactor=2",
-                                //"-Dcargo.rmi.port=${CARGO_RMI_PORT} -Djetty.http.port=9190 -Dwebdriver.base.url=http://localhost:9190/ -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -DSTOP.PORT=19097 -DSTOP.KEY=STOP",
-                                "-Djacoco.outputDir=${WORKSPACE}/target",
-                                "-Dsonar.branch=${SONAR_BRANCH}",
-                                "-Psonar,jacoco,codenarc,run-integration-test"].join(" ")
+                                             String MAVEN_GOALS = ["-U -e -Dsurefire.useFile=false",
+                                                     "clean install",
+                                                     //"-f ${MAVEN_ROOT_POM}",
+                                                     "-s ${SETTINGS_XML}",
+                                                     //"-T3",
+                                                     //"-Dakka.test.timefactor=2",
+                                                     //"-Dcargo.rmi.port=${CARGO_RMI_PORT} -Djetty.http.port=9190 -Dwebdriver.base.url=http://localhost:9190/ -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -DSTOP.PORT=19097 -DSTOP.KEY=STOP",
+                                                     "-Djacoco.outputDir=${WORKSPACE}/target",
+                                                     "-Dsonar.branch=${SONAR_BRANCH}",
+                                                     "-Psonar,jacoco,codenarc,run-integration-test"].join(" ")
+
+                                             if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /feature\/.*/)) {
+                                                 echo "pitest added"
+                                                 MAVEN_GOALS << " org.pitest:pitest-maven:1.2.4:mutationCoverage "
+                                                 echo "sonar added"
+                                                 MAVEN_GOALS << " sonar:sonar "
+                                             }
+
+                                             if (BRANCH_NAME ==~ /feature\/.*/) {
+                                                 MAVEN_GOALS << " -Dsonar.organization=misys -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false "
+                                                 MAVEN_GOALS << " -Denforcer.skip=false -Dmaven.test.failure.ignore=false -Dmaven.test.failure.skip=false "
+                                             }
+
+                                             if ((BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
+                                                 echo "skip test added"
+                                                 MAVEN_GOALS << " -Dmaven.test.failure.ignore=true -Dmaven.test.failure.skip=true "
+                                             }
+
+                                             echo "Maven GOALS have been specified: ${MAVEN_GOALS}"
+
+                                             wrap([$class: 'Xvfb', autoDisplayName: false, additionalOptions: '-pixdepths 24 4 8 15 16 32', parallelBuild: true]) {
+                                                 // Run the maven build
+                                                 sh "./mvnw ${MAVEN_GOALS}"
+                                             } // Xvfb
+                                             stash excludes: 'target/, .bower/, .tmp/, bower_components/, node/, node_modules/, coverage/, build/', includes: '**', name: 'source'
+                                             //stash includes: 'node_modules/', name: 'node_modules'
+                                             //unstash 'node_modules'
+                                         } //withMaven
+                                     } // configFileProvider
+                                 } //script
+                                //steps {
+                                //  withSonarQubeEnv("${env.SONAR_INSTANCE}") {
+                                //  sh './mvnw -s ${WORKSPACE}/settings.xml -f ${WORKSPACE}/pom.xml ${SONAR_MAVEN_COMMANDS} ${SONAR_MAVEN_GOALS}'
+                                //  }
+                                //}
+                            } // stage Maven
+                            stage('Quality - Basic results check') {
+                                script {
+                                    step([
+                                        $class: "WarningsPublisher",
+                                        canComputeNew: false,
+                                        canResolveRelativePaths: false,
+                                        canRunOnFailed: true,
+                                        consoleParsers: [
+                                            [
+                                                parserName: 'Java Compiler (javac)'
+                                            ],
+                                            [
+                                                parserName: 'Maven'
+                                            //],
+                                            //[
+                                            //    parserName: 'JSLint',
+                                            //    pattern: 'pmd.xml'
+                                            ]
+                                        ],
+                                        //unstableTotalAll: '10',
+                                        //unstableTotalHigh: '0',
+                                        //failedTotalAll: '10',
+                                        //failedTotalHigh: '0',
+                                        usePreviousBuildAsReference: true,
+                                        useStableBuildAsReference: true
+                                        ])
+
+                                    step([
+                                        $class: "AnalysisPublisher",
+                                        canComputeNew: false,
+                                        checkStyleActivated: false,
+                                        defaultEncoding: '',
+                                        dryActivated: false,
+                                        findBugsActivated: false,
+                                        healthy: '',
+                                        opentasksActivated: false,
+                                        pmdActivated: false,
+                                        unHealthy: ''
+                                        ])
+
+                                    step([
+                                        $class: 'LogParserPublisher',
+                                        parsingRulesPath:
+                                        '/jenkins/deploy-log_parsing_rules',
+                                        failBuildOnError: false,
+                                        unstableOnWarning: false,
+                                        useProjectRule: false
+                                        ])
+
+                                    step([
+                                        $class: 'CoberturaPublisher',
+                                        autoUpdateHealth: false,
+                                        autoUpdateStability: false,
+                                        coberturaReportFile: '**/coverage.xml',
+                                        //coberturaReportFile: 'target/site/cobertura/coverage.xml'
+                                        failUnhealthy: false,
+                                        failUnstable: false,
+                                        failNoReports: false,
+                                        maxNumberOfBuilds: 0,
+                                        onlyStable: false,
+                                        sourceEncoding: 'ASCII',
+                                        zoomCoverageChart: false
+                                        ])
+
+                                    script {
+                                        //sh "npm run lint"
+                                        //sh "shellcheck -f checkstyle *.sh > checkstyle.xml || true"
+                                        shellcheckExitCode = sh(
+                                            script: 'shellcheck -f checkstyle *.sh > checkstyle.xml',
+                                            returnStdout: true,
+                                            returnStatus: true
+                                        )
+                                        sh "echo ${shellcheckExitCode}"
+                                    } // script
+
+                                    step([
+                                        $class: 'CheckStylePublisher',
+                                        //pattern: '**/eslint.xml',
+                                        pattern: '**/checkstyle.xml',
+                                        unstableTotalAll: '0',
+                                        usePreviousBuildAsReference: true
+                                        ])
+
+                                    //step([
+                                    //    $class: 'RobotPublisher',
+                                    //    disableArchiveOutput: false,
+                                    //    logFileName: 'log.html',
+                                    //    otherFiles: '**/*.png',
+                                    //    outputFileName: 'output.xml',
+                                    //    outputPath: '.',
+                                    //    passThreshold: 100,
+                                    //    reportFileName: 'report.html',
+                                    //    unstableThreshold: 0
+                                    //    ])
+
+                                    //script {
+                                    //
+                                    //  utils.checkAPI()
+                                    //
+                                    //} //script
+
+                                } // script
+                            } // stage Quality - Basic results check
+                            post {
+                                always {
+                                    junit '**/target/surefire-reports/TEST-*.xml'
+                                }
+                            } // post
+                        } // script
+                    } // steps
+                    //} // parallel
+                } // stage Build
+
+                stage('Quality - More check') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
+                    }
+                    when {
+                        branch 'develop'
+                    }
+                    //failFast true
+                    //parallel {
+                    steps {
+                        script {
+                            //stage('Runtime - Docker') {
+                            //    steps {
+                            //        script {
+                            //            sh '''`ls $WORKSPACE/target/*.zip`;'''
+                            //            //sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
+                            //            //      cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
+                            //            //docker_build_args="--no-cache --pull --build-arg JENKINS_HOME=/home/jenkins"
+                            //            //docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
+                            //            //    def container = docker.build("${env.DOCKER_RUNTIME_IMG}:${env.DOCKER_TAG}", "${docker_build_args} -f Dockerfile-ubuntu:16.04 . ")
+                            //            //    pushDockerImage(container, "${env.DOCKER_RUNTIME_IMG}", "${env.DOCKER_TAG}")
+                            //            //}
+                            //        }
+                            //    }
+                            //} // stage Runtime - Docker
+                            //stage('Automated Acceptance Testing') {
+                            //  environment {
+                            //    // added from AAT stage
+                            //    SQL_DATA="14.0.3015.40-1-FR_170-latest_qa"
+                            //    SQL_VERSION="latest"
+                            //    LIMITS_TAG="${env.DOCKER_BUILD_TAG}"
+                            //    DOCKER_COMPOSE_UP_OPTIONS = "--force-recreate -d frlimits"
+                            //    ADDITIONAL_ROBOT_OPTS="-s Cargo"
+                            //  }
+                            //  steps {
+                            //    script {
+                            //      try {
+                            //        sh '''docker-compose -f $WORKSPACE/docker/run/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS}'''
+                            //        sh '''docker-compose -f $WORKSPACE/docker/run/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} up --exit-code-from frrobot frrobot'''
+                            //      }
+                            //      catch(exc) {
+                            //        echo 'Error: There were errors in tests. '+exc.toString()
+                            //        error 'There are errors in tests'
+                            //      }
+                            //    }
+                            //  }
+                            //}
+                            //stage('SonarQube analysis') {
+                            //    environment {
+                            //        SONAR_SCANNER_OPTS = "-Xmx1g"
+                            //    }
+                            //    steps {
+                            //        sh "pwd"
+                            //        sh "/usr/local/sonar-runner/bin/sonar-scanner -D sonar-project.properties"
+                            //    }
+                            //}
+                            stage('Site') {
+                                steps {
+                                    script {
+                                        if (params.DRY_RUN == false) {
+                                            //unstash 'source'
+                                            withMaven(
+                                                maven: 'maven-latest',
+                                                jdk: 'java-latest',
+                                                globalMavenSettingsConfig: 'fr-maven-default',
+                                                mavenLocalRepo: './.repository',
+                                                options: [
+                                                    pipelineGraphPublisher(
+                                                        ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                        skipDownstreamTriggers: !isReleaseBranch(),
+                                                        lifecycleThreshold: 'deploy'
+                                                        ),
+                                                    artifactsPublisher(disabled: true)
+                                                ]
+                                                ) {
+                                                // Run the maven build
+                                                sh "./mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                                            } // withMaven
+                                            //sh "grunt ngdocs"
+                                        }
+                                    } //script
+                                }
+                            } // stage Site
+                        } // script
+                    } // steps
+                    //} // parallel
+                } // stage Quality - More check
+
+                stage('Security') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
+                    }
+                    when {
+                        branch 'develop'
+                    }
+                    //failFast true
+                    //parallel {
+                    steps {
+                        script {
+                            stage('Security - Dependency check') {
+                                steps {
+                                    script {
+                                        if (params.DRY_RUN == false) {
+                                            //unstash 'source'
+                                            withMaven(
+                                                maven: 'maven-latest',
+                                                jdk: 'java-latest',
+                                                globalMavenSettingsConfig: 'fr-maven-default',
+                                                mavenLocalRepo: './.repository',
+                                                options: [
+                                                    pipelineGraphPublisher(
+                                                        ignoreUpstreamTriggers: !isReleaseBranch(),
+                                                        skipDownstreamTriggers: !isReleaseBranch(),
+                                                        lifecycleThreshold: 'deploy'
+                                                        ),
+                                                    artifactsPublisher(disabled: true)
+                                                ]
+                                            ) {
+                                                // Run the maven build
+                                                sh "./mvnw org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                                            } //withMaven
+                                            //sh "nsp check"
+                                        }
+                                    } //script
+                                }
+                            } // stage Security - Dependency check
+                            stage('Security - Checkmarx') {
+                                steps {
+                                     step([
+                                         $class: 'CxScanBuilder',
+                                         avoidDuplicateProjectScans: true,
+                                         comment: '',
+                                         excludeFolders: '.repository, target, .node_cache, .node_tmp, .grunt, .bower, bower_components, node_modules, node, lib, libs, docs, help, test, Sample, vendors, dist, build, site, fonts, images',
+                                         excludeOpenSourceFolders: '',
+                                         exclusionsSetting: 'job',
+                                         failBuildOnNewResults: true,
+                                         failBuildOnNewSeverity: 'HIGH',
+                                         filterPattern: '''
+!**/_cvs/**/*, !**/.svn/**/*,   !**/.hg/**/*,   !**/.git/**/*,  !**/.bzr/**/*, !**/bin/**/*,
+!**/obj/**/*,  !**/backup/**/*, !**/.idea/**/*, !**/*.DS_Store, !**/*.ipr,     !**/*.iws,
+!**/*.bak,     !**/*.tmp,       !**/*.aac,      !**/*.aif,      !**/*.iff,     !**/*.m3u, !**/*.mid, !**/*.mp3,
+!**/*.mpa,     !**/*.ra,        !**/*.wav,      !**/*.wma,      !**/*.3g2,     !**/*.3gp, !**/*.asf, !**/*.asx,
+!**/*.avi,     !**/*.flv,       !**/*.mov,      !**/*.mp4,      !**/*.mpg,     !**/*.rm,  !**/*.swf, !**/*.vob,
+!**/*.wmv,     !**/*.bmp,       !**/*.gif,      !**/*.jpg,      !**/*.png,     !**/*.psd, !**/*.tif, !**/*.swf,
+!**/*.jar,     !**/*.zip,       !**/*.rar,      !**/*.exe,      !**/*.dll,     !**/*.pdb, !**/*.7z,  !**/*.gz,
+!**/*.tar.gz,  !**/*.tar,       !**/*.gz,       !**/*.ahtm,     !**/*.ahtml,   !**/*.fhtml, !**/*.hdm,
+!**/*.hdml,    !**/*.hsql,      !**/*.ht,       !**/*.hta,      !**/*.htc,     !**/*.htd, !**/*.war, !**/*.ear,
+!**/*.htmls,   !**/*.ihtml,     !**/*.mht,      !**/*.mhtm,     !**/*.mhtml,   !**/*.ssi, !**/*.stm,
+!**/*.stml,    !**/*.ttml,      !**/*.txn,      !**/*.xhtm,     !**/*.xhtml,   !**/*.class, !**/*.iml, !Checkmarx/Reports/*.*,
+!**/*.csv,     !**/test/**/*,   !**/*Test.java, !**/*_UT.java,  !**/*_UT.groovy,!**/*_IT.java, !**/*_IT.groovy,  !**/*Test.groovy,
+!**/Sample/**/*, !**/.xrp,
+!**/.xls, !**/.xlsx, !**/.doc, !**/.pdf, !**/.pfx, !**/.xll,
+!**/.dylib, !**/.lib, !**/.a, !**/.so, !**/.pkg, !**/.swp, !**/.ttf, !**/.msi, !**/.chm,
+''',
+                                        fullScanCycle: 10,
+                                            fullScansScheduled: false,
+                                            generatePdfReport: true,
+                                            highThreshold: 50,
+                                            includeOpenSourceFolders: '',
+                                            incremental: true,
+                                            lowThreshold: 1000,
+                                            mediumThreshold: 100,
+                                            osaArchiveIncludePatterns: '*.zip, *.war, *.ear, *.tgz',
+                                            osaHighThreshold: 10,
+                                            osaInstallBeforeScan: false,
+                                            osaLowThreshold: 1000,
+                                            osaMediumThreshold: 100,
+                                            useOwnServerCredentials: true,
+                                            credentialsId: 'mgr.jenkins.checkmarx',
+                                            //groupId: '7bc62ee5-b91d-4908-aea7-d12f982f70d0',
+                                            //password: '{AQAAABAAAAAQ4zdhkim0EaO0/PY/6/KdHzYOatEHaH/thBW+K7YJmL4=}',
+                                            groupId: '1d9286a6-fc4f-4d65-9010-045ca9032198',
+                                            password: '{AQAAABAAAAAQ1/XWT55MpaM5ha9F+rXg7L51B2fPfoy3Yg6KD7H7e4A=}',
+                                            //preset: '36', // Default checkmarx
+                                            preset: '17', // Default 2014
+                                            projectName: 'MGR_UIComponents_Sample_Checkmarx',
+                                            serverUrl: 'https://par-checkmarx',
+                                            skipSCMTriggers: true,
+                                            sourceEncoding: '1',
+                                            username: '',
+                                            vulnerabilityThresholdEnabled: true,
+                                            vulnerabilityThresholdResult: 'FAILURE',
+                                            waitForResultsEnabled: true
+                                        ])
+                                }
+                            } // stage Security - Checkmarx
+                        } // script
+                    } // steps
+                    //} // parallel
+                } // stage Security
+            } // parallel
+        } // Main
+
+        stage('Push') { // for display purposes
+            failFast true
+            parallel {
+                stage('Deploy') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
+                    }
+                    when {
+                        expression { BRANCH_NAME ==~ /(release|master|develop)/ }
+                    }
+                    steps {
+                        script {
+                            if (params.DRY_RUN == false) {
+                                //unstash 'source'
+                                withMaven(
+                                    maven: 'maven-latest',
+                                    jdk: 'java-latest',
+                                    globalMavenSettingsConfig: 'fr-maven-default',
+                                    mavenLocalRepo: './.repository',
+                                    options: [
+                                        pipelineGraphPublisher(
+                                            ignoreUpstreamTriggers: !isReleaseBranch(),
+                                            skipDownstreamTriggers: !isReleaseBranch(),
+                                            lifecycleThreshold: 'deploy'
+                                            ),
+                                        artifactsPublisher(disabled: true)
+                                    ]
+                                    ) {
+                                    // Run the maven build
+                                    sh "./mvnw deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
+                                } // withMaven
+                                //sh "npm run publish:all"
+                            }
+                        } //script
+                    }
+                    post {
+                        success {
+                            script {
+                                manager.addShortText("deployed")
+                                manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+
+                                currentBuildNumber = manager.build.number
+                                if(manager.setBuildNumber(currentBuildNumber - 1)) {
+                                actions = manager.build.actions
+                                    actions.each { action ->
+                                        if (action.metaClass.hasProperty(action, "text") && action.text.contains("deployed")) {
+                                            actions.remove(action)
+                                        }
+                                    }
+                                    currDate = new Date().dateTimeString
+                                    manager.addShortText("undeployed: $currDate", "grey", "white", "0px", "white")
+                                    manager.createSummary("gear2.gif").appendText("<h2>Undeployed: $currDate</h2>", false, false, false, "grey")
+                                }
+                            } //script
+                        }
+                    }
+                } // stage Deploy
+                stage('Archive Artifacts') {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
+                    }
+                    steps {
+                        script {
+                            String ARTIFACTS = ['*_VERSION.TXT',
+                                            '**/target/*.swf',
+                                            '**/target/*.log',
+                                            'reports/*',
+                                            '**/MD5SUMS.md5',
+                                            'Jenkinsfile'].join(', ')
 
                             if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /feature\/.*/)) {
-                                echo "pitest added"
-                                MAVEN_GOALS << " org.pitest:pitest-maven:1.2.4:mutationCoverage "
-                                echo "sonar added"
-                                 MAVEN_GOALS << SONAR_MAVEN_COMMANDS
-                            }
-
-                            if (BRANCH_NAME ==~ /feature\/.*/) {
-                                MAVEN_GOALS << " -Dsonar.organization=nabla -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false "
-                                MAVEN_GOALS << " -Denforcer.skip=false -Dmaven.test.failure.ignore=false -Dmaven.test.failure.skip=false "
+                                ARTIFACTS << ",**/target/*SNAPSHOT.jar, **/target/*SNAPSHOT.war, **/target/*SNAPSHOT*.zip"
+                                ARTIFACTS << ",**/target/*test.jar"
                             }
 
                             if ((BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
-                                echo "skip test added"
-                                MAVEN_GOALS << " -Denforcer.skip=true "
-                                MAVEN_GOALS << " -Dmaven.test.failure.ignore=true -Dmaven.test.failure.skip=true "
+                                ARTIFACTS << ",**/target/*test.jar"
                             }
 
-                            echo "Maven GOALS have been specified: ${MAVEN_GOALS}"
+                            if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
+                                archiveArtifacts artifacts: "${ARTIFACTS}", excludes: null, fingerprint: true, onlyIfSuccessful: true
 
-                            wrap([$class: 'Xvfb', autoDisplayName: false, additionalOptions: '-pixdepths 24 4 8 15 16 32', parallelBuild: true]) {
-                                // Run the maven build
-                                sh "./mvnw ${MAVEN_GOALS}"
-                            } // Xvfb
-                            stash excludes: 'target/, .bower/, .tmp/, bower_components/, node/, node_modules/, coverage/, build/', includes: '**', name: 'source'
-                            //stash includes: 'node_modules/', name: 'node_modules'
-                            //unstash 'node_modules'
-                        } //withMaven
-                    } // configFileProvider
-                } //script
-            } // steps
-            //steps {
-            //  withSonarQubeEnv("${env.SONAR_INSTANCE}") {
-            //  sh './mvnw -s ${WORKSPACE}/settings.xml -f ${WORKSPACE}/pom.xml ${SONAR_MAVEN_COMMANDS} ${SONAR_MAVEN_GOALS}'
-            //  }
-            //}
-        } // stage Build
+                                publishHTML (target: [
+                                  allowMissing: true,
+                                  alwaysLinkToLastBuild: false,
+                                  keepAll: true,
+                                  reportDir: 'reports/',
+                                  reportFiles: 'JENKINS_ZAP_VULNERABILITY_REPORT-${BUILD_ID}.html',
+                                  reportName: "ZaProxy Report"
+                                ])
 
-        //stage('SonarQube analysis') {
-        //    environment {
-        //        SONAR_SCANNER_OPTS = "-Xmx1g"
-        //    }
-        //    steps {
-        //        sh "pwd"
-        //        sh "/usr/local/sonar-runner/bin/sonar-scanner -D sonar-project.properties"
-        //    }
-        //}
+                                publishHTML (target: [
+                                  allowMissing: true,
+                                  alwaysLinkToLastBuild: false,
+                                  keepAll: true,
+                                  reportDir: 'build/phantomas/',
+                                  reportFiles: 'index.html',
+                                  reportName: "Phantomas Report"
+                                ])
 
-        stage('Security') {
-            when {
-                branch 'develop'
-            }
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
-            steps {
-                script {
-                    if (params.DRY_RUN == false) {
-                        //unstash 'source'
-                        withMaven(
-                            maven: 'maven-latest',
-                            jdk: 'java-latest',
-                            globalMavenSettingsConfig: 'nabla-default',
-                            mavenLocalRepo: '.repository',
-                            options: [
-                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-                                                    skipDownstreamTriggers: !isReleaseBranch(),
-                                                    lifecycleThreshold: 'deploy')
-                            ]
-                        ) {
-                            // Run the maven build
-                            sh "./mvnw org.owasp:dependency-check-maven:check -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                        } //withMaven
-                        //sh "nsp check"
-                    }
-                } //script
-            }
-        } // stage Security
+                                publishHTML (target: [
+                                  allowMissing: true,
+                                  alwaysLinkToLastBuild: false,
+                                  keepAll: true,
+                                  reportDir: 'screenshots/desktop/',
+                                  reportFiles: 'index.html.png',
+                                  reportName: "Desktop CSS Diff Report"
+                                ])
 
-        stage('Site') {
-            when {
-                branch 'develop'
-            }
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
-            steps {
-                script {
-                    if (params.DRY_RUN == false) {
-                        //unstash 'source'
-                        withMaven(
-                            maven: 'maven-latest',
-                            jdk: 'java-latest',
-                            globalMavenSettingsConfig: 'nabla-default',
-                            mavenLocalRepo: '.repository',
-                            options: [
-                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-                                                    skipDownstreamTriggers: !isReleaseBranch(),
-                                                    lifecycleThreshold: 'deploy')
-                            ]
-                        ) {
-                            // Run the maven build
-                            sh "./mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                        } // withMaven
-                        //sh "grunt ngdocs"
-                    }
-                } //script
-            }
-        } // stage Site
+                                publishHTML (target: [
+                                  allowMissing: true,
+                                  alwaysLinkToLastBuild: false,
+                                  keepAll: true,
+                                  reportDir: 'screenshots/mobile/',
+                                  reportFiles: 'index.html.png',
+                                  reportName: "Mobile CSS Diff Report"
+                                ])
 
-        stage('Deploy') {
-            when {
-                expression { BRANCH_NAME ==~ /(release|master|develop)/ }
-                //anyOf { branch 'develop'; branch 'deploy' }
-            }
-            //agent {
-            //    docker { image "${DOCKER_IMAGE}"
-            //             reuseNode true
-            //             registryUrl "${DOCKER_REGISTRY_URL}"
-            //             args "${DOCKER_OPTS}"
-            //    }
-            //}
-            steps {
-                script {
-                    if (params.DRY_RUN == false) {
-                        //unstash 'source'
-                        withMaven(
-                            maven: 'maven-latest',
-                            jdk: 'java-latest',
-                            globalMavenSettingsConfig: 'nabla-default',
-                            mavenLocalRepo: '.repository',
-                            options: [
-                                pipelineGraphPublisher(ignoreUpstreamTriggers: !isReleaseBranch(),
-                                                    skipDownstreamTriggers: !isReleaseBranch(),
-                                                    lifecycleThreshold: 'deploy')
-                            ]
-                        ) {
-                            // Run the maven build
-                            sh "./mvnw deploy -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt"
-                        } // withMaven
-                        //sh "npm run publish:all"
-                    }
-                } //script
-            }
-            post {
-                success {
-                    script {
-                        manager.addShortText("deployed")
-                        manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+                                publishHTML (target: [
+                                  allowMissing: true,
+                                  alwaysLinkToLastBuild: false,
+                                  keepAll: true,
+                                  reportDir: 'target/*',
+                                  reportFiles: 'gc.png speed.har CHANGELOG.html',
+                                  reportName: "Reports"
+                                ])
 
-                        currentBuildNumber = manager.build.number
-                        if(manager.setBuildNumber(currentBuildNumber - 1)) {
-                        actions = manager.build.actions
-                            actions.each { action ->
-                                if (action.metaClass.hasProperty(action, "text") && action.text.contains("deployed")) {
-                                    actions.remove(action)
-                                }
+                                //stash includes: '${ARTIFACTS}', name: 'app'
+                                //unstash 'app'
                             }
-                            currDate = new Date().dateTimeString
-                            manager.addShortText("undeployed: $currDate", "grey", "white", "0px", "white")
-                            manager.createSummary("gear2.gif").appendText("<h2>Undeployed: $currDate</h2>", false, false, false, "grey")
-                        }
-                    } //script
-                }
-            }
-        } // stage Deploy
-
-        stage('Results') {
-            steps {
-                step([
-                        $class: "WarningsPublisher",
-                        canComputeNew: false,
-                        canResolveRelativePaths: false,
-                        canRunOnFailed: true,
-                        consoleParsers: [
-                            [
-                                parserName: 'Java Compiler (javac)'
-                            ],
-                            [
-                                parserName: 'Maven'
-                            //],
-                            //[
-                            //    parserName: 'JSLint',
-                            //    pattern: 'pmd.xml'
-                            ]
-                        ],
-                        //unstableTotalAll: '0',
-                        usePreviousBuildAsReference: true
-                    ])
-
-                step([
-                        $class: "AnalysisPublisher",
-                        canComputeNew: false,
-                        checkStyleActivated: false,
-                        defaultEncoding: '',
-                        dryActivated: false,
-                        findBugsActivated: false,
-                        healthy: '',
-                        opentasksActivated: false,
-                        pmdActivated: false,
-                        unHealthy: ''
-                    ])
-
-                step([
-                        $class: 'LogParserPublisher',
-                        parsingRulesPath:
-                        '/jenkins/deploy-log_parsing_rules',
-                        failBuildOnError: false,
-                        unstableOnWarning: false,
-                        useProjectRule: false
-                    ])
-
-                    step([
-                        $class: 'CoberturaPublisher',
-                        autoUpdateHealth: false,
-                        autoUpdateStability: false,
-                        coberturaReportFile: '**/coverage.xml',
-                        //coberturaReportFile: 'target/site/cobertura/coverage.xml'
-                        failUnhealthy: false,
-                        failUnstable: false,
-                        failNoReports: false,
-                        maxNumberOfBuilds: 0,
-                        onlyStable: false,
-                        sourceEncoding: 'ASCII',
-                        zoomCoverageChart: false
-                        ])
-
-                    script {
-                        //sh "npm run lint"
-                        //sh "shellcheck -f checkstyle *.sh > checkstyle.xml || true"
-                        shellcheckExitCode = sh(
-                            script: 'shellcheck -f checkstyle *.sh > checkstyle.xml',
-                            returnStdout: true,
-                            returnStatus: true
-                        )
-                        sh "echo ${shellcheckExitCode}"
-                    } // script
-
-                    step([
-                        $class: 'CheckStylePublisher',
-                        //pattern: '**/eslint.xml',
-                        pattern: '**/checkstyle.xml',
-                        unstableTotalAll: '0',
-                        usePreviousBuildAsReference: true
-                        ])
-
-                    //step([
-                    //    $class: 'RobotPublisher',
-                    //    disableArchiveOutput: false,
-                    //    logFileName: 'log.html',
-                    //    otherFiles: '**/*.png',
-                    //    outputFileName: 'output.xml',
-                    //    outputPath: '.',
-                    //    passThreshold: 100,
-                    //    reportFileName: 'report.html',
-                    //    unstableThreshold: 0
-                    //    ])
-
-                    //script {
-                    //
-                    //  utils.checkAPI()
-                    //
-                    //} //script
-
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-        } // stage Results
-
-        stage('Archive Artifacts') {
-            steps {
-                script {
-                    String ARTIFACTS = ['*_VERSION.TXT',
-                                    '**/target/*.swf',
-                                    '**/target/*.log',
-                                    'reports/*',
-                                    '**/MD5SUMS.md5',
-                                    'Jenkinsfile'].join(', ')
-
-                    if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /feature\/.*/)) {
-                        ARTIFACTS << ",**/target/*SNAPSHOT.jar, **/target/*SNAPSHOT.war, **/target/*SNAPSHOT*.zip"
-                        ARTIFACTS << ",**/target/*test.jar"
+                        } //script
                     }
+                } // stage Archive Artifacts
 
-                            if ((BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
-                        ARTIFACTS << ",**/target/*test.jar"
+                stage("Git Tag") {
+                    agent {
+                      docker {
+                        image DOCKER_IMAGE
+                        reuseNode true
+                        registryUrl DOCKER_REGISTRY_URL
+                        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                        args DOCKER_OPTS
+                      }
                     }
+                    steps {
+                        script {
+                            utils.gitTagLocal()
+                            utils.gitTagRemote()
 
-                    if ((BRANCH_NAME == 'develop') || (BRANCH_NAME ==~ /release\/.*/) || (BRANCH_NAME ==~ /master\/.*/)) {
-                        archiveArtifacts artifacts: "${ARTIFACTS}", excludes: null, fingerprint: true, onlyIfSuccessful: true
+                            //currentBuild.displayName = [
+                            //    '#',
+                            //    BRANCH_NAME,
+                            //    ' (',
+                            //    GIT_COMMIT,
+                            //    ', ',
+                            //    currentBuild.displayName,
+                            //    ')'
+                            //].join("")
+                            utils.setBuildName()
+                            utils.createVersionTextFile("${env.TARGET_PROJECT}_VERSION.TXT")
 
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'reports/',
-                              reportFiles: 'JENKINS_ZAP_VULNERABILITY_REPORT-${BUILD_ID}.html',
-                              reportName: "ZaProxy Report"
-                            ])
+                            //sshagent(['jenkins-ssh']) {
+                            //    String versionInfo = "${env.TARGET_PROJECT}: BUILD: ${BUILD_ID} BRANCH: ${BRANCH_NAME} SHA1: ${GIT_COMMIT}"
+                            //    String versionFile = "${env.WORKSPACE}/${env.TARGET_PROJECT}_VERSION.TXT"
+                            //    sh "echo ${versionInfo} > ${versionFile}"
+                            //}
 
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'build/phantomas/',
-                              reportFiles: 'index.html',
-                              reportName: "Phantomas Report"
-                            ])
-
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'screenshots/desktop/',
-                              reportFiles: 'index.html.png',
-                              reportName: "Desktop CSS Diff Report"
-                            ])
-
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'screenshots/mobile/',
-                              reportFiles: 'index.html.png',
-                              reportName: "Mobile CSS Diff Report"
-                            ])
-
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'target/*',
-                              reportFiles: 'gc.png speed.har CHANGELOG.html',
-                              reportName: "Reports"
-                            ])
-
-                        //stash includes: '${ARTIFACTS}', name: 'app'
-                        //unstash 'app'
-                    }
-                } //script
-            }
-        } // stage Archive Artifacts
-
-        //stage('Docker') {
-        //    steps {
-        //        script {
-        //            sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
-        //                  cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
-        //            docker_build_args="--no-cache"
-        //            docker.withRegistry('https://nabla.mobi', 'jenkins-https') {
-        //            container = docker.build("${env.DOCKER_BUILD_IMG}:${env.DOCKER_BUILD_TAG}", "${docker_build_args} -f $WORKSPACE/docker/build/Dockerfile $WORKSPACE/docker/build/")
-        //            pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
-        //          }
-        //        } // script
-        //    }
-        //} // stage Docker
-
-        stage("Git Tag") {
-            steps {
-                script {
-                    utils.gitTagLocal()
-                    utils.gitTagRemote()
-
-                    //currentBuild.displayName = [
-                    //    '#',
-                    //    BRANCH_NAME,
-                    //    ' (',
-                    //    GIT_COMMIT,
-                    //    ', ',
-                    //    currentBuild.displayName,
-                    //    ')'
-                    //].join("")
-                    utils.setBuildName()
-                    utils.createVersionTextFile("${TARGET_PROJECT}_VERSION.TXT")
-
-                    //sshagent(['jenkins-ssh']) {
-                    //    String versionInfo = "${TARGET_PROJECT}: BUILD: ${BUILD_ID} BRANCH: ${BRANCH_NAME} SHA1: ${GIT_COMMIT}"
-                    //    String versionFile = "${env.WORKSPACE}/${TARGET_PROJECT}_VERSION.TXT"
-                    //    sh "echo ${versionInfo} > ${versionFile}"
-                    //}
-
-                } // script
-            }
-        } // stage Git Tag
+                       } // script
+                    } // steps
+                } // stage Git Tag
+            } //parallel
+        } //stage Push
 
     } // stages
     post {
         // always means, well, always run.
         always {
-            echo "Hi there"
-            script {
-                utils.notifyMe()
-                try {
-                  sh '''docker system prune -f; docker rmi "${DOCKER_BUILD_IMG}:${DOCKER_BUILD_TAG}"'''
-                } catch(exc) {
-                  echo 'Warn: There was a problem Cleaning local docker repo. '+exc.toString()
+            node('docker-inside') {
+                echo "Hi there"
+                script {
+                    utils.notifyMe()
+                    try {
+                      sh '''docker system prune -f;"'''
+                      //docker rmi "${DOCKER_BUILD_IMG}:${DOCKER_TAG}
+                    } catch(exc) {
+                      echo 'Warn: There was a problem Cleaning local docker repo. '+exc.toString()
+                    }
                 }
-            }
+            } // node
         }
         failure {
             echo "I'm failing"
+            //manager.createSummary("warning.gif").appendText("<h1>Build failed!</h1>", false, false, false, "red")
             //bitbucketStatusNotify(
             //  buildState: 'FAILED',
             //  buildKey: 'build',
@@ -756,31 +967,14 @@ exit 0
         }
         // success, failure, unstable all run if the current build status is successful, failed, or unstable, respectively
         success {
-            echo "I succeeded"
-            //bitbucketStatusNotify ( buildState: 'SUCCESSFUL' )
-            //archive "**/*"
-            script {
-                if (! isReleaseBranch()) { cleanWs() }
-            }
+            node('docker-inside') {
+                echo "I succeeded"
+                //bitbucketStatusNotify ( buildState: 'SUCCESSFUL' )
+                //archive "**/*"
+                script {
+                    if (! isReleaseBranch()) { cleanWs() }
+                }
+            } //node
         }
     } // post
 } // pipeline
-
-def buildDockerTag(branch) {
-    branch.replaceAll('/','_')+"-test"
-}
-
-def pushDockerImage(container, image, tag)
-{
-  if (isReleaseBranch()) {
-    container.push(tag)
-    try {
-      sh "docker rmi "+image+":"+tag
-    }
-    catch(exc) {
-      echo 'Warn: There was a problem Deleting local docker image. '+exc.toString()
-    }
-  }
-}
-
-}
