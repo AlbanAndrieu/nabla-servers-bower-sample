@@ -7,52 +7,196 @@ def getReleasedVersion() {
     return (readFile('pom.xml') =~ '<version>(.+)-SNAPSHOT</version>')[0][1]
 }
 
-def createMavenGoals() { isReleaseBranch() ? "clean install -Denforcer.skip=true" : "clean install" }
-
-def createPropertyList() {
-    def daysToKeep         = isReleaseBranch() ? '30' : '10'
-    def numToKeep          = isReleaseBranch() ? '20' : '5'
-    def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
-    def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
-    def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
-    def triggers           = isReleaseBranch() ? [snapshotDependencies(), cron(cronString)] : [cron(cronString)]
-    def propertyList = [
-        buildDiscarder(
-            logRotator(
-                daysToKeepStr:         daysToKeep,
-                numToKeepStr:          numToKeep,
-                artifactDaysToKeepStr: artifactDaysToKeep,
-                artifactNumToKeepStr:  artifactNumToKeep
-            )
-        ), pipelineTriggers(triggers)
-    ]
-    return propertyList
+def getShortReleasedVersion() {
+    tokens = getReleasedVersion().tokenize('.')
+    MAJOR = tokens[tokens.size()-4] // MAJOR
+    MINOR = tokens[tokens.size()-3] // MINOR
+    RELEASE_VERSION_SHORT = MAJOR + "." + MINOR
+    PATCH = tokens[tokens.size()-2]
+    CUT = tokens[tokens.size()-1]
+    echo "MAJOR: ${MAJOR} - MINOR : ${MINOR} - SHORT : ${RELEASE_VERSION_SHORT} - PATCH : ${PATCH} - CUT - ${CUT}"
+    return "${RELEASE_VERSION_SHORT}"
 }
 
-//def getDockerImage() { 'nabla/ansible-jenkins-slave-docker:latest' }
-
-//def getDockerOpts() {
-//    [
-//        '--dns-search=nabla.mobi',
-//        '-v /etc/timezone:/etc/timezone:ro',
-//        '-v /etc/localtime:/etc/localtime:ro ',
-//        '-v /etc/passwd:/etc/passwd:ro ',
-//        '-v /etc/group:/etc/group:ro '
-//    ].join(" ")
+//def createPropertyList() {
+//    def daysToKeep         = isReleaseBranch() ? '30' : '10'
+//    def numToKeep          = isReleaseBranch() ? '20' : '5'
+//    def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
+//    def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
+//    def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
+//    def triggers           = isReleaseBranch() ? [snapshotDependencies(), cron(cronString)] : [cron(cronString)]
+//    def propertyList = [
+//        buildDiscarder(
+//            logRotator(
+//                daysToKeepStr:         daysToKeep,
+//                numToKeepStr:          numToKeep,
+//                artifactDaysToKeepStr: artifactDaysToKeep,
+//                artifactNumToKeepStr:  artifactNumToKeep
+//            )
+//        ), pipelineTriggers(triggers)
+//    ]
+//    return propertyList
 //}
 
-def pathInBuildChangeset(def queriedPath) {
-    boolean queriedPathChanged = false
-    for (changeSetList in currentBuild.changeSets) {
-        for (changeSet in changeSetList.getItems()) {
-            for (affectedFile in changeSet.affectedFiles) {
-                   if ( affectedFile.path ==~ queriedPath  ) {
-                    queriedPathChanged = true
-                }
-            }
-        }
+//def pathInBuildChangeset(def queriedPath) {
+//    boolean queriedPathChanged = false
+//    for (changeSetList in currentBuild.changeSets) {
+//        for (changeSet in changeSetList.getItems()) {
+//            for (affectedFile in changeSet.affectedFiles) {
+//                   if ( affectedFile.path ==~ queriedPath  ) {
+//                    queriedPathChanged = true
+//                }
+//            }
+//        }
+//    }
+//    return queriedPathChanged
+//}
+
+def gitTagLocal(def tagName="LATEST_SUCCESSFULL", def message="Jenkins local") {
+    sh """
+        git tag -l | grep -E "^${tagName}\$" && { git tag -d $tagName ; }
+        git tag -a ${tagName} -m "${message}"
+    """
+}
+
+def gitTagRemote(def tagName="LATEST_SUCCESSFULL", def remote="origin") {
+    // Push empty reference ( :tag) to delete remote tag
+    // Assumes that remote is consistently named to origin
+    sh """
+        git push ${remote} :${tagName} || echo "Could not delete tag: does not exist or no access rights"
+        git push ${remote} ${tagName} --force || echo "Could not push tag: invalid name or no access rights"
+    """
+}
+
+// TODO below is not working
+@NonCPS
+def checkAPI() {
+
+  def pattern = ~/.*src\/main\/java\/(.*)\.java:[^ ]* (.*) is Sun proprietary API and may be removed in a future release.*/
+  def map = [:]
+  manager.build.logFile.eachLine { line ->
+  	matcher = pattern.matcher(line)
+  	if(matcher.matches()) {
+  		ownClass = matcher.group(1).replaceAll("/", ".")
+  		sunClass = matcher.group(2)
+  		map[ownClass] = sunClass
+  	}
+  }
+  if(map.size() > 0) {
+  	def summary = manager.createSummary("warning.gif")
+  	summary.appendText("Classes using Sun proprietary API:<ul>", false)
+  	map.each {
+  		summary.appendText("<li><b>$it.key</b> - uses $it.value</li>", false)
+  	}
+  	summary.appendText("</ul>", false)
+  }
+
+  if(manager.logContains(".*uses or overrides a deprecated API.*")) {
+  	manager.addWarningBadge("Thou shalt not use deprecated methods.")
+  	manager.createSummary("warning.gif").appendText("<h1>You have been warned!</h1>", false, false, false, "red")
+  	manager.buildUnstable()
+  }
+
+} // checkAPI
+
+def notifyMe(body) {
+
+  // evaluate the body block, and collect configuration into the object
+  def config = [:]
+  body.resolveStrategy = Closure.DELEGATE_FIRST
+  body.delegate = config
+  body()
+
+  //// send to Slack
+  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //slackSend channel: '#general', color: 'good', message: '[${currentBuild.result}] #${env.BUILD_NUMBER} ${env.BUILD_URL}', teamDomain: 'kitconcept', token: '<ADD-TOKEN-HERE>'
+  //
+  //// send to HipChat
+  //hipchatSend (color: 'YELLOW', notify: true,
+  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
+  //)
+
+  def content = '${SCRIPT, template="pipeline.template"}'
+
+  // send to email
+  emailext (
+      subject: ("${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${currentBuild.displayName}"),
+      //body: """<p>${env.TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
+      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
+      attachLog: false,
+      compressLog: true,
+      to: emailextrecipients([
+          [$class: 'CulpritsRecipientProvider'],
+          [$class: 'DevelopersRecipientProvider'],
+          [$class: 'RequesterRecipientProvider']
+      ]), body: content
+    )
+
+} // notifyMe
+
+def abortPreviousRunningBuilds() {
+  def hi = Hudson.instance
+  def pname = env.JOB_NAME.split('/')[0]
+  def bname = env.JOB_NAME.split('/')[1]  // branch name
+
+  try {
+      hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
+          def exec = build.getExecutor()
+
+          if (build.number != currentBuild.number && exec != null) {
+            exec.interrupt(
+              Result.ABORTED,
+              new CauseOfInterruption.UserInterruption(
+                "Aborted by ${pname} - ${bname} #${currentBuild.number}"
+              )
+            )
+            println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Aborted previous running build #${build.number}")
+          } else {
+            println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Build is not running or is already built, not aborting #${build.number}")
+          }
+      }
+  } catch(NullPointerException e) {
+      // happens the first time if there is no branch at all
+  } finally {
+      // carry on as if nothing went wrong
+  }
+
+} // abortPreviousRunningBuilds
+
+// See https://gist.github.com/mskutin/3b13e089eedcd365ac9a9af30ef503d2
+def manualPromotion() {
+    // we need a first milestone step so that all jobs entering this stage are tracked an can be aborted if needed
+    milestone 1
+    // time out manual approval after ten minutes
+    timeout(time: 10, unit: 'MINUTES') {
+        input message: "Does Pre-Production look good?"
     }
-    return queriedPathChanged
+    // this will kill any job which is still in the input step
+    milestone 2
+}
+
+def getRepoSlug() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    org = tokens[tokens.size()-3]
+    repo = tokens[tokens.size()-2]
+    echo "ORG : ${org} - REPO : ${repo}"
+    //GITHUB
+    //return "${org}/${repo}"
+    //STASH
+    return "${org}/repos/${repo}"
+}
+
+// TODO TO BE tested with STASH
+void setBuildStatus(context, message, state) {
+  // partially hard coded URL because of https://issues.jenkins-ci.org/browse/JENKINS-36961, adjust to your own GitHub instance
+  step([
+      $class: "GitHubCommitStatusSetter",
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://scm-git-eur.misys.global.ad/projects/${getRepoSlug()}"],
+      //reposSource: [$class: "ManuallyEnteredRepositorySource", url: ""https://github.com/${getRepoSlug()}"],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+  ]);
 }
 
 def getCommitShortSHA1() {
@@ -78,74 +222,41 @@ def createVersionTextFile(def description="TEST", def filename="TEST_VERSION.TXT
     """
 }
 
-def gitTagLocal(def tagName="LATEST_SUCCESSFULL", def message="Jenkins local") {
-    sh """
-        cd ${env.WORKSPACE}
-        git tag -l | grep -E "^${tagName}\$" && { git tag -d $tagName ; }
-        git tag -a ${tagName} -m "${message}"
-    """
+//TODO REMOVE same as getCommitShortSHA1
+def getCommitId() {
+  sh "git rev-parse --short HEAD > .git/commit-id"
+  return readFile(".git/commit-id").trim()
 }
 
-def gitTagRemote(def tagName="LATEST_SUCCESSFULL", def remote="origin") {
-    // Push empty reference ( :tag) to delete remote tag
-    // Assumes that remote is consistently named to origin
-    sh """
-        git push ${remote} :${tagName} || echo "Could not delete tag: does not exist or no access rights"
-        git push ${remote} ${tagName} --force || echo "Could not push tag: invalid name or no access rights"
-    """
+def getCommitSha() {
+  sh "git rev-parse HEAD > .git/current-commit"
+  return readFile(".git/current-commit").trim()
 }
 
+def getRepoURL() {
+  sh "git config --get remote.origin.url > .git/remote-url"
+  return readFile(".git/remote-url").trim()
+}
 
-def notifyMe() {
-  //// send to Slack
-  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //
-  //// send to HipChat
-  //hipchatSend (color: 'YELLOW', notify: true,
-  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-  //)
+def updateGithubCommitStatus(build) {
+  // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+  repoUrl = getRepoURL()
+  commitSha = getCommitSha()
 
-  def content = '${SCRIPT, template="pipeline.template"}'
-  //to: "${GIT_AUTHOR_EMAIL}"
-
-  // send to email
-  emailext (
-      //subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-      subject: ("${currentBuild.result}: ${env.TARGET_PROJECT} ${currentBuild.displayName}"),
-      //body: """<p>${env.TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
-      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      body: content,
-      attachLog: false,
-      compressLog: true,
-      to: emailextrecipients([
-          [$class: 'CulpritsRecipientProvider'],
-          [$class: 'DevelopersRecipientProvider'],
-          [$class: 'RequesterRecipientProvider']
-      ])
-    )
-
-  //slackSend channel: '#general', color: 'good', message: '[${currentBuild.result}] #${env.BUILD_NUMBER} ${env.BUILD_URL}', teamDomain: 'kitconcept', token: '<ADD-TOKEN-HERE>'
-
-} // notifyMe
-
-def abortPreviousRunningBuilds() {
-  def hi = Hudson.instance
-  def pname = env.JOB_NAME.split('/')[0]
-
-  try {
-    hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
-    def exec = build.getExecutor()
-
-    if (build.number != currentBuild.number && exec != null) {
-      exec.interrupt(
-        Result.ABORTED,
-        new CauseOfInterruption.UserInterruption(
-          "Aborted by #${currentBuild.number}"
-        )
-      )
-      println("Aborted previous running build #${build.number} - ${env.JOB_BASE_NAME}")
-    } else {
-      println("Build ${pname} / ${env.JOB_BASE_NAME} is not running or is already built, not aborting #${build.number}")
+  step([
+    $class: 'GitHubCommitStatusSetter',
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
+    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
+    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+    statusResultSource: [
+      $class: 'ConditionalStatusResultSource',
+      results: [
+        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: build.description],
+        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: build.description],
+        [$class: 'AnyBuildResult', state: 'FAILURE', message: 'Loophole']
+      ]
+    ]
+  ])
 }
 
 return this

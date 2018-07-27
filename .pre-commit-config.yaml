@@ -14,7 +14,8 @@ repos:
                   (?x)^(
                       clean.bat|
                       build.bat|
-                      mvnw.cmd
+                      mvnw.cmd|
+                      .mvn/
                   )$
     -   id: check-json
     -   id: check-xml
@@ -53,7 +54,7 @@ repos:
 #    -   id: check-hooks-apply
 #    -   id: check-useless-excludes
 -   repo: https://github.com/willthames/ansible-lint.git
-    rev: v3.4.23
+    rev: v3.5.0rc1
     hooks:
     -   id: ansible-lint
         files: \.(yaml|yml)$
