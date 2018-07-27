@@ -1,0 +1,7 @@
+# comment
+hooks/
+doc/
+*.tmp/*
+.bower/
+.settings/
+*/target*
