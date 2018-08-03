@@ -9,7 +9,7 @@
  "dateFormat": "YYYY-MM-dd HH:mm:ss",
  "untaggedName": "Next release",
  "noIssueName": "Other changes",
- "ignoreCommitsWithoutIssue": "false",
+ "ignoreCommitsWithoutIssue": "true",
  "timeZone": "UTC",
  "removeIssueFromMessage": "true",
 

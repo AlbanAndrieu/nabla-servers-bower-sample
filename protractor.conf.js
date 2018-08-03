@@ -74,6 +74,7 @@ exports.config = {
     //  extensions: [],
     //},
     acceptSslCerts: true,
+    //'--cookies-keep-session', '--keep-session-cookies'
     ensureCleanSession: true,
     //proxy: {
     //   //proxyType: 'autodetect'
@@ -94,6 +95,7 @@ exports.config = {
   //chromeDriver: '/usr/local/bin/chromedriver',
   //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.8.1.jar',
   //chromeDriver: './node_modules/webdriver-manager/selenium/chromedriver_2.35',
+  //chromeDriver: './node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.35',
 
   onPrepare: function() {
       browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
@@ -154,6 +156,7 @@ exports.config = {
       jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
       //browser.ignoreSynchronization = true; //enable for non angular
+      //browser.waitForAngularEnabled(false);
 
       //https://github.com/angular/protractor/issues/1978
       //browser.driver.manage().window().maximize();

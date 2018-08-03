@@ -456,7 +456,7 @@ module.exports = function(grunt) {
       //bower: ['.bower', 'bower_components'],
       tmp: ['tmp'],
       build: ['build'],
-      docs: ['docs'],
+      docs: ['docs/groovydocs/', 'docs/js/', 'docs/partials/'],
       coverageE2E: {
         src: ['<%= config.e2e %>/']
       }
@@ -1652,7 +1652,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('docs', [
-    //'clean:docs',
+    'clean:docs',
     'ngdocs'
   ]);
 
