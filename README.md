@@ -155,7 +155,9 @@ bower install
 
 ## Build & development
 
+Run `mvnw clean install` for building.
 Run `grunt` for building and `grunt serve` for preview.
+Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
 ```
 mvnw clean install -Dserver=jetty9x
@@ -226,8 +228,8 @@ Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order
 ## Run war in jetty or using cargo
 
 ```
-mvn jetty:run-war
-mvn install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
+mvnw jetty:run-war
+mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
 
 ## ZaProxy
@@ -383,7 +385,7 @@ In order to workaround issue of bower_components (cssmin) absolute path instead 
 ## Run End2End tests
 
 ```
-mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
+mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
 grunt --gruntfile Gruntfile-e2e.js
 ```
 
