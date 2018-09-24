@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+import hudson.model.*
 
 def isReleaseBranch() {
     env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /master/ || env.BRANCH_NAME ==~ /release\/.*/
@@ -149,29 +151,52 @@ def notifyMe(body) {
 
 } // notifyMe
 
+@NonCPS
+def getBuildUser() {
+    if (currentBuild.rawBuild.getCause(Cause.UserIdCause) != null) {
+        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
+    } else {
+        return "UNKNOWN SYSTEM USER"
+    }
+}
+
 def abortPreviousRunningBuilds() {
   def hi = Hudson.instance
   def pname = env.JOB_NAME.split('/')[0]
   def bname = env.JOB_NAME.split('/')[1]  // branch name
 
+  echo "abortPreviousRunningBuilds : ${pname} - ${bname} #${currentBuild.number}"
+
   try {
       hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
           def exec = build.getExecutor()
 
-          if (build.number != currentBuild.number && exec != null) {
+          echo "  ${build.number} - ${exec}"
+
+          if (null != exec) {
+
+            //print currentBuild.getBuiltOn().getNodeName()
+            //def build = currentBuild.build()
+            //print exec.getOwner().getNode().getNodeName()
+
+            if (build.number < currentBuild.number && exec != null) {
+              def user = getBuildUser().toString()
+              echo "Aborted by " + user
             exec.interrupt(
               Result.ABORTED,
               new CauseOfInterruption.UserInterruption(
-                "Aborted by ${pname} - ${bname} #${currentBuild.number}"
+                  "Aborted by ${user} - ${pname} - ${bname} #${currentBuild.number}"
               )
             )
             println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Aborted previous running build #${build.number}")
           } else {
             println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Build is not running or is already built, not aborting #${build.number}")
+            }
           }
       }
   } catch(NullPointerException e) {
       // happens the first time if there is no branch at all
+      echo 'Error: There were errors in abortPreviousRunningBuilds. '+e.toString()
   } finally {
       // carry on as if nothing went wrong
   }
@@ -214,33 +239,46 @@ void setBuildStatus(context, message, state) {
   ]);
 }
 
-def getCommitShortSHA1() {
-    println(env.GIT_COMMIT)
-    println("***")
-    environment()
-    env.GIT_COMMIT.take(7)
-}
-
 def setBuildName() {
     setBuildName(env.BRANCH_NAME)
 }
 
 def setBuildName(def gitBranchName) {
     currentBuild.displayName = "#" + currentBuild.number.toString() + " " + gitBranchName + " " + getCommitShortSHA1()
+    def PULL_REQUEST_URL = env.getProperty('PULL_REQUEST_URL')
+    def PULL_REQUEST_ID = env.getProperty("PULL_REQUEST_ID")
+    if (null != PULL_REQUEST_URL) {
+        def description = "<a href='$PULL_REQUEST_URL'>PR #$PULL_REQUEST_ID</a>"
+        currentBuild.setDescription(description)
+    }
 }
 
 def createVersionTextFile(def description="TEST", def filename="TEST_VERSION.TXT") {
     build = currentBuild.number.toString()
-    commitSHA1 = getCommitShortSHA1()
+    commitSHA1 = getCommitId()
     sh """
-        echo ${description}: BUILD: ${build} SHA1:${commitSHA1} > "${env.WORKSPACE}/${filename}"
+        echo ${description}: BUILD:${build} SHA1:${commitSHA1} > "./${filename}"
     """
 }
 
-//TODO REMOVE same as getCommitShortSHA1
 def getCommitId() {
-  sh "git rev-parse --short HEAD > .git/commit-id"
-  return readFile(".git/commit-id").trim()
+    println("***")
+    try {
+      println(env.GIT_COMMIT)
+      if (!env.GIT_COMMIT) {
+          env.GIT_COMMIT = getCommitSha()
+      }
+    }
+    catch(exc) {
+    	echo 'Error: There were errors in getCommitId. '+exc.toString()
+        env.GIT_COMMIT = "TODO"
+    }
+    environment()
+    return env.GIT_COMMIT
+}
+
+def getCommitShortSHA1() {
+    return getCommitId().take(7)
 }
 
 def getCommitSha() {

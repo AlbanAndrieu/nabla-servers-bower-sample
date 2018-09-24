@@ -1,7 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 FROM selenium/standalone-chrome:3.12.0-cobalt AS builder
 
-ARG FILEBEAT_VERSION=${FILEBEAT_VERSION:-6.3.2}
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003
 ARG GID=1002
@@ -13,7 +12,7 @@ ARG CERT_NAME="UK1VSWCERT01-CA-5.crt"
 ARG CERT_URL="http://fr1cslfrbm0059.misys.global.ad/download/certs/UK1VSWCERT01-CA-5.crt"
 
 #MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
-#LABEL vendor="TEST" version="1.0"
+#LABEL vendor="TEST" version="1.0.0"
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
 
@@ -21,28 +20,27 @@ LABEL description="Image used by fusion-risk products to build Java/Javascript a
 #VOLUME [${JENKINS_HOME}]
 
 #ENV DEBIAN_FRONTEND noninteractive
-ENV JENKINS_HOME=${JENKINS_HOME} \
-HOME=${JENKINS_HOME}
+ENV JENKINS_HOME=${JENKINS_HOME}
 
 #ENV LANG en_US.UTF-8
 ENV TERM="xterm-256color"
 
 USER 0
 
-RUN printf "\033[1;32mFROM FILEBEAT: ${FILEBEAT_VERSION} - JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
+RUN printf "\033[1;32mFROM UID:GID: ${UID}$:{GID} - JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
 
 # Install ansible
 ENV BUILD_PACKAGES="python3 python3-pip python3-dev"
 RUN apt-get clean && apt-get -y update && apt-get install -y \
     -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
-    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog && pip install ansible==2.4.3.0 \
+    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog && pip install ansible==2.6.0.0 \
 	&& apt-get install -y xz-utils wget curl lsof sshpass \
 	openjdk-8-jdk maven \
 	net-tools iputils-ping x11-apps
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
     apt-get update && apt-get install -y nodejs ;\
-    npm install -g bower grunt grunt-cli nsp
+    npm install -g bower@1.8.4 grunt@1.0.3 grunt-cli@1.2.0 nsp@2.6.1 webdriver-manager@12.1.0
 
 RUN mkdir ${JDK_HOME} && \
     curl ${JAVA_URL} | tar xzC ${JDK_HOME} --strip-components=1
@@ -90,8 +88,6 @@ RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pa
 RUN mkdir -p /var/run/sshd
 #RUN chmod 0755 /var/run/sshd
 
-RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-${FILEBEAT_VERSION}-amd64.deb && sudo dpkg -i filebeat-${FILEBEAT_VERSION}-amd64.deb
-
 # Clean up APT when done.
 #RUN AUTO_ADDED_PACKAGES=$(apt-mark showauto) \
 #&& apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES &&
@@ -102,8 +98,9 @@ RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 COPY . $JENKINS_HOME/
 
 # Execute
-RUN npm install -g bower grunt grunt-cli nsp && npm install --only=production
-#RUN ./mvnw install -Dmaven.test.skip=true
+#RUN npm install --only=production
+#TODO -Dserver=tomcat8x
+RUN ./clean.sh && ./mvnw install -Dserver=jetty9x -Dmaven.test.skip=true
 
 #RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME/.[^.]* && chmod -R 777 $JENKINS_HOME/.[^.]* && ls -lrta -R $JENKINS_HOME
 #RUN ls -lrta -R $JENKINS_HOME
@@ -115,6 +112,9 @@ RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME && chmod -R 777 $JENKINS_HO
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
+ENV HOME=${JENKINS_HOME}
+# && chmod -R 777 ${HOME}/.npm && chmod -R 777 ${HOME}/.m2
+RUN mkdir ${HOME}/workspace
 
 # Standard SSH port
 EXPOSE 22
@@ -129,32 +129,26 @@ CMD ["/bin/bash"]
 #CMD ["./app"]
 
 ## This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-##FROM tomcat:8-jre8 as runner
+#FROM tomcat:8-jre8 as runner
 FROM tomcat:8-jre8
-
-#TODO REMOVE JENKINS_HOME
-ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
-#ARG UID=1003
-#ARG GID=1002
+#FROM tomcat:9.0-jre8-alpine
 
 MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
 
-LABEL vendor="TEST" version="1.0"
+LABEL vendor="TEST" version="1.0.0"
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
 
-#ENV DEBIAN_FRONTEND noninteractive
-ENV JENKINS_HOME=${JENKINS_HOME}
+ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 
 #ENV LANG en_US.UTF-8
 ENV TERM="xterm-256color"
 
 #USER 0
 
-#RUN printf "\033[1;32mFROM FILEBEAT: ${FILEBEAT_VERSION} - JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
+RUN printf "\033[1;32mFROM JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
 
 # Install ansible
-#ENV BUILD_PACKAGES="python3 python3-pip python3-dev"
 RUN apt-get clean && apt-get -y update && apt-get install -y \
     -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
     $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
@@ -175,32 +169,22 @@ RUN apt-get clean && apt-get -y update && apt-get install -y \
 #COPY --chown=jenkins:$(id -gn jenkins) --from=builder $JENKINS_HOME/target/*.war /usr/local/tomcat/webapps/
 #COPY --chown=jenkins:$(id -gn jenkins) --from=0 $JENKINS_HOME/target/*.war /usr/local/tomcat/webapps/
 #ADD ./target/test.war /usr/local/tomcat/webapps/
-
-#===================
-# Timezone settings
-# Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
-#===================
-ENV TZ "UTC"
-RUN echo "${TZ}" > /etc/timezone \
-  && dpkg-reconfigure --frontend noninteractive tzdata
-
-# Install a basic SSH server
-RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd
-RUN mkdir -p /var/run/sshd
-#RUN chmod 0755 /var/run/sshd
+COPY --from=0 $JENKINS_HOME/target/test.war $CATALINA_HOME/webapps/test.war
+#COPY target/test.war $CATALINA_HOME/webapps/test.war
 
 # Clean up APT when done.
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 && ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
 
 # Standard SSH port AND 8080
-EXPOSE 22
-#EXPOSE 22 8080
+#EXPOSE 22
+EXPOSE 22 8080
 
 # set a health check
-HEALTHCHECK --interval=5s \
+HEALTHCHECK --interval=1m \
             --timeout=5s \
 CMD curl -f http://127.0.0.1:8080 || exit 1
+#CMD wget --quiet --tries=1 --spider http://localhost:8080/wizard/ || exit 1
 
 #CMD ["/usr/sbin/sshd", "-D"]
 CMD ["/bin/bash"]
