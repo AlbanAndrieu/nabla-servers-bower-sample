@@ -5,8 +5,6 @@ WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 source "${WORKING_DIR}/docker-compose-env.sh"
 
-echo "PATH : ${PATH}"
-
 # shellcheck disable=SC2154
 echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures ${NC}"
 docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" pull --ignore-pull-failures
