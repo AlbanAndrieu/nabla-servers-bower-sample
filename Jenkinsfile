@@ -42,7 +42,7 @@ def DOCKER_OPTS = [
     '-v /usr/local/sonar-build-wrapper/:/usr/local/sonar-build-wrapper/',
     '-v /usr/local/sonar-runner/:/usr/local/sonar-runner/',
 //    '-v /home/jenkins/.m2:/home/jenkins/.m2:ro',
-    '-v /home/jenkins:/home/jenkins',
+//    '-v /home/jenkins:/home/jenkins',
     '-e HOME=${WORKSPACE}',
     '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
     '-v /etc/passwd:/etc/passwd:ro',
