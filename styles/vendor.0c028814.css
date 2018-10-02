@@ -1,6 +1,6 @@
 /**
  * bower-sample
- * @version v1.0.2 - 2018-09-27
+ * @version v1.0.2 - 2018-10-02
  * @link http://home.nabla.mobi
  * @author Alban Andrieu alban.andrieu@nabla.mobi
  * @license , 
