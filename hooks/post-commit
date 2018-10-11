@@ -11,7 +11,7 @@ msg['Subject'] = 'Git post-commit hook notification'
 msg['From'] = 'mary@example.com'
 msg['To'] = 'boss@example.com'
 # Send the message
-SMTP_SERVER = 'smtp.example.com'
+SMTP_SERVER = 'smtp'
 SMTP_PORT = 587
 session = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
 session.ehlo()

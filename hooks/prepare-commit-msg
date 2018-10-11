@@ -28,13 +28,14 @@ regex = re.compile('^feature|^bugfix')
 if re.match(regex, branch):
     print("prepare-commit-msg: Oh hey, it's an issue branch.")
 
-    # Matches any unique issue code
-    pattern = re.compile(r'(^feature|^bugfix)\/([A-Z]{3,5}-[0-9]+)')
-    issue = re.search(pattern, branch).group(2)  # Extract issue code
-    # print('Issue number : %s.') % issue
-    print('Issue number : {}.'.format(issue))
-
+    issue = 'UNKNOWN'
     try:
+        # Matches any unique issue code
+        pattern = re.compile(r'(^feature|^bugfix)\/([A-Z]{3,5}-[0-9]+)')
+        issue = re.search(pattern, branch).group(2)  # Extract issue code
+        # print('Issue number : %s.') % issue
+        print('Issue number : {}.'.format(issue))
+
         from jira import JIRA
         options = {'server': 'https://home.nabla.mobi/jira'}
         jira = JIRA(options, verify=False, basic_auth=('test', 'TODO'))

@@ -19,6 +19,6 @@ docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}
 #echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} logs robot ${NC}"
 #docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" logs robot
 
-echo -e "${green} https://localhost:9009/"
+echo -e "${green} https://localhost:9090/"
 
 exit 0
