@@ -1,5 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-FROM selenium/standalone-chrome:3.12.0-cobalt AS builder
+#FROM selenium/standalone-chrome:3.12.0-cobalt AS builder
+FROM selenium/standalone-chrome:3.12.0-cobalt
 
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003

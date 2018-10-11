@@ -1,40 +1,6 @@
 import groovy.json.JsonSlurper
 import hudson.model.*
 
-def isReleaseBranch() {
-    env.BRANCH_NAME ==~ /develop/ || env.BRANCH_NAME ==~ /master/ || env.BRANCH_NAME ==~ /release\/.*/
-}
-
-def getReleasedVersion() {
-    return (readFile('pom.xml') =~ '<version>(.+)-SNAPSHOT</version>')[0][1]
-}
-
-def getSemVerReleasedVersion() {
-    tokens = getReleasedVersion().tokenize('.')
-    MAJOR = tokens[tokens.size()-4] // MAJOR
-    MINOR = tokens[tokens.size()-3] // MINOR
-    PATCH = tokens[tokens.size()-2]
-    RELEASE_VERSION_SEMVER = MAJOR + "." + MINOR + "." + PATCH
-    CUT = tokens[tokens.size()-1]
-    echo "MAJOR: ${MAJOR} - MINOR : ${MINOR} - SEMVER : ${RELEASE_VERSION_SEMVER} - PATCH : ${PATCH} - CUT - ${CUT}"
-    return "${RELEASE_VERSION_SEMVER}"
-}
-
-def getShortReleasedVersion() {
-    tokens = getReleasedVersion().tokenize('.')
-    MAJOR = tokens[tokens.size()-4] // MAJOR
-    MINOR = tokens[tokens.size()-3] // MINOR
-    RELEASE_VERSION_SHORT = MAJOR + "." + MINOR
-    PATCH = tokens[tokens.size()-2]
-    CUT = tokens[tokens.size()-1]
-    echo "MAJOR: ${MAJOR} - MINOR : ${MINOR} - SHORT : ${RELEASE_VERSION_SHORT} - PATCH : ${PATCH} - CUT - ${CUT}"
-    return "${RELEASE_VERSION_SHORT}"
-}
-
-def getCurrentDate() {
-  new Date().format("yyyyMMdd")
-}
-
 //def createPropertyList() {
 //    def daysToKeep         = isReleaseBranch() ? '30' : '10'
 //    def numToKeep          = isReleaseBranch() ? '20' : '5'
@@ -69,22 +35,6 @@ def getCurrentDate() {
 //    return queriedPathChanged
 //}
 
-def gitTagLocal(def tagName="LATEST_SUCCESSFULL", def message="Jenkins local") {
-    sh """
-        git tag -l | grep -E "^${tagName}\$" && { git tag -d $tagName ; }
-        git tag -a ${tagName} -m "${message}"
-    """
-}
-
-def gitTagRemote(def tagName="LATEST_SUCCESSFULL", def remote="origin") {
-    // Push empty reference ( :tag) to delete remote tag
-    // Assumes that remote is consistently named to origin
-    sh """
-        git push ${remote} :${tagName} || echo "Could not delete tag: does not exist or no access rights"
-        git push ${remote} ${tagName} --force || echo "Could not push tag: invalid name or no access rights"
-    """
-}
-
 // TODO below is not working
 @NonCPS
 def checkAPI() {
@@ -116,92 +66,23 @@ def checkAPI() {
 
 } // checkAPI
 
-def notifyMe(body) {
-
-  // evaluate the body block, and collect configuration into the object
-  def config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
-
-  //// send to Slack
-  //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-  //slackSend channel: '#general', color: 'good', message: '[${currentBuild.result}] #${env.BUILD_NUMBER} ${env.BUILD_URL}', teamDomain: 'kitconcept', token: '<ADD-TOKEN-HERE>'
-  //
-  //// send to HipChat
-  //hipchatSend (color: 'YELLOW', notify: true,
-  //    message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
-  //)
-
-  def content = '${SCRIPT, template="pipeline.template"}'
-
-  // send to email
-  emailext (
-      subject: ("${currentBuild.result}: ${env.JOB_NAME} [${env.BUILD_NUMBER} ${currentBuild.displayName}"),
-      //body: """<p>${env.TARGET_PROJECT} STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': build on branch ${BRANCH_NAME} resulted in ${currentBuild.result} :</p>
-      //  <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>""",
-      attachLog: false,
-      compressLog: true,
-      to: emailextrecipients([
-          [$class: 'CulpritsRecipientProvider'],
-          [$class: 'DevelopersRecipientProvider'],
-          [$class: 'RequesterRecipientProvider']
-      ]), body: content
-    )
-
-} // notifyMe
 
 @NonCPS
-def getBuildUser() {
-    if (currentBuild.rawBuild.getCause(Cause.UserIdCause) != null) {
-        return currentBuild.rawBuild.getCause(Cause.UserIdCause).getUserId()
-    } else {
-        return "UNKNOWN SYSTEM USER"
-    }
+def cleanAction() {
+	currentBuildNumber = manager.build.number
+	if (manager.setBuildNumber(currentBuildNumber - 1)) {
+		actions = manager.build.actions
+		actions.each { action ->
+			if (action.metaClass.hasProperty(action, "text") && action.text.contains("deployed")) {
+				actions.remove(action)
+			}
+		}
+		currDate = new Date().dateTimeString
+		manager.addShortText("undeployed: $currDate", "grey", "white", "0px", "white")
+		manager.createSummary("gear2.gif").appendText("<h2>Undeployed: $currDate</h2>", false, false, false, "grey")
+	} // if
 }
 
-def abortPreviousRunningBuilds() {
-  def hi = Hudson.instance
-  def pname = env.JOB_NAME.split('/')[0]
-  def bname = env.JOB_NAME.split('/')[1]  // branch name
-
-  echo "abortPreviousRunningBuilds : ${pname} - ${bname} #${currentBuild.number}"
-
-  try {
-      hi.getItem(pname).getItem(env.JOB_BASE_NAME).getBuilds().each{ build ->
-          def exec = build.getExecutor()
-
-          echo "  ${build.number} - ${exec}"
-
-          if (null != exec) {
-
-            //print currentBuild.getBuiltOn().getNodeName()
-            //def build = currentBuild.build()
-            //print exec.getOwner().getNode().getNodeName()
-
-            if (build.number < currentBuild.number && exec != null) {
-              def user = getBuildUser().toString()
-              echo "Aborted by " + user
-            exec.interrupt(
-              Result.ABORTED,
-              new CauseOfInterruption.UserInterruption(
-                  "Aborted by ${user} - ${pname} - ${bname} #${currentBuild.number}"
-              )
-            )
-            println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Aborted previous running build #${build.number}")
-          } else {
-            println("${pname} - ${bname} / ${env.JOB_BASE_NAME} : Build is not running or is already built, not aborting #${build.number}")
-            }
-          }
-      }
-  } catch(NullPointerException e) {
-      // happens the first time if there is no branch at all
-      echo 'Error: There were errors in abortPreviousRunningBuilds. '+e.toString()
-  } finally {
-      // carry on as if nothing went wrong
-  }
-
-} // abortPreviousRunningBuilds
 
 // See https://gist.github.com/mskutin/3b13e089eedcd365ac9a9af30ef503d2
 def manualPromotion() {
@@ -238,54 +119,6 @@ void setBuildStatus(context, message, state) {
       statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
   ]);
 }
-
-def setBuildName() {
-    setBuildName(env.BRANCH_NAME)
-}
-
-def setBuildName(def gitBranchName) {
-    currentBuild.displayName = "#" + currentBuild.number.toString() + " " + gitBranchName + " " + getCommitShortSHA1()
-    def PULL_REQUEST_URL = env.getProperty('PULL_REQUEST_URL')
-    def PULL_REQUEST_ID = env.getProperty("PULL_REQUEST_ID")
-    if (null != PULL_REQUEST_URL) {
-        def description = "<a href='$PULL_REQUEST_URL'>PR #$PULL_REQUEST_ID</a>"
-        currentBuild.setDescription(description)
-    }
-}
-
-def createVersionTextFile(def description="TEST", def filename="TEST_VERSION.TXT") {
-    build = currentBuild.number.toString()
-    commitSHA1 = getCommitId()
-    sh """
-        echo ${description}: BUILD:${build} SHA1:${commitSHA1} > "./${filename}"
-    """
-}
-
-def getCommitId() {
-    println("***")
-    try {
-      println(env.GIT_COMMIT)
-      if (!env.GIT_COMMIT) {
-          env.GIT_COMMIT = getCommitSha()
-      }
-    }
-    catch(exc) {
-    	echo 'Error: There were errors in getCommitId. '+exc.toString()
-        env.GIT_COMMIT = "TODO"
-    }
-    environment()
-    return env.GIT_COMMIT
-}
-
-def getCommitShortSHA1() {
-    return getCommitId().take(7)
-}
-
-def getCommitSha() {
-  sh "git rev-parse HEAD > .git/current-commit"
-  return readFile(".git/current-commit").trim()
-}
-
 def getRepoURL() {
   sh "git config --get remote.origin.url > .git/remote-url"
   return readFile(".git/remote-url").trim()
@@ -310,42 +143,6 @@ def updateGithubCommitStatus(build) {
       ]
     ]
   ])
-}
-
-def substitutePomXmlVersion(body) {
-  // evaluate the body block, and collect configuration into the object
-  def config = [:]
-  body.resolveStrategy = Closure.DELEGATE_FIRST
-  body.delegate = config
-  body()
-
-  // Find all pom.xml files and switch SNAPSHOT versions
-  // Does not affect stable / release versions
-  def files = findFiles(glob: "**/pom.xml")
-  for (file in files) {
-    fileName = file.toString()
-    println("Changing version in pom file: ${fileName}")
-    pom = readMavenPom(file: fileName)
-    version = pom.getVersion()
-    if (version != null) {
-      println("Current pom version is ${version}")
-      if (version.contains("SNAPSHOT")) {
-        pom.setVersion(config.newVersion)
-        println("Changed pom version to ${config.newVersion}")
-      }
-    }
-    parent = pom.getParent()
-    if (parent != null) {
-      parentVersion = parent.getVersion()
-      println("Current parent pom version is ${version}")
-      if (parentVersion.contains("SNAPSHOT")) {
-        parent.setVersion(config.newVersion)
-        pom.setParent(parent)
-        println("Changed parent pom version to ${config.newVersion}")
-      }
-    }
-    writeMavenPom(model: pom, file: fileName)
-  }
 }
 
 return this
