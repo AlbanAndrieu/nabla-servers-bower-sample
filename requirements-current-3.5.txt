@@ -3,7 +3,7 @@
 #pip3 uninstall libxml2-python
 #pip3 install cairocffi==0.8.0
 #pip3 install CairoSVG==2.0.3
-ansible==2.4.3.0
+ansible==2.6.0
 apparmor==2.11.0
 appdirs==1.4.3
 apturl==0.5.2
@@ -65,7 +65,7 @@ oauthlib==2.0.7
 olefile==0.45.1
 onboard==1.4.1
 packaging==17.1
-paramiko==2.4.1
+paramiko==2.4.2
 pbr==3.1.1
 pexpect==4.4.0
 Pillow==5.0.0
