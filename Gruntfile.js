@@ -16,20 +16,6 @@ module.exports = function(grunt) {
     localConfig = {};
   }
 
-  var zone;
-  var xdomainUrl;
-
-  try {
-    xdomainUrl = require('./urlConfig.js').getUrl();
-    zone = require('./urlConfig.js').getProxy();
-  } catch (e) {
-    if (e instanceof Error && e.code === 'MODULE_NOT_FOUND') {
-      console.log('No urlConfig module found, going with defaults');
-      xdomainUrl = 'slave="http://home.nabla.mobi:8080/login"';
-      zone = 'home.nabla.mobi';
-    }
-  }
-
   var ZAP_PORT = process.env.ZAP_PORT || 8090;
   //console.log('ZAP_PORT : ' + ZAP_PORT);
   var ZAP_HOST = process.env.ZAP_HOST || 'localhost';
@@ -45,9 +31,6 @@ module.exports = function(grunt) {
   var SERVER_URL =  process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_SECURE_URL = process.env.SERVER_SECURE_URL || 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
   var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/test/#/';
-
-  // Load grunt tasks automatically
-  //require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -84,12 +67,6 @@ module.exports = function(grunt) {
   //    request = require('request');
   var serveStatic = require('serve-static');
   var serveIndex = require('serve-index');
-
-  //grunt.loadNpmTasks('grunt-uncss');
-  ////TODO http://grunt-tasks.com/grunt-purifycss/
-  //grunt.loadNpmTasks('grunt-postcss');
-  ////grunt.loadNpmTasks('grunt-penthouse'); //Use grunt-critical instead
-  ////grunt.loadNpmTasks('grunt-phantomcss-gitdiff'); //Use grunt-resemble-cli instead
 
   var parseVersionFromPomXml = function() {
       var fs = require('fs-extra');
@@ -187,7 +164,7 @@ module.exports = function(grunt) {
     config: appConfig,
 
     // Project meta
-    pkg: require('./package.json'),
+    pkg: grunt.file.readJSON('package.json'),
     banner: '/**\n' +
             ' * <%= pkg.name %>\n' +
             ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -309,6 +286,8 @@ module.exports = function(grunt) {
         options: {
           port: SERVER_SECURE_PORT,
           protocol: 'https',
+          //open: true,
+          singleRun: true,
           middleware: function(connect, options, middlewares) {
             return [
               serveStatic('.tmp'),
@@ -358,18 +337,7 @@ module.exports = function(grunt) {
           open: true,
           base: '<%= config.dist %>'
         }
-      },
-      proxies: [{
-        context: '/login/',
-        host: zone,
-        port: 8080,
-        changeOrigin: true
-      }, {
-        context: '/apidocs/',
-        host: zone,
-        port: 8080,
-        changeOrigin: true
-      }]
+      }
     },
 
     instrument: {
@@ -488,7 +456,7 @@ module.exports = function(grunt) {
       //bower: ['.bower', 'bower_components'],
       tmp: ['tmp'],
       build: ['build'],
-      docs: ['docs'],
+      docs: ['docs/groovydocs/', 'docs/js/', 'docs/partials/'],
       coverageE2E: {
         src: ['<%= config.e2e %>/']
       }
@@ -645,7 +613,6 @@ module.exports = function(grunt) {
     // additional tasks can operate on them
     useminPrepare: {
       html: '<%= config.app %>/**/*.html',
-      //html: '<%= config.app %>/index.html',
       options: {
         dest: '<%= config.dist %>',
         flow: {
@@ -1337,7 +1304,7 @@ module.exports = function(grunt) {
         //url: 'bababou.eu'
         //url: 'http://localhost:9090/'
         //url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: 'https://nabla.freeboxos.fr/sample/'
+        url: 'http://nabla.freeboxos.fr/sample/'
       },
       //prod: {
       //  options: {
@@ -1352,7 +1319,7 @@ module.exports = function(grunt) {
           paths: ['#/about', '#/'],
           locale: 'en_GB',
           strategy: 'desktop',
-          threshold: 60
+          threshold: 58
         }
       }
     },
@@ -1360,10 +1327,10 @@ module.exports = function(grunt) {
     'pagespeed_junit': {
       options: {
         //urls: ['http://home.nabla.mobi:9090/'],
-        urls: ['https://nabla.freeboxos.fr/sample/'],
+        urls: ['http://nabla.freeboxos.fr/sample/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
-        threshold: 70,
+        threshold: 60,
         ruleThreshold: 12
       }
     },

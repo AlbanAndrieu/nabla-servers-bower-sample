@@ -34,7 +34,35 @@
     <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
     <properties>
         <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
-        <maven.cargo.maven2.plugin.version>1.6.5</maven.cargo.maven2.plugin.version>
+        <!--
+        <maven.dependency.check.plugin.version>3.2.1</maven.dependency.check.plugin.version>
+        <maven.cargo.maven2.plugin.version>1.6.8</maven.cargo.maven2.plugin.version>
+        <maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
+        <maven.shade.plugin.version>2.4.1</maven.shade.plugin.version>
+        <maven.bundle.plugin.version>3.0.0</maven.bundle.plugin.version>
+        <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
+        <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+        <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
+        <maven.pitest.plugin.version>1.2.4</maven.pitest.plugin.version>
+        <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
+        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.pitest.plugin.version>1.4.0</maven.pitest.plugin.version>
+        <groovy.eclipse.compiler.version>2.9.2-01</groovy.eclipse.compiler.version>
+        <groovy.eclipse.batch.version>2.4.3-01</groovy.eclipse.batch.version>
+        <maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
+        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
+        <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+        <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+        <findbugs.maven.plugin.version>3.0.5</findbugs.maven.plugin.version>
+        <maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
+        <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
+        <maven.surefire.plugin.version>2.20</maven.surefire.plugin.version>
+        <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
+        <maven.war.plugin.version>2.4</maven.war.plugin.version>
+        <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
+        <maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
+        <maven.project.info.reports.plugin.version>2.9</maven.project.info.reports.plugin.version>
+ 	-->
         <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
         <node.version>9.3.0</node.version><!-- FreeNas -->
         <!--<node.version>8.9.3</node.version> NOK -->
@@ -129,11 +157,13 @@
         <dependency>
             <groupId>org.codehaus.groovy.modules.http-builder</groupId>
             <artifactId>http-builder</artifactId>
+            <version>${http.builder.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
             <exclusions>
                 <!-- circular dependency -->
                 <exclusion>
@@ -145,6 +175,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.api.version}</version>
             <scope>provided</scope>
             <!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
         </dependency>
@@ -157,6 +188,7 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
+            <version>${jsr305.version}</version>
             <optional>true</optional>
             <!-- needed only for annotations -->
         </dependency>
@@ -164,12 +196,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- jmockit musr be after junit in the classpath -->
         <dependency>
             <groupId>org.jmockit</groupId>
             <artifactId>jmockit</artifactId>
+            <version>${jmockit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -181,10 +215,10 @@
         <finalName>test</finalName>
         <pluginManagement>
             <plugins>
-				<plugin>
+		<plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
-                    <!-- <version>${maven.lifecycle.mapping.version}</version>-->
+                    <version>${maven.lifecycle.mapping.version}</version>
                     <configuration>
                         <lifecycleMappingMetadata>
                             <pluginExecutions>
@@ -280,12 +314,31 @@
                         <skipRuntimeScope>true</skipRuntimeScope>
                         <skipSystemScope>true</skipSystemScope>
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                        <centralAnalyzerEnabled>false</centralAnalyzerEnabled>
+                        <nexusAnalyzerEnabled>false</nexusAnalyzerEnabled>
 			<!--
-                        <cveUrl12Modified>https://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                        <cveUrl20Modified>https://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                        <cveUrl12Base>https://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                        <cveUrl20Base>https://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                        <cveUrl12Modified>http://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                        <cveUrl20Modified>http://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                        <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                        <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
 			-->
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jarsigner-plugin</artifactId>
+                    <version>${maven.jarsigner.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!--<verbose>true</verbose>-->
+                        <certs>true</certs>
                     </configuration>
                 </plugin>
             </plugins>
@@ -344,6 +397,7 @@
            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>${maven.exec.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>exec-npm-install</id>
@@ -636,14 +690,7 @@
                     <instructions>
                         <Import-Package>javax.servlet.jsp.*;version="[2.2.0,3.0)",org.eclipse.jetty.*;version="[$(version;===;${parsedVersion.osgiVersion}),$(version;==+;${parsedVersion.osgiVersion}))",*</Import-Package>
                         <Export-Package>!com.test*</Export-Package>
-                        <!-- the test webapp is configured via a jetty xml file
-                        in order to add the security handler. -->
                         <Web-ContextPath>/</Web-ContextPath>
-                        <!-- in fact the '.' must not be there
-                        but Felix-BND has a bug:
-                        http://www.mail-archive.com/users@felix.apache.org/msg04730.html
-                        https://issues.apache.org/jira/browse/FELIX-1571
-                        -->
                         <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
                     </instructions>
                 </configuration>
@@ -652,6 +699,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -668,6 +716,11 @@
                     </archive>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.pitest</groupId>
+				<artifactId>pitest-maven</artifactId>
+				<version>${maven.pitest.plugin.version}</version>
+			</plugin>
             <!-- for automatic running of integration tests with Jetty -->
             <!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
             <!--
@@ -702,7 +755,7 @@
 		    <skip>${maven.test.skip}</skip>
                     <wait>${cargo.wait}</wait>
                     <container>
-                        <timeout>300000</timeout>
+                        <timeout>600000</timeout>
                         <log>${project.build.directory}/cargo.log</log>
                         <logLevel>debug</logLevel>
                         <systemProperties>
@@ -1008,6 +1061,7 @@
                                         <include name="karma-coverage/lcov-karma.info"></include>
                                     </fileset>
                                 </copy>
+                                <!--
                                 <path id="sourceDirectory.path">
                                     <pathelement location="${basedir}/app/scripts" />
                                 </path>
@@ -1025,6 +1079,7 @@
                                         <include name="lcov-karma.info" />
                                     </fileset>
                                 </replaceregexp>
+                                -->
                             </target>
                         </configuration>
                     </execution>
@@ -1077,16 +1132,19 @@
         </profile>
         <profile>
             <id>run-integration-test</id>
+            <!--
             <activation>
                 <property>
                     <name>!profile.activation</name>
                 </property>
             </activation>
+            -->
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.cargo</groupId>
                         <artifactId>cargo-maven2-plugin</artifactId>
+                        <version>${maven.cargo.maven2.plugin.version}</version>
                         <inherited>true</inherited>
                         <executions>
                             <execution>
@@ -1127,8 +1185,9 @@
                         <configuration>
                             <properties>
                                 <!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
-                                <cargo.hostname>${cargo.host}</cargo.hostname>
-                                <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+                                <!-- <cargo.hostname>${cargo.host}</cargo.hostname> TODO useless, see below configuration -->
+                                <!--<cargo.servlet.port>${cargo.port}</cargo.servlet.port> TODO useless, see below configuration -->
+                                <!--<cargo.port>${jetty.port}</cargo.port> TODO useless, see below configuration -->
                                 <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
                                 <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
                                 <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
@@ -1147,6 +1206,20 @@
                                     <version>${server.version}</version>
                                 </artifactInstaller>
                             </container>
+						    <configuration>
+						    	<!--
+                                    This is another one that confused me for long. Its not enough to
+                                    specify 'installed' in the container tag. You have to now specify
+                                    another configuration with type == existing and re-issue the home
+                                    path
+                                -->
+						    	<type>${cargo.configuration.type}</type>
+						    	<properties>
+						    		<cargo.hostname>${cargo.host}</cargo.hostname>
+						    		<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+						    		<cargo.logging>high</cargo.logging>
+						    	</properties>
+						    </configuration>
                         </configuration>
                     </plugin>
                     <!-- DISABLE because it is too slow
@@ -1168,16 +1241,21 @@
                             <skipRuntimeScope>true</skipRuntimeScope>
                             <skipSystemScope>true</skipSystemScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                            <cveUrl12Modified>https://kgrdb01/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                            <cveUrl20Modified>https://kgrdb01/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                            <cveUrl12Base>https://kgrdb01/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                            <cveUrl20Base>https://kgrdb01/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                            -->
+                            <!--
+                            <cveUrl12Modified>http://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                            <cveUrl20Modified>http://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                            <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                            <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                            -->
+                            <!--
                         </configuration>
                     </plugin>
                     -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
+						<version>${maven.exec.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>exec-grunt-integration-test</id>
@@ -1194,6 +1272,7 @@
 							</execution>
 						</executions>
 						<configuration>
+							<skip>${maven.exec.skip}</skip>
 							<environmentVariables>
 								<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
 								<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
@@ -1221,7 +1300,6 @@
                         <configuration>
                             <nodeVersion>${node.version}</nodeVersion>
                             <yarnVersion>v${yarn.version}</yarnVersion>
-                            <downloadRoot>http://kgrdb01/download/nodejs/</downloadRoot>
                             <workingDirectory>./</workingDirectory>
                         </configuration>
                     </plugin>
@@ -1339,6 +1417,7 @@
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
+                    <version>${slf4j.version}</version>
                     <scope>runtime</scope>
                     <exclusions>
                         <!-- circular dependency -->
@@ -1351,6 +1430,7 @@
                 <dependency>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
+                    <version>${log4j.version}</version>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>

@@ -122,13 +122,17 @@ module.exports = function(grunt) {
                 configFile: 'test/protractor.conf.js', // Default config file
                 keepAlive: true, // If false, the grunt process stops when the test fails.
                 noColor: false, // If true, protractor will not use colors in its output.
+                collectorPort: 3002,
                 coverageDir: '<%= yeoman.instrumentedE2E %>',
-                args: {}
+				args: {
+					//baseUrl: 'http://localhost:8011'
+					baseUrl: 'http://localhost:9190'
+				}
             },
             phantom: {
                 options: {
                     args: {
-                        baseUrl: 'http://localhost:3000/',
+                        //baseUrl: 'http://localhost:3000/',
                         // Arguments passed to the command
                         'browser': 'phantomjs'
                     }
@@ -137,7 +141,7 @@ module.exports = function(grunt) {
             chrome: {
                 options: {
                     args: {
-                        baseUrl: 'http://localhost:9190/',
+                        //baseUrl: 'http://localhost:9190/',
                         // Arguments passed to the command
                         'browser': 'chrome'
                     }

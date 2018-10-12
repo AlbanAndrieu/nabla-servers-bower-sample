@@ -13,24 +13,29 @@ if len(sys.argv) > 3:
     commit_hash = sys.argv[3]
 else:
     commit_hash = ''
-print('prepare-commit-msg: File: %s\nType: %s\nHash: %s') % (
+print('prepare-commit-msg: File: %s\nType: %s\nHash: %s' % (
     commit_msg_filepath,
     commit_type, commit_hash,
-)
+))
 # Figure out which branch we're on
-branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
+branch = check_output([
+    'git', 'symbolic-ref', '--short',
+    'HEAD',
+]).strip().decode('utf-8')
 print(r"prepare-commit-msg: On branch '{}'".format(branch))
 regex = re.compile('^feature|^bugfix')
 # Populate the commit message with the issue #, if there is one
 if re.match(regex, branch):
     print("prepare-commit-msg: Oh hey, it's an issue branch.")
 
-    # Matches any unique issue code
-    pattern = re.compile(r'(^feature|^bugfix)\/([A-Z]{3,5}-[0-9]+)')
-    issue = re.search(pattern, branch).group(2)  # Extract issue code
-    print('Issue number : %s.') % issue
-
+    issue = 'UNKNOWN'
     try:
+        # Matches any unique issue code
+        pattern = re.compile(r'(^feature|^bugfix)\/([A-Z]{3,5}-[0-9]+)')
+        issue = re.search(pattern, branch).group(2)  # Extract issue code
+        # print('Issue number : %s.') % issue
+        print('Issue number : {}.'.format(issue))
+
         from jira import JIRA
         options = {'server': 'https://home.nabla.mobi/jira'}
         jira = JIRA(options, verify=False, basic_auth=('test', 'TODO'))

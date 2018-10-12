@@ -24,12 +24,21 @@ exports.config = {
     //  'browserName': 'firefox',
     //'browserName': 'phantomjs',
     'chromeOptions': {
-        'args': ['--incognito',
+        //  binary: '/usr/bin/google-chrome',
+        //extensions: [],
+        'args': ['--no-sandbox',
+                 '--verbose',
+                 '--log-path=chromedriver.log',
+                 //'show-fps-counter=true',
+                 //'--window-size=800,600',
                  '--disable-extensions',
 //                 '--start-maximized',
-                 '--no-sandbox',
-//                 '--headless',
-//                 '--disable-gpu',
+//                 '--remote-debugging-port=9222',
+//                 '--incognito',
+                 '--disable-setuid-sandbox',
+                 '--headless',
+                 '--disable-gpu',
+                 '--disable-infobars',
                  '--ignore-certificate-errors',
                  '--disable-popup-blocking',
                  '--disable-translate',
@@ -56,12 +65,16 @@ exports.config = {
                            //'--proxy=127.0.0.1:' + ( process.env.ZAP_PORT || 8090 ),
                            //'--proxy-type=none',
                            ],
+    'moz:firefoxOptions': {
+        'args': ['--headless', '--safe-mode']
+    },
     //chromeOptions: {
     //  binary: '/usr/bin/google-chrome',
     //  args: [],
     //  extensions: [],
     //},
     acceptSslCerts: true,
+    //'--cookies-keep-session', '--keep-session-cookies'
     ensureCleanSession: true,
     //proxy: {
     //   //proxyType: 'autodetect'
@@ -82,6 +95,7 @@ exports.config = {
   //chromeDriver: '/usr/local/bin/chromedriver',
   //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.8.1.jar',
   //chromeDriver: './node_modules/webdriver-manager/selenium/chromedriver_2.35',
+  //chromeDriver: './node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.35',
 
   onPrepare: function() {
       browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
@@ -115,33 +129,34 @@ exports.config = {
       //    new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
       //);
 
-      let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
-
-      exports.config = {
-         // your config here ...
-
-        onPrepare: function () {
-        jasmine.getEnv().addReporter(new SpecReporter({
-          spec: {
-            displayStacktrace: true
-          }
-      }));
-        }
-
-      }
+      //let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+      //
+      //exports.config = {
+      //   // your config here ...
+      //
+      //  onPrepare: function () {
+      //    jasmine.getEnv().addReporter(new SpecReporter({
+      //      spec: {
+      //        displayStacktrace: true
+      //      }
+      //    }));
+      //  }
+      //
+      //}
 
       var reporters = require('jasmine-reporters');
       var junitReporter = new reporters.JUnitXmlReporter({
-          consolidateAll: false,
+      //  consolidateAll: false,
           filePrefix: 'TEST-com.test.project.sample.Protractor',
           savePath: 'target/surefire-reports'
       });
       jasmine.getEnv().addReporter(junitReporter);
 
-      //var SpecReporter = require('jasmine-spec-reporter');
-      //jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
+      var SpecReporter = require('jasmine-spec-reporter');
+      jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
 
       //browser.ignoreSynchronization = true; //enable for non angular
+      //browser.waitForAngularEnabled(false);
 
       //https://github.com/angular/protractor/issues/1978
       //browser.driver.manage().window().maximize();

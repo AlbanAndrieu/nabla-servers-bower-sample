@@ -1,10 +1,14 @@
 # nabla-servers-bower-sample
-![nabla-projects-interview-visma](http://home.nabla.mobi/sample/images/mroizo.1f00120c.png)
+![nabla-servers-bower-sample](http://home.nabla.mobi:7075/images/mroizo.1f00120c.png)
 
 [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Javascript project
+
+## Overview
+
+![](https://raw.githubusercontent.com/AlbanAndrieu/nabla-servers-bower-sample/master/screenshot-overview.png)
 
 ## Build
 
@@ -13,12 +17,10 @@ Javascript project
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
 
 ## Quality
-
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample%3Abower-sample)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample%3Amaster&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample%3Abower-sample)
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
 
-[![Versioneye Status](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/579bf122aa78d5003c17364a)
 [![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
 [![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
@@ -129,6 +131,8 @@ SEE https://github.com/angular-ui/angular-google-maps
 
 ## Quality tools
 
+### pre-commit
+
 See [pre-commit](http://pre-commit.com/)
 Run `pre-commit install`
 Run `pre-commit autoupdate`
@@ -136,6 +140,14 @@ Run `pre-commit autoupdate`
 Run `pre-commit run --all-files`
 
 Commit `git commit -am 'TEST' --no-verify`
+
+### takari maven wrapper
+
+See [takari-maven-wrapper] (https://github.com/takari/maven-wrapper)
+
+```
+mvn -N io.takari:maven:wrapper
+```
 
 ## NODE/NPM Installation
 
@@ -167,21 +179,38 @@ bower install
 
 ## Build & development
 
+Run `mvnw clean install` for building.
 Run `grunt` for building and `grunt serve` for preview.
+Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
 ```
-mvn clean install -Dserver=jetty9x
-#mvn clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
-mvn verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
+mvnw clean install -Dserver=jetty9x
+#mvnw clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
+mvnw verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
 npm ls --licenses
 ```
 
-Run `mvn site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
+Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
 as root
 ```
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
 ```
+
+## Documentation
+
+See [mkdocs](https://www.mkdocs.org/)
+
+Run `mkdocs` for building doc and `mkdocs serve` for preview.
+
+```bash
+mkdocs serve
+mkdocs build
+mkdocs gh-deploy
+#mkdocs gh-deploy -b docs
+```
+
+[GitHub IO Documentation](http://albanandrieu.github.io/nabla-servers-bower-sample/)
 
 ## Fix imagemin upgrade
 
@@ -223,8 +252,8 @@ Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order
 ## Run war in jetty or using cargo
 
 ```
-mvn jetty:run-war
-mvn install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
+mvnw jetty:run-war
+mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
 
 ## ZaProxy
@@ -374,7 +403,7 @@ In order to workaround issue of bower_components (cssmin) absolute path instead 
 ## Run End2End tests
 
 ```
-mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
+mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
 grunt --gruntfile Gruntfile-e2e.js
 ```
 
