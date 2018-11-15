@@ -481,7 +481,7 @@ exit 0
                                             "-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:gc.log -XX:+HeapDumpOnOutOfMemoryError",
                                         ].join(" ")
 
-                                        sh 'echo TERM = $TERM && echo USER = $USER && id && cat /etc/hostname && ping -c 3 alm-sonar.misys.global.ad'
+                                        sh 'echo TERM = $TERM && echo USER = $USER && id && cat /etc/hostname && ping -c 3 home.nabla.mobi'
                                      }
 
                                     echo "Maven OPTS have been specified: ${MAVEN_OPTS}"
@@ -579,11 +579,11 @@ exit 0
                                              }
                                                     //" org.sonarsource.scanner.maven:sonar-maven-plugin:3.4.0.905:sonar ",
                                                     MAVEN_GOALS += "sonar:sonar"
-                                                    //" -Dsonar.organization=misys -Dsonar.host.url='https://alm-sonar.misys.global.ad' -Dsonar.login=ce1fc929ea67fa7d5e3f169db3f99cfe5361cbc5 ",
+                                                    //" -Dsonar.organization=misys -Dsonar.host.url='https://sonar.nabla.mobi' -Dsonar.login=ce1fc929ea67fa7d5e3f169db3f99cfe5361cbc5 ",
                                                     //" -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${prNo} -Dsonar.github.oauth=${githubToken} -Dsonar.github.repository=${repoSlug} -Dsonar.github.endpoint=https://api.github.com/ "
                                                     //-Dsonar.analysis.scmRevision=628f5175ada0d685fd7164baa7c6382c1f25cab4 -Dsonar.analysis.buildNumber=12345
                                                     MAVEN_GOALS = ["${MAVEN_GOALS}",
-                                                        " -Dsonar.host.url='https://sonardev.misys.global.ad/' -Dsonar.login=c71b002ba25ba981183379e2ae9baa272a8eb79a ",
+                                                        " -Dsonar.host.url='https://sonar.nabla.mobi/' -Dsonar.login=1234 ",
                                                         //" -Dissueassignplugin.enabled=false -Dsonar.pitest.mode=skip -Dsonar.scm.user.secured=false ",
                                                         //" -Dsonar.scm.enabled=false -Dsonar.scm-stats.enabled=false ",
                                                         //" -Denforcer.skip=false ",
@@ -1099,8 +1099,6 @@ exit 0
                                     unstash 'sources'
                                     unstash 'war'
 
-                                    //copyArtifacts filter: '**/AlmondeTest*.jar, **/freetds.conf, **/AlmtestJenkinsConfig.*', fingerprintArtifacts: true, flatten: true, projectName: 'ARC-ALMTEST-BUILD-DEV', selector: lastSuccessful(), target: '.'
-
                                 try {
                                     sh '''echo "TODO : RUN Automated Acceptance Testing "'''
                                     //sh '''docker-compose -f $WORKSPACE/docker/run/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS}'''
@@ -1311,22 +1309,6 @@ exit 0
                             //            verbose: false)
                             //        ])
 
-                            //nexusArtifactUploader artifacts: [
-                            //    [
-                            //        artifactId: 'arc-package-rhel7',
-                            //        classifier: 'debug',
-                            //        file: 'arc/Almonde/Output/Latest-x86_64-rhel7.tar.gz',
-                            //        type: 'tar.gz'
-                            //    ]
-                            //    ],
-                            //    credentialsId: 'Dantooine',
-                            //    groupId: 'com.finastra.arc',
-                            //    nexusUrl: 'dantooine:8081/nexus',
-                            //    nexusVersion: 'nexus2',
-                            //    protocol: 'http',
-                            //    repository: 'Components',
-                            //    version: '1.7.1'
-
                         } //script
                     } // steps
                     post {
@@ -1430,7 +1412,7 @@ exit 0
             }
             environment {
                 TARGET_USER = "jenkins"
-                TARGET_HOST = "FR1CSLFRBM0059.misys.global.ad"
+                TARGET_HOST = "home.nabla.mobi"
                 INSTALLER_PATH = "1.7.2"
                 TARGET_SHARE_DIR = "/var/www/release/ARC/LatestBuildsUntested/${INSTALLER_PATH}/"
             }
@@ -1442,7 +1424,6 @@ exit 0
                 unstash 'war'
 
                 //sh "scp target/*.war $TARGET_USER@$TARGET_HOST:$TARGET_SHARE_DIR/"
-                //build job: 'ARC-PROMOTE-DEV', parameters: [string(name: 'RELEASE_VERSION', value: '1.7.1.0_1-SNAPSHOT'), string(name: 'INSTALLER_PATH', value: '1.7.2'), string(name: 'GIT_BRANCH_NAME', value: 'develop'), string(name: 'GIT_BRANCH_NAME_BUILDMASTER', value: 'develop'), string(name: 'WORKSPACE_SUFFIX', value: 'Almonde')], quietPeriod: 10
 
             } // steps
         } // stage Load variables

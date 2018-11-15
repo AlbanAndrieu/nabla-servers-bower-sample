@@ -6,11 +6,11 @@ ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003
 ARG GID=1002
 ARG JDK8_VERSION=${JDK8_VERSION:-172}
-ARG JAVA_URL="http://fr1cslfrbm0059.misys.global.ad/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.tar.gz"
+ARG JAVA_URL="http://home.nabla.mobi/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.tar.gz"
 ENV JDK_HOME="/usr/local/jdk1.8.0_${JDK8_VERSION}"
 ENV JAVA_HOME=${JDK_HOME}
-ARG CERT_NAME="UK1VSWCERT01-CA-5.crt"
-ARG CERT_URL="http://fr1cslfrbm0059.misys.global.ad/download/certs/UK1VSWCERT01-CA-5.crt"
+ARG CERT_NAME="NABLA.crt"
+ARG CERT_URL="http://home.nabla.mobi/download/certs/UK1VSWCERT01-CA-5.crt"
 
 #MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
 #LABEL vendor="TEST" version="1.0.0"
