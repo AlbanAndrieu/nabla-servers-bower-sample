@@ -7,9 +7,10 @@ provider "docker" {
   }
 
   registry_auth {
-    address = "https://registry.misys.global.ad/repositories/aandrieu/ansible-jenkins-slave"
-    username = "aandrieu"
-    password = "somepass"
+    address = "registry.misys.global.ad:8443"
+    config_file = "~/.docker/config.json"
+    #username = "aandrieu"
+    #password = "todo"
   }
 }
 
@@ -17,6 +18,6 @@ data "docker_registry_image" "ansible-jenkins-slave-docker" {
   name = "nabla/ansible-jenkins-slave-docker"
 }
 
-data "docker_registry_image" "ansible-jenkins-slave" {
-  name = "registry.misys.global.ad/repositories/aandrieu/ansible-jenkins-slave"
-}
+#data "docker_registry_image" "ansible-jenkins-slave" {
+#  name = "aandrieu/ansible-jenkins-slave"
+#}
