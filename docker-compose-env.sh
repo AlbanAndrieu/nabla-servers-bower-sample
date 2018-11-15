@@ -32,7 +32,7 @@ if [ -n "${DOCKER_COMPOSE_UP_OPTIONS}" ]; then
   echo -e "${green} DOCKER_COMPOSE_UP_OPTIONS is defined ${happy_smiley} : ${DOCKER_COMPOSE_UP_OPTIONS} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_COMPOSE_UP_OPTIONS, use the default one ${NC}"
-  export DOCKER_COMPOSE_UP_OPTIONS="--force-recreate -d test"
+  export DOCKER_COMPOSE_UP_OPTIONS="--force-recreate -d mysql"
   echo -e "${magenta} DOCKER_COMPOSE_UP_OPTIONS : ${DOCKER_COMPOSE_UP_OPTIONS} ${NC}"
 fi
 
@@ -40,7 +40,7 @@ if [ -n "${ADDITIONAL_ROBOT_OPTS}" ]; then
   echo -e "${green} ADDITIONAL_ROBOT_OPTS is defined ${happy_smiley} : ${ADDITIONAL_ROBOT_OPTS} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : ADDITIONAL_ROBOT_OPTS, use the default one ${NC}"
-  export ADDITIONAL_ROBOT_OPTS="-s PipelineTests.NABLA"
+  export ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"
   echo -e "${magenta} ADDITIONAL_ROBOT_OPTS : ${ADDITIONAL_ROBOT_OPTS} ${NC}"
 fi
 

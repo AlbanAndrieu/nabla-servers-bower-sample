@@ -34,5 +34,4 @@ variable "github_organization" {
 
 variable "github_token" {
   description = "Github user token"
-  default = "aaf1c7d659a5a6655846e21915220e1a20cc2819"
 }
