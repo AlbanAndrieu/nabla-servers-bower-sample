@@ -4,14 +4,6 @@
     Point of this Jenkinsfile is to:
     - define global behavior
 */
-def utils
-
-def daysToKeep         = isReleaseBranch() ? '30' : '10'
-def numToKeep          = isReleaseBranch() ? '20' : '5'
-def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
-def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
-def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
-def pollSCMString = isReleaseBranch() ? '@montlhy' : '@hourly'
 
 def DOCKER_REGISTRY="hub.docker.com"
 //def DOCKER_ORGANISATION="nabla"
@@ -21,10 +13,9 @@ def DOCKER_NAME="ansible-jenkins-slave-docker"
 
 def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}"
 def DOCKER_REGISTRY_CREDENTIAL='jenkins'
-def DOCKER_IMAGE="${DOCKER_REGISTRY}/aandrieu/${DOCKER_NAME}:${DOCKER_TAG}"
+def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
 
-//JENKINS-42369 : Docker options need to be defined outside of pipeline
-def DOCKER_OPTS = [
+def DOCKER_OPTS_BASIC = [
 //    '--net=host',
 //    '--pid=host',
 //    '--dns-search=nabla.mobi',
@@ -44,9 +35,19 @@ def DOCKER_OPTS = [
 //  '-v /etc/localtime:/etc/localtime:ro',
 ].join(" ")
 
+def DOCKER_OPTS_COMPOSE = [
+    DOCKER_OPTS_BASIC,
+    '-v /etc/passwd:/etc/passwd:ro',
+    '-v /etc/group:/etc/group:ro',
+    '-v /var/run/docker.sock:/var/run/docker.sock',
+].join(" ")
+
+def DOCKER_OPTS_ROOT = [
+    DOCKER_OPTS_COMPOSE,
+    '-u root:root'
+].join(" ")
+
 def DOCKER_NAME_BUILD="ansible-jenkins-slave-docker"
-// TODO def DOCKER_BUILD_TAG="${BUILD_ID}" or remove after push to registry
-//def DOCKER_BUILD_TAG="${env.DOCKER_TAG}"+"_"+"${env.BUILD_NUMBER}"
 def DOCKER_BUILD_TAG="latest"
 def DOCKER_BUILD_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}"
 def DOCKER_RUNTIME_TAG="latest"
@@ -75,38 +76,18 @@ String ARTIFACTS = ['*_VERSION.TXT',
 pipeline {
     agent none
     //agent {
-    //    node {
-    //        label 'docker-inside'
-    //    }
-    //}
-    // TODO
-    //agent {
     //    // Equivalent to "docker build -f Dockerfile-jenkins-slave-ubuntu:16.04 --build-arg FILEBEAT_VERSION=6.3.0 ./build/
     //    dockerfile {
     //        //filename 'Dockerfile'
     //        //dir 'build'
-    //        label 'docker-inside'
+    //        label 'docker-compose-TODO'
     //        //--target builder
     //        additionalBuildArgs ' --build-arg JENKINS_HOME=/home/jenkins --label "version=1.0.1" --label "maintaner=Alban Andrieu <alban.andrieu@gmail.com>" '
     //    }
     //}
-    //agent {
-    //    docker {
-    //        image DOCKER_IMAGE
-    //        reuseNode true
-    //        registryUrl DOCKER_REGISTRY_URL
-    //        registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-    //        args DOCKER_OPTS
-    //        label 'docker-inside'
-    //    }
-    //}
-    triggers {
+    //triggers {
         //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
-        cron(cronString)
-        //pollSCM(pollSCMString)
-        //snapshotDependencies()
-        //bitbucketPush()
-    }
+    //}
     parameters {
         //booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
@@ -118,7 +99,7 @@ pipeline {
         string(defaultValue: 'jenkins', description: 'User', name: 'TARGET_USER')
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
         booleanParam(defaultValue: true, description: 'Clean before run', name: 'CLEAN_RUN')
-        booleanParam(defaultValue: true, description: 'Debug run', name: 'DEBUG_RUN')
+        booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
         booleanParam(defaultValue: false, description: 'Debug mvnw', name: 'MVNW_VERBOSE')
         booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
         string(name: "RELEASE_BASE", defaultValue: "", description: "Commit tag or branch that should be checked-out for release")
@@ -152,18 +133,12 @@ pipeline {
     }
     options {
         skipDefaultCheckout()
-        //disableConcurrentBuilds()
+        disableConcurrentBuilds()
+        skipStagesAfterUnstable()
+        parallelsAlwaysFailFast()
         ansiColor('xterm')
         timeout(time: 120, unit: 'MINUTES')
         timestamps()
-        buildDiscarder(
-          logRotator(
-            daysToKeepStr: daysToKeep,
-            numToKeepStr: numToKeep,
-            artifactDaysToKeepStr: artifactDaysToKeep,
-            artifactNumToKeepStr: artifactNumToKeep
-          )
-        )
     }
     stages {
         stage('\u2776 Preparation') { // for display purposes
@@ -176,8 +151,8 @@ pipeline {
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-inside'
+                            args DOCKER_OPTS_BASIC
+                            label 'docker-compose-TODO'
                         }
                     }
                     steps {
@@ -238,13 +213,16 @@ pipeline {
                         //} // dir
 
                         script {
+
+                            properties(createPropertyList())
+
                             gitCheckoutTEST() {
 
-                            if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
+                                if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
-                                getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: params.DEBUG_RUN)
+                                    getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
 
-                            if (params.DEBUG_RUN) {
+                                if (DEBUG_RUN) {
 sh '''
 set -e && id && cat /etc/hostname
 
@@ -300,28 +278,28 @@ exit 0
                                 } // if
                             } // gitCheckoutTEST
 
-                            stash excludes: '**/target/, **/.bower/, **/.tmp/, **/.git, **/.repository/, **/.mvn/, **/bower_components/, **/node/, **/node_modules/, **/npm/, **/coverage/, **/build/, docs/, hooks/, ansible/, screenshots/', includes: '**', name: 'sources'
-                            stash includes: "**/.git/**/*", useDefaultExcludes: false , name: 'git'
-                            stash includes: "**/.mvn/", name: 'sources-tools'
+                            //stash excludes: '**/target/, **/.bower/, **/.tmp/, **/.git, **/.repository/, **/.mvn/, **/bower_components/, **/node/, **/node_modules/, **/npm/, **/coverage/, **/build/, docs/, hooks/, ansible/, screenshots/', includes: '**', name: 'sources'
+                            //stash includes: "**/.git/**/*", useDefaultExcludes: false , name: 'git'
+                            //stash includes: "**/.mvn/", name: 'sources-tools'
 
                         } // script
                     } // steps
                     post {
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>1-1 &#2690;</h2>", false)
-                                } //script
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>1-1 &#2690;</h2>", false)
+                            } //script
                         } // success
                     } // post
                 } // stage SCM
                 stage('\u2756 Build - Docker') {
                     agent {
                         node {
-                            label 'docker-inside'
+                            label 'docker-compose-TODO'
                         }
                     }
                     when {
-                        expression { BRANCH_NAME ==~ /release|master|develop|feature\/.*/ }
+                        expression { BRANCH_NAME ==~ /release|master|develop|PR-\/.*|feature\/.*|bugfix\/.*/ }
                     }
                     steps {
                         script {
@@ -330,7 +308,7 @@ exit 0
 
                             sh(returnStdout: true, script: "echo ${DOCKER_BUILD_IMG} | cut -d'/' -f -1").trim()
                             DOCKER_BUILD_ARGS = ["--build-arg JENKINS_HOME=/home/jenkins"].join(" ")
-                            if (params.CLEAN_RUN) {
+                            if (CLEAN_RUN) {
                                 DOCKER_BUILD_ARGS = ["--no-cache",
                                                      "--pull",
                                                      //"--target builder", // See issue https://issues.jenkins-ci.org/browse/JENKINS-44609?page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel&showAll=true
@@ -341,104 +319,112 @@ exit 0
                                                   "--label 'maintainer=Alban Andrieu <alban.andrieu@gmail.com>'",
                                                 ].join(" ")
                             docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
-                                //def container = docker.build("${DOCKER_BUILD_IMG}:${env.BUILD_ID}", "${DOCKER_BUILD_ARGS} . ")
+                                //def container = docker.build("${DOCKER_BUILD_IMG}:${BUILD_ID}", "${DOCKER_BUILD_ARGS} . ")
                                 def container = docker.build("${DOCKER_BUILD_IMG}", "${DOCKER_BUILD_ARGS} . ")
                                 container.inside {
                                     sh 'echo test'
                                 }
-                                if (params.DRY_RUN) {
-                                    //pushDockerImage(container, "${env.DOCKER_BUILD_IMG}", "${env.DOCKER_TAG}")
+                                if (!DRY_RUN) {
+                                    //pushDockerImage(container, "${DOCKER_BUILD_IMG}", "${DOCKER_TAG}")
                                     ///* Push the container to the custom Registry */
                                     //customImage.push()
                                     //customImage.push('latest')
                                 }
                             } // withRegistry
-                            //dockerFingerprintFrom dockerfile: 'Dockerfile', image: "${DOCKER_BUILD_IMG}:${env.BUILD_ID}"
+                            //dockerFingerprintFrom dockerfile: 'Dockerfile', image: "${DOCKER_BUILD_IMG}:${BUILD_ID}"
                             dockerFingerprintFrom dockerfile: './docker/ubuntu16/Dockerfile', image: "${DOCKER_BUILD_IMG}"
                         } // script
                     } // steps
                     post {
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>1-2 &#2690;</h2>", false)
-                                } //script
+                           script {
+                               manager.createSummary("completed.gif").appendText("<h2>1-2 &#2690;</h2>", false)
+                           } //script
                         } // success
                     } // post
                 } // stage Build - Docker
             } // parallel
         } // stage Preparation
+
         stage('\u2600 Echo') {
             agent {
                 docker {
                     image DOCKER_IMAGE
+                    alwaysPull true
                     reuseNode true
                     registryUrl DOCKER_REGISTRY_URL
                     registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                    args DOCKER_OPTS
-                    label 'docker-inside'
+                    args DOCKER_OPTS_BASIC
+                    label 'docker-compose-TODO'
                 }
             }
             environment {
-                BRANCH_JIRA = "${env.BRANCH_NAME}".replaceAll("feature/","")
-                PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
+                BRANCH_JIRA = "${BRANCH_NAME}".replaceAll("feature/","")
+                PROJECT_BRANCH = "${GIT_BRANCH}".replaceFirst("origin/","")
             }
             steps {
                 script {
-                milestone 1
+                    milestone 2
 
-                unstash 'sources'
-                //unstash 'sources-tools'
+                    //unstash 'sources'
+                    //unstash 'sources-tools'
+                    gitCheckoutTEST() {
+                        getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
 
-                //getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: params.DEBUG_RUN)
+                        echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
+                        echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"
+                        echo "PROJECT_BRANCH : ${PROJECT_BRANCH}"
+                        echo "JOB_NAME : ${env.JOB_NAME} - ${env.JOB_BASE_NAME}"
 
-                echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
-                echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"
-                echo "PROJECT_BRANCH : ${PROJECT_BRANCH}"
-                echo "JOB_NAME : ${env.JOB_NAME} - ${env.JOB_BASE_NAME}"
+                        echo "BRANCH_NAME : ${env.BRANCH_NAME}"
+                        echo "GIT_BRANCH_NAME : ${env.GIT_BRANCH_NAME}"
+                        echo "TARGET_TAG : ${env.TARGET_TAG}"
 
-                echo "BRANCH_NAME : ${env.BRANCH_NAME}"
-                echo "GIT_BRANCH_NAME : ${params.GIT_BRANCH_NAME}"
-                echo "TARGET_TAG : ${env.TARGET_TAG}"
-                echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
-                echo "SONAR_USER_HOME : ${env.SONAR_USER_HOME}"
+                        echo "RELEASE : ${env.RELEASE}"
+                        echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
+                        echo "SONAR_USER_HOME : ${env.SONAR_USER_HOME}"
+                    }
                 } // script
             } // steps
             post {
                 success {
-                        script {
-                            manager.createSummary("completed.gif").appendText("<h2>* &#2690;</h2>", false)
-                        } //script
+                    script {
+                        manager.createSummary("completed.gif").appendText("<h2>* &#2690;</h2>", false)
+                    } //script
                 } // success
             } // post
-        } // stage Load variables
+        } // stage Echo
 
         stage('\u2777 Main') {
             failFast true
             parallel {
-                stage('\u27A1 Build') {
+                stage('\u27A1 Ubuntu') {
                     agent {
                         docker {
                             image DOCKER_IMAGE
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-inside'
+                            args DOCKER_OPTS_ROOT
+                            label 'docker-compose-TODO'
                         }
                     }
                     environment {
                         SCONS = "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64 --out-dir bw-outputs scons"
                         SCONS_OPTS = ""
-                      }
-                    steps {
-                        script {
-                            stage('\u27A1 Build - Maven') {
-                                 script {
+                        SONAR_SCANNER_OPTS = "-Xmx1g"
+                        SONAR_USER_HOME = "$WORKSPACE"
+                    }
+                    stages {
+                        stage('\u27A1 Build - Maven') {
+                            steps {
+                                script {
 
                                     checkout scm
 
-                                    //unstash 'sources'
-                                    //unstash 'sources-tools'
+                                    if (CLEAN_RUN) {
+                                        sh "$WORKSPACE/clean.sh"
+                                    }
 
                                     //profile: "sonar,run-integration-test"
 
@@ -453,8 +439,7 @@ exit 0
 
                                     withShellCheckWrapper(pattern: "*.sh")
 
-                                    //stash includes: 'target/, .bower/, .tmp/, .git/, .repository/, .mvn/, bower_components/, node/, node_modules/, npm/, coverage/, build/, docs/', name: 'disposable'
-                                    stash includes: 'node_modules/**/*', name: 'node_modules'
+                                    //stash includes: 'node_modules/**/*', name: 'node_modules'
                                     //stash allowEmpty: true, includes: 'target/jacoco*.exec, target/lcov*.info, karma-coverage/**/*', name: 'coverage'
                                     //stash includes: "${ARTIFACTS}", name: 'maven-artifacts'
                                     //stash includes: "**/target/classes/**", name: 'classes'
@@ -489,32 +474,32 @@ exit 0
                                     //} //script
 
                                 } // script
-                            } // stage Maven
-//                            stage('\u27A1 Build - Scons') {
-//                                script {
+                            } // steps
+                        } // stage Maven
+//                      stage('\u27A1 Build - Scons') {
+//                          steps {
+//                              script {
 //
-//                                    gitCheckoutTEST()
+//                                  gitCheckoutTEST()
 //
-//                                    dir ("test/") {
-//                                        script {
-//                                            //unstash 'git'
-//                                            //unstash 'sources'
-//                                            unstash 'maven-artifacts'
+//                                  dir ("test/") {
+//                                      script {
+//                                          unstash 'maven-artifacts'
 //
-//                                            dir ("Almonde/") {
+//                                          dir ("todo/") {
 //
-//                                                try {
+//                                              try {
 //
-//                                                    if (params.CLEAN_RUN) {
-//                                                        env.SCONS_OPTS += "--cache-disable"
-//                                                        //sh "rm -f .sconsign.dblite"
-//                                                    }
+//                                                  if (CLEAN_RUN) {
+//                                                      env.SCONS_OPTS += "--cache-disable"
+//                                                      //sh "rm -f .sconsign.dblite"
+//                                                  }
 //
-//                                                    echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
+//                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
 //
-//                                                    getEnvironementData(filePath: "./bm/Scripts/release/step-2-0-0-build-env.sh", DEBUG_RUN: params.DEBUG_RUN)
+//                                                  getEnvironementData(filePath: "./bm/Scripts/release/step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
 //
-//                                                    ansiColor('xterm') {
+//                                                  ansiColor('xterm') {
 //sh '''
 //#set -e
 //set -xv
@@ -526,29 +511,240 @@ exit 0
 //
 //exit 0
 //'''
-//                                                    } //ansiColor
+//                                                  } //ansiColor
 //
-//                                                    stash includes: "${ARTIFACTS}", name: 'scons-artifacts'
-//                                                    stash includes: "bw-outputs/*", name: 'bw-outputs'
+//                                                  stash includes: "${ARTIFACTS}", name: 'scons-artifacts'
+//                                                  stash includes: "bw-outputs/*", name: 'bw-outputs'
 //
-//                                                } catch (e) {
-//                                                    step([$class: 'ClaimPublisher'])
-//                                                    throw e
-//                                                }
+//                                              } catch (e) {
+//                                                  step([$class: 'ClaimPublisher'])
+//                                                  throw e
+//                                              }
 //
-//                                            } // dir
+//                                          } // dir
 //
-//                                        } // script
-//                                    } // dir
-//                                } // steps
-//                            } // stage Scons
-                        } // script
-                    } // steps
+//                                      } // script
+//                                  } // dir
+//                              } // script
+//                          } // steps
+//                      } // stage Scons
+                        stage('\u2795 Quality - SonarQube analysis') {
+                            //when {
+                            //    expression { BRANCH_NAME ==~ /release|master|develop/ }
+                            //}
+                            environment {
+                                SONAR_SCANNER_OPTS = "-Xmx1g"
+                                SONAR_USER_HOME = "$WORKSPACE"
+                            }
+                            steps {
+                                //checkout scm
+
+                                script {
+                                    def sonarInclusions = getSonarInclusionsForCommit {
+                                      project = "RKTMP"
+                                    }.collect{ filename -> "${env.WORKSPACE}/${filename}" }.join(",")
+                                    echo "Sonar Sources: ${sonarInclusions}"
+
+                                    def buildCmdParameters = ""
+
+                                    if (isReleaseBranch()) {
+                                      echo "isReleaseBranch"
+                                    } else {
+                                      //-Dsonar.analysis.mode=incremental
+                                      buildCmdParameters += " -Dsonar.inclusions=\"${sonarInclusions}\""
+                                    }
+
+                                    withSonarQubeWrapper(verbose: true, skipMaven: true, buildCmdParameters: buildCmdParameters) {
+                                        //unstash 'sources'
+
+                                        //unstash coverage
+                                        //unstash 'maven-artifacts'
+                                        //unstash 'classes'
+
+                                        //unstash bwoutputs
+                                    }
+                                }
+                            } // steps
+                            post {
+                                success {
+                                    script {
+                                        manager.createSummary("completed.gif").appendText("<h2>3-1 &#2690;</h2>", false)
+                                    } //script
+                                } // success
+                            } // post
+                        } // stage SonarQube analysis
+
+                        stage('\u2756 Runtime - Docker') {
+                            //when {
+                            //    expression { BRANCH_NAME ==~ /release|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+                            //}
+                            steps {
+                                script {
+
+                                    sh "chmod 777 . && whoami || true"
+                                    sh "id && pwd && ls -lrta || true"
+
+                                    //env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_NAME_RUNTIME: DOCKER_NAME_RUNTIME, dockerFilePath: "docker/centos7/run/")
+
+                                    echo "DOCKER_RUNTIME_TAG : ${env.DOCKER_RUNTIME_TAG}"
+                                } // script
+                            } // steps
+                            post {
+                                success {
+                                    script {
+                                        manager.createSummary("completed.gif").appendText("<h2>3-2 &#2690;</h2>", false)
+                                    } //script
+                                } // success
+                            } // post
+                        } // stage Runtime - Docker
+
+                        stage('\u2779 Automated Acceptance Testing') {
+                            when {
+                                expression { BRANCH_NAME ==~ /release|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+                                //expression { BRANCH_NAME ==~ /(none)/ }
+                            }
+                            environment {
+                                DOCKER_TEST_TAG=buildDockerTag("${env.BRANCH_NAME}", "${env.GIT_COMMIT}").toLowerCase()
+                                DOCKER_COMPOSE_FILE="docker-compose.prod.yml"
+                                DOCKER_COMPOSE_UP_OPTIONS="--exit-code-from web web"
+                                TEST_RESULTS_PATH="/tmp/result/test-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+                                ROBOT_RESULTS_PATH="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+                                ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"
+                            }
+                            steps {
+                                script {
+                                    if (!DRY_RUN && !RELEASE) {
+                                        try {
+
+                                            checkout scm
+
+                                            //unstash 'sources'
+
+                                            echo "TODO : ${DOCKER_TEST_TAG}"
+
+                                            if (CLEAN_RUN) {
+                                                sh "docker-compose-down.sh"
+                                            }
+
+                                            if (!DRY_RUN) {
+                                                def up = sh script: "docker-compose-up.sh", returnStatus: true
+                                                echo "UP : ${up}"
+                                                if (up == 0) {
+                                                    echo "TEST SUCCESS"
+                                                    //dockerCheckHealth("${DOCKER_TEST_CONTAINER}","healthy")
+
+                                                    currentBuild.result = 'SUCCESS'
+                                                } else if (up == 1) {
+                                                    echo "TEST FAILURE"
+                                                    currentBuild.result = 'FAILURE'
+                                                } else {
+                                                    echo "TEST UNSTABLE"
+                                                    currentBuild.result = 'UNSTABLE'
+                                                }
+                                            }
+
+                                            //sh 'sudo docker network ls && sudo docker ps -a'
+
+                                            docker.image('mysql:5').withRun('-e "MYSQL_ROOT_PASSWORD=root" -e MYSQL_DATABASE=test') { c ->
+                                                docker.image('mysql:5').inside("--link ${c.id}:db") {
+                                                    /* Wait until mysql service is up */
+                                                    sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
+                                                }
+                                                //docker.image('centos:7').inside("--link ${c.id}:db") {
+                                                //    /*
+                                                //     * Run some tests which require MySQL, and assume that it is
+                                                //     * available on the host name `db`
+                                                //     */
+                                                //    sh 'make check'
+                                                //}
+                                                //docker.image('tomcat:8').withRun('-v $TESTDIR:/usr/local/tomcat/webapps/test').inside("--link ${c.id}:db") {
+                                                //    sh 'echo test'
+                                                //}
+                                            }
+
+                                            // --memory 1024m --cpus="1.5"
+                                            //docker.image("https://github.com/AlbanAndrieu/nabla-servers-bower-sample:develop").withRun("-e \"ADDITIONAL_ROBOT_OPTS=${ADDITIONAL_ROBOT_OPTS}\" -e \"ROBOT_RESULTS_PATH=${ROBOT_RESULTS_PATH}\"").inside("--link frarc:frarc --network ${DOCKER_TEST_TAG}_default -v ${ROBOT_RESULTS_PATH}:/tmp/:rw") {c ->
+                                            //    sh "docker logs ${c.id}"
+                                            //    //sh "python --version"
+                                            //}
+
+                                            // -v /tmp/result-000-000:/tmp/:rw
+                                            //docker.image("nabla-servers-bower-sample:latest").inside("--network ${DOCKER_TEST_TAG}_default") {c ->
+                                            //    sh "docker logs ${c.id}"
+                                            //    //sh "java -jar test.jar --help"
+                                            //}
+
+                                            //step(
+                                            //  [
+                                            //    $class               : 'RobotPublisher',
+                                            //    outputPath           : "/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}",
+                                            //    outputFileName       : "output.xml",
+                                            //    reportFileName       : 'report.html',
+                                            //    logFileName          : 'log.html',
+                                            //    disableArchiveOutput : false,
+                                            //    passThreshold        : 100.0,
+                                            //    unstableThreshold    : 80.0,
+                                            //    otherFiles           : "*.png,*.jpg",
+                                            //  ]
+                                            //)
+
+                                            //unstash 'maven-artifacts'
+
+                                            sh "docker cp ${DOCKER_TEST_TAG}_web_1:${TEST_RESULTS_PATH} result"
+
+                                            publishHTML([allowMissing: true,
+                                                alwaysLinkToLastBuild: false,
+                                                keepAll: true,
+                                                //reportDir: "${TEST_RESULTS_PATH}/latestResult/",
+                                                reportDir: "result/latestResult/",
+                                                //reportDir: "result/",
+                                                reportFiles: 'index.html',
+                                                //reportFiles: 'index.html',
+                                                reportName: 'Test Report',
+                                                reportTitles: 'TEST index'])
+
+                                        } catch(exc) {
+                                            echo 'Error: There were errors in tests. '+exc.toString()
+                                            error 'There are errors in tests'
+                                           currentBuild.result = 'FAILURE'
+                                        } finally {
+                                            try {
+                                                sh '''docker-compose -f ./docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} ps -q'''
+                                            }
+                                            catch(exc) {
+                                                echo 'Warn: There was a problem taking down the docker-compose network. '+exc.toString()
+                                            } finally {
+                                                sh "./docker-compose-down.sh"
+                                            }
+                                        }
+
+                                    } // if DRY_RUN
+                                } // script
+                            } // steps
+                            post {
+                                always {
+
+                                    archiveArtifacts artifacts: ['*_VERSION.TXT', '**/target/*.jar', '**/*.log'].join(', '), excludes: null, fingerprint: true, onlyIfSuccessful: true
+                                    //sha1 'target/test.jar'
+
+                                    //runHtmlPublishers(["LogParserPublisher", "AnalysisPublisher"])
+
+                                    wrapCleanWs()
+                                }
+                                success {
+                                    script {
+                                        manager.createSummary("completed.gif").appendText("<h2>4-1 &#2690;</h2>", false)
+                                    } //script
+                                } // success
+                            } // post
+                        } // stage Automated Acceptance Testing
+
+                    } // stages
                     post {
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>2-1 &#2690;</h2>", false)
-                        } // script
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>2-1 &#2690;</h2>", false)
+                            } // script
                         } // success
                     } // post
                 } // stage Build
@@ -560,8 +756,8 @@ exit 0
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-compose'
+                            args DOCKER_OPTS_BASIC
+                            label 'docker-compose-TODO'
                         }
                     }
                     when {
@@ -570,14 +766,14 @@ exit 0
                     steps {
                         script {
                             stage('\u2795 Quality - Site') {
-                                    script {
-                                    if (!params.DRY_RUN && !params.RELEASE) {
+                                script {
+                                    if (!DRY_RUN && !RELEASE) {
 
-                                         //checkout scm
+                                         checkout scm
 
-                                         unstash 'sources'
-                                         unstash 'sources-tools'
-                                         //unstash 'disposable'
+                                         //unstash 'sources'
+                                         //unstash 'sources-tools'
+
                                          //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
                                          withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x")
@@ -589,22 +785,22 @@ exit 0
                     } // steps
                     post {
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>2-2 &#2690;</h2>", false)
-                                } //script
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>2-2 &#2690;</h2>", false)
+                            } //script
                         } // success
                     } // post
                 } // stage Quality - More check
 
-                stage('\u2795 Quality - Security') {
+                stage('\u2795 Quality - Security - Dependency check') {
                     agent {
                         docker {
                             image DOCKER_IMAGE
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-compose'
+                            args DOCKER_OPTS_BASIC
+                            label 'docker-compose-TODO'
                         }
                     }
                     when {
@@ -612,252 +808,96 @@ exit 0
                     }
                     steps {
                         script {
-                            stage('\u2795 Quality - Security - Dependency check') {
-                                    script {
-                                    if (!params.DRY_RUN && !params.RELEASE) {
-                                        //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'
 
-                                        //checkout scm
+                            if (!DRY_RUN && !RELEASE) {
+                                //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'
 
-                                        unstash 'sources'
-                                        unstash 'sources-tools'
+                                checkout scm
 
-                                        //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
+                                //unstash 'sources'
+                                //unstash 'sources-tools'
 
-                                        withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x")
-                                            //sh "nsp check"
+                                //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                        } // if DRY_RUN
-                                } // script
-                            } // stage Security - Dependency check
-                            stage('\u2795 Quality - Security - Checkmarx') {
-                                script {
+                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x")
+                                //sh "nsp check"
 
-                                     //checkout scm
-
-                                             unstash 'sources'
-                                             //unstash 'sources-tools'
-
-                                     echo "TODO"
-
-                                     //withCheckmarxWrapper(excludeFolders: ", bm", projectName: 'MGR_UIComponents_Sample_Checkmarx')
-
-                                } // script
-                            } // stage Security - Checkmarx
+                            } // if DRY_RUN
                         } // script
                     } // steps
                     post {
-                        always {
-                            cleanWs()
-                        }
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>2-3 &#2690;</h2>", false)
-                                } //script
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>2-3 &#2690;</h2>", false)
+                            } //script
                         } // success
                     } // post
-                } // stage Security
+                } // stage Quality - Security - Dependency check
+
+                stage('\u2795 Quality - Security - Checkmarx') {
+                    agent {
+                        docker {
+                            image DOCKER_IMAGE
+                            reuseNode true
+                            registryUrl DOCKER_REGISTRY_URL
+                            registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                            args DOCKER_OPTS_BASIC
+                            label 'docker-compose-TODO'
+                        }
+                    }
+                    when {
+                        expression { BRANCH_NAME ==~ /release|master|develop/ }
+                    }
+                    steps {
+                        script {
+
+                            if (!DRY_RUN && !RELEASE) {
+                                checkout scm
+
+                                //unstash 'sources'
+
+                                echo "TODO"
+
+                                //withCheckmarxWrapper(excludeFolders: ", bm", projectName: 'MGR_UIComponents_Sample_Checkmarx')
+
+                            }
+                        } // script
+                    } // steps
+                    post {
+                        success {
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>2-4 &#2690;</h2>", false)
+                            } //script
+                        } // success
+                    } // post
+                } // stage Quality - Security - Dependency check
             } // parallel
         } // Main
 
-        stage('\u2778 Gather') {
-            failFast true
-            parallel {
-                stage('\u2795 Quality - SonarQube analysis') {
-                    agent {
-                        node {
-                            label 'docker-inside'
-                        }
-                    }
-                    when {
-                        expression { BRANCH_NAME ==~ /release|master|develop|PR-\/.*|feature\/.*|bugfix\/.*/ }
-                    }
-                    environment {
-                        SONAR_SCANNER_OPTS = "-Xmx2g"
-                    }
-                    steps {
-
-                        withSonarQubeWrapper() {
-                            unstash 'sources'
-                        }
-
-                    } // step
-                    post {
-                        always {
-                            cleanWs()
-                        }
-                        success {
-                            script {
-                                manager.createSummary("completed.gif").appendText("<h2>3-1 &#2690;</h2>", false)
-                            } //script
-                        } // success
-                    } // post
-                } // stage SonarQube analysis
-                // First, you need SonarQube server 6.2+
-                // TODO https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/
-                // No need to occupy a node
-                //stage("\u2795 Quality - Quality Gate") {
-                //    steps {
-                //        script {
-                //
-                //            if (!params.DRY_RUN && !params.RELEASE) {
-                //                context="sonarqube/qualitygate"
-                //                utils = load "Jenkinsfile-vars"
-                //                utils.setBuildStatus ("${context}", 'Checking Sonarqube quality gate', 'PENDING')
-                //                timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                //                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                //                    if (qg.status != 'OK') {
-                //                        utils.setBuildStatus ("${context}", "Sonarqube quality gate fail: ${qg.status}", 'FAILURE')
-                //                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                //                    } else {
-                //                        utils.setBuildStatus ("${context}", "Sonarqube quality gate pass: ${qg.status}", 'SUCCESS')
-                //                    }
-                //                } // timeout
-                //            } // if DRY_RUN
-                //        } // script
-                //    } // steps
-                //} // stage Quality Gate
-                stage('\u2756 Runtime - Docker') {
-                    when {
-                        expression { params.RELEASE == false }
-                        //expression { BRANCH_NAME ==~ /release|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
-                        expression { BRANCH_NAME ==~ /(none)/ }
-                    }
-                    agent {
-                        node {
-                            label 'docker-inside'
-                        }
-                    }
-                    steps {
-                        script {
-                                if (!params.DRY_RUN) {
-
-                                    unstash 'sources'
-
-                                sh '''echo "TODO : RUN Docker "'''
-                                //sh '''TARGET_FILE=`ls $WORKSPACE/target/*.zip`;
-                                //      cp $TARGET_FILE $WORKSPACE/docker/build/local-build-archive/'''
-                                //docker_build_args="--no-cache --pull --build-arg JENKINS_HOME=/home/jenkins"
-                                //docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
-                                //    def container = docker.build("${env.DOCKER_RUNTIME_IMG}:${env.BUILD_ID}", "${docker_build_args} -f Dockerfile-ubuntu:16.04 . ")
-                                //    pushDockerImage(container, "${env.DOCKER_RUNTIME_IMG}", "${env.DOCKER_TAG}")
-                                    //    //TODO docker run sh "docker logs ${container.id}"
-                                //}
-                            } // if
-                            //dockerFingerprintFrom dockerfile: './Dockerfile', image: "${DOCKER_RUNTIME_IMG}"
-                        } // script
-                    } // steps
-                    post {
-                        always {
-                            cleanWs()
-                        }
-                        success {
-                            script {
-                                manager.createSummary("completed.gif").appendText("<h2>3-2 &#2690;</h2>", false)
-                            } //script
-                        } // success
-                    } // post
-                } // stage Runtime - Docker
-            } // parallel
-        } // stage  Gather
-
-        stage('\u2779 Automated Acceptance Testing') {
-            when {
-                expression { params.RELEASE == false }
-                //expression { BRANCH_NAME ==~ /release|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
-                expression { BRANCH_NAME ==~ /(none)/ }
-            }
-            agent {
-                docker {
-                    image DOCKER_IMAGE
-                    //image "docker/compose:1.22.0"
-                    reuseNode true
-                    registryUrl DOCKER_REGISTRY_URL
-                    registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                    args DOCKER_OPTS
-                    //args "--dns-search=misys.global.ad --entrypoint='/bin/sh'"
-                    label 'docker-compose'
-                }
-            }
-                    environment {
-                        TARGET_ARCH="_RHEL7"
-                DOCKER_TEST_TAG=buildDockerTag("${env.BRANCH_NAME}", "${env.GIT_COMMIT}").toLowerCase()
-                DOCKER_COMPOSE_OPTIONS="-p ${env.DOCKER_TEST_TAG}"
-                DOCKER_COMPOSE_UP_OPTIONS="--force-recreate -d mysql"
-                ROBOT_RESULTS_PATH="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
-                ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"
-                    }
-                    steps {
-                        script {
-                                if (!params.DRY_RUN && !params.RELEASE) {
-                        try {
-
-                            //checkout scm
-
-                            unstash 'sources'
-                            //unstash 'sources-tools'
-
-                            echo "TODO : ${DOCKER_TEST_TAG}"
-
-                            sh '''./docker-compose-down.sh'''
-                            sh '''./docker-compose-up.sh'''
-
-                            step(
-                              [
-                                $class               : 'RobotPublisher',
-                                outputPath           : "/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}",
-                                outputFileName       : "output.xml",
-                                reportFileName       : 'report.html',
-                                logFileName          : 'log.html',
-                                disableArchiveOutput : false,
-                                passThreshold        : 100.0,
-                                unstableThreshold    : 80.0,
-                                otherFiles           : "*.png,*.jpg",
-                              ]
-                            )
-
-                            //unstash 'maven-artifacts'
-
-                            //sh '''./step-3-test.sh;'''
-
-                            publishHTML (target: [
-                              allowMissing: true,
-                              alwaysLinkToLastBuild: false,
-                              keepAll: true,
-                              reportDir: 'NablaTest/*',
-                              reportFiles: 'indexNABLA.html',
-                              reportName: "NABLATest Report"
-                            ])
-
-                            //sh '''for i in $(docker-compose -f ./docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} ps -q); do docker container logs --details $i >& ${WORKSPACE}/docker/run/logs$(docker inspect --format='{{.Name}}' $i).docker.log; done'''
-
-                        } catch(exc) {
-                            echo 'Error: There were errors in tests. '+exc.toString()
-                            error 'There are errors in tests'
-                        } finally {
-                            try {
-                                sh '''docker-compose -f ./docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} ps -q'''
-                                //sh '''rm -f ${WORKSPACE}/docker/run/logs/*'''
-                                //sh '''mkdir -p ${WORKSPACE}/docker/run/logs''
-                            }
-                            catch(exc) {
-                                echo 'Warn: There was a problem taking down the docker-compose network. '+exc.toString()
-                            } finally {
-                                sh '''./docker-compose-down.sh'''
-                            }
-                        }
-
-                    } // if DRY_RUN
-                } // script
-            } // steps
-            post {
-                success {
-                        script {
-                            manager.createSummary("completed.gif").appendText("<h2>4-1 &#2690;</h2>", false)
-                        } //script
-                } // success
-            } // post
-        } // stage Automated Acceptance Testing
+        // First, you need SonarQube server 6.2+
+        // TODO https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/
+        // No need to occupy a node
+        //stage("\u2795 Quality - Quality Gate") {
+        //    steps {
+        //        script {
+        //
+        //            if (!DRY_RUN && !RELEASE) {
+        //                context="sonarqube/qualitygate"
+        //                utils = load "Jenkinsfile-vars"
+        //                utils.setBuildStatus ("${context}", 'Checking Sonarqube quality gate', 'PENDING')
+        //                timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+        //                    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+        //                    if (qg.status != 'OK') {
+        //                        utils.setBuildStatus ("${context}", "Sonarqube quality gate fail: ${qg.status}", 'FAILURE')
+        //                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+        //                    } else {
+        //                        utils.setBuildStatus ("${context}", "Sonarqube quality gate pass: ${qg.status}", 'SUCCESS')
+        //                    }
+        //                } // timeout
+        //            } // if DRY_RUN
+        //        } // script
+        //    } // steps
+        //} // stage Quality Gate
 
         stage('\u277A Push') {
             failFast true
@@ -869,8 +909,8 @@ exit 0
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-inside'
+                            args DOCKER_OPTS_COMPOSE
+                            label 'docker-compose-TODO'
                         }
                     }
                     when {
@@ -880,42 +920,38 @@ exit 0
                         //milestone 3
                         script {
 
-                        //timeout(time:1, unit:'HOURS') {
-                        //    input message:'Approve deployment?', submitter: 'aandrieu'
-                        //}
-                        unstash 'sources'
-                        unstash 'sources-tools'
-                        //unstash 'node_modules'
-                        //unstash 'maven-artifacts'
-                        //unstash 'disposable'
+                            //timeout(time:1, unit:'HOURS') {
+                            //    input message:'Approve deployment?', submitter: 'aandrieu'
+                            //}
+                            checkout scm
 
-                        //"-Dmaven.exec.skip=true -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Denforcer.skip=true -Dmaven.test.skip=true"
+                            //unstash 'sources'
+                            //unstash 'sources-tools'
 
-                        withDeploy(buildCmdParameters: "-Dserver=jetty9x") {
+                            //"-Dmaven.exec.skip=true -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                            unstash 'maven-artifacts'
+                            withDeploy(buildCmdParameters: "-Dserver=jetty9x") {
 
-                            //sh "npm run publish:all"
+                                unstash 'maven-artifacts'
 
-                        }
+                                //sh "npm run publish:all"
 
-                        //manager.addShortText("deployed")
-                        //manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+                            }
 
-                        //utils = load "Jenkinsfile-vars"
-                        //utils.cleanAction()
+                            //manager.addShortText("deployed")
+                            //manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+
+                            //utils = load "Jenkinsfile-vars"
+                            //utils.cleanAction()
 
                         } //script
                     } // steps
                     post {
-                        always {
-                            cleanWs()
-                        }
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>5-1 &#2690;</h2>", false)
-                                    manager.addShortText("deployed")
-                                    manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>5-1 &#2690;</h2>", false)
+                                manager.addShortText("deployed")
+                                manager.createSummary("gear2.gif").appendText("<h2>Successfully deployed</h2>", false)
                             } //script
                         }
                     } // post
@@ -923,19 +959,20 @@ exit 0
                 stage('Archive Artifacts') {
                     agent {
                         docker {
-                           image DOCKER_IMAGE
-                           reuseNode true
-                           registryUrl DOCKER_REGISTRY_URL
-                           registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                           args DOCKER_OPTS
-                           label 'docker-inside'
+                            image DOCKER_IMAGE
+                            reuseNode true
+                            registryUrl DOCKER_REGISTRY_URL
+                            registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                            args DOCKER_OPTS_COMPOSE
+                            label 'docker-compose-TODO'
                         }
                     }
                     steps {
                         script {
-                            unstash 'maven-artifacts'
 
-                            unstash 'sources'
+                            checkout scm
+
+                            //unstash 'sources'
 
                             withArchive() {
                                 unstash 'app'
@@ -1018,9 +1055,9 @@ exit 0
                     } // steps
                     post {
                         success {
-                                script {
-                                    manager.createSummary("completed.gif").appendText("<h2>5-2 &#2690;</h2>", false)
-                                } //script
+                            script {
+                                manager.createSummary("completed.gif").appendText("<h2>5-2 &#2690;</h2>", false)
+                            } //script
                         } // success
                     } // post
                 } // stage Archive Artifacts
@@ -1032,8 +1069,8 @@ exit 0
                             reuseNode true
                             registryUrl DOCKER_REGISTRY_URL
                             registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                            args DOCKER_OPTS
-                            label 'docker-inside'
+                            args DOCKER_OPTS_COMPOSE
+                            label 'docker-compose-TODO'
                         }
                     }
                     when {
@@ -1052,9 +1089,6 @@ exit 0
                        } // script
                     } // steps
                     post {
-                        always {
-                            cleanWs()
-                        }
                         failure {
                             script {
                                 manager.addBadge("red.gif", "<p>&#x2620;</p>")
@@ -1077,8 +1111,8 @@ exit 0
                     reuseNode true
                     registryUrl DOCKER_REGISTRY_URL
                     registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                    args DOCKER_OPTS
-                    label 'docker-inside'
+                    args DOCKER_OPTS_COMPOSE
+                    label 'docker-compose-TODO'
                 }
             }
             when {
@@ -1106,28 +1140,23 @@ exit 0
     post {
         // always means, well, always run.
         always {
-            node('docker-inside') {
-                script {
-                echo "Hi there"
-                    cleanWs()
-                    //notifyMe { }
-                } // script
-            } // node
+            wrapCleanWs()
         }
         failure {
             echo "I'm failing"
-                script {
-                    manager.createSummary("warning.gif").appendText("<h1>Build failed!</h1>", false, false, false, "red")
-                } //script
+            script {
+                manager.createSummary("warning.gif").appendText("<h1>Build failed!</h1>", false, false, false, "red")
+            } //script
         }
         changed {
             echo "I'm different"
         }
         success {
-            node('docker-inside') {
+            node('docker-compose-TODO') {
                 echo "I succeeded"
                 script {
                     manager.removeBadge(0) // See issue https://issues.jenkins-ci.org/browse/JENKINS-52043
+                    //manager.removeShortText("deployed")
                     //manager.removeSummaries()
                 } //script
             } // node
@@ -1135,7 +1164,7 @@ exit 0
     } // post
 } // pipeline
 
-def gitCheckout() {
+def gitCheckoutTEST() {
 
     checkout scm
 

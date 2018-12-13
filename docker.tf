@@ -7,7 +7,7 @@ provider "docker" {
   }
 
   registry_auth {
-    address = "registry.misys.global.ad:8443"
+    address = "registry.nabla.mobi:8443"
     config_file = "~/.docker/config.json"
     #username = "aandrieu"
     #password = "todo"

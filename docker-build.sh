@@ -1,8 +1,11 @@
 #!/bin/bash
 #set -xv
+#set -u
+set -e
 
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
+# shellcheck source=/dev/null
 source "${WORKING_DIR}/step-0-color.sh"
 
 #mkdir ./target/ || true
@@ -24,11 +27,11 @@ else
   echo -e "${magenta} DOCKER_BUILD_ARGS : ${DOCKER_BUILD_ARGS} ${NC}"
 fi
 
-export DOCKERUSERNAME="nabla"
-export DOCKERREGISTRY="https://hub.docker.com/"
-export DOCKERORGANISATION="nabla"
-export DOCKERNAME="nabla-servers-bower-sample"
-export DOCKERTAG="latest"
+readonly DOCKERUSERNAME="nabla"
+readonly DOCKERREGISTRY="https://hub.docker.com/"
+readonly DOCKERORGANISATION="nabla"
+readonly DOCKERNAME="nabla-servers-bower-sample"
+readonly DOCKERTAG="latest"
 
 #docker build --target builder .
 #docker build --target builder -t aandrieu/test:latest .
@@ -40,6 +43,7 @@ time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/Dockerfile" -t "${DOCK
 RC=$?
 if [ ${RC} -ne 0 ]; then
   echo ""
+  # shellcheck disable=SC2154
   echo -e "${red} ${head_skull} Sorry, build failed. ${NC}"
   exit 1
 else
@@ -63,7 +67,8 @@ echo -e " - to attach your container directly to the host's network interfaces"
 echo -e "    docker run --net host -d -P ${DOCKERORGANISATION}/${DOCKERNAME}"
 echo -e ""
 echo -e "To run in interactive mode for debug:"
-echo -e "    docker run -it -d --name sandbox ${DOCKERORGANISATION}/${DOCKERNAME}"
+echo -e "    docker run -it --entrypoint /bin/bash ${DOCKERORGANISATION}/${DOCKERNAME}:latest"
+echo -e "    docker run -it -d --name sandbox ${DOCKERORGANISATION}/${DOCKERNAME}:latest"
 echo -e "    docker exec -it sandbox /bin/bash"
 echo -e ""
 

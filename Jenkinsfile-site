@@ -1,0 +1,84 @@
+#!/usr/bin/env groovy
+@Library('github.com/AlbanAndrieu/jenkins-pipeline-scripts@master') _
+
+def DOCKER_REGISTRY="hub.docker.com"
+def DOCKER_ORGANISATION="nabla"
+def DOCKER_TAG="latest"
+def DOCKERNAME="ansible-jenkins-slave-docker"
+
+def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}"
+def DOCKER_REGISTRY_CREDENTIAL='jenkins'
+def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKERNAME}:${DOCKER_TAG}"
+
+def DOCKER_OPTS = [
+    '--init',
+    '-e HOME=${WORKSPACE}',
+    '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
+].join(" ")
+
+pipeline {
+    agent none
+    parameters {
+        string(defaultValue: 'develop', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
+        booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
+        booleanParam(defaultValue: true, description: 'Clean before run', name: 'CLEAN_RUN')
+        booleanParam(defaultValue: true, description: 'Debug run', name: 'DEBUG_RUN')
+        booleanParam(defaultValue: false, description: 'Debug mvnw', name: 'MVNW_VERBOSE')
+        booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
+        string(name: "RELEASE_BASE", defaultValue: "", description: "Commit tag or branch that should be checked-out for release")
+        string(name: "RELEASE_VERSION", defaultValue: "", description: "Release version for artifacts")
+    }
+    environment {
+        GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}"
+        DRY_RUN = "${params.DRY_RUN}".toBoolean()
+        CLEAN_RUN = "${params.CLEAN_RUN}".toBoolean()
+        DEBUG_RUN = "${params.DEBUG_RUN}".toBoolean()
+        MVNW_VERBOSE = "${params.MVNW_VERBOSE}".toBoolean()
+        RELEASE = "${params.RELEASE}".toBoolean()
+        RELEASE_BASE = "${params.RELEASE_BASE}"
+        RELEASE_VERSION = "${params.RELEASE_VERSION}"
+    }
+    options {
+        //skipDefaultCheckout()
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+        timeout(time: 120, unit: 'MINUTES')
+        timestamps()
+    }
+    stages {
+        stage('\u2795 Quality - Site/Javadoc') {
+            agent {
+                docker {
+                    image DOCKER_IMAGE
+                    reuseNode true
+                    registryUrl DOCKER_REGISTRY_URL
+                    registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                    args DOCKER_OPTS
+                    label 'docker-compose'
+                }
+            }
+            when {
+                expression { BRANCH_NAME ==~ /release|master|develop|PR-.*/ }
+            }
+            steps {
+                script {
+                    properties(createPropertyList())
+
+                    //buildCmdParameters:"-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
+                    withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x")
+                } // script
+            } // steps
+        } // stage Quality - More check
+    } // stages
+    post {
+        always {
+            node('docker-inside') {
+                echo "Hi there"
+                script {
+                    cleanWs()
+                    //standardNotify { }
+                }
+            } // node
+        }
+    } // post
+} // pipeline

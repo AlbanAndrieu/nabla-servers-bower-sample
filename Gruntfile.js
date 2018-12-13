@@ -1153,7 +1153,7 @@ module.exports = function(grunt) {
             jsErrors: 0,     // receive warning, when more than 0 JS errors appear
             gzipRequests: {      // receive warning, when less compressed assets are loaded then 10 ( might be useful for checking server configurations )
               type: '<',
-              value: 5
+              value: 10
             }
           },
           indexPath: './build/phantomas/',
@@ -1161,6 +1161,7 @@ module.exports = function(grunt) {
           options: {
             'cookies-file': './target/cookies.txt',
             timeout: 30,
+            //'film-strip': false,
             'ignore-ssl-errors': true,
             'web-security': false,
             'har': './target/phantomas.har',

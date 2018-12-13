@@ -1,5 +1,10 @@
 #!/bin/bash
-set -xv
+set -xveu
+
+WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+
+# shellcheck source=/dev/null
+source "${WORKING_DIR}/step-0-color.sh"
 
 #sudo apt install phantomjs
 #./node_modules/protractor/bin/webdriver-manager update --versions.chrome 2.37
