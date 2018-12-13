@@ -3,6 +3,7 @@
 
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
+# shellcheck source=/dev/null
 source "${WORKING_DIR}/step-0-color.sh"
 
 # shellcheck disable=SC2154
@@ -40,15 +41,18 @@ case "$OSTYPE" in
 esac
 echo "SYSTEM : ${SYSTEM}"
 
+# shellcheck disable=SC1009,SC1072,SC1073
 if [ -f /etc/os-release ]; then
     # freedesktop.org and systemd
     . /etc/os-release
     OS=$NAME
     VER=$VERSION_ID
+# shellcheck disable=SC1072,SC1073
 elif type lsb_release >/dev/null 2>&1; then
     # linuxbase.org
     OS=$(lsb_release -si)
     VER=$(lsb_release -sr)
+# shellcheck disable=SC1091
 elif [ -f /etc/lsb-release ]; then
     # For some versions of Debian/Ubuntu without lsb_release command
     . /etc/lsb-release
@@ -427,16 +431,16 @@ else
   echo -e "${magenta} GIT_CMD : ${GIT_CMD} ${NC}"
 fi
 
-if [ -n "${GIT_AUTHOR_EMAIL}" -o "${GIT_AUTHOR_EMAIL}" != "null" ]; then
+if [ -n "${GIT_AUTHOR_EMAIL}" || "${GIT_AUTHOR_EMAIL}" != "null" ]; then
   echo -e "${green} GIT_AUTHOR_EMAIL is defined ${happy_smiley} : ${GIT_AUTHOR_EMAIL} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : GIT_AUTHOR_EMAIL, use the default one ${NC}"
-  GIT_AUTHOR_EMAIL="TCM-DevOps-FusionRisk@misys.com"
+  GIT_AUTHOR_EMAIL="alban.andrieu@free.fr"
   export GIT_AUTHOR_EMAIL
   echo -e "${magenta} GIT_AUTHOR_EMAIL : ${GIT_AUTHOR_EMAIL} ${NC}"
 fi
 
-if [ -n "${SONAR_BRANCH}" -o "${SONAR_BRANCH}" == "null" ]; then
+if [ -n "${SONAR_BRANCH}" || "${SONAR_BRANCH}" == "null" ]; then
   echo -e "${green} SONAR_BRANCH is defined ${happy_smiley} : ${SONAR_BRANCH} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : SONAR_BRANCH, use the default one ${NC}"

@@ -112,7 +112,7 @@ void setBuildStatus(context, message, state) {
   step([
       $class: "GitHubCommitStatusSetter",
       contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://scm-git-eur.misys.global.ad/projects/${getRepoSlug()}"],
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/AlbanAndrieu/${getRepoSlug()}"],
       //reposSource: [$class: "ManuallyEnteredRepositorySource", url: ""https://github.com/${getRepoSlug()}"],
       errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
       statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]

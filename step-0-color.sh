@@ -1,5 +1,6 @@
 #!/bin/bash
-#set -xv
+#set -xvu
+set -e
 
 export bold="\033[01m"
 export underline="\033[04m"
