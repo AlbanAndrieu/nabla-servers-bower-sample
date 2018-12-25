@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "alto-saxophone": "^2.34.0",
-    "apache-server-configs": "2.15.0",
+    "apache-server-configs": "3.0.0",
     "async": "2.6.1",
     "autoprefixer": "8.5.0",
     "bower": "1.8.4",
@@ -66,7 +66,7 @@
     "grunt-browser-sync": "2.2.0",
     "grunt-build-control": "0.7.1",
     "grunt-check-dependencies": "1.0.0",
-    "grunt-cli": "1.2.0",
+    "grunt-cli": "1.3.2",
     "grunt-compare-size": "0.4.2",
     "grunt-concurrent": "2.3.1",
     "grunt-contrib-clean": "1.1.0",
@@ -155,7 +155,7 @@
   },
   "scripts": {
     "update-webdriver": "webdriver-manager update --versions.chrome 2.37",
-    "postinstall": "webdriver-manager update --versions.chrome 2.37",
+    "postinstall": "webdriver-manager update --versions.chrome 2.37 || true",
     "phantomjs": "./node node_modules/phantomjs-prebuilt/install.js",
     "pretest": "./node_modules/phantomjs-prebuilt/bin/phantomjs test/yslow.js --info grade --format tap --threshold '{\"yexpires\": 60}' http://localhost:9090/test/#/",
     "test": "grunt test",

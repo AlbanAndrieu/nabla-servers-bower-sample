@@ -3,22 +3,41 @@
 
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
+# shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-compose-env.sh"
 
-# shellcheck disable=SC2154
-echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures ${NC}"
-docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" pull --ignore-pull-failures
-echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS} ${NC}"
-docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" up "${DOCKER_COMPOSE_UP_OPTIONS}"
-#echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} up --exit-code-from robot robot ${NC}"
-#docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" up --exit-code-from robot robot
+if [ -n "${DEBUG_RUN}" ]; then
+  docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" config
+fi
+
+if [ -z "$DRY_RUN" ]; then
+  # shellcheck disable=SC2154
+  echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures ${NC}"
+  # shellcheck disable=SC2086
+  docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures
+fi
+echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS} ${NC}"
+# shellcheck disable=SC2086
+docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS}
+RC=$?
+if [ ${RC} -ne 0 ]; then
+  echo ""
+  # shellcheck disable=SC2154
+  echo -e "${red} ${head_skull} Sorry, docker compose failed. ${NC}"
+  exit 1
+else
+  echo -e "${green} The docker compose completed successfully. ${NC}"
+fi
+echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} up --exit-code-from frrobot frrobot ${NC}"
 
 sleep 10
-echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} logs frarc ${NC}"
-docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" logs test
-#echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml ${DOCKER_COMPOSE_OPTIONS} logs robot ${NC}"
-#docker-compose -f "${WORKING_DIR}/docker-compose.yml" "${DOCKER_COMPOSE_OPTIONS}" logs robot
+echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} logs test ${NC}"
+# shellcheck disable=SC2086
+docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} logs test
+echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} logs robot ${NC}"
 
-echo -e "${green} https://localhost:9090/"
+echo -e "${green} https://localhost:9090/ ${NC}"
+
+echo -e "${green} docker cp ${DOCKER_TEST_TAG}_web_1:${ALMTEST_RESULTS_PATH} result ${NC}"
 
 exit 0

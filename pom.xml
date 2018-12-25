@@ -31,37 +31,43 @@
         <system>Jenkins</system>
         <url>${JOB_URL}</url>
     </ciManagement>
+
     <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
     <properties>
         <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
         <!--
         <maven.dependency.check.plugin.version>3.2.1</maven.dependency.check.plugin.version>
-        <maven.cargo.maven2.plugin.version>1.6.8</maven.cargo.maven2.plugin.version>
+        <maven.cargo.maven2.plugin.version>1.7.0</maven.cargo.maven2.plugin.version>
         <maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
-        <maven.shade.plugin.version>2.4.1</maven.shade.plugin.version>
-        <maven.bundle.plugin.version>3.0.0</maven.bundle.plugin.version>
+        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
+        <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
         <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
         <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
         <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
         <maven.pitest.plugin.version>1.2.4</maven.pitest.plugin.version>
-        <maven.sonar.plugin.version>3.4.0.905</maven.sonar.plugin.version>
-        <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.pitest.plugin.version>1.4.0</maven.pitest.plugin.version>
+        <maven.sonar.plugin.version>3.5.0.1254</maven.sonar.plugin.version>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
+        <maven.pitest.plugin.version>1.4.3</maven.pitest.plugin.version>
         <groovy.eclipse.compiler.version>2.9.2-01</groovy.eclipse.compiler.version>
         <groovy.eclipse.batch.version>2.4.3-01</groovy.eclipse.batch.version>
         <maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
         <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
-        <findbugs.maven.plugin.version>3.0.5</findbugs.maven.plugin.version>
         <maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
-        <maven.surefire.plugin.version>2.20</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.failsafe.plugin.version>${maven.surefire.plugin.version}</maven.failsafe.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.war.plugin.version>2.4</maven.war.plugin.version>
         <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
         <maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
         <maven.project.info.reports.plugin.version>2.9</maven.project.info.reports.plugin.version>
+        <maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
+        <maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
+        <maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
+        <maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
+        <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
  	-->
         <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
         <node.version>9.3.0</node.version><!-- FreeNas -->
@@ -146,13 +152,13 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <!--<scope>test</scope> -->
+            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>${groovy.version}</version>
-            <!--<scope>test</scope> -->
+            <!--<scope>test</scope>-->
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy.modules.http-builder</groupId>
@@ -296,6 +302,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven.assembly.plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.eclipse.jetty.toolchain</groupId>
@@ -361,8 +368,9 @@
                                 <include>.sass-cache/</include>
                                 <include>node_modules/</include>
                                 <include>node/</include>
-                                <include>bower_components/</include>
                                 -->
+                                <include>bower_components/</include>
+                                <!-- bower install is not installing bower_components/angular/angular.js properly -->
                                 <include>lib/</include>
                                 <include>docs/</include>
                                 <include>dist/</include>
@@ -412,7 +420,6 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!--
                     <execution>
                         <id>exec-bower-install</id>
                         <phase>generate-sources</phase>
@@ -420,13 +427,13 @@
                             <executable>bower</executable>
                             <arguments>
                                 <argument>install</argument>
+                                <argument>--allow-root</argument>
                             </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    -->
                     <execution>
                         <id>exec-grunt-prepare</id>
                         <phase>generate-resources</phase>
@@ -497,6 +504,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skip>${maven.exec.skip}</skip>
                     <environmentVariables>
                         <!-- The following parameters create an NPM sandbox for CI -->
                         <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
@@ -869,9 +877,9 @@
                 </dependencies>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
+                    <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig>-->
                     <httpConnector>
-                        <!--host>localhost</host -->
+                        <!--host>localhost</host-->
                         <port>${jetty.port}</port>
                     </httpConnector>
                     <stopPort>${jetty.stop.port}</stopPort>
@@ -1434,6 +1442,44 @@
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
+        </profile>
+        <profile>
+            <!-- if ./exclusions.txt is present, use that as the exclusion list. Useful when skipping tests. -->
+            <id>exclusions</id>
+            <activation>
+                <file>
+                    <exists>exclusions.txt</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <excludesFile>exclusions.txt</excludesFile>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!-- if ./inclusions.txt is present, use that as the inclusion list. Useful when skipping tests. -->
+            <id>inclusions</id>
+            <activation>
+                <file>
+                    <exists>inclusions.txt</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <includesFile>inclusions.txt</includesFile>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
