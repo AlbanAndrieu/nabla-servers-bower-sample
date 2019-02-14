@@ -6,7 +6,11 @@ repos:
     -   id: end-of-file-fixer
     -   id: autopep8-wrapper
     -   id: check-added-large-files
-        exclude: 'package-lock.json'
+        exclude: >
+                  (?x)^(
+                      package-lock.json|
+                      npm-shrinkwrap.json
+                  )$
     -   id: check-case-conflict
     -   id: check-docstring-first
     -   id: check-executables-have-shebangs

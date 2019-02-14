@@ -3,6 +3,13 @@
 import re
 import sys
 from subprocess import check_output
+
+from colorama import init
+from termcolor import colored
+
+# use Colorama to make Termcolor work on Windows too
+init()
+
 # Collect the parameters
 commit_msg_filepath = sys.argv[1]
 # Figure out which branch we're on
@@ -17,12 +24,13 @@ if re.match(regex, branch):
     print("commit-msg: Oh hey, it's an issue branch.")
 
     issue = 'UNKNOWN'
+    required_message = '%s' % issue
 
     try:
         # Matches any unique issue code
         pattern = re.compile(r'(^feature|^bugfix)\/([A-Z]{3,5}-[0-9]+)')
         issue = re.search(pattern, branch).group(2)  # Extract issue code
-        print('Issue number : {}.'.format(issue))
+        print(colored('Issue number : {}.'.format(issue), 'green'))
 
         with open(commit_msg_filepath, 'r') as f:
 

@@ -9,8 +9,9 @@ ARG GID=1002
 
 ENV TERM="xterm-256color"
 ENV JAVA_HOME='/usr/java/latest'
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 
-ENV TEST_HOME=/home/nabla/test/
+ENV TEST_HOME=/home/jenkins/test
 
 # EPEL / IUS repositories and dependencies to install
 RUN yum -y update ;\

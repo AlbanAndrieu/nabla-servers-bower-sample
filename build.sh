@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xveu
+set -eu
 
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
@@ -9,8 +9,11 @@ source "${WORKING_DIR}/step-0-color.sh"
 #sudo apt install phantomjs
 #./node_modules/protractor/bin/webdriver-manager update --versions.chrome 2.37
 #npm install -g bower@1.8.4 grunt@1.0.3 grunt-cli@1.2.0 nsp@2.6.1 webdriver-manager@12.1.0
-npm run update-webdriver
+#npm run update-webdriver
 #webdriver-manager update --chrome --versions.chrome=2.37
+
+#TODO
+#npm install grunt-phantomas@0.14.0
 
 rm -f package-lock.json || true
 ./clean.sh
@@ -24,6 +27,7 @@ rm -f package-lock.json || true
 #docker build --target runner .
 
 npm list  > list.log
+#npm shrinkwrap
 
 #sudo npm install -g npm-license
 npm-license || true

@@ -131,11 +131,21 @@ SEE https://github.com/angular-ui/angular-google-maps
 
 ## Quality tools
 
+### python 3.6
+
+Install python 3.6 and virtualenv
+
+`virtualenv --no-site-packages /opt/ansible/env36 -p python3.6`
+`source /opt/ansible/env36/bin/activate`
+`pip install -r requirements-current-3.6.txt`
+
 ### pre-commit
 
 See [pre-commit](http://pre-commit.com/)
 Run `pre-commit install`
 Run `pre-commit autoupdate`
+
+First time run `cp hooks/* .git/hooks/` or `rm -Rf ./.git/hooks/ && ln -s ../hooks ./.git/hooks && git checkout hooks/`
 
 Run `pre-commit run --all-files`
 

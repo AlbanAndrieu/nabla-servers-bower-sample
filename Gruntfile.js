@@ -6,7 +6,7 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
-var path = require('path');
+//var path = require('path');
 
 module.exports = function(grunt) {
   var localConfig;
@@ -423,9 +423,9 @@ module.exports = function(grunt) {
       all: {
         src: [
           'Gruntfile.js',
-        '<%= config.app %>/scripts/{,*/}*.js',
-        '!<%= config.app %>/scripts/vendor/*',
-        'test/spec/{,*/}*.js'
+          '<%= config.app %>/scripts/{,*/}*.js',
+          '!<%= config.app %>/scripts/vendor/*',
+          'test/spec/{,*/}*.js'
         ]
       }
     },
@@ -763,13 +763,13 @@ module.exports = function(grunt) {
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
-            files: [{
+        files: [{
           expand: true,
           cwd: '<%= config.app %>/images',
           src: '{,*/}*.{ico,png,jpg,jpeg,gif}',
           dest: '<%= config.dist %>/images'
-            }]
-        }
+        }]
+      }
     },
 
     svgmin: {
@@ -1430,9 +1430,15 @@ module.exports = function(grunt) {
     },
 
     versioncheck: {
-      options: {
-        skip: ['semver', 'npm', 'lodash'],
-        hideUpToDate: false
+      target: {
+        options: {
+          skip: ["semver",
+                  "npm", "lodash", "jquery", "jquery-ui", "bootstrap", "angular", "angular-animate", "angular-cookies",
+                  "angular-dynamic-locale", "angular-i18n", "angular-mocks", "angular-resource", "angular-route", "angular-sanitize",
+                  "angular-touch", "angular-translate", "angular-translate-handler-log",
+                  "angular-translate-loader-static-files", "angular-translate-storage-local"],
+          hideUpToDate: true
+        }
       }
     },
 
@@ -1562,7 +1568,7 @@ module.exports = function(grunt) {
     'pagespeed',
     'pagespeed_junit',
     //'sitespeedio',
-    'phantomas'
+    //'phantomas'
     //'wpt',
     //'perfbudget',
     //'qunit'
