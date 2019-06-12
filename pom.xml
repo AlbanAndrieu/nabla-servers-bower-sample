@@ -4,12 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
     <!-- @formatter:off -->
+    <!--
     <parent>
         <artifactId>sample</artifactId>
         <groupId>com.nabla.project.servers.sample</groupId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
+    -->
 
+    <groupId>com.nabla.project.servers.sample</groupId>
     <artifactId>bower-sample</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
