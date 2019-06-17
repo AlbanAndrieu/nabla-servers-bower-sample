@@ -19,7 +19,9 @@ rm -f package-lock.json || true
 ./clean.sh
 
 #mvn clean install -Dserver=jetty9x
-./mvnw install -Dserver=jetty9x
+./mvnw install -Dserver=jetty9x -Prun-integration-test
+
+echo -e "./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -Prun-integration-test"
 
 #./docker-build.sh
 #docker build --target builder .

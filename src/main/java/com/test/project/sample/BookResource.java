@@ -2,6 +2,7 @@ package com.test.project.sample;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.ws.rs.GET;
@@ -23,6 +24,25 @@ public class BookResource {
     @GET
     public Collection<Book> list() {
         return books;
+    }
+
+    @Override
+    public final String toString()
+    {
+
+        final StringBuilder str = new StringBuilder();
+
+        str.append("books: [");
+
+        for (Iterator<Book> iterator = books.iterator(); iterator.hasNext();) {
+			Book book = iterator.next();
+			str.append("book: [").append(book).append("] ");
+		}
+
+        str.append(" ]");
+
+        return str.toString();
+
     }
 
     @GET

@@ -9,8 +9,20 @@ public class Book {
     private String title;
     private String author;
 
-    public Book() {
+    @SuppressWarnings("unused")
+	private Book() {
         throw new AssertionError();
+    }
+
+    public Book(@Nonnull @Nonnegative Integer aIsbn) {
+
+        this.isbn = aIsbn;
+
+        if (null == this.isbn)
+        {
+            throw new IllegalArgumentException("ISBN cannot be null");
+        }
+
     }
 
     public Book(@Nonnull @Nonnegative Integer aIsbn, String aTitle, String anAuthor) {
@@ -48,5 +60,19 @@ public class Book {
 
     public void setIsbn(Integer isbn) {
         this.isbn = isbn;
+    }
+
+    @Override
+    public final String toString()
+    {
+
+        final StringBuilder str = new StringBuilder();
+
+        str.append("isbn: ").append(this.getIsbn()).append(' ');
+        str.append("title: ").append(this.getTitle()).append(' ');
+        str.append("author: ").append(this.getAuthor());
+
+        return str.toString();
+
     }
 }

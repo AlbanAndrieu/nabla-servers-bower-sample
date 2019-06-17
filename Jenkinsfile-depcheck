@@ -1,13 +1,6 @@
 #!/usr/bin/env groovy
 @Library('github.com/AlbanAndrieu/jenkins-pipeline-scripts@master') _
 
-def daysToKeep         = isReleaseBranch() ? '30' : '10'
-def numToKeep          = isReleaseBranch() ? '20' : '5'
-def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
-def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
-def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
-def pollSCMString      = isReleaseBranch() ? 'H H(3-7) * * 1-5' : 'H/10 * * * *'
-
 def DOCKER_REGISTRY="hub.docker.com"
 def DOCKER_ORGANISATION="nabla"
 def DOCKER_TAG="latest"
@@ -52,14 +45,6 @@ pipeline {
         ansiColor('xterm')
         timeout(time: 120, unit: 'MINUTES')
         timestamps()
-        buildDiscarder(
-            logRotator(
-                daysToKeepStr: daysToKeep,
-                numToKeepStr: numToKeep,
-                artifactDaysToKeepStr: artifactDaysToKeep,
-                artifactNumToKeepStr: artifactNumToKeep
-            )
-        )
     }
     stages {
         stage('\u2795 Quality - Security - Dependency check') {
@@ -78,6 +63,8 @@ pipeline {
             }
             steps {
                 script {
+
+                    properties(createPropertyList())
 
                     if (!params.DRY_RUN && !params.RELEASE) {
                         //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'

@@ -1,7 +1,7 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-#FROM selenium/standalone-chrome:3.12.0-cobalt AS builder
-#FROM selenium/standalone-chrome:3.12.0-cobalt
-FROM ubuntu:18.04
+#FROM selenium/standalone-chrome:3.141.59-gold AS builder
+#FROM ubuntu:18.04
+FROM selenium/standalone-chrome:3.141.59-gold
 
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 
@@ -50,8 +50,9 @@ RUN apt-get -q update &&\
     locales xz-utils ksh wget tzdata sudo curl lsof sshpass \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
     openjdk-8-jdk maven \
-    net-tools iputils-ping x11-apps \
-    && dpkg-reconfigure --frontend noninteractive tzdata
+    net-tools iputils-ping x11-apps
+
+RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
 RUN python3 -m pip install --upgrade pip==9.0.3 \
     && pip install ansible==2.7.2 zabbix-api
@@ -67,7 +68,7 @@ RUN apt-get update -qq && apt-get install -qqy docker-ce=5:18.09.0~3-0~ubuntu-bi
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
     apt-get update && apt-get install -y nodejs ;\
-    npm install -g bower@1.8.4 grunt@1.0.3 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.0 npm@6.4.1 yo@2.0.5 json2csv@4.3.3 shrinkwrap@0.4.0
+    npm install -g bower@1.8.8 grunt@1.0.3 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.0 npm@6.4.1 yo@2.0.5 json2csv@4.3.3 shrinkwrap@0.4.0
 
 ARG UID=${UID:-1003}
 ARG GID=${GID:-1002}

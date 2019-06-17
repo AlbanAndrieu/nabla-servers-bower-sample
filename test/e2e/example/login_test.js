@@ -11,7 +11,7 @@ describe('Protractor Demo Sample', function() {
   beforeEach(function() {
     //var params = browser.params;
     //console.log('Opening browser... ' + browser.baseUrl + '/' + params.appContext);
-    //
+
     console.log('Opening browser... ' + browser.baseUrl);
 
   });

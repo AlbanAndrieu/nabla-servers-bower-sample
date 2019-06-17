@@ -21,14 +21,14 @@ def DOCKER_REGISTRY="hub.docker.com"
 //def DOCKER_ORGANISATION="nabla"
 def DOCKER_TAG="latest"
 //def DOCKER_USERNAME="nabla"
-def DOCKERNAME="ansible-jenkins-slave-docker
+def DOCKER_NAME="ansible-jenkins-slave-docker
 
 def DOCKER_REGISTRY_URL = "https://${DOCKER_REGISTRY}"
 def DOCKER_REGISTRY_CREDENTIAL = 'jenkins'
 //def DOCKER_BUILD_TAG = "${env.DOCKER_TAG}"+"_"+"${env.BUILD_NUMBER}"
-//def DOCKER_BUILD_IMG = "nabla/${DOCKERNAME}-build"
-//def DOCKER_RUNTIME_IMG = "nabla/${DOCKERNAME}-runtime"
-def DOCKER_IMAGE = "${DOCKER_REGISTRY}/aandrieu/${DOCKERNAME}:${DOCKER_TAG}"
+//def DOCKER_BUILD_IMG = "nabla/${DOCKER_NAME}-build"
+//def DOCKER_RUNTIME_IMG = "nabla/${DOCKER_NAME}-runtime"
+def DOCKER_IMAGE = "${DOCKER_REGISTRY}/aandrieu/${DOCKER_NAME}:${DOCKER_TAG}"
 
 //JENKINS-42369 : Docker options need to be defined outside of pipeline
 def DOCKER_OPTS = [
@@ -52,7 +52,6 @@ def DOCKER_OPTS = [
 ].join(" ")
 
 String ARTIFACTS = ['*_VERSION.TXT',
-                '**/target/*.swf',
                 '**/target/*.log',
                 '**/target/*.jar',
                 //'**/target/*.war',

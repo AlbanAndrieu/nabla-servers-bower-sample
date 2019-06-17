@@ -1,4 +1,4 @@
-# CentOS based image for TEST (RHEL7.3-compatible):
+# CentOS based image (RHEL7.3-compatible):
 FROM centos:7.3.1611
 LABEL maintainer="alban.andrieu@nabla.mobi"
 
@@ -10,8 +10,6 @@ ARG GID=1002
 ENV TERM="xterm-256color"
 ENV JAVA_HOME='/usr/java/latest'
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
-
-ENV TEST_HOME=/home/jenkins/test
 
 # EPEL / IUS repositories and dependencies to install
 RUN yum -y update ;\
@@ -65,9 +63,9 @@ RUN echo "jenkins:jenkins1234" | chpasswd
 
 USER jenkins
 
-COPY --chown=jenkins:docker ./target/*.jar ./target/*.plist ./Conf ${JENKINS_HOME}/
+COPY --chown=jenkins:docker target/dependency/jetty-runner.jar target/test.war ${JENKINS_HOME}/
 
-ENV LD_LIBRARY_PATH="$TEST_HOME/Executable/:$LD_LIBRARY_PATH"
+ENTRYPOINT ["java", "-jar", "/home/jenkins/jetty-runner.jar"]
+CMD [""/home/jenkins/test.war""]
 
-ENTRYPOINT ["java", "-jar", "/home/jenkins/test.jar"]
-#CMD ["."]
+EXPOSE 8080

@@ -27,19 +27,19 @@ else
   echo -e "${magenta} DOCKER_BUILD_ARGS : ${DOCKER_BUILD_ARGS} ${NC}"
 fi
 
-readonly DOCKERUSERNAME="nabla"
-readonly DOCKERREGISTRY="https://hub.docker.com/"
-readonly DOCKERORGANISATION="nabla"
-readonly DOCKERNAME="nabla-servers-bower-sample"
-readonly DOCKERTAG="latest"
+readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}
+readonly DOCKER_ORGANISATION=${DOCKER_ORGANISATION:-"nabla"}
+readonly DOCKER_USERNAME=${DOCKER_USERNAME:-"nabla"}
+readonly DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
+readonly DOCKER_TAG=${DOCKER_TAG:-"latest"}
 
 #docker build --target builder .
 #docker build --target builder -t aandrieu/test:latest .
 #docker build --target runner .
 
 echo -e "${green} Building docker image ${NC}"
-echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/Dockerfile -t \"${DOCKERORGANISATION}/${DOCKERNAME}\" . --tag \"$DOCKERTAG\" ${NC}"
-time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/Dockerfile" -t "${DOCKERORGANISATION}/${DOCKERNAME}" . --tag "${DOCKERTAG}"
+echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/Dockerfile -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" . --tag \"$DOCKER_TAG\" ${NC}"
+time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/Dockerfile" -t "${DOCKER_ORGANISATION}/${DOCKER_NAME}" . --tag "${DOCKER_TAG}"
 RC=$?
 if [ ${RC} -ne 0 ]; then
   echo ""
@@ -54,21 +54,21 @@ echo -e ""
 echo -e "${green} This image is a trusted docker Image. ${happy_smiley} ${NC}"
 echo -e ""
 echo -e "To push it"
-echo -e "    docker login ${DOCKERREGISTRY} --username ${DOCKERUSERNAME} --password password"
-echo -e "    docker tag ${DOCKERORGANISATION}/${DOCKERNAME}:latest ${DOCKERREGISTRY}${DOCKERORGANISATION}/${DOCKERNAME}:${DOCKERTAG}"
-echo -e "    docker push ${DOCKERREGISTRY}${DOCKERORGANISATION}/${DOCKERNAME}"
+echo -e "    docker login ${DOCKER_REGISTRY} --username ${DOCKER_USERNAME} --password password"
+echo -e "    docker tag ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+echo -e "    docker push ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}"
 echo -e ""
 echo -e "To pull it"
-echo -e "    docker pull ${DOCKERREGISTRY}${DOCKERORGANISATION}/${DOCKERNAME}:${DOCKERTAG}"
+echo -e "    docker pull ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
 echo -e ""
 echo -e "To use this docker:"
-echo -e "    docker run -d -P ${DOCKERORGANISATION}/${DOCKERNAME}"
+echo -e "    docker run -d -P ${DOCKER_ORGANISATION}/${DOCKER_NAME}"
 echo -e " - to attach your container directly to the host's network interfaces"
-echo -e "    docker run --net host -d -P ${DOCKERORGANISATION}/${DOCKERNAME}"
+echo -e "    docker run --net host -d -P ${DOCKER_ORGANISATION}/${DOCKER_NAME}"
 echo -e ""
 echo -e "To run in interactive mode for debug:"
-echo -e "    docker run -it --entrypoint /bin/bash ${DOCKERORGANISATION}/${DOCKERNAME}:latest"
-echo -e "    docker run -it -d --name sandbox ${DOCKERORGANISATION}/${DOCKERNAME}:latest"
+echo -e "    docker run -it --entrypoint /bin/bash ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest"
+echo -e "    docker run -it -d --name sandbox ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest"
 echo -e "    docker exec -it sandbox /bin/bash"
 echo -e ""
 
