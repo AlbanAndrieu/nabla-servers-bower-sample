@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
@@ -37,22 +39,26 @@
 
     <!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
     <properties>
-        <maven.frontend.plugin.version>1.6</maven.frontend.plugin.version>
-        <!--
-        <maven.dependency.check.plugin.version>3.2.1</maven.dependency.check.plugin.version>
-        <maven.cargo.maven2.plugin.version>1.7.0</maven.cargo.maven2.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+
+        <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
+        <groovy.eclipse.compiler.version>2.9.2-01</groovy.eclipse.compiler.version>
+        <groovy.eclipse.batch.version>2.4.3-01</groovy.eclipse.batch.version>
+        <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
+
+        <maven.frontend.plugin.version>1.7.5</maven.frontend.plugin.version>
+        <maven.dependency.check.plugin.version>4.0.2</maven.dependency.check.plugin.version>
+        <maven.cargo.maven2.plugin.version>1.7.3</maven.cargo.maven2.plugin.version>
         <maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
         <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
         <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
-        <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
         <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
         <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
         <maven.pitest.plugin.version>1.2.4</maven.pitest.plugin.version>
         <maven.sonar.plugin.version>3.5.0.1254</maven.sonar.plugin.version>
-        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.pitest.plugin.version>1.4.3</maven.pitest.plugin.version>
-        <groovy.eclipse.compiler.version>2.9.2-01</groovy.eclipse.compiler.version>
-        <groovy.eclipse.batch.version>2.4.3-01</groovy.eclipse.batch.version>
         <maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
@@ -71,13 +77,24 @@
         <maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
         <maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
         <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
- 	-->
-        <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
+        <maven.spotbugs.plugin.version>3.1.11</maven.spotbugs.plugin.version>
+        <maven.jenkinsfile.plugin.version>1.0.0</maven.jenkinsfile.plugin.version>
+        <maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
+        <maven.zkm.version>12.0.0</maven.zkm.version>
+        <maven.fabric8-docker-maven.plugin.version>0.26.1</maven.fabric8-docker-maven.plugin.version>
+        <maven.git-commit-id.plugin.version>2.2.4</maven.git-commit-id.plugin.version>
+        <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
+        <maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
+
+        <com.oracle.javafx.version>2.2.3</com.oracle.javafx.version>
+        <testcontainers.version>1.9.1</testcontainers.version>
+        <docker.compose.version>0.9.9</docker.compose.version>
+
         <node.version>9.3.0</node.version><!-- FreeNas -->
         <!--<node.version>8.9.3</node.version> NOK -->
         <!--<node.version>7.8.0</node.version> Ubuntu -->
-        <npm.version>5.6.0</npm.version>
-        <yarn.version>1.3.2</yarn.version>
+        <npm.version>6.9.0</npm.version>
+        <yarn.version>1.12.3</yarn.version>
         <!--
         <jersey.version>2.21</jersey.version>
         <jersey.bom.version>${jersey.version}</jersey.bom.version>
@@ -313,6 +330,33 @@
                             <version>1.0</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                  <groupId>com.github.spotbugs</groupId>
+                  <artifactId>spotbugs-maven-plugin</artifactId>
+                  <version>${maven.spotbugs.plugin.version}</version>
+                    <dependencies>
+                      <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+                      <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>3.1.12</version>
+                      </dependency>
+                    </dependencies>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <failOnError>true</failOnError>
+                        <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                        <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+                        <plugins>
+                            <plugin>
+                                <groupId>com.h3xstream.findsecbugs</groupId>
+                                <artifactId>findsecbugs-plugin</artifactId>
+                                <version>LATEST</version>
+                            </plugin>
+                        </plugins>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.owasp</groupId>
@@ -727,11 +771,11 @@
                     </archive>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.pitest</groupId>
-				<artifactId>pitest-maven</artifactId>
-				<version>${maven.pitest.plugin.version}</version>
-			</plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${maven.pitest.plugin.version}</version>
+            </plugin>
             <!-- for automatic running of integration tests with Jetty -->
             <!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
             <!--
@@ -880,9 +924,9 @@
                 </dependencies>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig>-->
+                    <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
                     <httpConnector>
-                        <!--host>localhost</host-->
+                        <!--host>localhost</host -->
                         <port>${jetty.port}</port>
                     </httpConnector>
                     <stopPort>${jetty.stop.port}</stopPort>
@@ -946,9 +990,34 @@
                     <password>${cargo.remote.password}</password>
                     <addContextWarDependencies>true</addContextWarDependencies>
                     <addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
-                    <!--<configurationDir>${basedir}</configurationDir>-->
-                    <!--<server>nabla-tomcat</server>-->
+                    <!--<configurationDir>${basedir}</configurationDir> -->
+                    <!--<server>nabla-tomcat</server> -->
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin.version}</version> <!--$NO-MVN-MAN-VER$ -->
+                <executions>
+                    <execution>
+                        <id>copy-files-on-build</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/bower_components</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!--<directory>${basedir}/bower_components/</directory>-->
+                                    <directory>bower_components</directory>
+                                    <!--<include>*.[MIME-TYPE]</include>-->
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <!--
             <plugin>
@@ -997,8 +1066,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.dependency.plugin.version}</version>
-                <!--$NO-MVN-MAN-VER$-->
+                <version>${maven.dependency.plugin.version}</version> <!--$NO-MVN-MAN-VER$ -->
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -1008,7 +1076,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>org.mortbay.jetty</groupId>
+                                    <groupId>org.eclipse.jetty</groupId>
                                     <artifactId>jetty-runner</artifactId>
                                     <version>${jetty.runner.version}</version>
                                     <destFileName>jetty-runner.jar</destFileName>
@@ -1096,10 +1164,218 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${maven.nexus.staging.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- The Base URL of Nexus instance where we want to stage -->
+                    <!--<nexusUrl>http://albandri:8081/nexus/</nexusUrl> -->
+                    <!-- The server "id" element from settings to use authentication from -->
+                    <serverId>local-nexus</serverId>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                    <skipStaging>true</skipStaging>
+                </configuration>
+            </plugin>
+            <!-- mvn jenkinsfile:validate -->
+            <plugin>
+                <groupId>com.andyserver.maven.plugins</groupId>
+                <artifactId>jenkinsfile-maven-plugin</artifactId>
+                <version>${maven.jenkinsfile.plugin.version}</version>
+                <configuration>
+                    <server>${env.JENKINS_URL}</server>
+                    <username>${env.JENKINS_USER}</username>
+                    <password>${env.JENKINS_USER_TOKEN}</password>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.java.maven-incremental-build</groupId>
+                <artifactId>incremental-build-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>incremental-build</goal>
+                        </goals>
+                        <configuration>
+                            <noIncrementalBuild>${skip.incremental}</noIncrementalBuild>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <profiles>
+        <profile>
+            <id>obfuscation</id>
+            <!-- <activation> <property> <name>!profile.activation</name> </property>
+                </activation> -->
+            <dependencies>
+                <dependency> <!-- for the obfuscator -->
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>jsp-api</artifactId>
+                    <version>${javax.jsp.api.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency> <!-- for the obfuscator -->
+                    <groupId>org.apache.ant</groupId>
+                    <artifactId>ant</artifactId>
+                    <version>${ant.version}</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>${maven.dependency.plugin.version}</version> <!--$NO-MVN-MAN-VER$ -->
+                        <executions>
+                            <!-- added for obfuscation tool to find lib -->
+                            <execution>
+                                <id>copy-dependencies</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/lib</outputDirectory>
+                                    <!--<excludeArtifactIds>spring-boot-devtools,junit</excludeArtifactIds> -->
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                    <includeScope></includeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.zelix.plugins</groupId>
+                        <artifactId>zkm-plugin</artifactId>
+                        <version>${maven.zkm.plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.finastra.plugins</groupId>
+                                <artifactId>zkm</artifactId>
+                                <version>${maven.zkm.version}</version>
+                                <!-- <scope>system</scope> <systemPath>${ZKM_HOME}/ZKM.jar</systemPath> -->
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>obfuscate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Will be used to inject values into the plugin but will not be
+                                in project properties -->
+                            <isSkip>false</isSkip>
+                            <isVerbose>true</isVerbose>
+                            <isParseOnly>false</isParseOnly>
+                            <scriptFile>zkm.txt</scriptFile>
+                            <classpathLibs>
+                                <lib>${java.home}/lib/rt.jar</lib>
+                                <!-- <lib>D:\Java\apache-ant-1.9.2\lib\ant.jar</lib> -->
+                            </classpathLibs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>javafx</id>
+            <dependencies>
+                <dependency>
+                  <groupId>com.oracle</groupId>
+                  <artifactId>javafx</artifactId>
+                  <version>${com.oracle.javafx.version}</version>
+                  <scope>system</scope>
+                  <systemPath>${project.basedir}/lib/jfxrt.jar</systemPath>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <!-- mvn clean install jfx:native -Pjavafx -->
+                    <plugin>
+                        <groupId>com.zenjava</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <version>${maven.javafx.plugin.version}</version>
+                        <configuration>
+                            <mainClass>com.almonde.WSEntryPoint</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>env.KEYSTORE.default</id>
+            <activation>
+                <property>
+                    <name>!env.KEYSTORE</name>
+                </property>
+            </activation>
+            <properties>
+                <!-- keytool -list -keystore $JAVA_HOME/jre/lib/security/cacerts -v -->
+                <env.KEYSTORE>${java.home}/jre/lib/security/cacerts</env.KEYSTORE>
+            </properties>
+        </profile>
+        <profile>
+            <id>env.STOREPASS.default</id>
+            <activation>
+                <property>
+                    <name>!env.STOREPASS</name>
+                </property>
+            </activation>
+            <properties>
+                <env.STOREPASS>{XiDq7l+KqFIHGOjOS2YJ+aZn+/VDNkepsecgIHQvW0U=}</env.STOREPASS> <!-- changeit -->
+            </properties>
+        </profile>
+        <profile>
+            <id>signing</id>
+            <!--
+            <activation>
+                <property>
+                    <name>!profile.activation</name>
+                </property>
+            </activation>
+            -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jarsigner-plugin</artifactId>
+                        <version>${maven.jarsigner.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign</id>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>verify</id>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!--<removeExistingSignatures>true</removeExistingSignatures>-->
+                            <keystore>${env.KEYSTORE}</keystore>
+                            <alias>test</alias>
+                            <storepass>${env.STOREPASS}</storepass>
+                            <!--<keypass>Key password</keypass>-->
+                            <!--<verbose>true</verbose>-->
+                            <certs>true</certs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>config</id>
             <activation>
@@ -1203,7 +1479,7 @@
                                 <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
                                 <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
                                 <cargo.logging>high</cargo.logging>
-                                <!-- <cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs>-->
+                                <!-- <cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs> -->
                                 <!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
                                 <cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
                             </properties>
@@ -1217,20 +1493,20 @@
                                     <version>${server.version}</version>
                                 </artifactInstaller>
                             </container>
-						    <configuration>
+		            <configuration>
 						    	<!--
                                     This is another one that confused me for long. Its not enough to
                                     specify 'installed' in the container tag. You have to now specify
                                     another configuration with type == existing and re-issue the home
                                     path
                                 -->
-						    	<type>${cargo.configuration.type}</type>
-						    	<properties>
-						    		<cargo.hostname>${cargo.host}</cargo.hostname>
-						    		<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
-						    		<cargo.logging>high</cargo.logging>
-						    	</properties>
-						    </configuration>
+			    	<type>${cargo.configuration.type}</type>
+			    	<properties>
+			    		<cargo.hostname>${cargo.host}</cargo.hostname>
+			    		<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+			    		<cargo.logging>high</cargo.logging>
+			    	</properties>
+			    </configuration>
                         </configuration>
                     </plugin>
                     <!-- DISABLE because it is too slow
@@ -1324,7 +1600,7 @@
                 <property>
                     <name>server</name>
                     <value>jetty9x</value>
-                    <!-- <name>!server</name>-->
+                    <!-- <name>!server</name> -->
                 </property>
             </activation>
             <dependencies>
@@ -1382,7 +1658,7 @@
                 <datasource>${datasource.name}</datasource>
                 <cargo.container>jetty9x</cargo.container>
                 <cargo.container.home>${project.build.directory}/jetty</cargo.container.home>
-                <!--<cargo.container.url>TODOjetty9</cargo.container.url>-->
+                <!--<cargo.container.url>TODOjetty9</cargo.container.url> -->
                 <cargo.container.type>installed</cargo.container.type>
                 <cargo.configuration.type>standalone</cargo.configuration.type>
                 <cargo.deployables.type></cargo.deployables.type>
@@ -1399,7 +1675,7 @@
                 <dependency>
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
-                    <version>${logback.version}</version>
+                    <version>${logback.version}</version> <!--$NO-MVN-MAN-VER$-->
                     <scope>runtime</scope>
                     <exclusions>
                         <!-- circular dependency -->
@@ -1428,7 +1704,7 @@
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
-                    <version>${slf4j.version}</version>
+                    <version>${slf4j.version}</version> <!--$NO-MVN-MAN-VER$-->
                     <scope>runtime</scope>
                     <exclusions>
                         <!-- circular dependency -->
