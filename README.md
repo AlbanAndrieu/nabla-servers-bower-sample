@@ -29,7 +29,6 @@ Javascript project
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample)
 [![Test Coverage](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/coverage.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/coverage)
 [![Known Vulnerabilities](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample/badge.svg)](https://snyk.io/test/github/albanandrieu/nabla-servers-bower-sample)
-[![NSP Status](https://nodesecurity.io/orgs/nabla/projects/09223c07-0122-47bd-ab24-f0a4b6b6a38a/badge)](https://nodesecurity.io/orgs/nabla/projects/09223c07-0122-47bd-ab24-f0a4b6b6a38a)
 
 ## Info
 

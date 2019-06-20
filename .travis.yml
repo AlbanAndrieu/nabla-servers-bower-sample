@@ -6,6 +6,11 @@
 sudo: required
 dist: trusty
 
+jdk:
+  - oraclejdk8
+  - oraclejdk11
+  - openjdk8
+  - openjdk11
 script:
 - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 - gcc --version
@@ -17,10 +22,23 @@ addons:
     - gcc-5
     - g++-5
 #    - ruby-compass
-language: node_js
+language: java
+
 node_js:
 # - "iojs"
   - "8"
+  - "11"
+
+cache:
+  pip: true
+  npm: true
+  yarn: true
+  directories:
+    - $HOME/.sonar/cache
+    - $HOME/.cache
+    - $HOME/.m2
+    - node_modules
+
 branches:
   only:
   - master
@@ -31,14 +49,6 @@ notifications:
     on_success: change
     on_failure: always
     on_start: false
-#cache:
-#  pip: true
-#  yarn: true
-#  directories:
-#    - $HOME/.sonar/cache
-#    - $HOME/.cache
-#    - $HOME/.m2
-#    - node_modules
 
 env:
   matrix:

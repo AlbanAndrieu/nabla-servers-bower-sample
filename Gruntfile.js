@@ -1433,10 +1433,13 @@ module.exports = function(grunt) {
       target: {
         options: {
           skip: ["semver",
-                  "npm", "lodash", "jquery", "jquery-ui", "bootstrap", "angular", "angular-animate", "angular-cookies",
+                  "npm", "lodash", "jquery", "jquery-ui", 
+                  "bootstrap", "bootstrap-sass-official",
+                  "angular", "angular-animate", "angular-cookies",
                   "angular-dynamic-locale", "angular-i18n", "angular-mocks", "angular-resource", "angular-route", "angular-sanitize",
                   "angular-touch", "angular-translate", "angular-translate-handler-log",
-                  "angular-translate-loader-static-files", "angular-translate-storage-local"],
+                  "angular-translate-loader-static-files", "angular-translate-storage-local",
+                  "font-awesome"],
           hideUpToDate: true
         }
       }
