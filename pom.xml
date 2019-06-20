@@ -85,6 +85,7 @@
         <maven.git-commit-id.plugin.version>2.2.4</maven.git-commit-id.plugin.version>
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
         <maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
+        <maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
 
         <com.oracle.javafx.version>2.2.3</com.oracle.javafx.version>
         <testcontainers.version>1.9.1</testcontainers.version>
@@ -95,18 +96,27 @@
         <!--<node.version>7.8.0</node.version> Ubuntu -->
         <npm.version>6.9.0</npm.version>
         <yarn.version>1.12.3</yarn.version>
-        <!--
-        <jersey.version>2.21</jersey.version>
+
+        <jmockit.version>1.19</jmockit.version>
+        <junit.version>4.12</junit.version>
+        <groovy.version>2.4.15</groovy.version>
+
+        <jersey.version>2.22</jersey.version>
         <jersey.bom.version>${jersey.version}</jersey.bom.version>
-        -->
+        <slf4j.version>1.7.13</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <logback.version>1.0.13</logback.version>
+
+        <jsr305.version>2.0.1</jsr305.version>
+        <http.builder.version>0.6</http.builder.version>
+        <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
+        <javax.jsp.api.version>2.0</javax.jsp.api.version>
+
         <!--
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
         <validation.api.version>1.1.0.Final</validation.api.version>
         -->
-        <!--
-        <logback.version>1.0.13</logback.version>
-        <slf4j.version>1.7.13</slf4j.version>
-        -->
+
         <!--<jetty9.version>9.3.22.v20171030</jetty9.version> NOK-->
         <jetty9.version>9.2.3.v20140905</jetty9.version>
         <jetty.ssl.port>9443</jetty.ssl.port>
@@ -241,7 +251,7 @@
         <finalName>test</finalName>
         <pluginManagement>
             <plugins>
-		<plugin>
+        <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
                     <version>${maven.lifecycle.mapping.version}</version>
@@ -303,17 +313,17 @@
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
-                                	<pluginExecutionFilter>
-                                		<groupId>org.codehaus.mojo</groupId>
-                                		<artifactId>exec-maven-plugin</artifactId>
-                                		<versionRange>[0.0,)</versionRange>
-                                		<goals>
-                                			<goal>exec</goal>
-                                		</goals>
-                                	</pluginExecutionFilter>
-                                	<action>
-                                		<ignore></ignore>
-                                	</action>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.codehaus.mojo</groupId>
+                                        <artifactId>exec-maven-plugin</artifactId>
+                                        <versionRange>[0.0,)</versionRange>
+                                        <goals>
+                                            <goal>exec</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore></ignore>
+                                    </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
@@ -370,12 +380,12 @@
                         <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                         <centralAnalyzerEnabled>false</centralAnalyzerEnabled>
                         <nexusAnalyzerEnabled>false</nexusAnalyzerEnabled>
-			<!--
+            <!--
                         <cveUrl12Modified>http://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
                         <cveUrl20Modified>http://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
                         <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
                         <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
-			-->
+            -->
                     </configuration>
                 </plugin>
                 <plugin>
@@ -783,7 +793,7 @@
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>${maven.cargo.maven2.plugin.version}</version>
-		<extensions>true</extensions>
+        <extensions>true</extensions>
                 <executions>
                     <execution>
                         <id>start-container-overrided</id>
@@ -807,7 +817,7 @@
                     </execution>
                 </executions>
                 <configuration>
-		    <skip>${maven.test.skip}</skip>
+            <skip>${maven.test.skip}</skip>
                     <wait>${cargo.wait}</wait>
                     <container>
                         <timeout>600000</timeout>
@@ -834,7 +844,7 @@
                     </container>
                     <configuration>
                         <properties>
-			    <cargo.protocol>http</cargo.protocol>
+                <cargo.protocol>http</cargo.protocol>
                             <cargo.hostname>${cargo.host}</cargo.hostname>
                             <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
                             <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1493,20 +1503,20 @@
                                     <version>${server.version}</version>
                                 </artifactInstaller>
                             </container>
-		            <configuration>
-						    	<!--
+                    <configuration>
+                                <!--
                                     This is another one that confused me for long. Its not enough to
                                     specify 'installed' in the container tag. You have to now specify
                                     another configuration with type == existing and re-issue the home
                                     path
                                 -->
-			    	<type>${cargo.configuration.type}</type>
-			    	<properties>
-			    		<cargo.hostname>${cargo.host}</cargo.hostname>
-			    		<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
-			    		<cargo.logging>high</cargo.logging>
-			    	</properties>
-			    </configuration>
+                    <type>${cargo.configuration.type}</type>
+                    <properties>
+                        <cargo.hostname>${cargo.host}</cargo.hostname>
+                        <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+                        <cargo.logging>high</cargo.logging>
+                    </properties>
+                </configuration>
                         </configuration>
                     </plugin>
                     <!-- DISABLE because it is too slow
@@ -1539,34 +1549,34 @@
                         </configuration>
                     </plugin>
                     -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>${maven.exec.plugin.version}</version>
-						<executions>
-							<execution>
-								<id>exec-grunt-integration-test</id>
-								<phase>integration-test</phase>
-								<configuration>
-									<executable>grunt</executable>
-									<arguments>
-										<argument>integration-test</argument>
-									</arguments>
-								</configuration>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<skip>${maven.exec.skip}</skip>
-							<environmentVariables>
-								<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-								<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-								<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-							</environmentVariables>
-						</configuration>
-					</plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${maven.exec.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>exec-grunt-integration-test</id>
+                                <phase>integration-test</phase>
+                                <configuration>
+                                    <executable>grunt</executable>
+                                    <arguments>
+                                        <argument>integration-test</argument>
+                                    </arguments>
+                                </configuration>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skip>${maven.exec.skip}</skip>
+                            <environmentVariables>
+                                <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
+                                <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+                                <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+                            </environmentVariables>
+                        </configuration>
+                    </plugin>
                     <!--
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
