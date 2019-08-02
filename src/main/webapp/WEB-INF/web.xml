@@ -5,12 +5,12 @@
                       http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
   version="3.1">
 
-   <display-name>Sample Application</display-name>
-   <description>Sample Application</description>
+  <display-name>sample</display-name>
+  <description>Sample Application</description>
 
-   <welcome-file-list>
-     <welcome-file>index.html</welcome-file>
-   </welcome-file-list>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 
    <servlet>
         <servlet-name>com.test.project.sample.servlet.MyApplication</servlet-name>

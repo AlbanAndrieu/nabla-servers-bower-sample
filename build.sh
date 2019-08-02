@@ -15,10 +15,14 @@ source "${WORKING_DIR}/step-0-color.sh"
 #TODO
 #npm install grunt-phantomas@0.14.0
 
+#npm install --save-dev grunt-dev-update
+#grunt devUpdate:main
+
+echo -e "grunt serve:dist --debug"
+
 rm -f package-lock.json || true
 ./clean.sh
 
-#mvn clean install -Dserver=jetty9x
 ./mvnw install -Dserver=jetty9x -Prun-integration-test
 
 echo -e "./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -Prun-integration-test"
@@ -33,6 +37,9 @@ npm list  > list.log
 
 #sudo npm install -g npm-license
 npm-license || true
+
+#See https://www.baeldung.com/deploy-to-jetty
+echo -e "java -jar target/dependency/jetty-runner.jar target/test.war"
 
 docker-compose -f docker-compose.yml -p TEST ps
 

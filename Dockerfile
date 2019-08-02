@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-#FROM selenium/standalone-chrome:3.12.0-cobalt AS builder
-#FROM selenium/standalone-chrome:3.12.0-cobalt
+#FROM selenium/standalone-chrome:3.141.59-gold AS builder
+#FROM selenium/standalone-chrome:3.141.59-gold
 FROM ubuntu:18.04
 
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
@@ -9,8 +9,9 @@ ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 #ARG JAVA_URL="http://home.nabla.mobi/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.tar.gz"
 ENV JDK_HOME=${JDK_HOME:-"/usr/lib/jvm/java-8-openjdk-amd64"}
 ENV JAVA_HOME=${JAVA_HOME:-$JDK_HOME}
-ARG CERT_NAME="NABLA.crt"
-ARG CERT_URL="http://home.nabla.mobi/download/certs/UK1VSWCERT01-CA-5.crt"
+
+ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
+ARG CERT_URL=${CERT_URL:-"http://home.nabla.mobi/download/certs/${CERT_NAME}"}
 
 #LABEL vendor="TEST" version="1.0.0"
 LABEL description="Image used by nabla products to build Java/Javascript and CPP\
@@ -47,6 +48,7 @@ RUN apt-get clean && apt-get -y update && apt-get install -y \
 #RUN add-apt-repository ppa:openjdk-r/ppa
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+RUN sudo apt-key fingerprint 0EBFCD88
 RUN add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
@@ -56,7 +58,7 @@ RUN apt-get update -qq && apt-get install -qqy docker-ce=5:18.09.0~3-0~ubuntu-bi
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
     apt-get update && apt-get install -y nodejs ;\
-    npm install -g bower@1.8.4 grunt@1.0.3 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.0 npm@6.4.1 yo@2.0.5
+    npm install -g bower@1.8.8 grunt@1.0.3 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.0 npm@6.4.1 yo@2.0.5 json2csv@4.3.3 shrinkwrap@0.4.0
 
 ARG UID=${UID:-1003}
 ARG GID=${GID:-1002}
@@ -93,7 +95,7 @@ ENV PATH=${JAVA_HOME}/bin:$PATH
 #    -keystore ${JAVA_HOME}/jre/lib/security/cacerts \
 #    -importcert \
 #    -trustcacerts \
-#    -file /etc/ssl/certs/${CERT_NAME} \
+#    -file /usr/local/share/ca-certificates/${CERT_NAME} \
 #    -alias test \
 #    -keypass changeit \
 #    -storepass changeit

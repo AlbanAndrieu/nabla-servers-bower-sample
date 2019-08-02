@@ -5,7 +5,6 @@
    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
    version="3.1">
 
-
 <!-- This web.xml format file is an override file that is applied to the test webapp AFTER
      it has been configured by the default descriptor and the WEB-INF/web.xml descriptor -->
 

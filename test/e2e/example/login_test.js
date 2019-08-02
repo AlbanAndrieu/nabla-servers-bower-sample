@@ -5,7 +5,7 @@
 describe('Protractor Demo Sample', function() {
   //browser.driver.manage().window().maximize();
 
-  browser.sleep(10000);
+  //browser.sleep(10000);
   //browser.waitForAngular();
 
   beforeEach(function() {
@@ -30,6 +30,8 @@ describe('Protractor Demo Sample', function() {
     var data = element(by.css('.jumbotron'));
     var header = data.element(by.tagName('h2'));
     expect(header.getText()).toContain('i18n for your AngularJS applications');
+
+    //expect(header.getText()).toContain('\'Allo, \'Allo!');
   });
 
   //it('should have an about page', function() {

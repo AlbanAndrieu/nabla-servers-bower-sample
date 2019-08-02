@@ -43,20 +43,20 @@
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 
         <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
-        <groovy.eclipse.compiler.version>2.9.2-01</groovy.eclipse.compiler.version>
-        <groovy.eclipse.batch.version>2.4.3-01</groovy.eclipse.batch.version>
+        <groovy.eclipse.compiler.version>3.4.0-01</groovy.eclipse.compiler.version>
+        <groovy.eclipse.batch.version>2.5.7-01</groovy.eclipse.batch.version>
         <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 
         <maven.frontend.plugin.version>1.7.5</maven.frontend.plugin.version>
         <maven.dependency.check.plugin.version>4.0.2</maven.dependency.check.plugin.version>
-        <maven.cargo.maven2.plugin.version>1.7.3</maven.cargo.maven2.plugin.version>
+        <maven.cargo.maven2.plugin.version>1.7.5</maven.cargo.maven2.plugin.version>
         <maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
         <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
         <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
         <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
         <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
         <maven.pitest.plugin.version>1.2.4</maven.pitest.plugin.version>
-        <maven.sonar.plugin.version>3.5.0.1254</maven.sonar.plugin.version>
+        <maven.sonar.plugin.version>3.6.0.1398</maven.sonar.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.pitest.plugin.version>1.4.3</maven.pitest.plugin.version>
         <maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
@@ -99,14 +99,14 @@
 
         <jmockit.version>1.19</jmockit.version>
         <junit.version>4.12</junit.version>
-        <groovy.version>2.4.15</groovy.version>
-
+        <groovy.version>2.5.7</groovy.version>
+        <guava.version>23.3-jre</guava.version>
+        <guice.version>4.1.0</guice.version>
         <jersey.version>2.22</jersey.version>
         <jersey.bom.version>${jersey.version}</jersey.bom.version>
         <slf4j.version>1.7.13</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
         <logback.version>1.0.13</logback.version>
-
         <jsr305.version>2.0.1</jsr305.version>
         <http.builder.version>0.6</http.builder.version>
         <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
@@ -117,25 +117,22 @@
         <validation.api.version>1.1.0.Final</validation.api.version>
         -->
 
-        <!--<jetty9.version>9.3.22.v20171030</jetty9.version> NOK-->
-        <jetty9.version>9.2.3.v20140905</jetty9.version>
+        <jetty9.version>9.4.19.v20190610</jetty9.version>
         <jetty.ssl.port>9443</jetty.ssl.port>
         <!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
         <cargo.protocol>http</cargo.protocol>
         <cargo.monitoring.jmx.rmi.port>10088</cargo.monitoring.jmx.rmi.port>
         <jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
         <jetty.jmxremote.rmiport>3099</jetty.jmxremote.rmiport>
-        <cargo.jetty.jmx.activation><![CDATA[-Dcom.sun.management.jmxremote=true
--Dcom.sun.management.jmxremote.ssl=false
--Dcom.sun.management.jmxremote.authenticate=false
--Dcom.sun.management.jmxremote.port=${cargo.monitoring.jmx.rmi.port}
--Djetty.jmxrmihost=${jetty.jmxremote.rmihost}
--Djetty.jmxrmiport=${jetty.jmxremote.rmiport}]]></cargo.jetty.jmx.activation>
+        <cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote
+            -Dcom.sun.management.jmxremote.ssl=false
+            -Dcom.sun.management.jmxremote.authenticate=false
+            -Dcom.sun.management.jmxremote.port=${cargo.monitoring.jmx.rmi.port}
+            -Djetty.jmxrmihost=${jetty.jmxremote.rmiserverhost}
+            -Djetty.jmxrmiport=${jetty.jmxremote.rmiserverport}</cargo.jetty.jmx.activation>
         <cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
         <documentation.output.directory>${basedir}/docs</documentation.output.directory>
         <groovydoc.directory.name>groovydocs</groovydoc.directory.name>
-        <guava.version>23.3-jre</guava.version>
-        <guice.version>4.1.0</guice.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -143,6 +140,13 @@
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
                 <version>${jersey.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -182,13 +186,18 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <!--<scope>test</scope>-->
+            <!--<scope>test</scope> -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
+            <artifactId>groovy</artifactId>
             <version>${groovy.version}</version>
-            <!--<scope>test</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-test</artifactId>
+            <version>${groovy.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.groovy.modules.http-builder</groupId>
@@ -788,39 +797,22 @@
             </plugin>
             <!-- for automatic running of integration tests with Jetty -->
             <!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
-            <!--
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
                 <version>${maven.cargo.maven2.plugin.version}</version>
-        <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <id>start-container-overrided</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <configuration>
-                            <timeout>240000</timeout>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-container-overrided</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <configuration>
-                            <timeout>60000</timeout>
-                        </configuration>
-                    </execution>
-                </executions>
                 <configuration>
-            <skip>${maven.test.skip}</skip>
+                    <skip>${maven.test.skip}</skip>
                     <wait>${cargo.wait}</wait>
                     <container>
-                        <timeout>600000</timeout>
+                        <!-- 5 minutes -->
+                        <timeout>300000</timeout>
+                        <containerId>${cargo.container}</containerId>
+                        <artifactInstaller>
+                            <groupId>org.eclipse.jetty</groupId>
+                            <artifactId>jetty-distribution</artifactId>
+                            <version>${server.version}</version>
+                        </artifactInstaller>
                         <log>${project.build.directory}/cargo.log</log>
                         <logLevel>debug</logLevel>
                         <systemProperties>
@@ -844,16 +836,18 @@
                     </container>
                     <configuration>
                         <properties>
-                <cargo.protocol>http</cargo.protocol>
+                            <cargo.protocol>http</cargo.protocol>
                             <cargo.hostname>${cargo.host}</cargo.hostname>
                             <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
                             <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
                             <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
                             <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
                             <cargo.logging>high</cargo.logging>
-                            <cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs>
+                            <cargo.start.jvmargs><![CDATA[${cargo.jmx.activation} ${jacoco.agent}]]></cargo.start.jvmargs>
                             <cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
+                            <!--<cargo.server.settings>jetty9x</cargo.server.settings>-->
                         </properties>
+
                         <configfiles>
                             <configfile>
                                 <file>${project.basedir}/src/main/config/demo-base/etc</file>
@@ -874,13 +868,14 @@
                         </configfiles>
                         <files>
                             <configfile>
-                                <file>${project.basedir}/src/main/config/demo-base/keystore</file>
+                                <file>${project.basedir}/src/main/config/demo-base/etc/keystore</file>
                                 <todir>etc</todir>
                                 <configfile>false</configfile>
                                 <overwrite>true</overwrite>
                             </configfile>
                         </files>
                     </configuration>
+                    <!--
                     <deployables>
                         <deployable>
                             <groupId>${project.groupId}</groupId>
@@ -893,18 +888,9 @@
                             <pingTimeout>60000</pingTimeout>
                         </deployable>
                     </deployables>
-                    <container>
-                        <timeout>300000</timeout>
-                        <containerId>${cargo.container}</containerId>
-                        <artifactInstaller>
-                            <groupId>org.eclipse.jetty</groupId>
-                            <artifactId>jetty-distribution</artifactId>
-                            <version>${server.version}</version>
-                        </artifactInstaller>
-                    </container>
+                    -->
                 </configuration>
             </plugin>
-            -->
             <!-- launch mvn clean install jetty:run-war -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -923,6 +909,11 @@
                     </dependency>
                     <dependency>
                         <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-util</artifactId>
+                        <version>${jetty.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-http</artifactId>
                         <version>${jetty.version}</version>
                     </dependency>
@@ -937,7 +928,7 @@
                     <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
                     <httpConnector>
                         <!--host>localhost</host -->
-                        <port>${jetty.port}</port>
+                        <port>${jetty.http.port}</port>
                     </httpConnector>
                     <stopPort>${jetty.stop.port}</stopPort>
                     <stopKey>STOP</stopKey>
@@ -1220,9 +1211,14 @@
 
     <profiles>
         <profile>
-            <id>obfuscation</id>
-            <!-- <activation> <property> <name>!profile.activation</name> </property>
-                </activation> -->
+            <id>obfuscation-DISABLED</id>
+            <!--
+            <activation>
+                <property>
+                    <name>!profile.activation</name>
+                </property>
+            </activation>
+            -->
             <dependencies>
                 <dependency> <!-- for the obfuscator -->
                     <groupId>javax.servlet</groupId>
@@ -1288,7 +1284,7 @@
                             <isParseOnly>false</isParseOnly>
                             <scriptFile>zkm.txt</scriptFile>
                             <classpathLibs>
-                                <lib>${java.home}/lib/rt.jar</lib>
+                                <lib>${java.home}/jre/lib/rt.jar</lib>
                                 <!-- <lib>D:\Java\apache-ant-1.9.2\lib\ant.jar</lib> -->
                             </classpathLibs>
                         </configuration>
@@ -1333,6 +1329,7 @@
                 <env.KEYSTORE>${java.home}/jre/lib/security/cacerts</env.KEYSTORE>
             </properties>
         </profile>
+        <!--
         <profile>
             <id>env.STOREPASS.default</id>
             <activation>
@@ -1341,7 +1338,19 @@
                 </property>
             </activation>
             <properties>
-                <env.STOREPASS>{XiDq7l+KqFIHGOjOS2YJ+aZn+/VDNkepsecgIHQvW0U=}</env.STOREPASS> <!-- changeit -->
+                <env.STOREPASS>{XiDq7l+KqFIHGOjOS2YJ+aZn+/VDNkepsecgIHQvW0U=}</env.STOREPASS>
+            </properties>
+        </profile>
+        -->
+        <profile>
+            <id>env.ALIAS.default</id>
+            <activation>
+                <property>
+                    <name>!env.ALIAS</name>
+                </property>
+            </activation>
+            <properties>
+                <env.ALIAS>test</env.ALIAS>
             </properties>
         </profile>
         <profile>
@@ -1376,9 +1385,8 @@
                         <configuration>
                             <!--<removeExistingSignatures>true</removeExistingSignatures>-->
                             <keystore>${env.KEYSTORE}</keystore>
-                            <alias>test</alias>
+                            <alias>${env.ALIAS}</alias>
                             <storepass>${env.STOREPASS}</storepass>
-                            <!--<keypass>Key password</keypass>-->
                             <!--<verbose>true</verbose>-->
                             <certs>true</certs>
                         </configuration>
@@ -1452,11 +1460,6 @@
                                 </goals>
                                 <configuration>
                                     <timeout>240000</timeout>
-                                    <!--
-                                    <properties>
-                                        <cargo.start.jvmargs>${jacoco.agent.it.arg}</cargo.start.jvmargs>
-                                    </properties>
-                                    -->
                                 </configuration>
                             </execution>
                             <execution>
@@ -1465,26 +1468,10 @@
                                 <goals>
                                     <goal>stop</goal>
                                 </goals>
-                                <configuration>
-                                    <!--<timeout>60000</timeout>-->
-                                    <!--
-                                    <configuration>
-                                        <properties>
-                                            <cargo.jmx.activation></cargo.jmx.activation>
-                                            <cargo.start.jvmargs></cargo.start.jvmargs>
-                                            <cargo.jvmargs><![CDATA[]]></cargo.jvmargs>
-                                        </properties>
-                                    </configuration>
-                                    -->
-                                </configuration>
                             </execution>
                         </executions>
                         <configuration>
                             <properties>
-                                <!--<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
-                                <!-- <cargo.hostname>${cargo.host}</cargo.hostname> TODO useless, see below configuration -->
-                                <!--<cargo.servlet.port>${cargo.port}</cargo.servlet.port> TODO useless, see below configuration -->
-                                <!--<cargo.port>${jetty.port}</cargo.port> TODO useless, see below configuration -->
                                 <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
                                 <cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
                                 <cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
@@ -1493,9 +1480,9 @@
                                 <!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
                                 <cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
                             </properties>
+                            <!--
                             <container>
                                 <timeout>300000</timeout>
-                                <!-- 5 minutes -->
                                 <containerId>${cargo.container}</containerId>
                                 <artifactInstaller>
                                     <groupId>org.eclipse.jetty</groupId>
@@ -1503,20 +1490,15 @@
                                     <version>${server.version}</version>
                                 </artifactInstaller>
                             </container>
-                    <configuration>
-                                <!--
-                                    This is another one that confused me for long. Its not enough to
-                                    specify 'installed' in the container tag. You have to now specify
-                                    another configuration with type == existing and re-issue the home
-                                    path
-                                -->
-                    <type>${cargo.configuration.type}</type>
-                    <properties>
-                        <cargo.hostname>${cargo.host}</cargo.hostname>
-                        <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
-                        <cargo.logging>high</cargo.logging>
-                    </properties>
-                </configuration>
+                            -->
+                            <configuration>
+                                <type>${cargo.configuration.type}</type>
+                                <properties>
+                                    <cargo.hostname>${cargo.host}</cargo.hostname>
+                                    <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
+                                    <cargo.logging>high</cargo.logging>
+                                </properties>
+                            </configuration>
                         </configuration>
                     </plugin>
                     <!-- DISABLE because it is too slow
@@ -1653,6 +1635,11 @@
                 </dependency>
                 <dependency>
                     <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-util</artifactId>
+                    <version>${jetty.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-servlets</artifactId>
                     <version>${jetty.version}</version>
                     <type>jar</type>
@@ -1672,7 +1659,7 @@
                 <cargo.container.type>installed</cargo.container.type>
                 <cargo.configuration.type>standalone</cargo.configuration.type>
                 <cargo.deployables.type></cargo.deployables.type>
-                <cargo.port>${jetty.port}</cargo.port>
+                <cargo.port>${jetty.http.port}</cargo.port>
                 <cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
                 <scope.type>${scope.compile}</scope.type>
                 <scope.tomcat.only.type>${scope.compile}</scope.tomcat.only.type>
@@ -1731,44 +1718,6 @@
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
-        </profile>
-        <profile>
-            <!-- if ./exclusions.txt is present, use that as the exclusion list. Useful when skipping tests. -->
-            <id>exclusions</id>
-            <activation>
-                <file>
-                    <exists>exclusions.txt</exists>
-                </file>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <excludesFile>exclusions.txt</excludesFile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!-- if ./inclusions.txt is present, use that as the inclusion list. Useful when skipping tests. -->
-            <id>inclusions</id>
-            <activation>
-                <file>
-                    <exists>inclusions.txt</exists>
-                </file>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <includesFile>inclusions.txt</includesFile>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>

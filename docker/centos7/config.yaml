@@ -1,0 +1,26 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+- name: "check jenkins user"
+  command: "whoami"
+  expectedOutput: ["jenkins"]
+
+- name: "check jenkins uid/gid used for config generation"
+  command: "id"
+  expectedOutput: ["uid=1003.jenkins. gid=1002.docker. .*"]
+
+#- name:  "yum update"
+#  command: "yum"
+#  args: ["update", "-y"]
+  
+metadataTest:
+  exposedPorts: []
+  volumes: []
+#  cmd: []
+
+fileExistenceTests:
+ - name: 'jenkins directory'
+   path: '/home/jenkins'
+   shouldExist: true
+   permissions: 'drwx------'
+   uid: 1003

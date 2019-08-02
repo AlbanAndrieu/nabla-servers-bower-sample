@@ -35,7 +35,9 @@ repos:
         exclude: >
                   (?x)^(
                       roles/jenkins-master/defaults/main.yml|
-                      roles/jenkins-master/README.md
+                      roles/jenkins-master/README.md|
+                      ca.key|
+                      server.key
                   )$
     -   id: double-quote-string-fixer
     -   id: name-tests-test

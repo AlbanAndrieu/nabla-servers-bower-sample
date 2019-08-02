@@ -5,13 +5,11 @@ FROM selenium/standalone-chrome:3.141.59-gold
 
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 
-ARG JDK8_VERSION=${JDK8_VERSION:-172}
-ARG JAVA_URL="http://fr1cslfrbm0059.misys.global.ad/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.tar.gz"
-ENV JDK_HOME=${JDK_HOME:-"/usr/local/jdk1.8.0_${JDK8_VERSION}"}
-ENV JAVA_HOME=${JAVA_HOME:-$JDK_HOME}
+ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
-ARG CERT_NAME="UK1VSWCERT01-CA-5.crt"
-ARG CERT_URL="http://fr1cslfrbm0059.misys.global.ad/download/certs/UK1VSWCERT01-CA-5.crt"
+
+ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
+ARG CERT_URL=${CERT_URL:-"https://home.nabla.mobi/download/certs/${CERT_NAME}"}
 
 #MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
 #LABEL vendor="TEST" version="1.0.0"
@@ -87,24 +85,18 @@ RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_HOME} jenkins && 
 RUN echo "jenkins:jenkins1234" | chpasswd
 RUN usermod -a -G docker jenkins
 
-RUN mkdir ${JDK_HOME} && \
-    curl ${JAVA_URL} | tar xzC ${JDK_HOME} --strip-components=1
-
-# env variables
-#ENV PATH=${JAVA_HOME}/bin:$PATH
-
-# Add java & root certs
-RUN cd /etc/ssl/certs/ && curl -L -O ${CERT_URL}
+# Add root certs
+RUN cd /usr/local/share/ca-certificates && wget --no-check-certificate ${CERT_URL}
 RUN update-ca-certificates
 
-#RUN ln -sf /etc/ssl/certs/java/cacerts /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts
+RUN ln -sf /etc/ssl/certs/java/cacerts ${JAVA_HOME}/jre/lib/security/cacerts
 
 # Update Java certs
 RUN keytool -v -noprompt \
-    -keystore $JAVA_HOME/jre/lib/security/cacerts \
+    -keystore ${JAVA_HOME}/jre/lib/security/cacerts \
     -importcert \
     -trustcacerts \
-    -file /etc/ssl/certs/${CERT_NAME} \
+    -file /usr/local/share/ca-certificates/${CERT_NAME} \
     -alias test \
     -keypass changeit \
     -storepass changeit

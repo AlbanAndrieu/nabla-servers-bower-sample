@@ -8,12 +8,14 @@ dist: trusty
 
 jdk:
   - oraclejdk8
-  - oraclejdk11
+#  - oraclejdk11
   - openjdk8
-  - openjdk11
+#  - openjdk11
+
 script:
 - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 - gcc --version
+
 addons:
   apt:
     sources:
@@ -22,10 +24,10 @@ addons:
     - gcc-5
     - g++-5
 #    - ruby-compass
+
 language: java
 
 node_js:
-# - "iojs"
   - "8"
   - "11"
 
@@ -38,10 +40,12 @@ cache:
     - $HOME/.cache
     - $HOME/.m2
     - node_modules
-
+    - travis_phantomjs
+    
 branches:
   only:
   - master
+  
 notifications:
   webhooks:
     urls:
@@ -55,30 +59,37 @@ env:
   - EMBER_VERSION=default
   global:
     secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
+    
 matrix:
   fast_finish: true
   allow_failures:
   - env: EMBER_VERSION=release
   - env: EMBER_VERSION=beta
   - env: EMBER_VERSION=canary
+  
 before_install:
-- export CHROME_BIN=chromium-browser
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-- npm config set spin false
-#- 'gem install sass --version "=3.2.12"'
-#- 'gem install compass --version "=0.12.2"'
-- 'gem install sass'
-- 'gem install compass'
-- npm install -g bower karma grunt-cli jshint
-#before_script:
-#- npm install -g bower karma grunt-cli jshint
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - npm config set spin false
+  #- 'gem install sass --version "=3.2.12"'
+  #- 'gem install compass --version "=0.12.2"'
+  - 'gem install sass'
+  - 'gem install compass'
+  - npm install -g bower karma grunt-cli jshint
+  # Upgrade PhantomJS to v2.1.1.
+  - "export PHANTOMJS_VERSION=2.1.1"
+  - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
+  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
+  - "phantomjs --version"
 install:
-- npm install
-- travis_retry bower install
-- grunt prepare
-- grunt check
-- grunt default
-- grunt unit-test
-- grunt package
-#- grunt integration-test
+  - npm install
+  - travis_retry bower install
+  - grunt prepare
+  - grunt check
+  - grunt default
+  - grunt unit-test
+  - grunt package
+  # - grunt integration-test

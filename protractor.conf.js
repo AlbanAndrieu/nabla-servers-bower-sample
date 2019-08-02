@@ -21,7 +21,7 @@ exports.config = {
   capabilities: {
     //'browserName': 'chromium',
     'browserName': 'chrome',
-    //  'browserName': 'firefox',
+    //'browserName': 'firefox',
     //'browserName': 'phantomjs',
     'chromeOptions': {
         //  binary: '/usr/bin/google-chrome',
