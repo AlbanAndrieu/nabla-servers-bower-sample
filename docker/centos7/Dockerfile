@@ -1,7 +1,6 @@
-# CentOS based image (RHEL7.3-compatible):
+# CentOS based image (RHEL7-compatible):
 FROM centos:7.5.1804
 
-ARG DATABASE_TYPE=${DATABASE_TYPE:-sqlserver}
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003
 ARG GID=1002
@@ -34,10 +33,8 @@ RUN yum -y install \
     unixODBC \
     libaio \
     freetds \
-    java-1.8.0-openjdk-devel
-
+    java-1.8.0-openjdk-devel \
 # Compilation tools
-RUN yum -y install \
     file \
     git \
     docker-compose \

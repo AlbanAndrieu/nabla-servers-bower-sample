@@ -4,11 +4,11 @@
 def DOCKER_REGISTRY="hub.docker.com"
 def DOCKER_ORGANISATION="nabla"
 def DOCKER_TAG="latest"
-def DOCKERNAME="ansible-jenkins-slave-docker"
+def DOCKER_NAME="ansible-jenkins-slave-docker"
 
 def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}"
 def DOCKER_REGISTRY_CREDENTIAL='jenkins'
-def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKERNAME}:${DOCKER_TAG}"
+def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
 
 def DOCKER_OPTS = [
     '--init',
@@ -69,7 +69,9 @@ pipeline {
 
                     stage('\u2795 Quality - Security - Checkmarx') {
                         script {
-                            withCheckmarxWrapper(excludeFolders: ", bm", projectName: 'MGR_UIComponents_Sample_Checkmarx')
+                            withCheckmarxWrapper(excludeFolders: ", bm",
+                                projectName: 'MGR_UIComponents_Sample_Checkmarx'
+                                preset: '1')
                         } // script
                     } // stage Security - Checkmarx
                 } // script

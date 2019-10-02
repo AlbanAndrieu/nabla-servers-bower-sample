@@ -4,7 +4,7 @@
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 # shellcheck source=/dev/null
-source "${WORKING_DIR}/step-0-color.sh"
+tput colors && source "${WORKING_DIR}/step-0-color.sh"
 
 # shellcheck disable=SC2154
 echo -e "${magenta} Make sure you have at least docker-compose==1.22.0 ${NC}"

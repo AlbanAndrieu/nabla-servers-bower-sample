@@ -1,18 +1,17 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM selenium/standalone-chrome:3.141.59-gold AS builder
-#FROM selenium/standalone-chrome:3.141.59-gold
-FROM ubuntu:18.04
+#FROM ubuntu:18.04
+FROM selenium/standalone-chrome:3.141.59-gold
 
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 
-#ARG JDK8_VERSION=${JDK8_VERSION:-172}
-#ARG JAVA_URL="http://home.nabla.mobi/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.tar.gz"
-ENV JDK_HOME=${JDK_HOME:-"/usr/lib/jvm/java-8-openjdk-amd64"}
-ENV JAVA_HOME=${JAVA_HOME:-$JDK_HOME}
+ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
 ARG CERT_URL=${CERT_URL:-"http://home.nabla.mobi/download/certs/${CERT_NAME}"}
 
+#MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
 #LABEL vendor="TEST" version="1.0.0"
 LABEL description="Image used by nabla products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
@@ -23,29 +22,38 @@ LABEL description="Image used by nabla products to build Java/Javascript and CPP
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
-ENV JENKINS_HOME=${JENKINS_HOME}
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-#ENV LC_ALL en_US.UTF-8
-ENV TERM="xterm-256color"
+ENV JENKINS_HOME=${JENKINS_HOME}
 
 USER 0
 
-# Install ansible
-RUN apt-get clean && apt-get -y update && apt-get install -y \
-    -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
-    git bzip2 zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog && pip install ansible==2.7.2 \
-    && apt-get install -y \
-    apt-transport-https ca-certificates software-properties-common \
-    xz-utils ksh wget tzdata sudo curl lsof sshpass \
-    python3 python3-pip python3-dev python3-apt \
-    openjdk-8-jdk maven \
-    net-tools iputils-ping x11-apps \
-    && dpkg-reconfigure --frontend noninteractive tzdata \
-    && pip install zabbix-api
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+ENV TERM="xterm-256color"
+ENV TZ=Europe/Paris
 
-#RUN add-apt-repository ppa:openjdk-r/ppa
+#===================
+# Timezone settings
+# Possible alternative: https://github.com/docker/docker/issues/3359#issuecomment-32150214
+#===================
+RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+RUN apt-get -q update &&\
+    apt-get -q upgrade -y -o Dpkg::Options::="--force-confnew" --no-install-recommends &&\
+    apt-get -q install -y -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
+    git bzip2 zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
+    apt-transport-https ca-certificates software-properties-common \
+    locales xz-utils ksh wget tzdata sudo curl lsof sshpass \
+    python3-setuptools python3 python3-pip python3-dev python3-apt \
+    openjdk-8-jdk maven \
+    net-tools iputils-ping x11-apps
+
+RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
+
+RUN python3 -m pip install --upgrade pip==9.0.3 \
+    && pip install ansible==2.7.2 zabbix-api
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 RUN sudo apt-key fingerprint 0EBFCD88
@@ -77,15 +85,8 @@ RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_HOME} jenkins && 
 RUN echo "jenkins:jenkins1234" | chpasswd
 RUN usermod -a -G docker jenkins
 
-#RUN mkdir ${JDK_HOME} && \
-#    curl ${JAVA_URL} | tar xzC ${JDK_HOME} --strip-components=1
-
-# env variables
-#TODO????
-ENV PATH=${JAVA_HOME}/bin:$PATH
-
 # Add java & root certs
-#RUN cd /etc/ssl/certs/ && curl -L -O ${CERT_URL}
+#RUN cd /usr/local/share/ca-certificates && wget --no-check-certificate ${CERT_URL}
 #RUN update-ca-certificates
 
 #RUN ln -sf /etc/ssl/certs/java/cacerts ${JAVA_HOME}/jre/lib/security/cacerts

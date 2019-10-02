@@ -12,7 +12,7 @@ source "${WORKING_DIR}/../step-0-color.sh"
 # shellcheck disable=SC2154
 echo -e "${magenta} Building TEST runtime image ${NC}"
 # shellcheck disable=SC2154
-echo -e "${green} pip install docker-compose==1.22.0 ${NC}"
+echo -e "${green} pip install docker-compose==1.23.2 ${NC}"
 
 if [ -n "${DOCKER_BUILD_ARGS}" ]; then
   # shellcheck disable=SC2154
@@ -57,8 +57,8 @@ else
   echo -e "${magenta} DOCKER_TAG : ${DOCKER_TAG} ${NC}"
 fi
 
-readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"registry.misys.global.ad/"}
-readonly DOCKER_ORGANISATION=${DOCKER_ORGANISATION:-"fusion-risk"}
-readonly DOCKER_USERNAME=${DOCKER_USERNAME:-"aandrieu"}
-export DOCKER_NAME=${DOCKER_NAME:-"bower-fr-integration-test"}
+readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}
+readonly DOCKER_ORGANISATION=${DOCKER_ORGANISATION:-"nabla"}
+readonly DOCKER_USERNAME=${DOCKER_USERNAME:-"nabla"}
+export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_TAG=${DOCKER_TAG:-"latest"}
