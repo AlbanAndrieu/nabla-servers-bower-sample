@@ -72,8 +72,8 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=nabla
+      - MYSQL_ROOT_PASSWORD: root
+      - MYSQL_DATABASE: nabla
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: root
@@ -88,4 +88,3 @@ services:
 
 #networks:
 #  frontend: {}
-

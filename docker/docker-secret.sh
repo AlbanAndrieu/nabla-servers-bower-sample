@@ -1,6 +1,5 @@
 echo "sdqsf" | docker secret create mysecret
 
-docker secret ls 
+docker secret ls
 
 exit 0
-

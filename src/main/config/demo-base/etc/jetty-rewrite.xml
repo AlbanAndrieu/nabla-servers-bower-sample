@@ -173,7 +173,7 @@
                 <Set name="rewriteRequestURI"><Property name="jetty.rewrite.rewriteRequestURI" deprecated="rewrite.rewriteRequestURI" default="true"/></Set>
                 <Set name="rewritePathInfo"><Property name="jetty.rewrite.rewritePathInfo" deprecated="rewrite.rewritePathInfo" default="false"/></Set>
                 <Set name="originalPathAttribute"><Property name="jetty.rewrite.originalPathAttribute" deprecated="rewrite.originalPathAttribute" default="requestedPath"/></Set>
-			    
+
                 <!-- Set DispatcherTypes  -->
                 <Set name="dispatcherTypes">
                     <Array type="javax.servlet.DispatcherType">
@@ -181,11 +181,11 @@
                         <Item><Call class="javax.servlet.DispatcherType" name="valueOf"><Arg>ASYNC</Arg></Call></Item>
                     </Array>
                 </Set>
-			    
+
                 <Get id="Rewrite" name="ruleContainer"/>
-			    
+
                 <!-- see rewrite-compactpath.xml for example how to add a rule -->
-                
+
                 <!--
                 <Set name="handler">
                    <New id="Handlers" class="org.eclipse.jetty.server.handler.HandlerCollection">
@@ -205,7 +205,7 @@
                    </New>
                 </Set>
                 -->
-		    
+
             </New>
         </Arg>
     </Call>

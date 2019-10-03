@@ -12,7 +12,7 @@ commandTests:
 #- name:  "yum update"
 #  command: "yum"
 #  args: ["update", "-y"]
-  
+
 metadataTest:
   exposedPorts: []
   volumes: []

@@ -16,7 +16,7 @@ docker service ls
 
 docker service inspect --pretty web2
 docker service logs web2
- 
+
 #Put monitoring on mode global pas replicas
 
 docker node demote host3
@@ -34,4 +34,3 @@ docker service logs -f web2
 docker-machine ssh host2 docker network ls
 
 exit 0
-

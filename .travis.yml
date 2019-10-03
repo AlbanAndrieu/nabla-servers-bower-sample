@@ -41,11 +41,11 @@ cache:
     - $HOME/.m2
     - node_modules
     - travis_phantomjs
-    
+
 branches:
   only:
   - master
-  
+
 notifications:
   webhooks:
     urls:
@@ -59,14 +59,14 @@ env:
   - EMBER_VERSION=default
   global:
     secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
-    
+
 matrix:
   fast_finish: true
   allow_failures:
   - env: EMBER_VERSION=release
   - env: EMBER_VERSION=beta
   - env: EMBER_VERSION=canary
-  
+
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0

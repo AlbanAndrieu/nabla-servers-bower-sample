@@ -5,7 +5,7 @@ set -eu
 #https://portainer.readthedocs.io/en/stable/deployment.html#inside-a-swarm-cluster
 
 mkdir /mnt/data
- 
+
 docker service create \
     --name portainer \
     --publish 9000:9000 \
@@ -13,11 +13,11 @@ docker service create \
     --constraint 'node.role == manager' \
     --mount type=bind,src=//mnt/data,dst=/data \
     portainer/portainer
-	
+
 #docker volume create portainer_data
-#docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/data:/data portainer/portainer	
-	
-#http://192.168.99.100:9000/	
+#docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/data:/data portainer/portainer
+
+#http://192.168.99.100:9000/
 
 #https://hub.docker.com/r/dockersamples/visualizer
 

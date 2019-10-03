@@ -1433,7 +1433,7 @@ module.exports = function(grunt) {
       target: {
         options: {
           skip: ["semver",
-                  "npm", "lodash", "jquery", "jquery-ui", 
+                  "npm", "lodash", "jquery", "jquery-ui",
                   "bootstrap", "bootstrap-sass-official",
                   "angular", "angular-animate", "angular-cookies",
                   "angular-dynamic-locale", "angular-i18n", "angular-mocks", "angular-resource", "angular-route", "angular-sanitize",
