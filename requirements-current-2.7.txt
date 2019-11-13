@@ -3,7 +3,7 @@
 #pip3 uninstall libxml2-python
 #pip2 install cairocffi==0.8.0
 #pip2 install CairoSVG==2.0.3
-ansible==2.6.0
+ansible==2.7.12
 appdirs==1.4.3
 argcomplete==1.9.4
 asn1crypto==0.24.0
