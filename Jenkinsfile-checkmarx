@@ -12,17 +12,19 @@ def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOC
 
 def DOCKER_OPTS = [
     '--init',
-    '-e HOME=${WORKSPACE}',
-    '-e NPM_CONFIG_PREFIX=${WORKSPACE}/.npm',
+//    '-e HOME=${WORKSPACE}',
 ].join(" ")
 
 pipeline {
-    agent none
+    //agent none
+    agent {
+        label 'docker-compose'
+    }
     parameters {
         string(defaultValue: 'develop', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
-        booleanParam(defaultValue: true, description: 'Clean before run', name: 'CLEAN_RUN')
-        booleanParam(defaultValue: true, description: 'Debug run', name: 'DEBUG_RUN')
+        booleanParam(defaultValue: false, description: 'Clean before run', name: 'CLEAN_RUN')
+        booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
         booleanParam(defaultValue: false, description: 'Debug mvnw', name: 'MVNW_VERBOSE')
         booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
         string(name: "RELEASE_BASE", defaultValue: "", description: "Commit tag or branch that should be checked-out for release")
@@ -51,10 +53,10 @@ pipeline {
                 docker {
                     image DOCKER_IMAGE
                     reuseNode true
-                    registryUrl DOCKER_REGISTRY_URL
-                    registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                    //registryUrl DOCKER_REGISTRY_URL
+                    //registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
                     args DOCKER_OPTS
-                    label 'docker-inside'
+                    label 'docker-compose'
                 }
             }
             when {
@@ -70,7 +72,7 @@ pipeline {
                     stage('\u2795 Quality - Security - Checkmarx') {
                         script {
                             withCheckmarxWrapper(excludeFolders: ", bm",
-                                projectName: 'MGR_UIComponents_Sample_Checkmarx'
+                                projectName: 'MGR_UIComponents_Sample_Checkmarx',
                                 preset: '1')
                         } // script
                     } // stage Security - Checkmarx
@@ -79,14 +81,8 @@ pipeline {
         } // stage Security
     } // stages
     post {
-        always {
-            node('docker-inside') {
-                echo "Hi there"
-                script {
-                    cleanWs()
-                    //standardNotify { }
-                }
-            } // node
-        }
+        cleanup {
+            wrapCleanWs(isEmailEnabled: false)
+        } // cleanup    
     } // post
 } // pipeline

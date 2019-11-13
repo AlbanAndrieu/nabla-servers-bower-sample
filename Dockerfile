@@ -1,15 +1,17 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM selenium/standalone-chrome:3.141.59-gold AS builder
 #FROM ubuntu:18.04
-FROM selenium/standalone-chrome:3.141.59-gold
+FROM selenium/standalone-chrome:3.141.59-xenon
 
-ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
+ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 
 ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
 ARG CERT_URL=${CERT_URL:-"http://home.nabla.mobi/download/certs/${CERT_NAME}"}
+
+ARG MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN:-"NzdhNTQ2ZGZmYmEz"}
 
 #MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
 #LABEL vendor="TEST" version="1.0.0"
@@ -23,7 +25,7 @@ LABEL description="Image used by nabla products to build Java/Javascript and CPP
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
 
-ENV JENKINS_HOME=${JENKINS_HOME}
+ENV JENKINS_USER_HOME=${JENKINS_USER_HOME}
 
 USER 0
 
@@ -52,8 +54,8 @@ RUN apt-get -q update &&\
 
 RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
-RUN python3 -m pip install --upgrade pip==9.0.3 \
-    && pip install ansible==2.7.2 zabbix-api
+RUN python3 -m pip install --upgrade pip==19.2.3 \
+    && pip install ansible==2.8.6 zabbix-api==0.5.3
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 RUN sudo apt-key fingerprint 0EBFCD88
@@ -62,24 +64,27 @@ RUN add-apt-repository \
     $(lsb_release -cs) \
     stable"
 # Install Docker from Docker Inc. repositories.
-RUN apt-get update -qq && apt-get install -qqy docker-ce=5:18.09.0~3-0~ubuntu-bionic && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - ;\
     apt-get update && apt-get install -y nodejs ;\
-    npm install -g bower@1.8.8 grunt@1.0.3 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.0 npm@6.4.1 yo@2.0.5 json2csv@4.3.3 shrinkwrap@0.4.0
+    npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.7 npm@6.11.3 yarn@1.19.1 yo@3.1.0 json2csv@4.3.3 phantomas@1.20.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11
 
-ARG UID=${UID:-1003}
-ARG GID=${GID:-1002}
-RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
+ARG USER=${USER:-jenkins}
+ARG GROUP=${GROUP:-docker}
+ARG UID=${UID:-2000}
+ARG GID=${GID:-2000}
+RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_USER_HOME: ${JENKINS_USER_HOME} \033[0m\n" && \
+    printf "\033[1;32mWITH $USER\ngroup: $GROUP \033[0m\n"
 
 RUN groupmod -g ${GID} docker
-RUN cat /etc/group | grep docker || true
+#RUN cat /etc/group | grep docker || true
 #RUN id docker
-RUN getent passwd 1002 || true
+#RUN getent passwd 2000 || true
 
 # Add user jenkins to the image
 #RUN groupadd -g ${GID} docker && \
-RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_HOME} jenkins && \
+RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
     echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 # Set password for the jenkins user (you may want to alter this).
 RUN echo "jenkins:jenkins1234" | chpasswd
@@ -102,7 +107,7 @@ RUN usermod -a -G docker jenkins
 #    -storepass changeit
 
 # Working dir
-WORKDIR $JENKINS_HOME
+WORKDIR $JENKINS_USER_HOME
 
 #===================
 # Timezone settings
@@ -125,13 +130,16 @@ RUN mkdir -p /var/run/sshd
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
 && ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
 
-#COPY --chown=jenkins:$(id -gn jenkins) . $JENKINS_HOME/
-COPY . $JENKINS_HOME/
+#COPY --chown=jenkins:$(id -gn jenkins) . $JENKINS_USER_HOME/
+COPY . $JENKINS_USER_HOME/
 
 # Execute
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
 RUN ./clean.sh
-RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME && chmod -R 777 $JENKINS_HOME
+RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME && chmod -R 777 $JENKINS_USER_HOME
+
+ADD https://get.aquasec.com/microscanner /
+RUN chmod +x /microscanner
 
 # Execute
 #RUN ansible-galaxy install -r $WORKDIR/requirements.yml -p $WORKDIR/roles/ --ignore-errors \
@@ -139,18 +147,23 @@ RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME && chmod -R 777 $JENKINS_HO
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
-ENV HOME=${JENKINS_HOME}
+ENV HOME=${JENKINS_USER_HOME}
 # && mkdir ${HOME}/.config && mkdir ${HOME}/.local
-RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && chmod -R 777 ${HOME}
+RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && chmod -R 777 ${HOME} && mkdir -p ${HOME}/.config/configstore || true
 #RUN id jenkins && ls -lrtai $HOME/ && ls -lrtai $HOME/.sonar
 
-#RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME/.[^.]* && chmod -R 777 $JENKINS_HOME/.[^.]* && ls -lrta -R $JENKINS_HOME
-#RUN ls -lrta -R $JENKINS_HOME
-#RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_HOME && chmod 777 $JENKINS_HOME
+#RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME/.[^.]* && chmod -R 777 $JENKINS_USER_HOME/.[^.]* && ls -lrta -R $JENKINS_USER_HOME
+#RUN ls -lrta -R $JENKINS_USER_HOME
+#RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME && chmod 777 $JENKINS_USER_HOME
 
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x
 RUN ./mvnw install -Dserver=jetty9x -Dmaven.test.skip=true
+
+RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_USER_HOME}/microscanner.log
+# [--continue-on-failure]
+RUN echo "No vulnerabilities!"
+#RUN /microscanner ${token} && rm /microscanner
 
 # Standard SSH port
 EXPOSE 22
@@ -176,21 +189,21 @@ CMD ["/bin/bash"]
 #LABEL description="Image used by nabla products to build Java/Javascript and CPP\
 # this image is running on Ubuntu 16.04."
 #
-#ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
+#ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 #
 ##ENV LANG en_US.UTF-8
 #ENV TERM="xterm-256color"
 #
 ##USER 0
 #
-#RUN printf "\033[1;32mFROM JENKINS_HOME: ${JENKINS_HOME} \033[0m\n"
+#RUN printf "\033[1;32mFROM JENKINS_USER_HOME: ${JENKINS_USER_HOME} \033[0m\n"
 #
 ## Install ansible
 #RUN apt-get clean && apt-get -y update && apt-get install -y \
 #    -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
 #    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
-#	&& apt-get install -y xz-utils wget curl lsof sshpass \
-#	net-tools iputils-ping x11-apps
+#    && apt-get install -y xz-utils wget curl lsof sshpass \
+#    net-tools iputils-ping x11-apps
 #
 ##RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
 ##    apt-get update && apt-get install -y nodejs ;\
@@ -203,10 +216,10 @@ CMD ["/bin/bash"]
 ##ADD obclient.properties /etc/
 ##ADD WebClient.properties /etc/
 #
-##COPY --chown=jenkins:$(id -gn jenkins) --from=builder $JENKINS_HOME/target/*.war /usr/local/tomcat/webapps/
-##COPY --chown=jenkins:$(id -gn jenkins) --from=0 $JENKINS_HOME/target/*.war /usr/local/tomcat/webapps/
+##COPY --chown=jenkins:$(id -gn jenkins) --from=builder $JENKINS_USER_HOME/target/*.war /usr/local/tomcat/webapps/
+##COPY --chown=jenkins:$(id -gn jenkins) --from=0 $JENKINS_USER_HOME/target/*.war /usr/local/tomcat/webapps/
 ##ADD ./target/test.war /usr/local/tomcat/webapps/
-#COPY --from=0 $JENKINS_HOME/target/test.war $CATALINA_HOME/webapps/test.war
+#COPY --from=0 $JENKINS_USER_HOME/target/test.war $CATALINA_HOME/webapps/test.war
 ##COPY target/test.war $CATALINA_HOME/webapps/test.war
 #
 ## Clean up APT when done.

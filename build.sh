@@ -28,9 +28,6 @@ rm -f package-lock.json || true
 echo -e "./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -Prun-integration-test"
 
 #./docker-build.sh
-#docker build --target builder .
-#docker build --target builder -t aandrieu/test:latest .
-#docker build --target runner .
 
 npm list  > list.log
 #npm shrinkwrap

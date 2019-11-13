@@ -4,7 +4,7 @@
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 # shellcheck source=/dev/null
-source "${WORKING_DIR}/../step-0-color.sh"
+tput colors && source "${WORKING_DIR}/../step-0-color.sh"
 
 #mkdir ./target/ || true
 #cp ${WORKING_DIR}/target/test.war ./target/
@@ -55,6 +55,16 @@ else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_TAG, use the default one ${NC}"
   export DOCKER_TAG=${DOCKER_TAG:-"latest"}
   echo -e "${magenta} DOCKER_TAG : ${DOCKER_TAG} ${NC}"
+fi
+
+if [ -n "${DOCKER_FILE}" ]; then
+  # shellcheck disable=SC2154
+  echo -e "${green} DOCKER_FILE is defined ${happy_smiley} : ${DOCKER_FILE} ${NC}"
+else
+  # shellcheck disable=SC2154
+  echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_FILE, use the default one ${NC}"
+  export DOCKER_FILE=${DOCKER_FILE:-"Dockerfile"}
+  echo -e "${magenta} DOCKER_FILE : ${DOCKER_FILE} ${NC}"
 fi
 
 readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}

@@ -15,6 +15,9 @@ rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ node_m
 
 rm -f checkstyle.xml
 
+npm cache clean || true
+npm cache verify
+
 echo -e "${green} Cleaning DONE. ${NC}"
 
 exit 0

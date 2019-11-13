@@ -48,41 +48,41 @@
         <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 
         <maven.frontend.plugin.version>1.7.5</maven.frontend.plugin.version>
-        <maven.dependency.check.plugin.version>4.0.2</maven.dependency.check.plugin.version>
+        <maven.dependency.check.plugin.version>5.2.2</maven.dependency.check.plugin.version>
         <maven.cargo.maven2.plugin.version>1.7.5</maven.cargo.maven2.plugin.version>
-        <maven.dependency.plugin.version>2.9</maven.dependency.plugin.version>
+        <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
         <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
-        <maven.bundle.plugin.version>4.1.0</maven.bundle.plugin.version>
+        <maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
         <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
         <maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
-        <maven.pitest.plugin.version>1.2.4</maven.pitest.plugin.version>
         <maven.sonar.plugin.version>3.6.0.1398</maven.sonar.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.pitest.plugin.version>1.4.3</maven.pitest.plugin.version>
+        <maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
+        <maven.pitest.plugin.version>1.4.9</maven.pitest.plugin.version>
         <maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
         <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
         <maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
-        <maven.resources.plugin.version>2.7</maven.resources.plugin.version>
+        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
         <maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
-        <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
-        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
         <maven.failsafe.plugin.version>${maven.surefire.plugin.version}</maven.failsafe.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.war.plugin.version>2.4</maven.war.plugin.version>
         <maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
         <maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
-        <maven.project.info.reports.plugin.version>2.9</maven.project.info.reports.plugin.version>
+        <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
         <maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
         <maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
         <maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
         <maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
-        <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
-        <maven.spotbugs.plugin.version>3.1.11</maven.spotbugs.plugin.version>
-        <maven.jenkinsfile.plugin.version>1.0.0</maven.jenkinsfile.plugin.version>
+        <maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+        <maven.spotbugs.plugin.version>3.1.12</maven.spotbugs.plugin.version>
+        <maven.jenkinsfile.plugin.version>1.0.1</maven.jenkinsfile.plugin.version>
         <maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
         <maven.zkm.version>12.0.0</maven.zkm.version>
-        <maven.fabric8-docker-maven.plugin.version>0.26.1</maven.fabric8-docker-maven.plugin.version>
-        <maven.git-commit-id.plugin.version>2.2.4</maven.git-commit-id.plugin.version>
+        <maven.fabric8-docker-maven.plugin.version>0.30.0</maven.fabric8-docker-maven.plugin.version>
+        <maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
         <maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
         <maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
@@ -91,10 +91,11 @@
         <testcontainers.version>1.9.1</testcontainers.version>
         <docker.compose.version>0.9.9</docker.compose.version>
 
-        <node.version>9.3.0</node.version><!-- FreeNas -->
+        <!--<node.version>9.3.0</node.version> FreeNas -->
         <!--<node.version>8.9.3</node.version> NOK -->
         <!--<node.version>7.8.0</node.version> Ubuntu -->
-        <npm.version>6.9.0</npm.version>
+        <node.version>v11.12.0</node.version>
+        <npm.version>6.10.3</npm.version>
         <yarn.version>1.12.3</yarn.version>
 
         <jmockit.version>1.19</jmockit.version>
@@ -111,6 +112,8 @@
         <http.builder.version>0.6</http.builder.version>
         <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
         <javax.jsp.api.version>2.0</javax.jsp.api.version>
+        <doxia.core.version>1.8</doxia.core.version>
+        <doxia.version>1.8.1</doxia.version>
 
         <!--
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
@@ -253,10 +256,6 @@
         </dependency>
     </dependencies>
     <build>
-        <!--
-        <sourceDirectory>app</sourceDirectory>
-        <testSourceDirectory>test</testSourceDirectory>
-        -->
         <finalName>test</finalName>
         <pluginManagement>
             <plugins>
@@ -359,7 +358,7 @@
                       <dependency>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs</artifactId>
-                        <version>3.1.12</version>
+                        <version>${maven.spotbugs.plugin.version}</version>
                       </dependency>
                     </dependencies>
                     <configuration>
@@ -395,6 +394,31 @@
                         <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
                         <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
             -->
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>${maven.project.info.reports.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.doxia</groupId>
+                            <artifactId>doxia-core</artifactId>
+                            <version>${doxia.core.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.maven.doxia</groupId>
+                            <artifactId>doxia-site-renderer</artifactId>
+                            <version>${doxia.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -928,7 +952,7 @@
                     <!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
                     <httpConnector>
                         <!--host>localhost</host -->
-                        <port>${jetty.http.port}</port>
+                        <port>${jetty.port}</port>
                     </httpConnector>
                     <stopPort>${jetty.stop.port}</stopPort>
                     <stopKey>STOP</stopKey>
@@ -1301,6 +1325,7 @@
                   <version>${com.oracle.javafx.version}</version>
                   <scope>system</scope>
                   <systemPath>${project.basedir}/lib/jfxrt.jar</systemPath>
+                  <optional>true</optional>
                 </dependency>
             </dependencies>
             <build>
@@ -1316,6 +1341,18 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>env.JAVA_HOME.default</id>
+            <activation>
+                <property>
+                    <name>!env.JAVA_HOME</name>
+                </property>
+            </activation>
+            <properties>
+                <env.JAVA_HOME>/usr/lib/jvm/java-1.8.0-openjdk-amd64</env.JAVA_HOME>
+                <java.home>/usr/lib/jvm/java-1.8.0-openjdk-amd64</java.home>
+            </properties>
         </profile>
         <profile>
             <id>env.KEYSTORE.default</id>
@@ -1437,13 +1474,6 @@
         </profile>
         <profile>
             <id>run-integration-test</id>
-            <!--
-            <activation>
-                <property>
-                    <name>!profile.activation</name>
-                </property>
-            </activation>
-            -->
             <build>
                 <plugins>
                     <plugin>
@@ -1659,7 +1689,7 @@
                 <cargo.container.type>installed</cargo.container.type>
                 <cargo.configuration.type>standalone</cargo.configuration.type>
                 <cargo.deployables.type></cargo.deployables.type>
-                <cargo.port>${jetty.http.port}</cargo.port>
+                <cargo.port>${jetty.port}</cargo.port>
                 <cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
                 <scope.type>${scope.compile}</scope.type>
                 <scope.tomcat.only.type>${scope.compile}</scope.tomcat.only.type>
