@@ -7,7 +7,7 @@ commandTests:
 
 - name: "check jenkins uid/gid used for config generation"
   command: "id"
-  expectedOutput: ["uid=1003.jenkins. gid=1002.docker. .*"]
+  expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
 
 - name:  "apt-get upgrade"
   command: "apt-get"
@@ -24,5 +24,5 @@ fileExistenceTests:
  - name: 'jenkins directory'
    path: '/home/jenkins'
    shouldExist: true
-   permissions: 'drwx------'
-   uid: 1003
+   permissions: 'drwxrwxrwx'
+   uid: 2000

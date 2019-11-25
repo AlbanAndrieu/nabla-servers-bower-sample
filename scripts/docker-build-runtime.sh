@@ -7,18 +7,17 @@ set -eo pipefail
 
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
-export DOCKER_NAME=${DOCKER_NAME:-"bower-fr-integration-test"}
+export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
+export DOCKER_FILE="docker/centos7/Dockerfile"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
-#docker build --target builder .
-#docker build --target builder -t aandrieu/test:latest .
-#docker build --target runner .
+WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 echo -e "${green} Building docker image ${NC}"
-echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/../docker/centos7/Dockerfile -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" \"${WORKING_DIR}/..\" --tag \"$DOCKER_TAG\" ${NC}"
-time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/../docker/centos7/Dockerfile" -t "${DOCKER_ORGANISATION}/${DOCKER_NAME}" "${WORKING_DIR}/.." --tag "${DOCKER_TAG}"
+echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/../${DOCKER_FILE} -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" \"${WORKING_DIR}/..\" --tag \"$DOCKER_TAG\" ${NC}"
+time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/../${DOCKER_FILE}" -t "${DOCKER_ORGANISATION}/${DOCKER_NAME}" "${WORKING_DIR}/.." --tag "${DOCKER_TAG}"
 RC=$?
 if [ ${RC} -ne 0 ]; then
   echo ""
@@ -27,6 +26,9 @@ if [ ${RC} -ne 0 ]; then
   exit 1
 else
   echo -e "${green} The build completed successfully. ${NC}"
+
+  echo -e "${green} Tagging the image. ${NC}"
+  docker tag "${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest" "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
 fi
 
 echo -e ""
@@ -55,5 +57,9 @@ echo -e "docker build -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --pull -f 
 echo -e "docker run -p 8080:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --version"
 echo -e "docker run -p 8080:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest /home/jenkins/test.war"
 echo -e ""
+
+export CST_CONFIG="docker/centos7/config.yaml"
+
+"${WORKING_DIR}/docker-test.sh" "${DOCKER_NAME}"
 
 exit 0

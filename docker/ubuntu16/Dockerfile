@@ -48,7 +48,7 @@ RUN apt-get -q update &&\
     apt-get -q install -y -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
     git bzip2 zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
     apt-transport-https ca-certificates software-properties-common \
-    locales xz-utils ksh wget tzdata sudo curl lsof sshpass \
+    locales xz-utils ksh tzdata sudo curl lsof sshpass \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
     openjdk-8-jdk maven \
     net-tools iputils-ping x11-apps
@@ -91,21 +91,21 @@ RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkin
 RUN echo "jenkins:jenkins1234" | chpasswd
 RUN usermod -a -G docker jenkins
 
-# Add root certs
-RUN cd /usr/local/share/ca-certificates && wget --no-check-certificate ${CERT_URL}
-RUN update-ca-certificates
+# Add java & root certs
+#ADD ${CERT_URL} /etc/pki/ca-trust/source/anchors/
+#RUN update-ca-trust
 
-RUN ln -sf /etc/ssl/certs/java/cacerts ${JAVA_HOME}/jre/lib/security/cacerts
+#RUN ln -sf /etc/ssl/certs/java/cacerts ${JAVA_HOME}/jre/lib/security/cacerts
 
 # Update Java certs
-RUN keytool -v -noprompt \
-    -keystore ${JAVA_HOME}/jre/lib/security/cacerts \
-    -importcert \
-    -trustcacerts \
-    -file /usr/local/share/ca-certificates/${CERT_NAME} \
-    -alias test \
-    -keypass changeit \
-    -storepass changeit
+#RUN keytool -v -noprompt \
+#    -keystore ${JAVA_HOME}/jre/lib/security/cacerts \
+#    -importcert \
+#    -trustcacerts \
+#    -file /usr/local/share/ca-certificates/${CERT_NAME} \
+#    -alias test \
+#    -keypass changeit \
+#    -storepass changeit
 
 # Working dir
 WORKDIR $JENKINS_USER_HOME
@@ -134,10 +134,12 @@ RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME && chmod -R 777 $JENKI
 ADD https://get.aquasec.com/microscanner /
 RUN chmod +x /microscanner
 
+#ADD https://albandri/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
+#RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
+
 # drop back to the regular jenkins user - good practice
 USER jenkins
 ENV HOME=${JENKINS_USER_HOME}
-# && chmod -R 777 ${HOME}/.npm && chmod -R 777 ${HOME}/.m2
 # && mkdir ${HOME}/.config && mkdir ${HOME}/.local
 RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && chmod -R 777 ${HOME} && mkdir -p ${HOME}/.config/configstore || true
 #RUN id jenkins && ls -lrtai $HOME/ && ls -lrtai $HOME/.sonar
@@ -151,9 +153,8 @@ RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repo
 RUN ./mvnw install -Dserver=jetty9x -Dmaven.test.skip=true
 
 RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_USER_HOME}/microscanner.log
-# [--continue-on-failure]
-RUN echo "No vulnerabilities!"
-#RUN /microscanner ${token} && rm /microscanner
+#RUN echo "No vulnerabilities!"
+#RUN rm /microscanner
 
 # Standard SSH port
 EXPOSE 22
@@ -189,8 +190,8 @@ CMD ["/bin/bash"]
 #RUN apt-get clean && apt-get -y update && apt-get install -y \
 #    -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
 #    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
-#   && apt-get install -y xz-utils wget curl lsof sshpass \
-#   net-tools iputils-ping x11-apps
+#    && apt-get install -y xz-utils curl lsof sshpass \
+#    net-tools iputils-ping x11-apps
 #
 ##RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
 ##    apt-get update && apt-get install -y nodejs ;\

@@ -12,7 +12,7 @@ tput colors && source "${WORKING_DIR}/../step-0-color.sh"
 # shellcheck disable=SC2154
 echo -e "${magenta} Building TEST runtime image ${NC}"
 # shellcheck disable=SC2154
-echo -e "${green} pip install docker-compose==1.23.2 ${NC}"
+echo -e "${green} pip install docker-compose==1.24.1 ${NC}"
 
 if [ -n "${DOCKER_BUILD_ARGS}" ]; then
   # shellcheck disable=SC2154
@@ -31,8 +31,8 @@ if [ -n "${CST_CONFIG}" ]; then
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : CST_CONFIG, use the default one ${NC}"
-  #export CST_CONFIG="docker/ubuntu16/config.yaml" v
-  export CST_CONFIG="docker/centos7/config.yaml" # runtime image
+  export CST_CONFIG="docker/ubuntu16/config.yaml" # build image
+  #export CST_CONFIG="docker/centos7/config.yaml" # runtime image
   echo -e "${magenta} CST_CONFIG : ${CST_CONFIG} ${NC}"
 fi
 
@@ -43,7 +43,7 @@ else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_NAME, use the default one ${NC}"
   #export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"} # build image
-  export DOCKER_NAME=${DOCKER_NAME:-"bower-fr-integration-test"} # runtime image
+  export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"} # runtime image
   echo -e "${magenta} DOCKER_NAME : ${DOCKER_NAME} with ${CST_CONFIG} ${NC}"
 fi
 

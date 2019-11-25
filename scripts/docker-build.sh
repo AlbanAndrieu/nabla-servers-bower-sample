@@ -16,7 +16,7 @@ source "${WORKING_DIR}/docker-env.sh"
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 echo -e "${green} Building docker image ${NC}"
-echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/${DOCKER_FILE} -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}\" \"${WORKING_DIR}/..\" ${NC}"
+echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/../${DOCKER_FILE} -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}\" \"${WORKING_DIR}/..\" ${NC}"
 time docker build ${DOCKER_BUILD_ARGS} -f "${WORKING_DIR}/../${DOCKER_FILE}" -t "${DOCKER_ORGANISATION}/${DOCKER_NAME}" -t "${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" "${WORKING_DIR}/.." | tee docker.log
 RC=$?
 if [ ${RC} -ne 0 ]; then
@@ -57,6 +57,8 @@ echo -e "docker build -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --pull -f 
 echo -e "docker run -p 8080:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --version"
 echo -e "docker run -p 8080:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest /home/jenkins/test.war"
 echo -e ""
+
+export CST_CONFIG="docker/ubuntu16/config.yaml"
 
 "${WORKING_DIR}/docker-test.sh" "${DOCKER_NAME}"
 

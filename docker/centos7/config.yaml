@@ -1,26 +1,85 @@
+
 schemaVersion: "2.0.0"
-
-commandTests:
-- name: "check jenkins user"
-  command: "whoami"
-  expectedOutput: ["jenkins"]
-
-- name: "check jenkins uid/gid used for config generation"
-  command: "id"
-  expectedOutput: ["uid=2000.jenkins. gid=2000.docker. .*"]
-
-#- name:  "yum update"
-#  command: "yum"
-#  args: ["update", "-y"]
-
-metadataTest:
-  exposedPorts: []
-  volumes: []
-#  cmd: []
 
 fileExistenceTests:
  - name: 'jenkins directory'
    path: '/home/jenkins'
    shouldExist: true
-   permissions: 'drwxrwxrwx'
-   uid: 2000
+   permissions: 'drwx------'
+   uid: 1100
+
+ - name: 'sonar-build-wrapper'
+   path: '/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64'
+   shouldExist: true
+   permissions: '-rwxrwxr-x'
+
+ - name: 'sonar-scanner'
+   path: '/usr/local/sonar-runner/bin/sonar-scanner'
+   shouldExist: true
+   permissions: '-rwxr-xr-x'
+
+commandTests:
+ - name: "check jenkins user"
+   command: "whoami"
+   expectedOutput: ["jenkins"]
+
+ - name: "check jenkins uid/gid used for config generation"
+   command: "id"
+   expectedOutput: ["uid=1100.jenkins. gid=1101.docker. .*"]
+
+ - name: "check PATH"
+   command: "echo"
+   args: ["${PATH}"]
+   expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
+   
+#- name:  "yum update"
+#  command: "yum"
+#  args: ["update", "-y"]
+
+ - name: "check openjdk 1.8.0"
+   command: "${JAVA_HOME}/bin/java"
+   args: ["-version"]
+   expectedError: ['openjdk version \"1\.8\.0_232\".*']
+
+ - name: "check python 2.7.15+"
+   command: "python"
+   args: ["--version"]
+   expectedError: ['Python 2.7.*']
+
+# - name: "check pip 19.3.1"
+#   command: "pip"
+#   args: ["--version"]
+#   expectedOutput: ['pip 19.3.1 from /usr/local/lib/python2.7/dist-packages/pip (python 2.7)']
+
+# - name: "check python 3"
+#   command: "python3"
+#   args: ["--version"]
+#   expectedOutput: ['Python 3.6.*']
+#
+# - name: "check python 3.5.7"
+#   command: "python3.5"
+#   args: ["--version"]
+#   expectedOutput: ['Python 3.5.*']
+#
+# - name: "check python 3.6.8"
+#   command: "python3.6"
+#   args: ["--version"]
+#   expectedOutput: ['Python 3.6.*']
+
+# - name: "check docker 19.03.4"
+#   command: "docker"
+#   args: ["--version"]
+#   expectedOutput: ['Docker version 19.03.*']
+
+metadataTest:
+  env:
+    - key: "PATH"
+      value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#  labels:
+#    - key: 'com.example.vendor'
+#      value: 'ACME Incorporated'
+#  exposedPorts: ["8080", "2345"]
+  volumes: []
+#  volumes: ["/test"]
+#  cmd: ["/home/jenkins/test.war"]
+#  workdir: "/home/jenkins"

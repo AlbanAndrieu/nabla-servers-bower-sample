@@ -133,6 +133,12 @@ pipeline {
                         }
                     }
                     steps {
+                
+                        if (env.CLEAN_RUN == true) {
+                          cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
+                          //cleanStash()                     
+                        }      
+
                         //checkout scm
 
                         //checkout([
@@ -307,6 +313,9 @@ exit 0
                             label 'docker-compose-TODO'
                         }
                     }
+                    environment {
+                        CST_CONFIG = "docker/ubuntu16/config.yaml"
+                    }
                     when {
                         expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
                     }
@@ -350,17 +359,32 @@ exit 0
                                         //TODO sh 'bower --version'
                                         sh 'date > /tmp/test.txt'
                                         sh "cp /tmp/test.txt ${WORKSPACE}"
-                                        archiveArtifacts artifacts: 'test.txt, *.log, /home/jenkins/*.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
+                                        sh "cp ${HOME}/microscanner.log ${WORKSPACE}"
+                                        archiveArtifacts artifacts: 'test.txt, *.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
                                     }
 
-                                    sh 'which container-structure-test'
-                                    sh "./scripts/docker-test.sh ${DOCKER_NAME_BUILD} ${DOCKER_BUILD_TAG}"
-
+                                    //sh 'which container-structure-test'
+                                    cst = sh (
+                                      script: "./scripts/docker-test.sh ${DOCKER_NAME_BUILD} ${DOCKER_BUILD_TAG}",
+                                      returnStatus: true
+                                    )
+					                
+                                    echo "CONTAINER STRUCTURE TEST RETURN CODE : ${cst}"
+                                    if (cst == 0) {
+                                        echo "CONTAINER STRUCTURE TEST SUCCESS"
+                                    } else {
+                                        echo "CONTAINER STRUCTURE TEST FAILURE"
+                                        currentBuild.result = 'UNSTABLE'
+                                    }
+                    
                                     dockerComposeLogs()
+                                    
+                                    echo "DRY_RUN : ${env.DRY_RUN}"
 
-                                    if (!env.DRY_RUN) {
+                                    //if (env.DRY_RUN == false) {
+                                    if (isReleaseBranch()) {
                                         //pushDockerImage(container, "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}", "${DOCKER_TAG}")
-                                        ///* Push the container to the custom Registry */
+                                        echo "Push the container to the custom Registry"
                                         //customImage.push()
                                         container.push('latest')
                                     }
@@ -522,11 +546,12 @@ exit 0
                                     recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
                                     recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
                                     //recordIssues enabledForFailure: true, tool: pit()
+                                    //taskScanner()
                                     recordIssues enabledForFailure: true,
                                                  aggregatingResults: true,
                                                  id: "analysis-java",
                                                  tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc(),
-                                                         spotBugs(), taskScanner()
+                                                         spotBugs(), 
                                                  ],
                                                  filters: [excludeFile('.*\\/target\\/.*'),
                                                            excludeFile('node_modules\\/.*'),
@@ -705,9 +730,12 @@ exit 0
                             steps {
                                 script {
 
-                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_TEST_RUNTIME_NAME: DOCKER_NAME_RUNTIME, dockerFilePath: "./docker/centos7/")
+                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_NAME_RUNTIME: DOCKER_NAME_RUNTIME, dockerFilePath: "./docker/centos7/", dockerTargetPath: "./", skipMaven: false)
 
                                     echo "DOCKER_RUNTIME_TAG: ${env.DOCKER_RUNTIME_TAG}"
+                                    
+                                    withCSTWrapper(imageName: "${DOCKER_RUNTIME_IMG}", configFile: "docker/centos7/config.yaml")
+                                    
                                 } // script
                             } // steps
                             post {
@@ -1087,7 +1115,7 @@ exit 0
                             //stash includes: '${ARTIFACTS}', name: 'app'
                             //unstash 'app'
 
-                            def remoteDirectory = "TEST/LatestBuildsUntested/" + getSemVerReleasedVersion() + "-PROMOTE"
+                            String remoteDirectory = "TEST/LatestBuildsUntested/" + getSemVerReleasedVersion() + "-PROMOTE"
 
                             sshPublisherWrapper(remoteDirectory: remoteDirectory, sourceFiles: '**/TEST-*.tar.gz,target/test.war') {
 
@@ -1128,8 +1156,8 @@ exit 0
                     agent {
                         docker {
                             image DOCKER_IMAGE
-                            reuseNode true
-                            args DOCKER_OPTS_COMPOSE
+                            reuseNode false
+                            args DOCKER_OPTS_BASIC
                             label 'docker-compose-TODO'
                         }
                     }
@@ -1246,7 +1274,7 @@ Changelog of Git Changelog.
                 docker {
                     image DOCKER_IMAGE
                     reuseNode true
-                    args DOCKER_OPTS_COMPOSE
+                    args DOCKER_OPTS_BASIC
                     label 'docker-compose-TODO'
                 }
             }

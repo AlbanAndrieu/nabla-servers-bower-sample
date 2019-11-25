@@ -10,16 +10,28 @@ def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
 def DOCKER_REGISTRY_CREDENTIAL='jenkins'.trim()
 def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
 
-def DOCKER_OPTS = [
-    '--init',
-//    '-e HOME=${WORKSPACE}',
+String DOCKER_RUNTIME_TAG="latest".trim()
+String DOCKER_NAME_RUNTIME="bower-fr-integration-test".trim()
+String DOCKER_RUNTIME_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_RUNTIME}:${DOCKER_RUNTIME_TAG}".trim()
+
+def DOCKER_OPTS_BASIC = [
+    '--dns-search=misys.global.ad',
+    '-v /etc/passwd:/etc/passwd:ro',
+    '-v /etc/group:/etc/group:ro',
+//    '-v /home/jenkins:/home/jenkins',
+    '--entrypoint=\'\'',
+].join(" ")
+
+def DOCKER_OPTS_COMPOSE = [
+    DOCKER_OPTS_BASIC,
+    '-v /var/run/docker.sock:/var/run/docker.sock',
 ].join(" ")
 
 pipeline {
     //agent none
     agent {
         label 'docker-compose'
-    }
+    }    
     parameters {
         string(defaultValue: 'develop', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
@@ -44,41 +56,38 @@ pipeline {
         //skipDefaultCheckout()
         disableConcurrentBuilds()
         ansiColor('xterm')
-        timeout(time: 120, unit: 'MINUTES')
+        timeout(time: 60, unit: 'MINUTES')
         timestamps()
-        retry(3)
-        disableResume()
     }
     stages {
-        stage('\u2795 Quality - Security - Checkmarx') {
+        stage('\u2795 Quality - Security - Aqua') {
             agent {
                 docker {
                     image DOCKER_IMAGE
                     reuseNode true
-                    //registryUrl DOCKER_REGISTRY_URL
-                    //registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                    args DOCKER_OPTS
+                    args DOCKER_OPTS_COMPOSE
                     label 'docker-compose'
                 }
             }
             when {
-                expression { BRANCH_NAME ==~ /release|master|develop/ }
+                expression { BRANCH_NAME ==~ /release|master|develop|PR-NOK-.*/ }
             }
             steps {
                 script {
 
-                    properties(createPropertyList(cronString: env.BRANCH_NAME == 'develop' ? 'H H(0-7) * * 6' : ''))
+                    properties(createPropertyList())
 
-                    stage('\u2795 Quality - Security - Checkmarx') {
-                        script {
-                            withCheckmarxWrapper(excludeFolders: ", bm",
-                                projectName: 'MGR_UIComponents_Sample_Checkmarx',
-                                preset: '1')
-                        } // script
-                    } // stage Security - Checkmarx
-                } // script
+                    if (!params.DRY_RUN && !params.RELEASE) {
+                        //AquaScanAndPublish("${DOCKER_RUNTIME_IMG}", "${DOCKER_NAME_RUNTIME}")
+                        //withAquaWrapper(imageName: "${DOCKER_IMAGE}", reportName: "${DOCKER_NAME}")
+                        // See https://jenkins.io/doc/pipeline/steps/aqua-security-scanner/
+                        aqua customFlags: '', hideBase: true, hostedImage: "${DOCKER_IMAGE}", localImage: "${DOCKER_IMAGE}", locationType: 'local', notCompliesCmd: '', onDisallowed: 'ignore', policies: '', register: true, registry: "${DOCKER_REGISTRY}", showNegligible: true
+                        
+                        //whitesource jobApiToken: '', jobCheckPolicies: 'global', jobForceUpdate: 'global', jobUserKey: '', libExcludes: '', libIncludes: '', product: 'Producttoken', productVersion: '1.0.0', projectToken: 'Projecttoken', requesterEmail: 'alban.andrieu@free.fr'
+                    } // if DRY_RUN
+                } //script
             } // steps
-        } // stage Security
+        } // stage Security - Dependency Aqua
     } // stages
     post {
         cleanup {
