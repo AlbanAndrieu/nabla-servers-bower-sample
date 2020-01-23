@@ -48,7 +48,7 @@
         <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 
         <maven.frontend.plugin.version>1.7.5</maven.frontend.plugin.version>
-        <maven.dependency.check.plugin.version>5.2.2</maven.dependency.check.plugin.version>
+        <maven.dependency.check.plugin.version>5.2.4</maven.dependency.check.plugin.version>
         <maven.cargo.maven2.plugin.version>1.7.5</maven.cargo.maven2.plugin.version>
         <maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
         <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
@@ -107,6 +107,7 @@
         <jersey.bom.version>${jersey.version}</jersey.bom.version>
         <slf4j.version>1.7.13</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
+        <log4j.core.version>2.13.0</log4j.core.version>
         <logback.version>1.0.13</logback.version>
         <jsr305.version>2.0.1</jsr305.version>
         <http.builder.version>0.6</http.builder.version>
@@ -1214,22 +1215,6 @@
                     <password>${env.JENKINS_USER_TOKEN}</password>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>net.java.maven-incremental-build</groupId>
-                <artifactId>incremental-build-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>incremental-build</goal>
-                        </goals>
-                        <configuration>
-                            <noIncrementalBuild>${skip.incremental}</noIncrementalBuild>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -1471,6 +1456,27 @@
                 <sonar.sources>src/main,app</sonar.sources>
                 <sonar.tests>src/test,test</sonar.tests>
             </properties>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <!--
+            <modules>
+                <module>docker</module>
+            </modules>
+            -->
+            <activation>
+                <property>
+                    <name>docker</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <id>run-integration-test</id>
@@ -1741,12 +1747,12 @@
                         </exclusion>
                     </exclusions>
                 </dependency>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                    <version>${log4j.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
+				<dependency>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-core</artifactId>
+					<version>${log4j.core.version}</version>
+					<scope>runtime</scope>
+				</dependency>
             </dependencies>
         </profile>
     </profiles>

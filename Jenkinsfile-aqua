@@ -1,31 +1,21 @@
 #!/usr/bin/env groovy
 @Library('github.com/AlbanAndrieu/jenkins-pipeline-scripts@master') _
 
-def DOCKER_REGISTRY="hub.docker.com"
-def DOCKER_ORGANISATION="nabla"
-def DOCKER_TAG="latest"
-def DOCKER_NAME="ansible-jenkins-slave-docker"
+String DOCKER_REGISTRY="hub.docker.com".trim()
+String DOCKER_ORGANISATION="nabla".trim()
+String DOCKER_TAG="latest".trim()
+String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
 
-def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
-def DOCKER_REGISTRY_CREDENTIAL='jenkins'.trim()
-def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
+String DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
+String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "jenkins".trim()
+String DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
 
 String DOCKER_RUNTIME_TAG="latest".trim()
 String DOCKER_NAME_RUNTIME="bower-fr-integration-test".trim()
 String DOCKER_RUNTIME_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_RUNTIME}:${DOCKER_RUNTIME_TAG}".trim()
 
-def DOCKER_OPTS_BASIC = [
-    '--dns-search=misys.global.ad',
-    '-v /etc/passwd:/etc/passwd:ro',
-    '-v /etc/group:/etc/group:ro',
-//    '-v /home/jenkins:/home/jenkins',
-    '--entrypoint=\'\'',
-].join(" ")
-
-def DOCKER_OPTS_COMPOSE = [
-    DOCKER_OPTS_BASIC,
-    '-v /var/run/docker.sock:/var/run/docker.sock',
-].join(" ")
+//String DOCKER_OPTS_BASIC = getDockerOpts()
+String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
 pipeline {
     //agent none
@@ -78,12 +68,8 @@ pipeline {
                     properties(createPropertyList())
 
                     if (!params.DRY_RUN && !params.RELEASE) {
-                        //AquaScanAndPublish("${DOCKER_RUNTIME_IMG}", "${DOCKER_NAME_RUNTIME}")
-                        //withAquaWrapper(imageName: "${DOCKER_IMAGE}", reportName: "${DOCKER_NAME}")
-                        // See https://jenkins.io/doc/pipeline/steps/aqua-security-scanner/
-                        aqua customFlags: '', hideBase: true, hostedImage: "${DOCKER_IMAGE}", localImage: "${DOCKER_IMAGE}", locationType: 'local', notCompliesCmd: '', onDisallowed: 'ignore', policies: '', register: true, registry: "${DOCKER_REGISTRY}", showNegligible: true
                         
-                        //whitesource jobApiToken: '', jobCheckPolicies: 'global', jobForceUpdate: 'global', jobUserKey: '', libExcludes: '', libIncludes: '', product: 'Producttoken', productVersion: '1.0.0', projectToken: 'Projecttoken', requesterEmail: 'alban.andrieu@free.fr'
+                        //whitesource, productVersion: '1.0.0', requesterEmail: 'alban.andrieu@free.fr')
                     } // if DRY_RUN
                 } //script
             } // steps

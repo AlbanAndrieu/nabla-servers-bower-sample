@@ -1,5 +1,5 @@
 {
-  "name": "bower-sample",
+  "name": "nabla-servers-bower-sample",
   "description": "Bower sample",
   "branchVersion": "^1.0.2",
   "branchPattern": "1.0.*",
@@ -177,8 +177,8 @@
     "yo": "3.1.0"
   },
   "scripts": {
-    "update-webdriver": "webdriver-manager update --versions.chrome 2.37",
-    "postinstall": "webdriver-manager update --versions.chrome 2.37 || true",
+    "update-webdriver": "webdriver-manager update --versions.chrome 2.42",
+    "postinstall": "webdriver-manager update --versions.chrome 2.42 || true",
     "test": "grunt test",
     "webpagetest": "./node_modules/webpagetest/bin/webpagetest test http://localhost:9090/test/#/ --key $WPT_API_KEY --first --location Dulles:Chrome --poll --timeout 60 --specs tco-specs.json --reporter spec"
   }

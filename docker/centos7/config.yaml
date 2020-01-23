@@ -31,7 +31,7 @@ commandTests:
    command: "echo"
    args: ["${PATH}"]
    expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
-   
+
 #- name:  "yum update"
 #  command: "yum"
 #  args: ["update", "-y"]
@@ -60,11 +60,16 @@ commandTests:
 #   command: "python3.5"
 #   args: ["--version"]
 #   expectedOutput: ['Python 3.5.*']
-#
-# - name: "check python 3.6.8"
-#   command: "python3.6"
-#   args: ["--version"]
-#   expectedOutput: ['Python 3.6.*']
+
+ - name: "check python 3.6.8"
+   command: "python3.6"
+   args: ["--version"]
+   expectedOutput: ['Python 3.6.*']
+
+ - name: "check pip 19.3.1"
+   command: "pip3"
+   args: ["--version"]
+   expectedOutput: ["pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)*"]
 
 # - name: "check docker 19.03.4"
 #   command: "docker"
@@ -78,8 +83,9 @@ metadataTest:
 #  labels:
 #    - key: 'com.example.vendor'
 #      value: 'ACME Incorporated'
+  exposedPorts: ["8080"]
 #  exposedPorts: ["8080", "2345"]
   volumes: []
 #  volumes: ["/test"]
-#  cmd: ["/home/jenkins/test.war"]
-#  workdir: "/home/jenkins"
+  cmd: ["/home/jenkins/test.war"]
+  workdir: "/home/jenkins"

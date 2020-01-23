@@ -5,27 +5,30 @@
     - define global behavior
 */
 
-def DOCKER_REGISTRY="hub.docker.com".trim()
-//def DOCKER_ORGANISATION="nabla".trim()
-def DOCKER_TAG="latest".trim()
-//def DOCKER_USERNAME="nabla"
-def DOCKER_NAME="ansible-jenkins-slave-docker".trim()
+String DOCKER_REGISTRY="hub.docker.com".trim()
+String DOCKER_ORGANISATION="nabla".trim()
+String DOCKER_TAG="latest".trim()
+//String DOCKER_USERNAME="nabla"
+String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
 
-def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
-def DOCKER_REGISTRY_CREDENTIAL='jenkins'.trim()
-def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
+String DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
+String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "jenkins".trim()
+String DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
 
-def DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: true)
+String DOCKER_OPTS_BASIC = getDockerOpts()
+String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
-def DOCKER_NAME_BUILD="ansible-jenkins-slave-docker".trim()
-def DOCKER_BUILD_TAG=dockerTag("temp").trim()
-def DOCKER_BUILD_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
-def DOCKER_RUNTIME_TAG="latest".trim()
-def DOCKER_NAME_RUNTIME="nabla-servers-bower-sample-test".trim()
-def DOCKER_RUNTIME_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_RUNTIME}:${DOCKER_RUNTIME_TAG}".trim()
+String DOCKER_NAME_BUILD="ansible-jenkins-slave-test".trim()
+String DOCKER_BUILD_TAG=dockerTag("temp").trim()
+String DOCKER_BUILD_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
+String DOCKER_RUNTIME_TAG="latest".trim()
+String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
+String DOCKER_RUNTIME_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
 
-def RELEASE_VERSION=""
-def GIT_COMMIT_REV=""
+String RELEASE_VERSION=""
+String GIT_COMMIT_REV=""
+
+def NODES_USED = []
 
 String ARTIFACTS = ['*_VERSION.TXT',
                 '**/target/*.log',
@@ -50,7 +53,7 @@ pipeline {
     //agent none
     agent {
         label 'docker-compose-TODO'
-    }    
+    }
     //agent {
     //    // Equivalent to "docker build -f Dockerfile-jenkins-slave-ubuntu:16.04 --build-arg FILEBEAT_VERSION=6.3.0 ./build/
     //    dockerfile {
@@ -65,14 +68,13 @@ pipeline {
         //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
     //}
     parameters {
-        //booleanParam(name: "RELEASE", defaultValue: false, description: "Perform release-type build.")
-        string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
-        string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT')
-        string(defaultValue: '', description: 'Default workspace suffix to override', name: 'WORKSPACE_SUFFIX')
-        string(defaultValue: 'http://localhost:9190', description: 'Default URL used by deployment tests', name: 'SERVER_URL')
+        string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME', trim: true)
+        string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT', trim: true)
+        string(defaultValue: '', description: 'Default workspace suffix to override', name: 'WORKSPACE_SUFFIX', trim: true)
+        string(defaultValue: 'http://localhost:9190', description: 'Default URL used by deployment tests', name: 'SERVER_URL', trim: true)
         string(defaultValue: '/test/#/', description: 'Default context', name: 'SERVER_CONTEXT')
-        string(defaultValue: 'LATEST_SUCCESSFULL', description: 'Create a TAG', name: 'TARGET_TAG')
-        string(defaultValue: 'jenkins', description: 'User', name: 'TARGET_USER')
+        string(defaultValue: 'LATEST_SUCCESSFULL', description: 'Create a TAG', name: 'TARGET_TAG', trim: true)
+        string(defaultValue: 'jenkins', description: 'User', name: 'TARGET_USER', trim: true)
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
         booleanParam(defaultValue: false, description: 'Clean before run', name: 'CLEAN_RUN')
         booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
@@ -82,8 +84,7 @@ pipeline {
         string(defaultValue: "", name: "RELEASE_VERSION", description: "Release version for artifacts", trim: true)
     }
     environment {
-        JENKINS_CREDENTIALS = 'jenkins-ssh'
-        GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}"
+        GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}".trim()
         //BRANCH_JIRA = "${env.BRANCH_NAME}".replaceAll("feature/","")
         //PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
         SONAR_INSTANCE = "sonardev"
@@ -133,69 +134,14 @@ pipeline {
                         }
                     }
                     steps {
-                
-                        if (env.CLEAN_RUN == true) {
-                          cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
-                          //cleanStash()                     
-                        }      
-
-                        //checkout scm
-
-                        //checkout([
-                        //    $class: 'GitSCM',
-                        //    branches: [[name: "refs/heads/${params.GIT_BRANCH_NAME_BUILDMASTER}"]],
-                        //    browser: [
-                        //        $class: 'Stash',
-                        //        repoUrl: "${env.GIT_BROWSE_URL}"],
-                        //    doGenerateSubmoduleConfigurations: false,
-                        //    extensions: [
-                        //        [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-                        //        //[$class: 'LocalBranch', localBranch: "**"],
-                        //        //[$class: 'WipeWorkspace'],
-                        //        [$class: 'RelativeTargetDirectory', relativeTargetDir: "bm"],
-                        //        [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
-                        //        [$class: 'IgnoreNotifyCommit'],
-                        //        //[$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.7.0']]
-                        //    ],
-                        //    gitTool: 'git-latest',
-                        //    submoduleCfg: [],
-                        //    userRemoteConfigs: [[
-                        //        credentialsId: "${env.JENKINS_CREDENTIALS}",
-                        //        url: "${env.GIT_URL}"]
-                        //    ]
-                        //])
-
-                        //checkout([
-                        //    $class: 'GitSCM',
-                        //    //branches: [[name: "refs/heads/${params.GIT_BRANCH_NAME}"]],
-                        //    branches: scm.branches,
-                        //    browser: [
-                        //        $class: 'Stash',
-                        //        repoUrl: "${env.GIT_BROWSE_URL_MAIN}"],
-                        //    doGenerateSubmoduleConfigurations: false,
-                        //    extensions: scm.extensions + [
-                        //        [$class: 'GitLFSPull'],
-                        //        [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-                        //        [$class: 'LocalBranch', localBranch: "${params.GIT_BRANCH_NAME}"],
-                        //        //[$class: 'WipeWorkspace'],
-                        //        [$class: 'RelativeTargetDirectory', relativeTargetDir: "test"],
-                        //        [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
-                        //        [$class: 'IgnoreNotifyCommit'],
-                        //        //[$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.7.0']]
-                        //    ],
-                        //    gitTool: 'git-latest',
-                        //    submoduleCfg: [],
-                        //    userRemoteConfigs: [[
-                        //        credentialsId: "${env.JENKINS_CREDENTIALS}",
-                        //        url: "${env.GIT_URL_MAIN}"]
-                        //    ]
-                        //])
-
-                        //dir ("test") {
-
-                        //} // dir
-
                         script {
+
+                            if (env.CLEAN_RUN == true) {
+                              cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
+                              //cleanStash()
+                            }
+
+                            NODES_USED.add(env.NODE_NAME)
 
                             properties(createPropertyList())
 
@@ -260,13 +206,17 @@ wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280
 
 exit 0
 '''
-
-                                    //sh 'pre-commit run --files'
-
+                                  // TODO to enforce pre-commit, to be done once DEV is ready
+                                  sh "#!/bin/bash \n" +
+                                    "whoami \n" +
+                                    "./scripts/run-python.sh\n" +
+                                    "pre-commit run -a || true\n" +
+                                    "kubectl --kubeconfig ${params.CONFIG_DIR}/kube.config cluster-info || true\n"
                                 } // if
                             } // gitCheckoutTEST
-                                                        
+
                             echo "DOCKER_OPTS_COMPOSE: ${DOCKER_OPTS_COMPOSE}"
+                            echo "DOCKER_OPTS_BASIC: ${DOCKER_OPTS_BASIC}"
 
                             RELEASE_VERSION = getSemVerReleasedVersion() ?: "LATEST"
 
@@ -308,13 +258,13 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             alwaysPull true
-                            reuseNode true
+                            reuseNode false
                             args DOCKER_OPTS_COMPOSE
                             label 'docker-compose-TODO'
                         }
                     }
                     environment {
-                        CST_CONFIG = "docker/ubuntu16/config.yaml"
+                        CST_CONFIG = "docker/ubuntu16/config-BUILD.yaml"
                     }
                     when {
                         expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
@@ -329,23 +279,23 @@ exit 0
                                 sh 'id jenkins'
                                 sh 'ls -lrta /var/run/docker.sock'
 
-                                sh(returnStdout: true, script: "echo ${DOCKER_BUILD_IMG} | cut -d'/' -f -1").trim()
+                                // this give the registry
+                                // sh(returnStdout: true, script: "echo ${DOCKER_BUILD_IMG} | cut -d'/' -f -1").trim()
                                 DOCKER_BUILD_ARGS = ["--build-arg JENKINS_USER_HOME=/home/jenkins --build-arg=MICROSCANNER_TOKEN=NzdhNTQ2ZGZmYmEz"].join(" ")
                                 if (env.CLEAN_RUN) {
                                     DOCKER_BUILD_ARGS = ["--no-cache",
                                                          "--pull",
-                                                         //"--target builder", // See issue https://issues.jenkins-ci.org/browse/JENKINS-44609?page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel&showAll=true
                                                          ].join(" ")
                                 }
                                 DOCKER_BUILD_ARGS = [ "${DOCKER_BUILD_ARGS}",
-                                                      "--label 'version=1.0.6'",
-                                                      "--label 'maintainer=Alban Andrieu <alban.andrieu@free.fr>'",
+                                                      "--target BUILD", // See issue https://issues.jenkins-ci.org/browse/JENKINS-44609?page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel&showAll=true
+                                                      "--label 'version=1.0.0'",
                                                     ].join(" ")
 
                                 //docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
 
                                     //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.misys.global.ad'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
-                                    
+
                                     def container = docker.build("${DOCKER_BUILD_IMG}", "${DOCKER_BUILD_ARGS} . ")
                                     container.inside {
                                         sh 'echo DEBUGING image : $PATH'
@@ -353,13 +303,13 @@ exit 0
                                         sh 'java -version'
                                         sh 'id jenkins'
                                         sh 'ls -lrta'
-                                        sh 'ls -lrta /home/jenkins/'
-                                        sh 'less ${HOME}/.bowerrc'
-                                        sh 'npm --version'
+                                        sh 'ls -lrta /home/jenkins/ || true'
+                                        sh 'less ${HOME}/.bowerrc || true'
+                                        //sh 'npm --version'
                                         //TODO sh 'bower --version'
                                         sh 'date > /tmp/test.txt'
                                         sh "cp /tmp/test.txt ${WORKSPACE}"
-                                        sh "cp ${HOME}/microscanner.log ${WORKSPACE}"
+                                        sh "cp ${HOME}/microscanner.log ${WORKSPACE} || true"
                                         archiveArtifacts artifacts: 'test.txt, *.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
                                     }
 
@@ -368,7 +318,7 @@ exit 0
                                       script: "./scripts/docker-test.sh ${DOCKER_NAME_BUILD} ${DOCKER_BUILD_TAG}",
                                       returnStatus: true
                                     )
-					                
+
                                     echo "CONTAINER STRUCTURE TEST RETURN CODE : ${cst}"
                                     if (cst == 0) {
                                         echo "CONTAINER STRUCTURE TEST SUCCESS"
@@ -376,9 +326,9 @@ exit 0
                                         echo "CONTAINER STRUCTURE TEST FAILURE"
                                         currentBuild.result = 'UNSTABLE'
                                     }
-                    
+
                                     dockerComposeLogs()
-                                    
+
                                     echo "DRY_RUN : ${env.DRY_RUN}"
 
                                     //if (env.DRY_RUN == false) {
@@ -551,7 +501,7 @@ exit 0
                                                  aggregatingResults: true,
                                                  id: "analysis-java",
                                                  tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc(),
-                                                         spotBugs(), 
+                                                         spotBugs(),
                                                  ],
                                                  filters: [excludeFile('.*\\/target\\/.*'),
                                                            excludeFile('node_modules\\/.*'),
@@ -604,7 +554,7 @@ exit 0
                                         sourceEncoding: 'ASCII',
                                         zoomCoverageChart: false
                                         ])
-                                        
+
                                     publishCoverage adapters: [jacocoAdapter(mergeToOneReport: true, path: 'target/jacoco.exec, target/jacoco-it.exec')], failNoReports: true, sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
 
                                     step([$class: "TapPublisher", testResults: "target/yslow.tap"])
@@ -624,7 +574,7 @@ exit 0
                                                  aggregatingResults: true,
                                                  id: "analysis-java",
                                                  tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc(),
-                                                         spotBugs(), 
+                                                         spotBugs(),
                                                  ],
                                                  filters: [excludeFile('.*\\/target\\/.*'),
                                                            excludeFile('node_modules\\/.*'),
@@ -708,6 +658,8 @@ exit 0
                                 script {
                                     withSonarQubeWrapper(verbose: true,
                                         skipMaven: false,
+                                        skipSonarCheck: false,
+                                        reportTaskFile: ".scannerwork/report-task.txt",
                                         isScannerHome: false,
                                         sonarExecutable: "/usr/local/sonar-runner/bin/sonar-scanner",
                                         project: "NABLA",
@@ -730,12 +682,12 @@ exit 0
                             steps {
                                 script {
 
-                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_NAME_RUNTIME: DOCKER_NAME_RUNTIME, dockerFilePath: "./docker/centos7/", dockerTargetPath: "./", skipMaven: false)
+                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_RUNTIME_NAME: DOCKER_RUNTIME_NAME, dockerFilePath: "./docker/centos7/", dockerTargetPath: "./", skipMaven: false)
 
-                                    echo "DOCKER_RUNTIME_TAG: ${env.DOCKER_RUNTIME_TAG}"
-                                    
-                                    withCSTWrapper(imageName: "${DOCKER_RUNTIME_IMG}", configFile: "docker/centos7/config.yaml")
-                                    
+                                    echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
+
+                                    withCSTWrapper(imageName: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
+
                                 } // script
                             } // steps
                             post {
@@ -757,7 +709,7 @@ exit 0
                                 DOCKER_COMPOSE_FILE="docker-compose.prod.yml"
                                 DOCKER_COMPOSE_UP_OPTIONS="--exit-code-from web web"
                                 TEST_RESULTS_PATH="/tmp/result/test-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
-                                ROBOT_RESULTS_PATH="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+                                dockerResultPath="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
                                 ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"
                             }
                             steps {
@@ -805,7 +757,7 @@ exit 0
                                             }
 
                                             // --memory 1024m --cpus="1.5"
-                                            //docker.image("https://github.com/AlbanAndrieu/nabla-servers-bower-sample:develop").withRun("-e \"ADDITIONAL_ROBOT_OPTS=${ADDITIONAL_ROBOT_OPTS}\" -e \"ROBOT_RESULTS_PATH=${ROBOT_RESULTS_PATH}\"").inside("--link frarc:frarc --network ${DOCKER_TEST_TAG}_default -v ${ROBOT_RESULTS_PATH}:/tmp/:rw") {c ->
+                                            //docker.image("https://github.com/AlbanAndrieu/nabla-servers-bower-sample:develop").withRun("-e \"ADDITIONAL_ROBOT_OPTS=${ADDITIONAL_ROBOT_OPTS}\" -e \"dockerResultPath=${dockerResultPath}\"").inside("--link frarc:frarc --network ${DOCKER_TEST_TAG}_default -v ${dockerResultPath}:/tmp/:rw") {c ->
                                             //    sh "docker logs ${c.id}"
                                             //    //sh "python --version"
                                             //}
@@ -832,22 +784,18 @@ exit 0
 
                                             //unstash 'maven-artifacts'
 
-                                            def containerId = getContainerId(DOCKER_TEST_CONTAINER: "${DOCKER_TEST_TAG}_web_1")
-							                
-                                            if (containerId?.trim()) {
-                                                sh """
-                                                    docker cp ${containerId}:${TEST_RESULTS_PATH} result || true
-                                                """
-                                            }
-                            
-                                            publishHTML([allowMissing: true,
-                                                alwaysLinkToLastBuild: false,
-                                                keepAll: true,
-                                                reportDir: "result/latestResult/",
-                                                //reportDir: "result/",
-                                                reportFiles: 'index.html',
-                                                reportName: 'Test Report',
-                                                reportTitles: 'TEST index'])
+                                            getContainerResults(DOCKER_TEST_CONTAINER: "${DOCKER_TEST_TAG}_web_1") {
+
+                                                publishHTML([allowMissing: true,
+                                                    alwaysLinkToLastBuild: false,
+                                                    keepAll: true,
+                                                    reportDir: "result/latestResult/",
+                                                    //reportDir: "result/",
+                                                    reportFiles: 'index.html',
+                                                    reportName: 'Test Report',
+                                                    reportTitles: 'TEST index'])
+
+                                            } // getContainerResults
 
                                         } catch(exc) {
                                             echo 'Error: There were errors in tests. '+exc.toString()
@@ -1017,28 +965,25 @@ exit 0
         // TODO https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/
         // No need to occupy a node
         stage("\u2795 Quality - Quality Gate") {
+            agent {
+                docker {
+                    image DOCKER_IMAGE
+                    reuseNode true
+                    args DOCKER_OPTS_BASIC
+                    label 'docker-compose'
+                }
+            }
+            when {
+                expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+            }
             steps {
                 script {
+                    //if (!env.DRY_RUN && !env.RELEASE) {
+                        //checkout scm
 
-                    if (!env.DRY_RUN && !env.RELEASE) {
-                        context="sonarqube/qualitygate"
-                        utils = load "Jenkinsfile-vars"
-                        utils.setBuildStatus ("${context}", 'Checking Sonarqube quality gate', 'PENDING')
-                        timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                            def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                            if (qg.status != 'OK') {
-                                utils.setBuildStatus ("${context}", "Sonarqube quality gate fail: ${qg.status}", 'FAILURE')
-                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                            } else {
-                                utils.setBuildStatus ("${context}", "Sonarqube quality gate pass: ${qg.status}", 'SUCCESS')
-                            }
-                        } // timeout
+                        echo "TODO"
 
-                        sh 'curl -LJO https://github.com/whitesource/unified-agent-distribution/raw/master/standAlone/wss_agent.sh'
-
-                        sh 'wss_agent.sh -apiKey xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx -c [path to config file] -project my-project -d [path to folder to scan]'
-
-                    } // if DRY_RUN
+                    //} // if DRY_RUN
                 } // script
             } // steps
         } // stage Quality Gate
@@ -1171,85 +1116,8 @@ exit 0
                             checkout scm
 
                             withTag()
-                            
-                            writeFile file: "git-changelog-settings.json", text: '''
-{
- "fromRepo": ".",
- "fromCommit": "0000000000000000000000000000000000000000",
- "toRef": "refs/tags/LATEST_SUCCESSFULL",
 
- "ignoreCommitsIfMessageMatches": "^\\[maven-release-plugin\\].*|^\\[Gradle Release Plugin\\].*|^Merge.*",
- "readableTagName": "/([^/]+?)$",
- "dateFormat": "YYYY-MM-dd HH:mm:ss",
- "untaggedName": "Next release",
- "noIssueName": "Other changes",
- "ignoreCommitsWithoutIssue": "true",
- "timeZone": "UTC",
- "removeIssueFromMessage": "true",
-
- "jiraServer": "https://almtools/jira",
- "jiraIssuePattern": "\\b[a-zA-Z]([a-zA-Z]+)-([0-9]+)\\b",
-
- "gitHubApi": "https://api.github.com/repos/tomasbjerre/git-changelog-lib",
- "gitHubIssuePattern": "#([0-9]+)",
-
- "customIssues": [
-  { "name": "Incidents", "title": "${PATTERN_GROUP_1}", "pattern": "INC([0-9]*)", "link": "http://inc/${PATTERN_GROUP}" },
-  { "name": "CQ", "title": "${PATTERN_GROUP_1}", "pattern": "CQ([0-9]+)", "link": "http://cq/${PATTERN_GROUP_1}" },
-  { "name": "Bugs", "title": "Mixed bugs", "pattern": "#bug" }
- ]
-}
-'''                           
-                    
-                            def createFileTemplateContent = '''<h1> Git Changelog changelog </h1>
-
-<p>
-Changelog of Git Changelog.
-</p>
-
-{{#tags}}
-<h2> {{name}} </h2>
- {{#issues}}
-  {{#hasIssue}}
-   {{#hasLink}}
-<h2> {{name}} <a href="{{link}}">{{issue}}</a> {{title}} </h2>
-   {{/hasLink}}
-   {{^hasLink}}
-<h2> {{name}} {{issue}} {{title}} </h2>
-   {{/hasLink}}
-  {{/hasIssue}}
-  {{^hasIssue}}
-<h2> {{name}} </h2>
-  {{/hasIssue}}
-
-
-   {{#commits}}
-<a href="https://github.com/tomasbjerre/git-changelog-lib/commit/{{hash}}">{{hash}}</a> {{authorName}} <i>{{commitTime}}</i>
-<p>
-<h3>{{{messageTitle}}}</h3>
-
-{{#messageBodyItems}}
- <li> {{.}}</li> 
-{{/messageBodyItems}}
-</p>
-  {{/commits}}
-
- {{/issues}}
-{{/tags}}
-'''
-
-                            step([$class: 'GitChangelogRecorder', 
-                                config: [configFile: 'git-changelog-settings.json', 
-                                createFileTemplateContent: createFileTemplateContent, 
-                           showSummaryTemplateFile: 'changelog.mustache', 
-                           showSummaryUseTemplateFile: true, subDirectory: '', 
-                           timeZone: 'UTC', 
-                           toReference: '', 
-                           toType: 'master', 
-                           untaggedName: 'Unreleased', 
-                           useConfigFile: true, 
-                           useFile: true]])
-
+                            withChangelog()
 
                        } // script
                     } // steps
@@ -1269,38 +1137,14 @@ Changelog of Git Changelog.
             } // parallel
         } // stage Push
 
-        stage('\u277B Promote') {
-            agent {
-                docker {
-                    image DOCKER_IMAGE
-                    reuseNode true
-                    args DOCKER_OPTS_BASIC
-                    label 'docker-compose-TODO'
-                }
-            }
-            when {
-                expression { BRANCH_NAME ==~ /(release\/.+|master|develop)/ }
-            }
-            environment {
-                TARGET_USER = "jenkins"
-                TARGET_HOST = "home.nabla.mobi"
-                INSTALLER_PATH = "1.0.0"
-                TARGET_SHARE_DIR = "/var/www/release/${INSTALLER_PATH}/"
-            }
-            steps {
-                milestone label: 'promote', ordinal: 4
-
-                unstash 'maven-artifacts'
-
-                //sh "scp target/*.war $TARGET_USER@$TARGET_HOST:$TARGET_SHARE_DIR/"
-
-            } // steps
-        } // stage Promote
-
     } // stages
     post {
         // always means, well, always run.
         always {
+            script {
+              echo "NODES_USED : " + NODES_USED.toString()
+            } // script
+
             node('docker-compose-TODO') {
                 runHtmlPublishers(["LogParserPublisher"])
             }
@@ -1315,156 +1159,42 @@ Changelog of Git Changelog.
             echo "I'm different"
         }
         success {
-            //node('docker-compose-TODO') {
-                echo "I succeeded"
-                script {
-                    manager.removeBadge(0) // See issue https://issues.jenkins-ci.org/browse/JENKINS-52043
-                    //manager.removeShortText("deployed")
-                    manager.removeSummaries()
-                } //script
-            //} // node
+            echo "I succeeded"
+            script {
+                manager.removeBadge(0) // See issue https://issues.jenkins-ci.org/browse/JENKINS-52043
+                //manager.removeShortText("deployed")
+                manager.removeSummaries()
+            } //script
         } // success
         cleanup {
             node('docker-compose-TODO') {
                 dockerCleaning()
             }
 
-            wrapCleanWs(isEmailEnabled: false)
+            script {
+                UNCLEANED = []
+                if (NODES_USED.size() != 0) {
+                    echo NODES_USED.toSet().toString()
+                    NODES_USED.toSet().each(){ n->
+                        if (n!="") {
+                          echo n
+                          try{
+                             timeout(time: 2, unit: 'MINUTES') {
+                                 wrapCleanWsOnNode(nodeLabel:n, isEmailEnabled: false, isCleaningCachesEnabled: true)
+                             }
+                          }
+                          catch (Exception err){
+                            echo "Could not clean node ${n}"
+                            UNCLEANED.add(n)
+                          }
+
+                        } // if
+
+                    }
+                    echo "FOLLOWING NODES WERE NOT CLEANED: "+ UNCLEANED.toString()
+                }
+            } // script
         }
     } // post
 } // pipeline
 
-def gitCheckoutTEST() {
-
-    checkout scm
-
-    checkout([
-        $class: 'GitSCM',
-        branches: [[name: "refs/heads/${params.GIT_BRANCH_NAME_BUILDMASTER}"]],
-        browser: [
-            $class: 'Stash',
-            repoUrl: "${env.GIT_BROWSE_URL}"],
-        doGenerateSubmoduleConfigurations: false,
-        extensions: [
-            //[$class: 'LocalBranch', localBranch: "**"],
-            //[$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "bm"],
-            [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
-            [$class: 'IgnoreNotifyCommit'],
-            [$class: 'CheckoutOption', timeout: 120],
-            //[$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false, timeout: 120]
-            //[$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.7.0']]
-        ],
-        gitTool: 'git-latest',
-        submoduleCfg: [],
-        userRemoteConfigs: [[
-            credentialsId: "${env.JENKINS_CREDENTIALS}",
-            url: "${env.GIT_URL}"]
-        ]
-    ])
-
-    //checkout([
-    //    $class: 'GitSCM',
-    //    //branches: [[name: "refs/heads/${params.GIT_BRANCH_NAME}"]],
-    //    branches: scm.branches,
-    //    browser: [
-    //        $class: 'Stash',
-    //        repoUrl: "${env.GIT_BROWSE_URL_MAIN}"],
-    //    doGenerateSubmoduleConfigurations: false,
-    //    extensions: scm.extensions + [
-    //        [$class: 'GitLFSPull'],
-    //        [$class: 'CloneOption', depth: 0, noTags: true, reference: '', shallow: true],
-    //        [$class: 'LocalBranch', localBranch: "${params.GIT_BRANCH_NAME}"],
-    //        //[$class: 'WipeWorkspace'],
-    //        [$class: 'RelativeTargetDirectory', relativeTargetDir: "test"],
-    //        [$class: 'MessageExclusion', excludedMessage: '.*\\\\[maven-release-plugin\\\\].*'],
-    //        [$class: 'IgnoreNotifyCommit'],
-    //        //[$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: 'release/1.7.0']]
-    //    ],
-    //    gitTool: 'git-latest',
-    //    submoduleCfg: [],
-    //    userRemoteConfigs: [[
-    //        credentialsId: "${env.JENKINS_CREDENTIALS}",
-    //        url: "${env.GIT_URL_MAIN}"]
-    //    ]
-    //])
-
-    //dir ("bm") {
-
-    //} // dir
-
-    script {
-
-        if (params.RELEASE && params.RELEASE_BASE) {
-            sh "git fetch --tags; git checkout ${params.RELEASE_BASE}"
-        }
-
-        utils = load "jpl/Jenkinsfile-vars"
-        if (! isReleaseBranch()) { utils.abortPreviousRunningBuilds() }
-        env.GIT_COMMIT = utils.getCommitId()
-        echo "GIT_COMMIT: ${GIT_COMMIT} - ${env.GIT_COMMIT}"
-
-        env.GIT_REVISION = utils.getRevision()
-        echo "GIT_REVISION: ${GIT_REVISION} - ${env.GIT_REVISION}"
-
-        if (params.DEBUG_RUN) {
-            ansiColor('xterm') {
-sh '''
-set -e
-#set -xve
-
-echo "USER : $USER"
-echo "SHELL : $SHELL"
-
-id
-cat /etc/hostname
-
-cd ./bm/Scripts/release
-
-./step-2-0-0-build-env.sh || exit 1
-
-echo "PATH : ${PATH}"
-echo "JAVA_HOME : ${JAVA_HOME}"
-echo "DISPLAY : ${DISPLAY}"
-
-echo "BUILD_NUMBER: ${BUILD_NUMBER}"
-echo "BUILD_ID: ${BUILD_ID}"
-echo "IS_M2RELEASEBUILD: ${IS_M2RELEASEBUILD}"
-
-export ZAP_PORT=8091
-export JETTY_PORT=9190
-export SERVER_HOST=localhost
-#export SERVER_URL="http://localhost:${JETTY_PORT}/"
-
-echo "ZAP_PORT : ${ZAP_PORT}"
-echo "CARGO_RMI_PORT : ${CARGO_RMI_PORT}"
-echo "JETTY_PORT : ${JETTY_PORT}"
-echo "SERVER_HOST : ${SERVER_HOST}"
-echo "SERVER_URL : ${SERVER_URL}"
-echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
-
-#TODO
-#JAVA_OPTS=-Xms64m -Xmx64m
-#SUREFIRE_OPTS=-Xms256m -Xmx256m
-#MAVEN_OPTS=-Xms128m -Xmx128m -DargLine=${env.SUREFIRE_OPTS}
-
-#curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=kgr&password=Kondor_123"
-
-wget --http-user=admin --http-password=Motdepasse12 "http://kgrdb01:8280/manager/text/undeploy?path=/test" -O -
-
-#Xvfb :99 -ac -screen 0 1280x1024x24 &
-#export DISPLAY=":99"
-#nice -n 10 x11vnc 2>&1 &
-
-#google-chrome --no-sandbox &
-
-#killall Xvfb
-
-exit 0
-'''
-            } //ansiColor
-
-        } // if
-    } //script
-
-} // gitCheckout

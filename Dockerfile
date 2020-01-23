@@ -1,7 +1,6 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
-#FROM selenium/standalone-chrome:3.141.59-gold AS builder
 #FROM ubuntu:18.04
-FROM selenium/standalone-chrome:3.141.59-xenon
+FROM selenium/standalone-chrome:3.141.59-xenon as BUILD
 
 ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 
@@ -13,8 +12,7 @@ ARG CERT_URL=${CERT_URL:-"http://home.nabla.mobi/download/certs/${CERT_NAME}"}
 
 ARG MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN:-"NzdhNTQ2ZGZmYmEz"}
 
-#MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
-#LABEL vendor="TEST" version="1.0.0"
+LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
 LABEL description="Image used by nabla products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
 
@@ -43,19 +41,24 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone
 
 RUN apt-get -q update &&\
-    apt-get -q upgrade -y -o Dpkg::Options::="--force-confnew" --no-install-recommends &&\
+#    apt-get -q upgrade -y -o Dpkg::Options::="--force-confnew" --no-install-recommends &&\
     apt-get -q install -y -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
-    git bzip2 zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
+    git bzip2 zip unzip python-yaml python-jinja2 python-pip rsyslog \
     apt-transport-https ca-certificates software-properties-common \
-    locales xz-utils ksh wget tzdata sudo curl lsof sshpass \
+    locales xz-utils ksh tzdata sudo curl lsof sshpass \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
     openjdk-8-jdk maven \
     net-tools iputils-ping x11-apps
 
+# Fix potential UTF-8 errors with ansible-test.
 RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
 RUN python3 -m pip install --upgrade pip==19.2.3 \
     && pip install ansible==2.8.6 zabbix-api==0.5.3
+
+# Install Ansible inventory file.
+RUN mkdir -p /etc/ansible
+RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 RUN sudo apt-key fingerprint 0EBFCD88
@@ -64,11 +67,11 @@ RUN add-apt-repository \
     $(lsb_release -cs) \
     stable"
 # Install Docker from Docker Inc. repositories.
-RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - ;\
-    apt-get update && apt-get install -y nodejs ;\
-    npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.7 npm@6.11.3 yarn@1.19.1 yo@3.1.0 json2csv@4.3.3 phantomas@1.20.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - && \
+    apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.0 json2csv@4.3.3 phantomas@1.20.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11 dockerfile_lint@0.3.3;
 
 ARG USER=${USER:-jenkins}
 ARG GROUP=${GROUP:-docker}
@@ -120,14 +123,13 @@ RUN echo "${TZ}" > /etc/timezone \
 #RUN cat /etc/resolv.conf
 
 # Install a basic SSH server
-RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd
-RUN mkdir -p /var/run/sshd
-#RUN chmod 0755 /var/run/sshd
+#RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd
+#RUN mkdir -p /var/run/sshd
 
 # Clean up APT when done.
 #RUN AUTO_ADDED_PACKAGES=$(apt-mark showauto) \
 #&& apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES &&
-RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /tmp/* /var/tmp/* \
 && ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
 
 #COPY --chown=jenkins:$(id -gn jenkins) . $JENKINS_USER_HOME/
@@ -158,20 +160,23 @@ RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repo
 
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x
-RUN ./mvnw install -Dserver=jetty9x -Dmaven.test.skip=true
+RUN ./mvnw --batch-mode install -Dserver=jetty9x -Dmaven.test.skip=true
 
 RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_USER_HOME}/microscanner.log
-# [--continue-on-failure]
 RUN echo "No vulnerabilities!"
 #RUN /microscanner ${token} && rm /microscanner
 
-# Standard SSH port
-EXPOSE 22
+FROM openjdk:11-jre-slim
+#ENV PORT 4567
+EXPOSE 4567
+COPY --from=BUILD /home/jenkins/target/test.war /opt/
+WORKDIR /opt/
 
 ADD entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
+#CMD ["/bin/bash", "-c", "find -type f -name '*-with-dependencies.jar' | xargs java -jar"]
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM selenium/standalone-chrome:3.12.0-cobalt as tester
@@ -183,9 +188,7 @@ CMD ["/bin/bash"]
 ## This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM tomcat:8-jre8 as runner
 #
-#MAINTAINER Alban Andrieu "https://github.com/AlbanAndrieu"
-#
-#LABEL vendor="TEST" version="1.0.0"
+#LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
 #LABEL description="Image used by nabla products to build Java/Javascript and CPP\
 # this image is running on Ubuntu 16.04."
 #
@@ -202,7 +205,7 @@ CMD ["/bin/bash"]
 #RUN apt-get clean && apt-get -y update && apt-get install -y \
 #    -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
 #    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
-#    && apt-get install -y xz-utils wget curl lsof sshpass \
+#    && apt-get install -y xz-utils curl lsof sshpass \
 #    net-tools iputils-ping x11-apps
 #
 ##RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\

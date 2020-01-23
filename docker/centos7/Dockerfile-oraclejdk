@@ -1,0 +1,165 @@
+# CentOS based image for x86 Linux RH7 compilation (RHEL7.3-compatible):
+FROM centos:7.3.1611
+#FROM centos:7.6.1810 # see bug https://linuxacademy.com/community/posts/show/topic/21629-docker-failed-to-get-dbus-connection-operation-not-permitted
+
+LABEL license="Finastra" \
+      name="FusionRisk ARC Build" \
+      vendor="Finastra" \
+      maintainer="fusionrisk-docker@finastra.com"
+
+ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
+
+ARG SCONS_VERSION=${SCONS_VERSION:-2.5.1-1}
+ARG JDK8_VERSION=${JDK8_VERSION:-201}
+ARG JAVA_URL="http://fr1cslfrbm0059.misys.global.ad/download/jdk/jdk-8u${JDK8_VERSION}-linux-x64.rpm"
+ENV JDK_HOME="/usr/local/jdk1.8.0_${JDK8_VERSION}"
+ENV JAVA_HOME=${JDK_HOME}
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
+ARG CERT_URL="http://fr1cslfrbm0059.misys.global.ad/download/certs/UK1VSWCERT01-CA-5.crt"
+
+ENV SCONS="scons"
+ENV TERM="xterm-256color"
+ENV JAVA_HOME='/usr/java/latest'
+
+# EPEL / IUS repositories and dependencies to install
+RUN yum -y update ;\
+    yum -y install \
+    wget \
+    which
+
+# Add root certificate
+RUN cd /etc/pki/ca-trust/source/anchors/ && curl -L -O ${CERT_URL}
+RUN update-ca-trust force-enable &&\
+    update-ca-trust extract
+
+RUN cd /tmp &&\
+    wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm &&\
+    yum -y install epel-release-latest-7.noarch.rpm
+
+RUN cd /tmp &&\
+    wget https://centos7.iuscommunity.org/ius-release.rpm &&\
+    rpm -ivh ius-release.rpm
+
+RUN yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+
+# Add git lfs repo for yum
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | bash
+RUN rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+#clang which less subversion gcc-objc gcc-c++ glibc-devel libuuid-devel unixODBC-devel libxml2-devel libicu-devel openldap-devel openssl-devel bison flex nano doxygen cmake make
+# Compilation tools
+RUN yum -y install \
+    file \
+    openssl-devel \
+    util-linux \
+    apr \
+    apr-util \
+    libssh2 \
+    openssl-devel \
+    openldap-devel \
+    libcurl-devel \
+    libzip \
+    libxml2-devel \
+    wget \
+    unzip \
+    gcc-objc \
+    gcc-c++-4.8.5 \
+    gcc-4.8.5 \
+    g++-4.8.5 \
+    bison \
+    flex \
+    doxygen \
+    cmake \
+    make \
+    clang \
+    clang-analyzer \
+    libclang-dev \
+    llvm-3.8-dev \
+    unixODBC-devel \
+    libuuid-devel \
+    libicu-devel \
+    gnustep-base-devel \
+    libtool-ltdl \
+    libobjc \
+    mingw64-gcc-objc++ \
+    rsync \
+    pv \
+    ShellCheck \
+    perl \
+    libsecret \
+    git \
+    git-lfs \
+    yum-utils \
+    device-mapper-persistent-data \
+    lvm2 \
+    docker-ce \
+    maven \
+    python-pip \
+    python36u \
+    python36u-libs \
+    python36u-devel \
+    python36u-pip \
+    sudo
+
+RUN yum upgrade python*
+
+RUN pip install docker-compose==1.24.1 && docker-compose version
+
+RUN yum -y clean all
+
+RUN localedef -i en_US -f UTF-8 en_US.UTF-8
+
+# finalize git lfs installation and setup
+RUN git lfs install
+
+ARG SCONS_BINARY="https://fr1cslfrbm0059.misys.global.ad/download/scons/scons-${SCONS_VERSION}.noarch.rpm"
+RUN wget --no-check-certificate ${SCONS_BINARY} && yum -y localinstall $(basename ${SCONS_BINARY})
+
+ARG JAVA_URL="${JAVA_URL}"
+RUN rpm -Uvh -i ${JAVA_URL} && \
+    echo "export JAVA_HOME=${JAVA_HOME}" >> /etc/environment && \
+    echo "export JRE_HOME=${JAVA_HOME}/jre" >> /etc/environment && \
+    echo "export PATH=$PATH:${JAVA_HOME}/bin:${JAVA_HOME}/jre/bin" >>/etc/environment
+
+RUN ln -sf /etc/pki/java/cacerts /usr/java/default/jre/lib/security/cacerts
+
+# Sonar tools
+ARG SONAR_SCANNER_URL="https://fr1cslfrbm0059/download/sonar/sonar-scanner-cli-4.2.0.1873.zip"
+ARG SONAR_WRAPPER_URL="https://sonardev.misys.global.ad/static/cpp/build-wrapper-linux-x86.zip"
+
+ADD ${SONAR_SCANNER_URL} /tmp/
+RUN unzip /tmp/*.zip ;\
+    rm /tmp/*.zip ;\
+    sonar_scanner=$( ls -d /sonar-scanner*) ;\
+    mv ${sonar_scanner} /usr/local/sonar-runner/
+
+ADD ${SONAR_WRAPPER_URL} /tmp/
+RUN unzip /tmp/*.zip ;\
+    rm /tmp/*.zip ;\
+    sonar_build_wrapper=$( ls -d /build-wrapper*) ;\
+    mv ${sonar_build_wrapper} /usr/local/sonar-build-wrapper/
+
+# Add user jenkins to the image
+ARG USER=${USER:-jenkins}
+ARG GROUP=${GROUP:-docker}
+ARG UID=${UID:-1100}
+ARG GID=${GID:-1101}
+RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_USER_HOME: ${JENKINS_USER_HOME} \033[0m\n" && \
+    printf "\033[1;32mWITH $USER\ngroup: $GROUP \033[0m\n"
+
+RUN groupmod -g ${GID} docker
+RUN adduser --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
+    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
+# Set password for the jenkins user (you may want to alter this).
+RUN echo "jenkins:jenkins1234" | chpasswd
+
+ADD https://fr1cslfrbm0059/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
+RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
+
+USER jenkins
+ENV HOME=${JENKINS_USER_HOME}
+RUN chmod -R 777 ${HOME} && mkdir ${HOME}/workspace && mkdir ${HOME}/.config && mkdir ${HOME}/.local && mkdir ${HOME}/.sonar
+
+# Working dir
+WORKDIR $JENKINS_USER_HOME

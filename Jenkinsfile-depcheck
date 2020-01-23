@@ -1,20 +1,17 @@
 #!/usr/bin/env groovy
 @Library('github.com/AlbanAndrieu/jenkins-pipeline-scripts@master') _
 
-def DOCKER_REGISTRY="hub.docker.com"
-def DOCKER_ORGANISATION="nabla"
-def DOCKER_TAG="latest"
-def DOCKER_NAME="ansible-jenkins-slave-docker"
+String DOCKER_REGISTRY="hub.docker.com".trim()
+String DOCKER_ORGANISATION="nabla".trim()
+String DOCKER_TAG="latest".trim()
+String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
 
-def DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}"
-def DOCKER_REGISTRY_CREDENTIAL='jenkins'
-def DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+String DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
+String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "jenkins".trim()
+String DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
 
-//JENKINS-42369 : Docker options need to be defined outside of pipeline
-def DOCKER_OPTS = [
-    '--init',
-//    '-e HOME=${WORKSPACE}',
-].join(" ")
+String DOCKER_OPTS_BASIC = getDockerOpts()
+//String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
 pipeline {
     //agent none
@@ -56,7 +53,7 @@ pipeline {
                     reuseNode true
                     //registryUrl DOCKER_REGISTRY_URL
                     //registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
-                    args DOCKER_OPTS
+                    args DOCKER_OPTS_BASIC
                     label 'docker-compose'
                 }
             }
@@ -85,6 +82,6 @@ pipeline {
     post {
         cleanup {
             wrapCleanWs(isEmailEnabled: false)
-        } // cleanup    
+        } // cleanup
     } // post
 } // pipeline

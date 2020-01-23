@@ -54,14 +54,14 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
   else
     git clone https://github.com/lukebond/microscanner-wrapper ${WORKING_DIR}/microscanner-wrapper
   fi
-  
+
   echo -e "${WORKING_DIR}/microscanner-wrapper/scan.sh ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG} ${NC}"
-  
-  export MICROSCANNER_OPTIONS="--html" 
+
+  export MICROSCANNER_OPTIONS="--html"
   cd "${WORKING_DIR}/microscanner-wrapper/"
-  #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" 2>&1 > aqua-scan.log
-  grabhtml.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" 2>&1 > aqua-grabhtml.log
-  
+  #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-scan.log
+  grabhtml.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-grabhtml.log
+
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : MICROSCANNER_TOKEN, use the default one ${NC}"
