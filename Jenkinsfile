@@ -194,7 +194,7 @@ echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
 
 #curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=tomcat&password=microsoft"
 
-wget --http-user=admin --http-password=Motdepasse12 "http://home.nabla.mobi:8280/manager/text/undeploy?path=/test" -O -
+wget --http-user=admin --http-password=Motdepasse12 "http://home.albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
 
 #Xvfb :99 -ac -screen 0 1280x1024x24 &
 #export DISPLAY=":99"
@@ -209,7 +209,7 @@ exit 0
                                   // TODO to enforce pre-commit, to be done once DEV is ready
                                   sh "#!/bin/bash \n" +
                                     "whoami \n" +
-                                    "./scripts/run-python.sh\n" +
+                                    "source ./scripts/run-python.sh\n" +
                                     "pre-commit run -a || true\n" +
                                     "kubectl --kubeconfig ${params.CONFIG_DIR}/kube.config cluster-info || true\n"
                                 } // if
@@ -1197,4 +1197,3 @@ exit 0
         }
     } // post
 } // pipeline
-

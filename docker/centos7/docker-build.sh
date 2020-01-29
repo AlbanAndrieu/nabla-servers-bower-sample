@@ -30,7 +30,7 @@ if [ ${RC} -ne 0 ]; then
   exit 1
 else
   echo -e "${green} The build completed successfully. ${NC}"
-  
+
   echo -e "${green} Tagging the latest image. ${NC}"
   docker tag "${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest" "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest"
 fi

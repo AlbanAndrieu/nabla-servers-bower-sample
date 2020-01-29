@@ -21,7 +21,7 @@ pipeline {
     //agent none
     agent {
         label 'docker-compose'
-    }    
+    }
     parameters {
         string(defaultValue: 'develop', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME')
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
@@ -68,7 +68,7 @@ pipeline {
                     properties(createPropertyList())
 
                     if (!params.DRY_RUN && !params.RELEASE) {
-                        
+
                         //whitesource, productVersion: '1.0.0', requesterEmail: 'alban.andrieu@free.fr')
                     } // if DRY_RUN
                 } //script
@@ -78,6 +78,6 @@ pipeline {
     post {
         cleanup {
             wrapCleanWs(isEmailEnabled: false)
-        } // cleanup    
+        } // cleanup
     } // post
 } // pipeline
