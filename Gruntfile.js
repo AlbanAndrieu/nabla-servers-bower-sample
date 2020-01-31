@@ -1439,6 +1439,8 @@ module.exports = function(grunt) {
                   "angular-dynamic-locale", "angular-i18n", "angular-mocks", "angular-resource", "angular-route", "angular-sanitize",
                   "angular-touch", "angular-translate", "angular-translate-handler-log",
                   "angular-translate-loader-static-files", "angular-translate-storage-local",
+                  "angular-bootstrap", "angular-gravatar",
+                  "github-fork-ribbon-css",
                   "font-awesome"],
           hideUpToDate: true
         }
@@ -1569,7 +1571,7 @@ module.exports = function(grunt) {
     //'penthouse',
     //'yslow_test', #buggy
     'pagespeed',
-    'pagespeed_junit',
+    'pagespeed_junit'
     //'sitespeedio',
     //'phantomas'
     //'wpt',

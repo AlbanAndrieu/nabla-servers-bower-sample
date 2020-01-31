@@ -6,35 +6,38 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class App {
+public final class App
+{
 
-	private static final transient Logger LOGGER = LoggerFactory.getLogger(App.class);
+    private static final transient Logger LOGGER = LoggerFactory.getLogger(App.class);
 
-	private App() {
-	}
+    private App()
+    {
+    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         final ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
 
         final Server jettyServer = new Server(8080);
         jettyServer.setHandler(context);
 
-        final ServletHolder jerseyServlet = context.addServlet(
-             org.glassfish.jersey.servlet.ServletContainer.class, "/*");
+        final ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
         jerseyServlet.setInitOrder(0);
 
         // Tells the Jersey Servlet which REST service/class to load.
-        jerseyServlet.setInitParameter(
-           "jersey.config.server.provider.classnames",
-           BookResource.class.getCanonicalName());
+        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", BookResource.class.getCanonicalName());
 
-        try {
-			jettyServer.start();
+        try
+        {
+            jettyServer.start();
             jettyServer.join();
-        } catch (Exception e) {
-			App.LOGGER.info("Jetty failure : ", e);
-        } finally {
+        } catch (Exception e)
+        {
+            App.LOGGER.info("Jetty failure : ", e);
+        } finally
+        {
             jettyServer.destroy();
         }
     }
