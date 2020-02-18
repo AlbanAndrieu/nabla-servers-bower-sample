@@ -4,7 +4,8 @@
 # (See accompanying file LICENSE.md)
 
 sudo: required
-dist: trusty
+#dist: trusty
+dist: bionic
 
 jdk:
   - oraclejdk8
