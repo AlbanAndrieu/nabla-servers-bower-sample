@@ -4,8 +4,8 @@
 # (See accompanying file LICENSE.md)
 
 sudo: required
-#dist: trusty
-dist: bionic
+dist: travis_lts
+#dist: bionic
 
 jdk:
 #  - oraclejdk8
@@ -31,6 +31,9 @@ language: java
 node_js:
   - "8"
   - "11"
+
+services:
+  - docker
 
 cache:
   pip: true
@@ -70,8 +73,9 @@ matrix:
 
 before_install:
   - export CHROME_BIN=chromium-browser
+  - sudo apt-get install -qq xvfb  
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - sh -e /usr/bin/Xvfb start
   - npm config set spin false
   #- 'gem install sass --version "=3.2.12"'
   #- 'gem install compass --version "=0.12.2"'
