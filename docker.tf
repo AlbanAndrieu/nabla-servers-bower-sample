@@ -2,12 +2,12 @@ provider "docker" {
   host = "tcp://localhost:2376"
 
   registry_auth {
-    address = "registry.hub.docker.com"
+    address = "hub.docker.com"
     config_file = "~/.docker/config.json"
   }
 
   registry_auth {
-    address = "registry.nabla.mobi:8443"
+    address = "registry.albandrieu.com:8443"
     config_file = "~/.docker/config.json"
     #username = "aandrieu"
     #password = "todo"

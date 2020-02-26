@@ -9,8 +9,8 @@
   ],
   "author": {
     "name": "Alban Andrieu",
-    "email": "alban.andrieu@nabla.mobi",
-    "url": "http://home.nabla.mobi"
+    "email": "alban.andrieu@albandrieu.com",
+    "url": "http://home.albandrieu.com"
   },
   "license": "MIT",
   "licenses": [
@@ -19,7 +19,7 @@
       "url": "http://www.opensource.org/licenses/MIT"
     }
   ],
-  "homepage": "http://home.nabla.mobi",
+  "homepage": "http://home.albandrieu.com",
   "repository": {
     "type": "git",
     "url": "AlbanAndrieu/nabla-servers-bower"

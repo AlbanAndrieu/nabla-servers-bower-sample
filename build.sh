@@ -38,6 +38,6 @@ npm-license || true
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "java -jar target/dependency/jetty-runner.jar target/test.war"
 
-docker-compose -f docker-compose.yml -p TEST ps
+docker-compose -f docker-compose/docker-compose.yml -p TEST ps
 
 exit 0

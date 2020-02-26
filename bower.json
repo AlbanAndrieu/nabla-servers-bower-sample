@@ -2,7 +2,7 @@
   "name": "bower-sample",
   "description": "Sample bower component",
   "version": "1.0.2",
-  "author": "Nabla Core Team <dev@home.nabla.mobi>",
+  "author": "Nabla Core Team <dev@albandrieu.com>",
   "license": "MIT",
   "private": "false",
   "main": "app/scripts/app.js",

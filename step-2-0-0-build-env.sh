@@ -777,7 +777,7 @@ if [ -n "${TARGET_HOST}" ]; then
   echo -e "${green} TARGET_HOST is defined ${happy_smiley} : ${TARGET_HOST} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : TARGET_HOST, use the default one ${NC}"
-  export TARGET_HOST="FR1CSLFRBM0059.nabla.mobi"
+  export TARGET_HOST="albandrieu.com"
   echo -e "${magenta} TARGET_HOST : ${TARGET_HOST} ${NC}"
 fi
 
@@ -785,7 +785,7 @@ if [ -n "${INSTALLER_PATH}" ]; then
   echo -e "${green} INSTALLER_PATH is defined ${happy_smiley} : ${INSTALLER_PATH} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : INSTALLER_PATH, use the default one ${NC}"
-  export INSTALLER_PATH="1.7.1"
+  export INSTALLER_PATH="1.0.0"
   echo -e "${magenta} INSTALLER_PATH : ${INSTALLER_PATH} ${NC}"
 fi
 
@@ -811,7 +811,7 @@ if [ -n "${SERVER_HOST}" ]; then
   echo -e "${green} SERVER_HOST is defined ${happy_smiley} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : SERVER_HOST, use the default one ${NC}"
-  SERVER_HOST="kgrdb01"
+  SERVER_HOST="nabla"
   export SERVER_HOST
   echo -e "${magenta} SERVER_HOST : ${SERVER_HOST} ${NC}"
 fi

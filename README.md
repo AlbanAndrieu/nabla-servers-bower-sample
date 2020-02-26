@@ -1,5 +1,5 @@
 # nabla-servers-bower-sample
-![nabla-servers-bower-sample](http://home.nabla.mobi:7075/images/mroizo.1f00120c.png)
+![nabla-servers-bower-sample](http://albandrieu.com:7075/images/mroizo.1f00120c.png)
 
 [![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -14,7 +14,7 @@ Javascript project
 
 [![Grunt](https://gruntjs.com/cdn/builtwith.png)](http://gruntjs.com/)
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
-[![Jenkins Build Status](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly/badge/icon)](http://home.nabla.mobi:8381/job/nabla-servers-bower-sample-nightly)
+[![Jenkins Build Status](http://albandrieu.com:8381/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com:8381/job/nabla-servers-bower-sample-nightly)
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
 
 ## Quality
@@ -149,7 +149,16 @@ First time run `cp hooks/* .git/hooks/` or `rm -Rf ./.git/hooks/ && ln -s ../hoo
 
 Run `pre-commit run --all-files`
 
+Run `SKIP=ansible-lint git commit -am 'Add key'`
 Commit `git commit -am 'TEST' --no-verify`
+
+### pre-commit specific hook
+
+`export JIRA_USER=aandrieu`
+
+`export JIRA_PASSWORD=XXX`
+
+Run custom hook `pre-commit run git-branches-check`
 
 ### takari maven wrapper
 
@@ -165,10 +174,11 @@ mvn -N io.takari:maven:wrapper
 #npm cache clean -f
 npm install -g n
 #n stable
-n 8.9.4
+n 11.12.0
 node -v
+#v11.12.0
 /usr/local/bin/node -v
-npm install -g npm@5.5.1
+npm install -g npm@6.13.6
 env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g puppeteer@0.12.0
 env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn global add puppeteer
 ```
@@ -189,6 +199,24 @@ bower install
 
 ## Build & development
 
+### Docker image
+
+Build image is :
+See [ansible-jenkins-slave-docker](https://hub.docker.com/ansible-jenkins-slave-docker/)
+
+#### Pull image
+```
+docker pull registry.misys.global.ad/fusion-risk/ansible-jenkins-slave-test:latest
+```
+#### Start container
+```
+#Sample using container to buid my local workspace
+id albandri
+#uid=1000(albandri) gid=999(docker) groups=999(docker)
+docker run -it -u 1000:999 --userns=host -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /var/run/docker.sock:/var/run/docker.sock -v /data1/home/albandri/:/data1/home/albandri/ -v /workspace/users/albandri30:/workspace/users/albandri30 -w /sandbox/project-to-build -v /workspace/users/albandri30/bower-fr-integration-test/:/sandbox/project-to-build:rw -v /jenkins:/home/jenkins -v /jenkins:/jenkins -v /etc/bash_completion.d:/etc/bash_completion.d:ro --name sandbox --entrypoint /bin/bash registry.misys.global.ad/fusion-risk/ansible-jenkins-slave:latest
+```
+
+#### Maven
 Run `mvnw clean install` for building.
 Run `grunt` for building and `grunt serve` for preview.
 Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
@@ -300,18 +328,18 @@ tail -f zap.log
 How to start selenium grid
 
 ```
-#ssh -X root@home.nabla.mobi
+#ssh -X root@albandrieu.com
 sudo su - jenkins
 #start by hand selenium grid
 rm nohup.out
 nohup java -jar /workspace/selenium-server-standalone-2.52.0.jar -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -role hub -port 4444 -host 192.168.0.29 -debug &
 tail -f nohup.out
 #check hub is working
-INFO - Nodes should register to http://172.17.42.1:4444/grid/register/
-#start by hand selenium instance for home.nabla.mobi
-ssh -X jenkins@home.nabla.mobi
+INFO - Nodes should register to http://albandrieu.com:4444/grid/register/
+#start by hand selenium instance for albandrieu.com
+ssh -X jenkins@albandrieu.com
 #https://github.com/SeleniumHQ/selenium/wiki/Grid2
-#export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.52.0.jar -role node -hub http://home.nabla.mobi:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
+#export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.52.0.jar -role node -hub http://albandrieu.com:4444/wd/register -browser browserName=firefox,version=38.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=39.0.2171.95,chrome_binary=/opt/google/chrome/chrome,maxInstances=1,platform=LINUX &
 #export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.52.0.jar -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=40.0,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=43.0.2357.125,chrome_binary=/usr/bin/google-chrome,maxInstances=1,platform=LINUX clean install -Dserver=jetty9x -Dsurefire.useFile=false -Psample,jacoco,integration,run-its,arq-weld-ee-embedded -Darquillian=arq-weld-ee-embedded -Darquillian.launch=arq-weld-ee-embedded -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -debug > selenum-hub.out 2>&1 &
 #master
 export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-standalone-2.53.0.jar -Dwebdriver.chrome.driver=/usr/lib/chromium-browser/chromedriver -role node -hub http://127.0.0.1:4444/grid/register -browser browserName=firefox,version=58.0.2,firefox_binary=/usr/bin/firefox,maxInstances=1,platform=LINUX -browser browserName=chrome,version=48.0.2564.116,chrome_binary=/usr/bin/google-chrome,maxInstances=1,platform=LINUX -debug > selenum-hub.out 2>&1 &
@@ -322,20 +350,20 @@ export DISPLAY=localhost:99.0 && nohup java -jar /workspace/selenium-server-stan
 multitail nohup.out selenum-hub.out
 
 curl http://localhost:4444/grid/api/proxy?id=http://172.17.42.1:5555
-curl http://home.nabla.mobi:4444/grid/console
+curl http://albandrieu.com:4444/grid/console
 
 /usr/bin/google-chrome
 /opt/google/chrome/chrome --> NOK
 
-#On home.nabla.mobi check starter script at
+#On albandrieu.com check starter script at
 #/etc/init.d/selenium_hub
 ```
 
 Check result at :
 
-curl http://home.nabla.mobi:4444/grid/console
+curl http://albandrieu.com:4444/grid/console
 
-http://home.nabla.mobi:4444/grid/console
+http://albandrieu.com:4444/grid/console
 
 http://192.168.0.29:5555/wd/hub/static/resource/hub.html
 
