@@ -41,6 +41,7 @@ module.exports = function(grunt) {
   require('jit-grunt')(grunt, {
     bower: 'grunt-bower-task',
     versioncheck: 'grunt-version-check',
+    retire: 'grunt-retire',
     //configureProxies: 'grunt-connect-proxy',
     'zap_start': 'grunt-zaproxy',
     'zap_spider': 'grunt-zaproxy',
@@ -237,11 +238,11 @@ module.exports = function(grunt) {
         livereload: 35730,
         analytics: {
           account: 'UA-56011797-1',
-          domainName: 'nabla.freeboxos.fr'
+          domainName: 'albandrieu.com'
         },
         discussions: {
           shortName: 'nabla',
-          url: 'https://nabla.freeboxos.fr',
+          url: 'https://albandrieu.com',
           dev: false
         }
       },
@@ -1305,7 +1306,7 @@ module.exports = function(grunt) {
         //url: 'bababou.eu'
         //url: 'http://localhost:9090/'
         //url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: 'http://nabla.freeboxos.fr/sample/'
+        url: 'http://albandrieu.com/sample/'
       },
       //prod: {
       //  options: {
@@ -1328,7 +1329,7 @@ module.exports = function(grunt) {
     'pagespeed_junit': {
       options: {
         //urls: ['http://home.nabla.mobi:9090/'],
-        urls: ['http://nabla.freeboxos.fr/sample/'],
+        urls: ['http://albandrieu.com/sample/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 60,
@@ -1346,7 +1347,7 @@ module.exports = function(grunt) {
           url: [
             //'http://home.nabla.mobi:9090/'
             //SERVER_PROD_URL + SERVER_CONTEXT
-            'https://nabla.freeboxos.fr/sample/'
+            'https://albandrieu.com/sample/'
           ]
         },
         dest: './build/sideroad/'
@@ -1358,7 +1359,7 @@ module.exports = function(grunt) {
         options: {
           //url: 'http://home.nabla.mobi:9090/',
           //url: SERVER_PROD_URL + SERVER_CONTEXT,
-          url: 'https://nabla.freeboxos.fr/sample/',
+          url: 'https://albandrieu.com/sample/',
           timeout: 500,
           key: process.env.WPT_API_KEY,
           budget: {
@@ -1446,6 +1447,22 @@ module.exports = function(grunt) {
         }
       }
     },
+    
+    retire: {
+      js: ['app/src/*.js'], /** Which js-files to scan. **/
+      node: ['node'], /** Which node directories to scan (containing package.json). **/
+      options: {
+         proxy: 'http://albandrieu.com',
+         verbose: true,
+         packageOnly: true, 
+         jsRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
+         nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
+         outputFile: './target/retire-output.json',
+         ignore: 'documents,java',
+         /** list of files to ignore **/
+         ignorefile: '.retireignore.json' //or '.retireignore'
+      }
+    },   
 
     checkDependencies: {
         this: {}
@@ -1465,6 +1482,7 @@ module.exports = function(grunt) {
         }
       }
     }
+    
   });
 
   // Used for delaying livereload until after server has restarted

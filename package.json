@@ -129,6 +129,7 @@
     "grunt-protractor-runner": "5.0.0",
     "grunt-release": "0.14.0",
     "grunt-replace": "1.0.1",
+    "grunt-retire": "^1.0.8",
     "grunt-svgmin": "6.0.0",
     "grunt-text-replace": "0.4.0",
     "grunt-uncss": "0.9.0",
