@@ -92,7 +92,7 @@ python-apt==1.4.0b3
 python-dateutil==2.7.0
 python-debian==0.1.32
 python-debianbts==2.7.2
-python-gnupg==0.4.1
+python-gnupg==0.4.4
 python-xapp==1.0.0
 python-xlib==0.22
 pytz==2018.3
