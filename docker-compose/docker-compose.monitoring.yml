@@ -4,7 +4,7 @@ version: '3.7'
 services:
 
     prometheus:
-      image: prom/prometheus:latest
+      image: prom/prometheus:v2.16.0
       container_name: monitoring_prometheus
       restart: unless-stopped
       volumes:
@@ -16,24 +16,24 @@ services:
         - '--web.console.libraries=/usr/share/prometheus/console_libraries'
         - '--web.console.templates=/usr/share/prometheus/consoles'
       ports:
-        - 9090:9090
+        - 9091:9090
       links:
         - cadvisor:monitoring_cadvisor
         - node-exporter:node-monitoring_node_exporter
 
     node-exporter:
-      image: prom/node-exporter:latest
+      image: prom/node-exporter:v0.18.1
       container_name: monitoring_node_exporter
       restart: unless-stopped
       ports:
         - 9100:9100
 
   #   alertmanager:
-  #     image: prom/alertmanager
+  #     image: prom/alertmanager:latest
   #     ports:
   #       - 9093:9093
   #     volumes:
-  #       - ./alertmanager/:/etc/alertmanager/
+  #       - ./data/alertmanager/:/etc/alertmanager/
   #     networks:
   #       - back-tier
   #     restart: always
@@ -46,7 +46,7 @@ services:
   #          - node.hostname == ${HOSTNAME}
 
     cadvisor:
-      image: google/cadvisor:latest
+      image: google/cadvisor:v0.32.0
       container_name: monitoring_cadvisor
       restart: unless-stopped
       volumes:
@@ -56,9 +56,12 @@ services:
         - /var/lib/docker/:/var/lib/docker:ro
       ports:
         - 7777:8080
-
+      #links: 
+      #  - elasticsearch
+      #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
+  
     grafana:
-      image: grafana/grafana:latest
+      image: grafana/grafana:6.7.1
       user: "1000"
       container_name: monitoring_grafana
       restart: unless-stopped
@@ -88,3 +91,86 @@ services:
  #       - GF_SMTP_USER=myadrress@gmail.com
  #       - GF_SMTP_PASSWORD=mypassword
  #       - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
+
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:${TAG}
+#    container_name: logstash
+#    secrets:
+#      - source: logstash.conf
+#        target: /usr/share/logstash/pipeline/logstash.conf
+#      - source: logstash.yml
+#        target: /usr/share/logstash/config/logstash.yml
+#      - source: logstash.keystore
+#        target: /usr/share/logstash/config/logstash.keystore
+#      - source: ca.crt
+#        target: /usr/share/logstash/config/certs/ca/ca.crt
+#    depends_on: ['elasticsearch']
+#    healthcheck:
+#      test: bin/logstash -t
+#      interval: 60s
+#      timeout: 50s
+#      retries: 5
+
+#  fluentd:
+#    build: ./fluentd
+#    volumes:
+#      - ./fluentd/conf:/fluentd/etc
+#    links:
+#      - "elasticsearch"
+#    ports:
+#      - 24224:24224
+#      - 24224:24224/udp
+
+    elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1    
+      container_name: monitoring_elasticsearch      
+      #restart: unless-stopped      
+      deploy:
+        resources:
+          limits:
+            memory: 3g
+          reservations:
+            memory: 512m      
+      environment:
+        - xpack.security.enabled=false      
+        - discovery.type=single-node
+        #- http.host=0.0.0.0
+        #- transport.host=127.0.0.1
+        #- bootstrap.memory_lock=true
+        #- "ES_JAVA_OPTS=-Xms${ES_JVM_HEAP} -Xmx${ES_JVM_HEAP}"      
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+        nofile:
+          soft: 65536
+          hard: 65536        
+      cap_add:
+        - IPC_LOCK          
+      volumes:
+        #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        - esdata:/usr/share/elasticsearch/data
+      ports:
+        - 9200:9200
+        - 9300:9300
+
+    kibana:
+      container_name: monitoring_kibana
+      image: docker.elastic.co/kibana/kibana:7.4.0
+      environment:
+        - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
+      ports:
+        - 5601:5601
+      depends_on:
+        - elasticsearch
+      
+volumes:
+  esdata:
+    driver: local
+    
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.59.0/24 # bypass openvpn

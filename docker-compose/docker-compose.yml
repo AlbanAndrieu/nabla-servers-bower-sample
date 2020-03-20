@@ -33,7 +33,9 @@ services:
     links:
       - db
       - cache
-
+    #healthcheck:
+    #  test: ["CMD", "curl","-s" ,"-f", "http://localhost:9090/_cat/health"]
+      
   selenium-hub:
     image: selenium/hub:3.12.0-cobalt
     container_name: selenium-hub
@@ -56,24 +58,6 @@ services:
       - HUB_HOST=selenium-hub
       - HUB_PORT=4444
 
-#  artifactory:
-#    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
-#    image: docker.bintray.io/jfrog/artifactory-cpp-ce
-#    container_name: artifactory
-#    ports:
-#     - 80:8081
-#    volumes:
-#     - /workspace/data/artifactory:/var/opt/jfrog/artifactory
-##    Add extra Java options by uncommenting the following lines
-##    environment:
-##     - EXTRA_JAVA_OPTIONS=-Xmx4g
-#    restart: always
-#    ulimits:
-#      nproc: 65535
-#      nofile:
-#        soft: 32000
-#        hard: 40000
-
   db:
     image: mysql
     environment:
@@ -84,25 +68,6 @@ services:
 
   cache:
     image: redis:latest
-
-#  logstash:
-#    image: docker.elastic.co/logstash/logstash:${TAG}
-#    container_name: logstash
-#    secrets:
-#      - source: logstash.conf
-#        target: /usr/share/logstash/pipeline/logstash.conf
-#      - source: logstash.yml
-#        target: /usr/share/logstash/config/logstash.yml
-#      - source: logstash.keystore
-#        target: /usr/share/logstash/config/logstash.keystore
-#      - source: ca.crt
-#        target: /usr/share/logstash/config/certs/ca/ca.crt
-#    depends_on: ['elasticsearch']
-#    healthcheck:
-#      test: bin/logstash -t
-#      interval: 60s
-#      timeout: 50s
-#      retries: 5
 
 # use docker volume to persist test data outside of a container.
 #volumes:
