@@ -1,0 +1,14 @@
+---
+version: '3.7'
+
+services:
+
+  web:
+    ports:
+      - 9090:80
+    environment:
+      PRODUCTION: 'true'
+
+  cache:
+    environment:
+      TTL: '500'

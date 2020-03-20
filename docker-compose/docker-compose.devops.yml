@@ -1,0 +1,91 @@
+---
+version: '3.7'
+
+services:
+  dtrack:
+    ## Pull the image from the Docker Hub OWASP repo
+    #docker pull owasp/dependency-track
+    ## Creates a dedicated volume where data can be stored outside the container
+    #docker volume create --name dependency-track
+    ## Run the container with 8GB RAM on port 8087
+    #docker run -d -m 8192m -p 8087:8080 --name dependency-track -v dependency-track:/data owasp/dependency-track  
+    #
+    #environment:
+    # The Dependency-Track container can be configured using any of the
+    # available configuration properties defined in:
+    # https://docs.dependencytrack.org/getting-started/configuration/
+    # All properties are upper case with periods replaced by underscores.
+    #
+    # Database Properties
+    # - ALPINE_DATABASE_MODE=external
+    # - ALPINE_DATABASE_URL=jdbc:postgresql://postgres10:5432/dtrack
+    # - ALPINE_DATABASE_DRIVER=org.postgresql.Driver
+    # - ALPINE_DATABASE_DRIVER_PATH=/extlib/postgresql-42.2.5.jar
+    # - ALPINE_DATABASE_USERNAME=dtrack
+    # - ALPINE_DATABASE_PASSWORD=changeme
+    # - ALPINE_DATABASE_POOL_ENABLED=true
+    # - ALPINE_DATABASE_POOL_MAX_SIZE=10
+    # - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=600000
+    # - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
+    #
+    # Optional LDAP Properties
+    # - ALPINE_LDAP_ENABLED=
+    # - ALPINE_LDAP_SERVER_URL=ldap://ldap.example.com:389
+    # - ALPINE_LDAP_BASEDN=dc=example,dc=com
+    # - ALPINE_LDAP_SECURITY_AUTH=simple
+    # - ALPINE_LDAP_BIND_USERNAME=
+    # - ALPINE_LDAP_BIND_PASSWORD=
+    # - ALPINE_LDAP_AUTH_USERNAME_FORMAT=%s@example.com
+    # - ALPINE_LDAP_ATTRIBUTE_NAME=userPrincipalName
+    # - ALPINE_LDAP_ATTRIBUTE_MAIL=mail
+    # - ALPINE_LDAP_GROUPS_FILTER=(&(objectClass=group)(objectCategory=Group))
+    # - ALPINE_LDAP_USER_GROUPS_FILTER=(member:1.2.840.113556.1.4.1941:={USER_DN})
+    # - ALPINE_LDAP_GROUPS_SEARCH_FILTER=(&(objectClass=group)(objectCategory=Group)(cn=*{SEARCH_TERM}*))
+    # - ALPINE_LDAP_USERS_SEARCH_FILTER=(&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
+    # - ALPINE_LDAP_USER_PROVISIONING=false
+    # - ALPINE_LDAP_TEAM_SYNCHRONIZATION=false
+    #
+    # Optional HTTP Proxy Settings
+    # - ALPINE_HTTP_PROXY_ADDRESS=proxy.example.com
+    # - ALPINE_HTTP_PROXY_PORT=8888
+    # - ALPINE_HTTP_PROXY_USERNAME=
+    # - ALPINE_HTTP_PROXY_PASSWORD=
+    #
+    # Optional Cross-Origin Resource Sharing (CORS) Headers
+    # - ALPINE_CORS_ENABLED=true
+    # - ALPINE_CORS_ALLOW_ORIGIN=*
+    # - ALPINE_CORS_ALLOW_METHODS=GET POST PUT DELETE OPTIONS
+    # - ALPINE_CORS_ALLOW_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count, *
+    # - ALPINE_CORS_EXPOSE_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count
+    # - ALPINE_CORS_ALLOW_CREDENTIALS=true
+    # - ALPINE_CORS_MAX_AGE=3600
+    image: 'owasp/dependency-track'
+    hostname: albandrieu-dependency-track
+    deploy:
+      resources:
+        limits:
+          memory: 12288m
+        reservations:
+          memory: 8192m
+      restart_policy:
+        condition: on-failure
+    ports:
+      - '8087:8080'
+    volumes:
+      - './data:/data'
+
+  nexus:
+    #docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
+    image: sonatype/nexus3:3.0.0
+    hostname: albandrieu-nexus
+    volumes:
+      - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
+    ports:
+      - "8081:8081"
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.58.0/24 # bypass openvpn
