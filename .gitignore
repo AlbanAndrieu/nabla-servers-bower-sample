@@ -1,4 +1,9 @@
 
+# Home made custom exception
+
+docker-compose/data
+.repository
+
 # To avoid adding encrypted files with git add -u or -a
 
 .checkstyle

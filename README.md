@@ -1,8 +1,14 @@
 # nabla-servers-bower-sample
 ![nabla-servers-bower-sample](http://albandrieu.com:7075/images/mroizo.1f00120c.png)
 
-[![License](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![License: APACHE](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Gitter](https://badges.gitter.im/nabla-servers-bower-sample/Lobby.svg)](https://gitter.im/nabla-servers-bower-sample/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Join the chat at https://gitter.im/AlbanAndrieu/warnings-plugin](https://badges.gitter.im/AlbanAndrieu/warnings-plugin.svg)](https://gitter.im/AlbanAndrieu/warnings-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Minimal java version](https://img.shields.io/badge/java-1.8-yellow.svg)](https://img.shields.io/badge/java-1.8-yellow.svg)
+
+[![Jenkins Version](https://img.shields.io/badge/Jenkins-2.221-green.svg?label=min.%20Jenkins)](https://jenkins.io/download/)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/AlbanAndrieu/nabla-servers-bower-sample?label=changelog)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases)
 
 Javascript project
 
@@ -32,7 +38,6 @@ Javascript project
 
 ## Info
 
-[![Minimal java version](https://img.shields.io/badge/java-1.8-yellow.svg)](https://img.shields.io/badge/java-1.8-yellow.svg)
 [![Node version](https://img.shields.io/node/v/[NPM-MODULE-NAME].svg?style=flat)](http://nodejs.org/download/)
 
 [![Branch](http://img.shields.io/github/tag/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/tree/master)
@@ -81,14 +86,14 @@ This project is also used to test integration of build tools like:
 languages like :
 
  * javascript
-	* unit tests (karma) + LCOV coverage
-	* end2end tests (protractor)
+    * unit tests (karma) + LCOV coverage
+    * end2end tests (protractor)
  * java
-	* unit tests (junit and jmockit) + Jacoco coverage
-	* integration tests (junit) + Jacoco coverage
+    * unit tests (junit and jmockit) + Jacoco coverage
+    * integration tests (junit) + Jacoco coverage
  * groovy
-	* unit tests (junit) + Jacoco coverage
-	* integration tests (junit) + Jacoco coverage
+    * unit tests (junit) + Jacoco coverage
+    * integration tests (junit) + Jacoco coverage
 
 jmeter, gatling, mutation testing and arquillian are available in other sample project
 
@@ -208,6 +213,7 @@ See [ansible-jenkins-slave-docker](https://hub.docker.com/ansible-jenkins-slave-
 ```
 docker pull registry.misys.global.ad/fusion-risk/ansible-jenkins-slave-test:latest
 ```
+
 #### Start container
 ```
 #Sample using container to buid my local workspace
@@ -233,6 +239,15 @@ Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building si
 as root
 ```
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
+```
+
+#### Docker compose
+```
+cd ./docker-compose
+./docker-compose-up.sh
+docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml -p test up --force-recreate -d web
+docker-compose -f ./docker-compose.monitoring.yml -p monitoring up -d nexus
+docker-compose -f ./docker-compose.monitoring.yml -p monitoring up -d
 ```
 
 ## Documentation

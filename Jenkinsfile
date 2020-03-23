@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library('github.com/AlbanAndrieu/jenkins-pipeline-scripts@master') _
+@Library(value=''github.com/AlbanAndrieu/jenkins-pipeline-scripts@master', changelog=false) _
 /*
     Point of this Jenkinsfile is to:
     - define global behavior
@@ -52,15 +52,14 @@ String ARTIFACTS = ['*_VERSION.TXT',
 pipeline {
     //agent none
     agent {
-        label 'docker-compose-TODO'
+        label 'molecule'
     }
     //agent {
     //    // Equivalent to "docker build -f Dockerfile-jenkins-slave-ubuntu:16.04 --build-arg FILEBEAT_VERSION=6.3.0 ./build/
     //    dockerfile {
     //        //filename 'Dockerfile'
     //        //dir 'build'
-    //        label 'docker-compose-TODO'
-    //        //--target builder
+    //        label 'molecule'
     //        additionalBuildArgs ' --build-arg JENKINS_USER_HOME=/home/jenkins --label "version=1.0.1" --label "maintaner=Alban Andrieu <alban.andrieu@gmail.com>" '
     //    }
     //}
@@ -72,7 +71,7 @@ pipeline {
         string(defaultValue: '44447', description: 'Default cargo rmi port to override', name: 'CARGO_RMI_PORT', trim: true)
         string(defaultValue: '', description: 'Default workspace suffix to override', name: 'WORKSPACE_SUFFIX', trim: true)
         string(defaultValue: 'http://localhost:9190', description: 'Default URL used by deployment tests', name: 'SERVER_URL', trim: true)
-        string(defaultValue: '/test/#/', description: 'Default context', name: 'SERVER_CONTEXT')
+        string(defaultValue: '/test/#/', description: 'Default context', name: 'SERVER_CONTEXT', trim: true)
         string(defaultValue: 'LATEST_SUCCESSFULL', description: 'Create a TAG', name: 'TARGET_TAG', trim: true)
         string(defaultValue: 'jenkins', description: 'User', name: 'TARGET_USER', trim: true)
         booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
@@ -87,8 +86,6 @@ pipeline {
         GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}".trim()
         //BRANCH_JIRA = "${env.BRANCH_NAME}".replaceAll("feature/","")
         //PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
-        SONAR_INSTANCE = "sonardev"
-        SONAR_USER_HOME = "/tmp"
         CARGO_RMI_PORT = "${params.CARGO_RMI_PORT}"
         //WORKSPACE_SUFFIX = "${params.WORKSPACE_SUFFIX}"
         //echo "JOB_NAME: ${env.JOB_NAME} : ${env.JOB_BASE_NAME}"
@@ -99,6 +96,8 @@ pipeline {
         CLEAN_RUN = "${params.CLEAN_RUN}".toBoolean()
         DEBUG_RUN = "${params.DEBUG_RUN}".toBoolean()
         MVNW_VERBOSE = "${params.MVNW_VERBOSE}".toBoolean()
+        SERVER_URL = "${params.SERVER_URL}"
+        SERVER_CONTEXT = "${params.SERVER_CONTEXT}"
         RELEASE = "${params.RELEASE}".toBoolean()
         RELEASE_BASE = "${params.RELEASE_BASE}"
         RELEASE_VERSION = "${params.RELEASE_VERSION}"
@@ -106,7 +105,7 @@ pipeline {
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
         //GIT_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         GIT_URL = "ssh://git@github.com/AlbanAndrieu/${GIT_PROJECT}.git"
-        //DOCKER_TAG=buildDockerTag("${env.BRANCH_NAME}")
+        DOCKER_TAG = dockerTag()
     }
     options {
         skipDefaultCheckout()
@@ -130,7 +129,7 @@ pipeline {
                             //registryUrl DOCKER_REGISTRY_URL
                             //registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
                             args DOCKER_OPTS_BASIC
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     steps {
@@ -144,12 +143,13 @@ pipeline {
                             NODES_USED.add(env.NODE_NAME)
 
                             properties(createPropertyList())
+                            getJenkinsOpts()
 
                             gitCheckoutTEST() {
 
                                 if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
-                                    getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
+                                    getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                                 if (env.DEBUG_RUN) {
 sh '''
@@ -194,7 +194,7 @@ echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
 
 #curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=tomcat&password=microsoft"
 
-wget --http-user=admin --http-password=Motdepasse12 "http://home.albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
+wget --http-user=admin --http-password=Motdepasse12 "http://albandrieu.albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
 
 #Xvfb :99 -ac -screen 0 1280x1024x24 &
 #export DISPLAY=":99"
@@ -206,7 +206,7 @@ wget --http-user=admin --http-password=Motdepasse12 "http://home.albandrieu.com:
 
 exit 0
 '''
-                                  // TODO to enforce pre-commit, to be done once DEV is ready
+
                                   sh "#!/bin/bash \n" +
                                     "whoami \n" +
                                     "source ./scripts/run-python.sh\n" +
@@ -220,7 +220,7 @@ exit 0
 
                             RELEASE_VERSION = getSemVerReleasedVersion() ?: "LATEST"
 
-                            echo "RELEASE_VERSION: ${RELEASE_VERSION}"
+                            echo "RELEASE_VERSION: ${RELEASE_VERSION} - ${env.RELEASE_VERSION}"
 
                             setBuildName("Test project ${RELEASE_VERSION}")
                             //createVersionTextFile("Sample", "TEST_VERSION.TXT")
@@ -235,6 +235,8 @@ exit 0
                              }
 
                             println(env.PATH)
+
+                            sh "printenv | sort"
 
                             //stash excludes: '**/target/, **/.bower/, **/.tmp/, **/.git, **/.repository/, **/.mvn/, **/bower_components/, **/node/, **/node_modules/, **/npm/, **/coverage/, **/build/, docs/, hooks/, ansible/, screenshots/', includes: '**', name: 'sources'
                             //stash includes: "**/.git/**/*", useDefaultExcludes: false , name: 'git'
@@ -252,19 +254,16 @@ exit 0
                 } // stage SCM
                 stage('\u2756 Build - Docker') {
                     agent {
-                        //node {
-                        //    label 'docker-compose-TODO'
-                        //}
                         docker {
                             image DOCKER_IMAGE
                             alwaysPull true
                             reuseNode false
                             args DOCKER_OPTS_COMPOSE
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     environment {
-                        CST_CONFIG = "docker/ubuntu16/config-BUILD.yaml"
+                        CST_CONFIG = "docker/ubuntu18/config-BUILD.yaml"
                     }
                     when {
                         expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
@@ -288,7 +287,7 @@ exit 0
                                                          ].join(" ")
                                 }
                                 DOCKER_BUILD_ARGS = [ "${DOCKER_BUILD_ARGS}",
-                                                      "--target BUILD", // See issue https://issues.jenkins-ci.org/browse/JENKINS-44609?page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel&showAll=true
+                                                      "--target build",
                                                       "--label 'version=1.0.0'",
                                                     ].join(" ")
 
@@ -302,8 +301,8 @@ exit 0
                                         sh 'git --version'
                                         sh 'java -version'
                                         sh 'id jenkins'
-                                        sh 'ls -lrta'
-                                        sh 'ls -lrta /home/jenkins/ || true'
+                                        //sh 'ls -lrta'
+                                        //sh 'ls -lrta /home/jenkins/ || true'
                                         sh 'less ${HOME}/.bowerrc || true'
                                         //sh 'npm --version'
                                         //TODO sh 'bower --version'
@@ -327,12 +326,13 @@ exit 0
                                         currentBuild.result = 'UNSTABLE'
                                     }
 
-                                    dockerComposeLogs()
+                                    dockerComposeLogs(dockerFilePath: "docker-compose/")
+
+                                    archiveArtifacts artifacts: 'scripts/microscanner-wrapper/aqua-grab.html', excludes: null, fingerprint: false, onlyIfSuccessful: false, allowEmptyArchive: true
 
                                     echo "DRY_RUN : ${env.DRY_RUN}"
 
-                                    //if (env.DRY_RUN == false) {
-                                    if (isReleaseBranch()) {
+                                    if (!env.DRY_RUN.toBoolean() && isReleaseBranch()) {
                                         //pushDockerImage(container, "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}", "${DOCKER_TAG}")
                                         echo "Push the container to the custom Registry"
                                         //customImage.push()
@@ -370,7 +370,7 @@ exit 0
                     alwaysPull true
                     reuseNode true
                     args DOCKER_OPTS_BASIC
-                    label 'docker-compose-TODO'
+                    label 'molecule'
                 }
             }
             environment {
@@ -382,7 +382,7 @@ exit 0
                     milestone 2
 
                     gitCheckoutTEST() {
-                        getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
+                        getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                         echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
                         echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"
@@ -393,8 +393,8 @@ exit 0
                         echo "GIT_BRANCH_NAME : ${env.GIT_BRANCH_NAME}"
                         echo "TARGET_TAG : ${env.TARGET_TAG}"
 
-                        echo "RELEASE : ${env.RELEASE}"
-                        echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
+                        echo "RELEASE : ${env.RELEASE} - ${env.RELEASE}.toBoolean()"
+                        //echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
                         echo "SONAR_USER_HOME : ${env.SONAR_USER_HOME}"
                     }
                 } // script
@@ -417,7 +417,7 @@ exit 0
                             image DOCKER_IMAGE
                             reuseNode true
                             args DOCKER_OPTS_COMPOSE
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     environment {
@@ -457,8 +457,10 @@ exit 0
                                         skipSigning: true,
                                         skipDocker: true,
                                         skipDeploy: false,
+                                        skipSonarCheck: true,
                                         buildCmdParameters: " checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
                                         mavenHome: "/home/jenkins/.m2/",
+                                        shellOutputFile: "maven-release.log",
                                         artifacts: "**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip") {
 
                                         sh 'echo "JAVA_HOME: ${JAVA_HOME} - PATH: ${PATH}"'
@@ -529,10 +531,12 @@ exit 0
                                         profile: "jacoco",
                                         skipObfuscation: false,
                                         skipIntegration: false,
-                                        skipSonar: true,
+                                        skipSonar: false,
                                         skipPitest: true,
                                         skipSigning: false,
+                                        skipSonarCheck: true,
                                         mavenHome: "/home/jenkins/.m2/",
+                                        shellOutputFile: "maven-build.log",
                                         buildCmdParameters: " checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
                                         artifacts: "**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip") {
 
@@ -582,13 +586,6 @@ exit 0
                                                            excludeFile('bower_components\\/.*')]
                                     //sonarQube()
 
-                                    //script {
-                                    //
-                                    //  utils = load "Jenkinsfile-vars"
-                                    //  utils.checkAPI()
-                                    //
-                                    //} //script
-
                                 } // script
                             } // steps
                         } // stage Maven
@@ -613,7 +610,7 @@ exit 0
 //
 //                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
 //
-//                                                  getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: DEBUG_RUN)
+//                                                  getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 //
 //                                                  ansiColor('xterm') {
 //sh '''
@@ -658,7 +655,8 @@ exit 0
                                 script {
                                     withSonarQubeWrapper(verbose: true,
                                         skipMaven: false,
-                                        skipSonarCheck: false,
+                                        skipFailure: false,
+                                        skipSonarCheck: true,
                                         reportTaskFile: ".scannerwork/report-task.txt",
                                         isScannerHome: false,
                                         sonarExecutable: "/usr/local/sonar-runner/bin/sonar-scanner",
@@ -687,6 +685,7 @@ exit 0
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
                                     withCSTWrapper(imageName: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
+                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)
 
                                 } // script
                             } // steps
@@ -714,18 +713,18 @@ exit 0
                             }
                             steps {
                                 script {
-                                    if (!env.DRY_RUN && !env.RELEASE) {
+                                    if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                         try {
 
                                             checkout scm
-                                            echo "TODO : ${DOCKER_TEST_TAG}"
+                                            echo "DOCKER_TEST_TAG : ${DOCKER_TEST_TAG}"
 
                                             if (env.CLEAN_RUN) {
-                                                sh "docker-compose-down.sh"
+                                                sh "./docker-compose/docker-compose-down.sh"
                                             }
 
-                                            if (!env.DRY_RUN) {
-                                                def up = sh script: "docker-compose-up.sh", returnStatus: true
+                                            if (!env.DRY_RUN.toBoolean()) {
+                                                def up = sh script: "./docker-compose/docker-compose-up.sh", returnStatus: true
                                                 echo "UP : ${up}"
                                                 if (up == 0) {
                                                     echo "TEST SUCCESS"
@@ -733,6 +732,7 @@ exit 0
                                                 } else if (up == 1) {
                                                     echo "TEST FAILURE"
                                                     currentBuild.result = 'FAILURE'
+                                                    error "Test failed"
                                                 } else {
                                                     echo "TEST UNSTABLE"
                                                     currentBuild.result = 'UNSTABLE'
@@ -799,16 +799,16 @@ exit 0
 
                                         } catch(exc) {
                                             echo 'Error: There were errors in tests. '+exc.toString()
+                                            currentBuild.result = 'FAILURE'
                                             error 'There are errors in tests'
-                                           currentBuild.result = 'FAILURE'
                                         } finally {
                                             try {
-                                                dockerComposeLogs()
+                                                dockerComposeLogs(dockerFilePath: "docker-compose/")
                                             }
                                             catch(exc) {
                                                 echo 'Warn: There was a problem taking down the docker-compose network. '+exc.toString()
                                             } finally {
-                                                sh "./docker-compose-down.sh"
+                                                sh "./docker-compose/docker-compose-down.sh"
                                             }
                                         }
 
@@ -843,9 +843,9 @@ exit 0
                     agent {
                         docker {
                             image DOCKER_IMAGE
-                            reuseNode true
+                            reuseNode false
                             args DOCKER_OPTS_BASIC
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     when {
@@ -855,16 +855,23 @@ exit 0
                         script {
                             stage('\u2795 Quality - Site') {
                                 script {
-                                    if (!env.DRY_RUN && !env.RELEASE) {
+                                    if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
 
                                          checkout scm
 
                                          //unstash 'sources'
                                          //unstash 'sources-tools'
 
+                                         withSonarQubeEnv("${env.SONAR_INSTANCE}") {
+                                             //reportTaskFile: "${env.WORKSPACE}/target/sonar/report-task.txt"
+                                             withSonarQubeCheck(skipFailure: false)
+                                         }
+
                                          //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                         withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x")
+                                         withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x",
+                                                              shellOutputFile: "maven-site.log",
+                                                              skipSonarCheck: true)
 
                                     } // if DRY_RUN
                                 } // script
@@ -884,9 +891,9 @@ exit 0
                     agent {
                         docker {
                             image DOCKER_IMAGE
-                            reuseNode true
+                            reuseNode false
                             args DOCKER_OPTS_BASIC
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     when {
@@ -895,7 +902,7 @@ exit 0
                     steps {
                         script {
 
-                            if (!env.DRY_RUN && !env.RELEASE) {
+                            if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                 //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'
 
                                 checkout scm
@@ -905,15 +912,19 @@ exit 0
 
                                 //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x") {
+                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x",
+                                                                skipSonarCheck: true) {
 
                                     archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.xml', onlyIfSuccessful: true
 
-                                    dependencyTrackPublisher artifact: 'dependency-check-report.xml', artifactType: 'scanResult', projectId: 'nabla-servers-bower-sample'
-                                    //dependencyTrackPublisher artifact: 'dependency-check-report.xml', artifactType: 'bom', synchronous: true
+                                    try {
+                                        dependencyTrackPublisher artifact: '**/dependency-check-report.xml', artifactType: 'scanResult', projectId: 'nabla-servers-bower-sample'
+                                        //dependencyTrackPublisher artifact: '**/dependency-check-report.xml', artifactType: 'bom', synchronous: true
+                                    } catch (exc) {
+                                        echo "Warn: There was a problem with dependencyTrackPublisher " + exc.toString()
+                                    }
 
                                 }
-                                //sh "nsp check"
 
                             } // if DRY_RUN
                         } // script
@@ -931,9 +942,9 @@ exit 0
                     agent {
                         docker {
                             image DOCKER_IMAGE
-                            reuseNode true
+                            reuseNode false
                             args DOCKER_OPTS_BASIC
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     when {
@@ -942,7 +953,7 @@ exit 0
                     steps {
                         script {
 
-                            if (!env.DRY_RUN && !env.RELEASE) {
+                            if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                 checkout scm
 
                                 withCheckmarxWrapper(excludeFolders: ", bm", projectName: 'nabla-servers-bower-sample_Checkmarx')
@@ -970,7 +981,7 @@ exit 0
                     image DOCKER_IMAGE
                     reuseNode true
                     args DOCKER_OPTS_BASIC
-                    label 'docker-compose'
+                    label 'molecule'
                 }
             }
             when {
@@ -978,7 +989,7 @@ exit 0
             }
             steps {
                 script {
-                    //if (!env.DRY_RUN && !env.RELEASE) {
+                    //if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                         //checkout scm
 
                         echo "TODO"
@@ -997,7 +1008,7 @@ exit 0
                             image DOCKER_IMAGE
                             reuseNode true
                             args DOCKER_OPTS_COMPOSE
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     steps {
@@ -1011,6 +1022,15 @@ exit 0
                                 unstash 'app'
                                 sha1 'target/test.war'
                             }
+
+                            publishHTML (target: [
+                              allowMissing: true,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: 'scripts/microscanner-wrapper/',
+                              reportFiles: 'aqua-grab.html',
+                              reportName: "Aqua Report"
+                            ])
 
                             publishHTML (target: [
                               allowMissing: true,
@@ -1103,7 +1123,7 @@ exit 0
                             image DOCKER_IMAGE
                             reuseNode false
                             args DOCKER_OPTS_BASIC
-                            label 'docker-compose-TODO'
+                            label 'molecule'
                         }
                     }
                     when {
@@ -1145,7 +1165,7 @@ exit 0
               echo "NODES_USED : " + NODES_USED.toString()
             } // script
 
-            node('docker-compose-TODO') {
+            node('molecule') {
                 runHtmlPublishers(["LogParserPublisher"])
             }
         }
@@ -1164,10 +1184,10 @@ exit 0
                 manager.removeBadge(0) // See issue https://issues.jenkins-ci.org/browse/JENKINS-52043
                 //manager.removeShortText("deployed")
                 manager.removeSummaries()
-            } //script
+            } // script
         } // success
         cleanup {
-            node('docker-compose-TODO') {
+            node('molecule') {
                 dockerCleaning()
             }
 

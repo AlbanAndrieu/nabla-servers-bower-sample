@@ -23,7 +23,7 @@ LABEL description="Image used by fusion-risk products to build Java/Javascript a
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
 
-ENV JENKINS_USER_HOME=${JENKINS_USER_HOME}
+ENV HOME=${JENKINS_USER_HOME}
 
 USER 0
 
@@ -69,7 +69,8 @@ RUN add-apt-repository \
 # Install Docker from Docker Inc. repositories.
 RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sL https://deb.nodesource.com/setup_11.x | bash - && \
+# hadolint ignore=DL3008,DL3015
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.0 json2csv@4.3.3 phantomas@1.20.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11 dockerfile_lint@0.3.3;
 
@@ -130,7 +131,7 @@ COPY . $JENKINS_USER_HOME/
 # Execute
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
 RUN ./clean.sh
-RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME && chmod -R 777 $JENKINS_USER_HOME
+RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME" && chmod -R 777 "$JENKINS_USER_HOME"
 
 ADD https://get.aquasec.com/microscanner /
 RUN chmod +x /microscanner
@@ -158,13 +159,16 @@ RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_U
 #RUN rm /microscanner
 
 FROM openjdk:11-jre-slim
-#ENV PORT 4567
-EXPOSE 4567
+
 COPY --from=BUILD /home/jenkins/target/test.war /opt/
 WORKDIR /opt/
 
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
+
 CMD ["/bin/bash"]
 #CMD ["/bin/bash", "-c", "find -type f -name '*-with-dependencies.jar' | xargs java -jar"]
+#CMD ["/lib/systemd/systemd"]
+EXPOSE 8080
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM selenium/standalone-chrome:3.12.0-cobalt as tester
@@ -196,7 +200,7 @@ CMD ["/bin/bash"]
 #    && apt-get install -y xz-utils curl lsof sshpass \
 #    net-tools iputils-ping x11-apps
 #
-##RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - ;\
+##RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - ;\
 ##    apt-get update && apt-get install -y nodejs ;\
 ##    npm set progress=false && \
 ##    npm config set depth 0 && \

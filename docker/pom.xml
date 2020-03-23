@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
+    <!-- @formatter:off -->
+
+    <groupId>com.nabla.project.servers.sample</groupId>
+    <artifactId>bower-sample-docker</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <name>Nabla Bower Sample Docker</name>
+    <description>Bower sample docker components</description>
+    <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+
+    <scm>
+        <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
+        <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
+        <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+        <tag>HEAD</tag>        
+    </scm>
+
+    <!--
+    <parent>
+        <groupId>com.nabla.project.servers.sample</groupId>
+        <artifactId>bower-sample</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+    -->
+
+    <properties>
+
+        <maven.fabric8-docker-maven.plugin.version>0.32.0</maven.fabric8-docker-maven.plugin.version>
+        <maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
+        <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
+
+        <junit.version>4.12</junit.version>
+        <testcontainers.version>1.11.4</testcontainers.version>
+        <docker.compose.version>0.9.9</docker.compose.version>
+        <system.rules.version>1.18.0</system.rules.version>
+
+        <commons.io.version>2.6</commons.io.version>
+        <commons.lang.version>2.6</commons.lang.version>
+
+        <cargo.docker.basedir>${project.basedir}/src/main/resources/</cargo.docker.basedir>
+        <cargo.docker.registry>hub.docker.com</cargo.docker.registry>
+        <cargo.docker.organisation>nabla</cargo.docker.organisation>
+        <cargo.docker.image.name>${cargo.docker.organisation}/cargo</cargo.docker.image.name>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.stefanbirkner</groupId>
+                <artifactId>system-rules</artifactId>
+                <version>${system.rules.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>docker-compose</artifactId>
+                <version>${docker.compose.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>docker-compose</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons.io.version}</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons.lang.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.properties</include>
+                    <include>*.TXT</include>
+                </includes>
+            </resource>
+        </resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${maven.fabric8-docker-maven.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>pl.project13.maven</groupId>
+					<artifactId>git-commit-id-plugin</artifactId>
+					<version>${maven.git-commit-id.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${cargo.docker.basedir}/local-build-archive</directory>
+                            <includes>
+                                <include>*.zip</include>
+                            </includes>
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <timestampFormat>{0,date,yyyyMMdd}</timestampFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- To create target/classes/git.properties with current sha1 -->
+                <!-- Use case is to tag docker images -->
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <commitIdGenerationMode>flat</commitIdGenerationMode>
+                    <gitDescribe>
+                        <skip>true</skip>
+                    </gitDescribe>
+                    <!-- sanitize branch name: replace slash '/' with dash '-'  -->
+                    <!-- e.g. feature/MGR... -> feature-MGR.. -->
+                    <replacementProperties>
+                        <replacementProperty>
+                            <property>git.branch</property>
+                            <token>^([^\/]*)\/([^\/]*)$</token>
+                            <value>$1-$2</value>
+                            <regex>true</regex>
+                        </replacementProperty>
+                    </replacementProperties>
+                </configuration>
+            </plugin>
+            <!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${cargo.docker.basedir}/local-build-archive/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/../app/target/</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*.zip</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-docker-image</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy-docker-image</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- to print output from docker at build time - this is not debug -->
+                    <logStdout>true</logStdout>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>${cargo.docker.registry}/${cargo.docker.image.name}</name>
+                            <!--if using <registry> tag, docker plugin  will create temporary name,-->
+                            <!--which will fail the build if temporary name clashes with existing one-->
+                            <build>
+                                <dockerFileDir>${cargo.docker.basedir}</dockerFileDir>
+                                <tags>
+                                    <tag>latest-${git.branch}</tag>
+                                    <tag>${git.branch}-${git.commit.id.abbrev}</tag>
+                                    <!--<tag>${git.branch}-${timestamp}</tag>-->
+                                </tags>
+                                <args>
+                                    <!-- variables used for internal image labeling -->
+                                    <!-- for constants go to src/main/resources/docker.properties -->
+                                    <BUILD_DATE>${timestamp}</BUILD_DATE>
+                                    <GIT_COMMIT>${git.commit.id.abbrev}</GIT_COMMIT>
+                                    <BUILD_TAG>${git.branch}-${git.commit.id.abbrev}-${dbms}</BUILD_TAG>
+                                    <GIT_BRANCH>${git.branch}</GIT_BRANCH>
+                                    <LIMITS_TAG>${git.branch}-${git.commit.id.abbrev}-${dbms}</LIMITS_TAG>
+                                </args>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -39,7 +39,7 @@ commandTests:
  - name: "check openjdk 1.8.0"
    command: "${JAVA_HOME}/bin/java"
    args: ["-version"]
-   expectedError: ['openjdk version \"1\.8\.0_232\".*']
+   expectedError: ['openjdk version \"1\.8\.0_242\".*']
 
  - name: "check python 2.7.15+"
    command: "python"
@@ -51,12 +51,12 @@ commandTests:
 #   args: ["--version"]
 #   expectedOutput: ['pip 19.3.1 from /usr/local/lib/python2.7/dist-packages/pip (python 2.7)']
 
-# - name: "check python 3"
-#   command: "python3"
-#   args: ["--version"]
-#   expectedOutput: ['Python 3.6.*']
-#
-# - name: "check python 3.5.7"
+ - name: "check python 3"
+   command: "python3"
+   args: ["--version"]
+   expectedOutput: ['Python 3.6.*']
+
+#- name: "check python 3.5.7"
 #   command: "python3.5"
 #   args: ["--version"]
 #   expectedOutput: ['Python 3.5.*']
@@ -71,10 +71,10 @@ commandTests:
    args: ["--version"]
    expectedOutput: ["pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)*"]
 
-# - name: "check docker 19.03.4"
-#   command: "docker"
-#   args: ["--version"]
-#   expectedOutput: ['Docker version 19.03.*']
+ - name: "check docker 19.03.4"
+   command: "docker"
+   args: ["--version"]
+   expectedOutput: ['Docker version 19.03.*']
 
 metadataTest:
   env:

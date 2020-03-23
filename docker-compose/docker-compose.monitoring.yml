@@ -3,30 +3,152 @@ version: '3.7'
 
 services:
 
-    prometheus:
-      image: prom/prometheus:v2.16.0
-      container_name: monitoring_prometheus
-      restart: unless-stopped
-      volumes:
-        - ./data/prometheus/config:/etc/prometheus/
-        - ./data/prometheus/data:/prometheus
-      command:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
-        - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-        - '--web.console.templates=/usr/share/prometheus/consoles'
-      ports:
-        - 9091:9090
-      links:
-        - cadvisor:monitoring_cadvisor
-        - node-exporter:node-monitoring_node_exporter
+  jenkins:
+    image: jenkins:local
+    container_name: devops_jenkins
+    restart: unless-stopped
+    user: root
+    volumes:
+      - /jenkins:/jenkins
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JENKINS_HOME=/jenkins
+    ports:
+      - 8686:8080
+      - 50000:50000
+    depends_on:
+      - elasticsearch
+      - nexus
+      
+  dtrack:
+    ## Pull the image from the Docker Hub OWASP repo
+    #docker pull owasp/dependency-track
+    ## Creates a dedicated volume where data can be stored outside the container
+    #docker volume create --name dependency-track
+    ## Run the container with 8GB RAM on port 8087
+    #docker run -d -m 8192m -p 8087:8080 --name dependency-track -v dependency-track:/data owasp/dependency-track
+    #
+    #environment:
+    # The Dependency-Track container can be configured using any of the
+    # available configuration properties defined in:
+    # https://docs.dependencytrack.org/getting-started/configuration/
+    # All properties are upper case with periods replaced by underscores.
+    #
+    # Database Properties
+    # - ALPINE_DATABASE_MODE=external
+    # - ALPINE_DATABASE_URL=jdbc:postgresql://postgres10:5432/dtrack
+    # - ALPINE_DATABASE_DRIVER=org.postgresql.Driver
+    # - ALPINE_DATABASE_DRIVER_PATH=/extlib/postgresql-42.2.5.jar
+    # - ALPINE_DATABASE_USERNAME=dtrack
+    # - ALPINE_DATABASE_PASSWORD=changeme
+    # - ALPINE_DATABASE_POOL_ENABLED=true
+    # - ALPINE_DATABASE_POOL_MAX_SIZE=10
+    # - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=600000
+    # - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
+    #
+    # Optional LDAP Properties
+    # - ALPINE_LDAP_ENABLED=
+    # - ALPINE_LDAP_SERVER_URL=ldap://ldap.example.com:389
+    # - ALPINE_LDAP_BASEDN=dc=example,dc=com
+    # - ALPINE_LDAP_SECURITY_AUTH=simple
+    # - ALPINE_LDAP_BIND_USERNAME=
+    # - ALPINE_LDAP_BIND_PASSWORD=
+    # - ALPINE_LDAP_AUTH_USERNAME_FORMAT=%s@example.com
+    # - ALPINE_LDAP_ATTRIBUTE_NAME=userPrincipalName
+    # - ALPINE_LDAP_ATTRIBUTE_MAIL=mail
+    # - ALPINE_LDAP_GROUPS_FILTER=(&(objectClass=group)(objectCategory=Group))
+    # - ALPINE_LDAP_USER_GROUPS_FILTER=(member:1.2.840.113556.1.4.1941:={USER_DN})
+    # - ALPINE_LDAP_GROUPS_SEARCH_FILTER=(&(objectClass=group)(objectCategory=Group)(cn=*{SEARCH_TERM}*))
+    # - ALPINE_LDAP_USERS_SEARCH_FILTER=(&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
+    # - ALPINE_LDAP_USER_PROVISIONING=false
+    # - ALPINE_LDAP_TEAM_SYNCHRONIZATION=false
+    #
+    # Optional HTTP Proxy Settings
+    # - ALPINE_HTTP_PROXY_ADDRESS=proxy.example.com
+    # - ALPINE_HTTP_PROXY_PORT=8888
+    # - ALPINE_HTTP_PROXY_USERNAME=
+    # - ALPINE_HTTP_PROXY_PASSWORD=
+    #
+    # Optional Cross-Origin Resource Sharing (CORS) Headers
+    # - ALPINE_CORS_ENABLED=true
+    # - ALPINE_CORS_ALLOW_ORIGIN=*
+    # - ALPINE_CORS_ALLOW_METHODS=GET POST PUT DELETE OPTIONS
+    # - ALPINE_CORS_ALLOW_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count, *
+    # - ALPINE_CORS_EXPOSE_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count
+    # - ALPINE_CORS_ALLOW_CREDENTIALS=true
+    # - ALPINE_CORS_MAX_AGE=3600
+    image: 'owasp/dependency-track'
+    container_name: devops_dependency-track
+    #hostname: albandrieu-dependency-track
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 3g
+        reservations:
+          memory: 512m
+      restart_policy:
+        condition: on-failure
+    ports:
+      - '8087:8080'
+    volumes:
+      - './data:/data'
+    depends_on:
+      - jenkins
+      
+  nexus:
+    #docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
+    image: sonatype/nexus3:3.0.0
+    container_name: devops_nexus3
+    #hostname: albandrieu-nexus
+    restart: unless-stopped
+    volumes:
+      - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
+    ports:
+      - "8081:8081"
 
-    node-exporter:
-      image: prom/node-exporter:v0.18.1
-      container_name: monitoring_node_exporter
-      restart: unless-stopped
-      ports:
-        - 9100:9100
+#  artifactory:
+#    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
+#    image: docker.bintray.io/jfrog/artifactory-cpp-ce
+#    container_name: artifactory
+#    ports:
+#     - 80:8081
+#    volumes:
+#     - /workspace/data/artifactory:/var/opt/jfrog/artifactory
+##    Add extra Java options by uncommenting the following lines
+##    environment:
+##     - EXTRA_JAVA_OPTIONS=-Xmx4g
+#    restart: always
+#    ulimits:
+#      nproc: 65535
+#      nofile:
+#        soft: 32000
+#        hard: 40000
+
+  prometheus:
+    image: prom/prometheus:v2.16.0
+    container_name: monitoring_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./data/prometheus/config:/etc/prometheus/
+      - ./data/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9091:9090
+    links:
+      - cadvisor:monitoring_cadvisor
+      - node-exporter:node-monitoring_node_exporter
+
+  node-exporter:
+    image: prom/node-exporter:v0.18.1
+    container_name: monitoring_node_exporter
+    restart: unless-stopped
+    ports:
+      - 9100:9100
 
   #   alertmanager:
   #     image: prom/alertmanager:latest
@@ -45,52 +167,52 @@ services:
   #        constraints:
   #          - node.hostname == ${HOSTNAME}
 
-    cadvisor:
-      image: google/cadvisor:v0.32.0
-      container_name: monitoring_cadvisor
-      restart: unless-stopped
-      volumes:
-        - /:/rootfs:ro
-        - /var/run:/var/run:rw
-        - /sys:/sys:ro
-        - /var/lib/docker/:/var/lib/docker:ro
-      ports:
-        - 7777:8080
-      #links: 
-      #  - elasticsearch
-      #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
-  
-    grafana:
-      image: grafana/grafana:6.7.1
-      user: "1000"
-      container_name: monitoring_grafana
-      restart: unless-stopped
-      links:
-        - prometheus:monitoring_prometheus
-      volumes:
-        - ./data/grafana/data:/var/lib/grafana
-        - ./data/grafana/provisioning/:/etc/grafana/provisioning/
-        #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-        #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
-        #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
-        #- ./grafana/dashboards:/var/lib/grafana/dashboards
-      environment:
-         - GF_SECURITY_ADMIN_USER=admin
-         - GF_SECURITY_ADMIN_PASSWORD=admin
-         - GF_USERS_ALLOW_SIGN_UP=false
-        #- GF_USERS_ALLOW_SIGN_UP=true
-        #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
-        #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-      depends_on:
-        - prometheus
-      ports:
-        - '3000:3000'
- #       - GF_SERVER_DOMAIN=myrul.com
- #       - GF_SMTP_ENABLED=true
- #       - GF_SMTP_HOST=smtp.gmail.com:587
- #       - GF_SMTP_USER=myadrress@gmail.com
- #       - GF_SMTP_PASSWORD=mypassword
- #       - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
+  cadvisor:
+    image: google/cadvisor:v0.32.0
+    container_name: monitoring_cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 7777:8080
+    #links:
+    #  - elasticsearch
+    #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
+
+  grafana:
+    image: grafana/grafana:6.7.1
+    user: "1000"
+    container_name: monitoring_grafana
+    restart: unless-stopped
+    links:
+      - prometheus:monitoring_prometheus
+    volumes:
+      - ./data/grafana/data:/var/lib/grafana
+      - ./data/grafana/provisioning/:/etc/grafana/provisioning/
+      #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
+      #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      #- ./grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+       - GF_SECURITY_ADMIN_USER=admin
+       - GF_SECURITY_ADMIN_PASSWORD=admin
+       - GF_USERS_ALLOW_SIGN_UP=false
+      #- GF_USERS_ALLOW_SIGN_UP=true
+      #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
+      #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+    depends_on:
+      - prometheus
+    ports:
+      - '3000:3000'
+ #     - GF_SERVER_DOMAIN=myrul.com
+ #     - GF_SMTP_ENABLED=true
+ #     - GF_SMTP_HOST=smtp.gmail.com:587
+ #     - GF_SMTP_USER=myadrress@gmail.com
+ #     - GF_SMTP_PASSWORD=mypassword
+ #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
 
 #  logstash:
 #    image: docker.elastic.co/logstash/logstash:${TAG}
@@ -121,56 +243,92 @@ services:
 #      - 24224:24224
 #      - 24224:24224/udp
 
-    elasticsearch:
-      image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1    
-      container_name: monitoring_elasticsearch      
-      #restart: unless-stopped      
-      deploy:
-        resources:
-          limits:
-            memory: 3g
-          reservations:
-            memory: 512m      
-      environment:
-        - xpack.security.enabled=false      
-        - discovery.type=single-node
-        #- http.host=0.0.0.0
-        #- transport.host=127.0.0.1
-        #- bootstrap.memory_lock=true
-        #- "ES_JAVA_OPTS=-Xms${ES_JVM_HEAP} -Xmx${ES_JVM_HEAP}"      
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-        nofile:
-          soft: 65536
-          hard: 65536        
-      cap_add:
-        - IPC_LOCK          
-      volumes:
-        #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-        - esdata:/usr/share/elasticsearch/data
-      ports:
-        - 9200:9200
-        - 9300:9300
+  elasticsearch-hq:
+    image: elastichq/elasticsearch-hq:latest # v3.5.12
+    # Todo connect to http://monitoring_elasticsearch:9200
+    container_name: monitoring_elasticsearch-hq
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+        reservations:
+          memory: 512m
+    ports:
+      - 5001:5000
+    depends_on:
+      - elasticsearch
 
-    kibana:
-      container_name: monitoring_kibana
-      image: docker.elastic.co/kibana/kibana:7.4.0
-      environment:
-        - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
-      ports:
-        - 5601:5601
-      depends_on:
-        - elasticsearch
-      
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+    container_name: monitoring_elasticsearch
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 3g
+        reservations:
+          memory: 512m
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      #- http.host=0.0.0.0
+      #- transport.host=127.0.0.1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - xpack.monitoring.collection.enabled=true
+      #- network.host=_eth0_
+    #three nodes # See https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+    #environment:
+    #  - node.name=es01
+    #  - cluster.name=es-docker-cluster
+    #  - discovery.seed_hosts=es02,es03
+    #  - cluster.initial_master_nodes=es01,es02,es03
+    #  - bootstrap.memory_lock=true
+    #  - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    #cap_add:
+    #  - IPC_LOCK
+    #- ALL-
+    volumes:
+      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata:/usr/share/elasticsearch/data
+#docker exec monitoring_elasticsearch /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch royrusso/elasticsearch-HQ
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.4.0
+    container_name: monitoring_kibana
+    restart: unless-stopped
+    environment:
+      - SERVER_NAME=localhost
+      - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
+      - xpack.monitoring.enabled=true
+    # See https://www.elastic.co/guide/en/kibana/current/docker.html
+    #volumes:
+    #  - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
 volumes:
   esdata:
     driver: local
-    
-networks:
-  default:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.16.59.0/24 # bypass openvpn
+
+#networks:
+#  default:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.16.59.0/24 # bypass openvpn

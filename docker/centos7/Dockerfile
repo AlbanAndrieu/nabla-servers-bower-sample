@@ -1,11 +1,13 @@
 # CentOS based image (RHEL7-compatible):
 FROM centos:7.5.1804
 
+LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
+
 ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 
 ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-openjdk"}
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
-ARG CERT_URL=${CERT_URL:-"https://home.nabla.mobi/download/certs/${CERT_NAME}"}
+ARG CERT_URL=${CERT_URL:-"https://home.albandrieu.com/download/certs/${CERT_NAME}"}
 
 ARG HELM_VERSION=${HELM_VERSION:-"v2.14.1"}
 ENV FILENAME=helm-${HELM_VERSION}-linux-amd64.tar.gz
@@ -26,10 +28,10 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 ADD https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm /tmp
-RUN yum -y install /tmp/epel-release-latest-7.noarch.rpm
+RUN yum -y install /tmp/epel-release-latest-7.noarch.rpm && yum -y clean all
 
 ADD https://centos7.iuscommunity.org/ius-release.rpm /tmp
-RUN rpm -ivh /tmp/ius-release.rpm
+RUN rpm -ivh /tmp/ius-release.rpm && yum -y clean all
 
 RUN yum-config-manager \
     --add-repo \
@@ -140,5 +142,4 @@ VOLUME ["/sys/fs/cgroup"]
 
 ENTRYPOINT ["java", "-jar", "/home/jenkins/jetty-runner.jar"]
 CMD ["/home/jenkins/test.war"]
-
 EXPOSE 8080
