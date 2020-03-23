@@ -1,4 +1,4 @@
-ansible==2.7.1
+ansible==2.7.16
 ansible-cmdb==1.29
 ansible-lint==3.5.1
 ansicolors==1.1.8
