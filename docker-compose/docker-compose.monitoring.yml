@@ -19,7 +19,10 @@ services:
     depends_on:
       - elasticsearch
       - nexus
-      
+    #networks:
+    #  - elastic
+    #  - ingress
+
   dtrack:
     ## Pull the image from the Docker Hub OWASP repo
     #docker pull owasp/dependency-track
@@ -78,8 +81,8 @@ services:
     # - ALPINE_CORS_ALLOW_CREDENTIALS=true
     # - ALPINE_CORS_MAX_AGE=3600
     image: 'owasp/dependency-track'
-    container_name: devops_dependency-track
-    #hostname: albandrieu-dependency-track
+    container_name: devops_dtrack
+    #hostname: albandrieu-dtrack
     restart: unless-stopped
     deploy:
       resources:
@@ -95,7 +98,9 @@ services:
       - './data:/data'
     depends_on:
       - jenkins
-      
+    #networks:
+    #  - ingress
+
   nexus:
     #docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
     image: sonatype/nexus3:3.0.0
@@ -106,6 +111,9 @@ services:
       - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
     ports:
       - "8081:8081"
+    network_mode: "host"
+    #networks:
+    #  - ingress
 
 #  artifactory:
 #    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
@@ -114,7 +122,7 @@ services:
 #    ports:
 #     - 80:8081
 #    volumes:
-#     - /workspace/data/artifactory:/var/opt/jfrog/artifactory
+#     - ./data/artifactory:/var/opt/jfrog/artifactory
 ##    Add extra Java options by uncommenting the following lines
 ##    environment:
 ##     - EXTRA_JAVA_OPTIONS=-Xmx4g
@@ -127,14 +135,16 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.16.0
+    user: root
     container_name: monitoring_prometheus
     restart: unless-stopped
     volumes:
-      - ./data/prometheus/config:/etc/prometheus/
+      - ${PWD}/configs/prometheus/:/etc/prometheus/
       - ./data/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      #- '--storage.tsdb.retention.time=365d'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
@@ -142,31 +152,44 @@ services:
     links:
       - cadvisor:monitoring_cadvisor
       - node-exporter:node-monitoring_node_exporter
-
+    #networks:
+    #  - elastic
+    #  - ingress
+      
+  alertmanager:
+    image: prom/alertmanager:v0.20.0
+    ports:
+      - 9093:9093
+    volumes:
+      - ./configs/alertmanager/:/etc/alertmanager/
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    #networks:
+    #  - elastic
+      
   node-exporter:
     image: prom/node-exporter:v0.18.1
     container_name: monitoring_node_exporter
     restart: unless-stopped
     ports:
       - 9100:9100
+    #networks:
+    #  - elastic
+    #  - ingress
 
-  #   alertmanager:
-  #     image: prom/alertmanager:latest
-  #     ports:
-  #       - 9093:9093
-  #     volumes:
-  #       - ./data/alertmanager/:/etc/alertmanager/
-  #     networks:
-  #       - back-tier
-  #     restart: always
-  #     command:
-  #       - '--config.file=/etc/alertmanager/config.yml'
-  #       - '--storage.path=/alertmanager'
-  # #    deploy:
-  #      placement:
-  #        constraints:
-  #          - node.hostname == ${HOSTNAME}
-
+  blackbox:
+    image: prom/blackbox-exporter:v0.14.0
+    container_name: monitoring_blackbox
+    restart: unless-stopped    
+    deploy:
+      replicas: 1
+    volumes:
+    - ./configs/blackbox:/config
+    #networks:
+    #  - ingress
+      
   cadvisor:
     image: google/cadvisor:v0.32.0
     container_name: monitoring_cadvisor
@@ -181,10 +204,14 @@ services:
     #links:
     #  - elasticsearch
     #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
+    #networks:
+    #  - elastic
+    #  - ingress
 
   grafana:
     image: grafana/grafana:6.7.1
-    user: "1000"
+    #user: "1000"
+    user: root
     container_name: monitoring_grafana
     restart: unless-stopped
     links:
@@ -213,35 +240,9 @@ services:
  #     - GF_SMTP_USER=myadrress@gmail.com
  #     - GF_SMTP_PASSWORD=mypassword
  #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
-
-#  logstash:
-#    image: docker.elastic.co/logstash/logstash:${TAG}
-#    container_name: logstash
-#    secrets:
-#      - source: logstash.conf
-#        target: /usr/share/logstash/pipeline/logstash.conf
-#      - source: logstash.yml
-#        target: /usr/share/logstash/config/logstash.yml
-#      - source: logstash.keystore
-#        target: /usr/share/logstash/config/logstash.keystore
-#      - source: ca.crt
-#        target: /usr/share/logstash/config/certs/ca/ca.crt
-#    depends_on: ['elasticsearch']
-#    healthcheck:
-#      test: bin/logstash -t
-#      interval: 60s
-#      timeout: 50s
-#      retries: 5
-
-#  fluentd:
-#    build: ./fluentd
-#    volumes:
-#      - ./fluentd/conf:/fluentd/etc
-#    links:
-#      - "elasticsearch"
-#    ports:
-#      - 24224:24224
-#      - 24224:24224/udp
+    #networks:
+    #  - elastic
+    #  - ingress
 
   elasticsearch-hq:
     image: elastichq/elasticsearch-hq:latest # v3.5.12
@@ -254,10 +255,15 @@ services:
           memory: 1g
         reservations:
           memory: 512m
+    environment:          
+      - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
+      #- HQ_ENABLE_SSL=False
     ports:
       - 5001:5000
     depends_on:
       - elasticsearch
+    #networks:
+    #  - elastic
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
@@ -296,15 +302,16 @@ services:
         soft: 65536
         hard: 65536
     #cap_add:
-    #  - IPC_LOCK
-    #- ALL-
+    ##  - IPC_LOCK
+    #  - ALL
     volumes:
-      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      #- ${PWD}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - esdata:/usr/share/elasticsearch/data
-#docker exec monitoring_elasticsearch /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch royrusso/elasticsearch-HQ
     ports:
       - 9200:9200
       - 9300:9300
+    #networks:
+    #  - elastic
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.4.0
@@ -316,19 +323,155 @@ services:
       - xpack.monitoring.enabled=true
     # See https://www.elastic.co/guide/en/kibana/current/docker.html
     #volumes:
-    #  - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    #  - ${PWD}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - 5601:5601
     depends_on:
       - elasticsearch
+    #networks:
+    #  - elastic
+    #  - ingress
+
+  auditbeat:
+    image: docker.elastic.co/beats/auditbeat:7.6.0
+    command: auditbeat -e -strict.perms=false
+    user: root
+    environment:
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearchmonitoring_elasticsearch:9200"]
+    cap_add: ['AUDIT_CONTROL', 'AUDIT_READ']
+    pid: "host"
+    volumes:
+    #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    #networks:
+    #  - elastic
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.6.0
+    # command: --strict.perms=false
+    environment:
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+    cap_add:
+      - AUDIT_CONTROL
+      - AUDIT_READ
+    volumes:
+      # - ${PWD}/configs/metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    #networks:
+    #  - elastic
+
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:7.6.0
+    command: --strict.perms=false
+    environment:
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+    volumes:
+      - ${PWD}/configs/beats/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    #network_mode: "host"
+
+  packetbeat:
+    image: docker.elastic.co/beats/packetbeat:7.6.0
+    command: --strict.perms=false
+    environment:
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    # volumes:
+    #   - ${PWD}/configs/packetbeat.docker.yml:/usr/share/packetbeat/packetbeat.yml
+    #networks:
+    #  - elastic
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.6.0
+    command: --strict.perms=false
+    environment:
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+    ports:
+      - 9000:9000
+    volumes:
+      # - ${PWD}/configs/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    #networks:
+    #  - elastic
+
+  apmserver:
+    image: docker.elastic.co/apm/apm-server:7.6.0
+    command: --strict.perms=false
+    ports:
+      - 8200:8200
+      - 8201:8200
+    environment:
+      - apm-server.host=0.0.0.0
+      - setup.kibana.host=monitoring_kibana:5601
+      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+    # volumes:
+    #   - ${PWD}/configs/apm-server.yml:/usr/share/apm-server/apm-server.yml
+    #networks:
+    #    - elastic
+
+  app-search:
+    image: docker.elastic.co/app-search/app-search:7.6.0
+    ports:
+      - 3002:3002
+    environment:
+      secret_session_key: supersecretsessionkey
+      elasticsearch.host: http://monitoring_elasticsearch:9200/
+      allow_es_settings_modification: "true"
+    #networks:
+    #  - elastic
+
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:${TAG}
+#    container_name: logstash
+#    secrets:
+#      - source: logstash.conf
+#        target: /usr/share/logstash/pipeline/logstash.conf
+#      - source: logstash.yml
+#        target: /usr/share/logstash/config/logstash.yml
+#      - source: logstash.keystore
+#        target: /usr/share/logstash/config/logstash.keystore
+#      - source: ca.crt
+#        target: /usr/share/logstash/config/certs/ca/ca.crt
+#    depends_on: ['elasticsearch']
+#    healthcheck:
+#      test: bin/logstash -t
+#      interval: 60s
+#      timeout: 50s
+#      retries: 5
+
+#  fluentd:
+#    build: ./fluentd
+#    volumes:
+#      - ./fluentd/conf:/fluentd/etc
+#    links:
+#      - "elasticsearch"
+#    ports:
+#      - 24224:24224
+#      - 24224:24224/udp
 
 volumes:
   esdata:
     driver: local
 
-#networks:
-#  default:
-#    driver: bridge
+networks:
+  #elastic:
+  #ingress:
+  
+  default:    
+    driver: bridge
+    #driver: host
+    #external:
+    #  name: test    
 #    ipam:
 #      config:
 #        - subnet: 172.16.59.0/24 # bypass openvpn
