@@ -44,7 +44,7 @@
         <org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
         <groovy.eclipse.compiler.version>3.4.0-01</groovy.eclipse.compiler.version>
         <groovy.eclipse.batch.version>2.5.7-01</groovy.eclipse.batch.version>
-        <maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
+        <maven.gmavenplus.plugin.version>1.8.1</maven.gmavenplus.plugin.version>
 
         <maven.frontend.plugin.version>1.7.5</maven.frontend.plugin.version>
         <maven.dependency.check.plugin.version>5.2.4</maven.dependency.check.plugin.version>
@@ -99,7 +99,7 @@
 
         <jmockit.version>1.19</jmockit.version>
         <junit.version>4.12</junit.version>
-        <groovy.version>2.5.7</groovy.version>
+        <groovy.version>2.4.12</groovy.version>
         <guava.version>23.3-jre</guava.version>
         <guice.version>4.1.0</guice.version>
         <jersey.version>2.22</jersey.version>
@@ -114,6 +114,7 @@
         <javax.jsp.api.version>2.0</javax.jsp.api.version>
         <doxia.core.version>1.8</doxia.core.version>
         <doxia.version>1.8.1</doxia.version>
+        <jetty.runner.version>${jetty9.version}</jetty.runner.version>
 
         <!--
         <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
@@ -1064,6 +1065,7 @@
             </plugin>
             -->
             <!-- groovydoc -->
+            <!--
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -1081,13 +1083,17 @@
                         <groupId>org.codehaus.groovy</groupId>
                         <artifactId>groovy-all</artifactId>
                         <version>${groovy.version}</version>
+                        <scope>runtime</scope>
                     </dependency>
                 </dependencies>
                 <configuration>
                     <groovydocJavaSources>false</groovydocJavaSources>
                     <groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
+                    <testGroovyDocOutputDirectory>${project.basedir}/target/site/testgapidocs</testGroovyDocOutputDirectory>
                 </configuration>
             </plugin>
+            -->
+           
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

@@ -872,13 +872,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= config.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -1647,7 +1640,6 @@ module.exports = function(grunt) {
     'ngtemplates',
     'concat',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'replace:debugMode',
     'replace:versionTag',

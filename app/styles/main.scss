@@ -10,11 +10,11 @@
 //Check order in bower.json
 
 // bower:scss
-@import "font-awesome/scss/font-awesome.scss";
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "font-awesome/scss/font-awesome.scss";
 // endbower
 
-@import "nabla-styles/app/styles/nabla-bootstrap.scss";
+//@import "nabla-styles/app/styles/nabla-bootstrap.scss";
 
 @import "mixins";
 @import "components/header";

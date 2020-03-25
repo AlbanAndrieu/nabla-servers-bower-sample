@@ -5,7 +5,7 @@ public class JavaCode {
         DOMESTIC,
         FOREIGN,
         ALL,
-    };
+    }
 
     static final String getCurrencyType(final JavaEnum currencyType) {
         switch (currencyType) {
