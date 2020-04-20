@@ -14,7 +14,7 @@ if [ -z "${DRY_RUN}" ]; then
   # shellcheck disable=SC2154
   echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures ${NC}"
   # shellcheck disable=SC2086
-  docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures
+  #docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} pull --ignore-pull-failures
 fi
 echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} up ${DOCKER_COMPOSE_UP_OPTIONS} ${NC}"
 # shellcheck disable=SC2086
@@ -34,7 +34,7 @@ echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKI
 # shellcheck disable=SC2086
 docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" ${DOCKER_COMPOSE_OPTIONS} logs ${DOCKER_COMPOSE_UP_SERVICE}
 
-echo -e "${green} https://localhost:9090/ ${NC}"
+echo -e "${green} http://localhost:9090/ ${NC}"
 
 echo -e "${green} docker cp ${DOCKER_TEST_TAG}_web_1:${ALMTEST_RESULTS_PATH} result ${NC}"
 

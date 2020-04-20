@@ -135,7 +135,6 @@ RUN echo "jenkins:jenkins1234" | chpasswd
 ADD entrypoint.sh /
 
 ENV JETTY_TMP /tmp/jetty
-
 RUN mkdir ${JETTY_TMP} && chown -R ${USER}:${GROUP} ${JETTY_TMP}
 
 USER jenkins
