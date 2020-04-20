@@ -13,6 +13,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JENKINS_HOME=/jenkins
+    dns_search: 
+      - misys.global.ad
+      - albandrieu.com
+    dns:
+      - 10.21.200.3
+      - 10.25.200.3   
+      - 192.168.1.1
     ports:
       - 8686:8080
       - 50000:50000
@@ -408,7 +415,7 @@ services:
     image: docker.elastic.co/apm/apm-server:7.6.0
     command: --strict.perms=false
     ports:
-      - 8200:8200
+      #- 8200:8200
       - 8201:8200
     environment:
       - apm-server.host=0.0.0.0
@@ -472,6 +479,6 @@ networks:
     #driver: host
     #external:
     #  name: test    
-#    ipam:
-#      config:
-#        - subnet: 172.16.59.0/24 # bypass openvpn
+    ipam:
+      config:
+        - subnet: 172.16.59.0/24 # bypass openvpn

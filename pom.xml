@@ -121,7 +121,7 @@
         <validation.api.version>1.1.0.Final</validation.api.version>
         -->
 
-        <jetty9.version>9.4.19.v20190610</jetty9.version>
+        <jetty9.version>9.4.28.v20200408</jetty9.version>
         <jetty.ssl.port>9443</jetty.ssl.port>
         <!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
         <cargo.protocol>http</cargo.protocol>
@@ -841,9 +841,10 @@
                         <log>${project.build.directory}/cargo.log</log>
                         <logLevel>debug</logLevel>
                         <systemProperties>
-                            <java.io.tmpdir>target/tmp</java.io.tmpdir>
+                            <!--<java.io.tmpdir>target/tmp</java.io.tmpdir>-->
                             <log4j.debug>true</log4j.debug>
                         </systemProperties>
+                        <!--
                         <dependencies>
                             <dependency>
                                 <groupId>org.slf4j</groupId>
@@ -858,10 +859,11 @@
                                 <artifactId>log4j</artifactId>
                             </dependency>
                         </dependencies>
+                        -->
                     </container>
                     <configuration>
                         <properties>
-                            <cargo.protocol>http</cargo.protocol>
+                            <cargo.protocol>${cargo.protocol}</cargo.protocol>
                             <cargo.hostname>${cargo.host}</cargo.hostname>
                             <cargo.servlet.port>${cargo.port}</cargo.servlet.port>
                             <cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1064,8 +1066,7 @@
                 </configuration>
             </plugin>
             -->
-            <!-- groovydoc -->
-            <!--
+            <!-- groovydoc 
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -1093,7 +1094,6 @@
                 </configuration>
             </plugin>
             -->
-           
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

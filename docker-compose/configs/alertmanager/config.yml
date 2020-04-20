@@ -20,6 +20,7 @@ receivers:
   - channel: '#alerts_test' 
     api_url: https://hooks.slack.com/services/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
     icon_url: https://avatars3.githubusercontent.com/u/3380462
+    #icon_url: https://avatars1.githubusercontent.com/u/7859836
     send_resolved: true
     # Template for the text field in Slack messages.
     text: 'https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}'

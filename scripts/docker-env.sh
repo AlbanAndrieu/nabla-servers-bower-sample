@@ -67,7 +67,8 @@ else
   echo -e "${magenta} DOCKER_FILE : ${DOCKER_FILE} ${NC}"
 fi
 
-readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}
+#readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}
+readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-""}
 readonly DOCKER_ORGANISATION=${DOCKER_ORGANISATION:-"nabla"}
 readonly DOCKER_USERNAME=${DOCKER_USERNAME:-"nabla"}
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}

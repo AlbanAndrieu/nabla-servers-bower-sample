@@ -4,22 +4,23 @@ version: '3.7'
 services:
 
   web:
-    build: ..
-    volumes:
-      - '.:/code'
+    #build: 
+    #  context: ..
+    #  dockerfile: ../docker/centos7/
+    #volumes:
+    #  - '..:/code'
     ports:
-     - 1099:1099 #jmx remote
+     #- 1099:1099 #jmx remote
      - 9090:8080 #http
-     #- 9090:80
-     - 9443:9443 #https
-     - 2924:2924 #eclipse
-    environment:
-      DEBUG: 'true'
+     #- 9443:9443 #https
+     #- 2924:2924 #eclipse
+    #environment:
+    #  DEBUG: 'true'
 
   db:
     command: '-d'
     ports:
-      - 3306:3306
+      - 3307:3306
 
   cache:
     ports:

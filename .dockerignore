@@ -2,8 +2,9 @@
 hooks
 doc/
 *.tmp/*
-.bower/
+#.bower/
 .settings/
 */target*
 *.md
 !README.md
+docker-compose/data/grafana/data/

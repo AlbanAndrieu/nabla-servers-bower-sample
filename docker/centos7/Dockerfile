@@ -7,7 +7,7 @@ ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 
 ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-openjdk"}
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
-ARG CERT_URL=${CERT_URL:-"https://home.albandrieu.com/download/certs/${CERT_NAME}"}
+ARG CERT_URL=${CERT_URL:-"https://albandrieu.com/download/certs/${CERT_NAME}"}
 
 ARG HELM_VERSION=${HELM_VERSION:-"v2.14.1"}
 ENV FILENAME=helm-${HELM_VERSION}-linux-amd64.tar.gz
@@ -90,7 +90,8 @@ RUN curl -L -o /tmp/kubectl  https://storage.googleapis.com/kubernetes-release/r
 RUN helm init --client-only
 
 # Sonar tools
-ARG SONAR_SCANNER_URL="https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip"
+#ARG SONAR_SCANNER_URL="https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip"
+ARG SONAR_SCANNER_URL="https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip"
 ARG SONAR_WRAPPER_URL="https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip"
 
 ADD ${SONAR_SCANNER_URL} /tmp/
@@ -131,15 +132,25 @@ RUN echo "jenkins:jenkins1234" | chpasswd
 #ADD https://albandri/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
 #RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
 
+ADD entrypoint.sh /
+
+ENV JETTY_TMP /tmp/jetty
+
+RUN mkdir ${JETTY_TMP} && chown -R ${USER}:${GROUP} ${JETTY_TMP}
+
 USER jenkins
 
 # Working dir
 WORKDIR $JENKINS_USER_HOME
 
+ENV JETTY_BASE /var/lib/jetty
+ENV JETTY_HOME /usr/local/jetty
+
 COPY --chown=jenkins:docker target/dependency/jetty-runner.jar target/test.war ${JENKINS_USER_HOME}/
 
-VOLUME ["/sys/fs/cgroup"]
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 
-ENTRYPOINT ["java", "-jar", "/home/jenkins/jetty-runner.jar"]
+#ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["java", "-Djava.io.tmpdir=/tmp/jetty", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
 CMD ["/home/jenkins/test.war"]
 EXPOSE 8080

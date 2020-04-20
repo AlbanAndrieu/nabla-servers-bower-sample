@@ -58,9 +58,9 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
   echo -e "${WORKING_DIR}/microscanner-wrapper/scan.sh ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG} ${NC}"
 
   export MICROSCANNER_OPTIONS="--html"
-  cd "${WORKING_DIR}/microscanner-wrapper/"
+  cd ${WORKING_DIR}/microscanner-wrapper/
   #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-scan.log
-  grabhtml.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-grabhtml.log
+  ${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-grabhtml.log
 
 else
   # shellcheck disable=SC2154

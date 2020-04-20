@@ -4,7 +4,7 @@ exports.config = {
   // Specify you want to use jasmine 2.x as you would with mocha and cucumber.
   framework: 'jasmine2',
   //seleniumAddress: 'http://home.nabla.mobi:4444/wd/hub',
-  specs: ['test/e2e/example/*_test.js'],
+  specs: ['e2e/example/*_test.js'],
   //baseUrl: 'http://' + process.env.SERVER_HOST + ':' + process.env.JETTY_PORT,
   //baseUrl: 'https://localhost:' + ( process.env.SERVER_SECURE_PORT || 9443 ),
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9090 ),
@@ -115,46 +115,17 @@ exports.config = {
       browser.getCapabilities().then(function(caps) {
         browser.params.browser = caps.get('browserName');
       });
-
-      //var failFast = require('jasmine-fail-fast');
-      //jasmine.getEnv().addReporter(failFast.init());
+      
       //require('jasmine-bail-fast');
       //jasmine.getEnv().bailFast();
-
-      // The require statement must be down here, since jasmine-reporters@1.0
-      // expects jasmine to be in the global and protractor does not guarantee
-      // this until inside the onPrepare function.
-      //require('jasmine-reporters');
-      //jasmine.getEnv().addReporter(
-      //    new jasmine.JUnitXmlReporter('target/surefire-reports', true, true)
-      //);
-
-      //let SpecReporter = require('jasmine-spec-reporter').SpecReporter;
-      //
-      //exports.config = {
-      //   // your config here ...
-      //
-      //  onPrepare: function () {
-      //    jasmine.getEnv().addReporter(new SpecReporter({
-      //      spec: {
-      //        displayStacktrace: true
-      //      }
-      //    }));
-      //  }
-      //
-      //}
-
-      var reporters = require('jasmine-reporters');
-      var junitReporter = new reporters.JUnitXmlReporter({
-      //  consolidateAll: false,
+      
+      var jasmineReporters = require('jasmine-reporters');
+      jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
+          consolidateAll: true,
           filePrefix: 'TEST-com.test.project.sample.Protractor',
           savePath: 'target/surefire-reports'
-      });
-      jasmine.getEnv().addReporter(junitReporter);
-
-      var SpecReporter = require('jasmine-spec-reporter');
-      jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: 'all'}));
-
+      }));
+      
       //browser.ignoreSynchronization = true; //enable for non angular
       //browser.waitForAngularEnabled(false);
 
