@@ -16,7 +16,7 @@ ENV HELM_URL=https://storage.googleapis.com/kubernetes-helm/${FILENAME}
 ENV TERM="xterm-256color"
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 
-# Install systemd -- See https://hub.docker.com/_/centos/
+# Install systemd -- See https://index.docker.io/v1/_/centos/
 RUN yum -y update; yum clean all; \
 (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
 rm -f /lib/systemd/system/multi-user.target.wants/*;\

@@ -75,10 +75,10 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
   echo -e "${WORKING_DIR}/microscanner-wrapper/scan.sh ${DOCKER_IMAGE} ${NC}"
 
   export MICROSCANNER_OPTIONS="--html"
-  cd "${WORKING_DIR}/microscanner-wrapper/"
+  cd ${WORKING_DIR}/microscanner-wrapper/
   #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_IMAGE}" | tee aqua-scan.log
   echo -e "grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html ${NC}"
-  grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
+  ${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
 
 else
   # shellcheck disable=SC2154

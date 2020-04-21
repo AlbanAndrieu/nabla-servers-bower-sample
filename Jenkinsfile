@@ -5,25 +5,25 @@
     - define global behavior
 */
 
-String DOCKER_REGISTRY="hub.docker.com".trim()
+String DOCKER_REGISTRY="index.docker.io/v1".trim()
 String DOCKER_ORGANISATION="nabla".trim()
 String DOCKER_TAG="latest".trim()
 //String DOCKER_USERNAME="nabla"
 String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
 
 String DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
-String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "jenkins".trim()
-String DOCKER_IMAGE="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
+String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "hub-docker-nabla".trim()
+String DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
 
 String DOCKER_OPTS_BASIC = getDockerOpts()
 String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
 String DOCKER_NAME_BUILD="ansible-jenkins-slave-test".trim()
 String DOCKER_BUILD_TAG=dockerTag("temp").trim()
-String DOCKER_BUILD_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
+String DOCKER_BUILD_IMG="${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
 String DOCKER_RUNTIME_TAG="latest".trim()
 String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
-String DOCKER_RUNTIME_IMG="${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
+String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
 
 String RELEASE_VERSION=""
 String GIT_COMMIT_REV=""
@@ -681,11 +681,13 @@ exit 0
                                 script {
 
                                     env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_RUNTIME_NAME: DOCKER_RUNTIME_NAME, dockerFilePath: "./docker/centos7/", dockerTargetPath: "./", skipMaven: false)
+                                    // Same as ./scripts/docker-build-runtime.sh
+                                    // with result ./scripts/microscanner-wrapper/aqua-grab.html
 
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
                                     withCSTWrapper(imageName: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
-                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)
+                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)                                    
 
                                 } // script
                             } // steps
