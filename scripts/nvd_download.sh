@@ -4,7 +4,7 @@ git clone https://github.com/stevespringett/nist-data-mirror.git
 cd nist-data-mirro || exit 1
 mvn clean package
 
-NVD_ROOT=$1/`date -I`
+NVD_ROOT=$1/$(date -I)
 mkdir target/$NVD_ROOT
 JAR_PATH=target/nist-data-mirror.jar
 java -jar $JAR_PATH target/$NVD_ROOT

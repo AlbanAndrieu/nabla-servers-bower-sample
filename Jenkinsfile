@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-@Library(value=''github.com/AlbanAndrieu/jenkins-pipeline-scripts@master', changelog=false) _
+@Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 /*
     Point of this Jenkinsfile is to:
     - define global behavior
@@ -706,7 +706,7 @@ exit 0
                             environment {
                                 DOCKER_TEST_TAG=dockerTag("${env.BRANCH_NAME}", "${env.GIT_COMMIT}")
                                 DOCKER_COMPOSE_FILE="docker-compose.prod.yml"
-                                DOCKER_COMPOSE_UP_OPTIONS="--exit-code-from web web"
+                                DOCKER_COMPOSE_UP_OPTIONS="--detach web "
                                 TEST_RESULTS_PATH="/tmp/result/test-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
                                 dockerResultPath="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
                                 ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"

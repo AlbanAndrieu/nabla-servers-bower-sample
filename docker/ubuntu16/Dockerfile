@@ -70,9 +70,18 @@ RUN add-apt-repository \
 RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL3008,DL3015
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-    apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 nsp@3.2.1 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.0 json2csv@4.3.3 phantomas@1.20.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11 dockerfile_lint@0.3.3;
+RUN apt-get update && apt-get install -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2-0ubuntu4 && apt-get clean && rm -rf /var/lib/apt/lists/*
+#     && \
+#    npm set progress=false && \
+#    npm config set depth 0;
+#npm@6.14.4    
+RUN npm install -g npm
+RUN apt purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
+#hash -d npm
+RUN npm -v && command -v npm
+RUN npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.1
+RUN npm install -g nsp@3.2.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11
+RUN npm install -g json2csv@4.3.3 phantomas@1.20.1
 
 ARG USER=${USER:-jenkins}
 ARG GROUP=${GROUP:-docker}
@@ -199,12 +208,6 @@ EXPOSE 8080
 #    $BUILD_PACKAGES git zip unzip python-yaml python-jinja2 python-pip openssh-server rsyslog \
 #    && apt-get install -y xz-utils curl lsof sshpass \
 #    net-tools iputils-ping x11-apps
-#
-##RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - ;\
-##    apt-get update && apt-get install -y nodejs ;\
-##    npm set progress=false && \
-##    npm config set depth 0 && \
-##    npm install -g bower grunt grunt-cli nsp
 #
 ## Copy to images tomcat path
 ##ADD web.xml /usr/local/tomcat/conf/
