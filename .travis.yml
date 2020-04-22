@@ -28,7 +28,7 @@ addons:
     - g++-5
 #    - ruby-compass
 
-language: java
+language: nodejs
 
 node_js:
   - "8"
