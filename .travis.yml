@@ -13,10 +13,6 @@ jdk:
   - openjdk8
 #  - openjdk11
 
-script:
-- sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
-- gcc --version
-
 addons:
   chrome: stable
   #firefox: latest
@@ -33,6 +29,10 @@ language: nodejs
 node_js:
 #  - "8"
   - "11"
+
+compiler:
+#  - clang
+  - gcc
 
 services:
   - docker
@@ -62,8 +62,8 @@ notifications:
     on_start: false
 
 env:
-#  matrix:
-#  - EMBER_VERSION=default
+  matrix:
+  - EMBER_VERSION=default
   global:
   - MOZ_HEADLESS=1
   - secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
@@ -74,26 +74,6 @@ matrix:
   - env: EMBER_VERSION=release
   - env: EMBER_VERSION=beta
   - env: EMBER_VERSION=canary
-  include:
-    - compiler: gcc
-      os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-8
-            - cmake
-            - colormake
-            - libxml2-dev
-            - libxml2-utils
-            - libcppunit-dev
-            - libboost-thread-dev
-            - libboost-date-time-dev
-            - libboost-filesystem-dev
-      #before_script:
-      #  - conan profile update settings.compiler.version=8 nabla
-      env: CMAKEFLAGS="-DWITH_BOOST=OFF" CXX=g++-8
 
 # See https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
 
@@ -119,6 +99,7 @@ before_install:
   - "phantomjs --version"
   - # start your web application and listen on `localhost`
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
+
 install:
   - npm set progress=false
   - npm install
@@ -129,3 +110,8 @@ install:
   - grunt unit-test
   - grunt package
   # - grunt integration-test
+
+
+#script:
+#  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+#  - gcc --version
