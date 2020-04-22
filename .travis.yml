@@ -74,6 +74,26 @@ matrix:
   - env: EMBER_VERSION=release
   - env: EMBER_VERSION=beta
   - env: EMBER_VERSION=canary
+  include:
+    - compiler: gcc
+      os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - cmake
+            - colormake
+            - libxml2-dev
+            - libxml2-utils
+            - libcppunit-dev
+            - libboost-thread-dev
+            - libboost-date-time-dev
+            - libboost-filesystem-dev
+      #before_script:
+      #  - conan profile update settings.compiler.version=8 nabla
+      env: CMAKEFLAGS="-DWITH_BOOST=OFF" CXX=g++-8
 
 # See https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
 
