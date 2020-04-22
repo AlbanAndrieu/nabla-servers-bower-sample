@@ -31,7 +31,7 @@ addons:
 language: nodejs
 
 node_js:
-  - "8"
+#  - "8"
   - "11"
 
 services:
@@ -62,8 +62,8 @@ notifications:
     on_start: false
 
 env:
-  matrix:
-  - EMBER_VERSION=default
+#  matrix:
+#  - EMBER_VERSION=default
   global:
   - MOZ_HEADLESS=1
   - secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
