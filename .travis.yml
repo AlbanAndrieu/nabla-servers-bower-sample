@@ -81,8 +81,8 @@ before_install:
   #- export CHROME_BIN=chromium-browser
   - sudo apt-get install -qq xvfb
   - export DISPLAY=:99.0
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+  #- "sh -e /etc/init.d/xvfb start"
+  #- sleep 3 # give xvfb some time to start
 
   - npm config set spin false
   #- 'gem install sass --version "=3.2.12"'
@@ -100,6 +100,7 @@ before_install:
   - # start your web application and listen on `localhost`
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
 install:
+  - npm set progress=false
   - npm install
   - travis_retry bower install
   - grunt prepare
