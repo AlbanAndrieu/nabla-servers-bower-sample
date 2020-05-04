@@ -246,8 +246,10 @@ npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
 cd ./docker-compose
 ./docker-compose-up.sh
 docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml -p test up --force-recreate -d web
-docker-compose -f ./docker-compose.monitoring.yml -p monitoring up -d nexus
+#docker-compose -f ./docker-compose.monitoring.yml -p monitoring up -d nexus
 docker-compose -f ./docker-compose.monitoring.yml -p monitoring up -d
+cd /opt/harbor
+sudo docker-compose -f ./docker-compose.yml up -d
 ```
 
 ## Documentation

@@ -1,9 +1,5 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
-/*
-    Point of this Jenkinsfile is to:
-    - define global behavior
-*/
 
 String DOCKER_REGISTRY="index.docker.io/v1".trim()
 String DOCKER_ORGANISATION="nabla".trim()
@@ -45,10 +41,6 @@ String ARTIFACTS = ['*_VERSION.TXT',
                 '*.tar.gz'
                 ].join(', ')
 
-/*
-    Point of this Jenkinsfile is to:
-    - build java project
-*/
 pipeline {
     //agent none
     agent {
@@ -291,7 +283,7 @@ exit 0
                                                       "--label 'version=1.0.0'",
                                                     ].join(" ")
 
-                                //docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
+                                docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
 
                                     //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.misys.global.ad'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
 
@@ -338,7 +330,7 @@ exit 0
                                         //customImage.push()
                                         container.push('latest')
                                     }
-                                //} // withRegistry
+                                } // withRegistry
 
                                 //dockerFingerprintFrom dockerfile: 'docker/ubuntu16/Dockerfile', image: "${DOCKER_BUILD_IMG}"
 
@@ -687,7 +679,7 @@ exit 0
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
                                     withCSTWrapper(imageName: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
-                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)                                    
+                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)
 
                                 } // script
                             } // steps

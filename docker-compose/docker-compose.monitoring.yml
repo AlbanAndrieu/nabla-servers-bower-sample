@@ -13,12 +13,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JENKINS_HOME=/jenkins
-    dns_search: 
+    dns_search:
       - misys.global.ad
       - albandrieu.com
     dns:
       - 10.21.200.3
-      - 10.25.200.3   
+      - 10.25.200.3
       - 192.168.1.1
     ports:
       - 8686:8080
@@ -91,18 +91,18 @@ services:
     container_name: devops_dtrack
     #hostname: albandrieu-dtrack
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 3g
-        reservations:
-          memory: 512m
-      restart_policy:
-        condition: on-failure
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 3g
+    #    reservations:
+    #      memory: 512m
+    #  restart_policy:
+    #    condition: on-failure
     ports:
       - '8087:8080'
     volumes:
-      - './data:/data'
+      - '/data:/data'
     depends_on:
       - jenkins
     #networks:
@@ -117,7 +117,7 @@ services:
     volumes:
       - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
     ports:
-      - "8081:8081"
+      - '8081:8081'
     network_mode: "host"
     #networks:
     #  - ingress
@@ -129,7 +129,7 @@ services:
 #    ports:
 #     - 80:8081
 #    volumes:
-#     - ./data/artifactory:/var/opt/jfrog/artifactory
+#     - /data/artifactory:/var/opt/jfrog/artifactory
 ##    Add extra Java options by uncommenting the following lines
 ##    environment:
 ##     - EXTRA_JAVA_OPTIONS=-Xmx4g
@@ -147,7 +147,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${PWD}/configs/prometheus/:/etc/prometheus/
-      - ./data/prometheus/data:/prometheus
+      - /data/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -162,7 +162,7 @@ services:
     #networks:
     #  - elastic
     #  - ingress
-      
+
   alertmanager:
     image: prom/alertmanager:v0.20.0
     ports:
@@ -175,7 +175,7 @@ services:
       - '--storage.path=/alertmanager'
     #networks:
     #  - elastic
-      
+
   node-exporter:
     image: prom/node-exporter:v0.18.1
     container_name: monitoring_node_exporter
@@ -189,14 +189,14 @@ services:
   blackbox:
     image: prom/blackbox-exporter:v0.14.0
     container_name: monitoring_blackbox
-    restart: unless-stopped    
-    deploy:
-      replicas: 1
+    restart: unless-stopped
+    #deploy:
+    #  replicas: 1
     volumes:
     - ./configs/blackbox:/config
     #networks:
     #  - ingress
-      
+
   cadvisor:
     image: google/cadvisor:v0.32.0
     container_name: monitoring_cadvisor
@@ -224,8 +224,8 @@ services:
     links:
       - prometheus:monitoring_prometheus
     volumes:
-      - ./data/grafana/data:/var/lib/grafana
-      - ./data/grafana/provisioning/:/etc/grafana/provisioning/
+      - /data/grafana/data:/var/lib/grafana
+      - /data/grafana/provisioning/:/etc/grafana/provisioning/
       #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
       #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
@@ -237,6 +237,7 @@ services:
       #- GF_USERS_ALLOW_SIGN_UP=true
       #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
       #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+      #- GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
     depends_on:
       - prometheus
     ports:
@@ -256,13 +257,13 @@ services:
     # Todo connect to http://monitoring_elasticsearch:9200
     container_name: monitoring_elasticsearch-hq
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 1g
-        reservations:
-          memory: 512m
-    environment:          
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 1g
+    #    reservations:
+    #      memory: 512m
+    environment:
       - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
       #- HQ_ENABLE_SSL=False
     ports:
@@ -276,12 +277,12 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
     container_name: monitoring_elasticsearch
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 3g
-        reservations:
-          memory: 512m
+    #deploy:
+    #  resources:
+    #    limits:
+    #      memory: 3g
+    #    reservations:
+    #      memory: 512m
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
@@ -437,6 +438,45 @@ services:
     #networks:
     #  - elastic
 
+  influxdb:
+    image: influxdb:1.8.0
+    container_name: monitoring_influxdb
+    restart: unless-stopped
+    ports:
+      #- "8083:8083"
+      - "8086:8086"
+      #- "8090:8090"
+      - "2003:2003"
+    #env_file:
+    #  - 'env.influxdb'
+    #environment:
+    #  - INFLUXDB_DATA_ENGINE=tsm1
+    #  - INFLUXDB_REPORTING_DISABLED=false
+    #  - INFLUXDB_GRAPHITE_ENABLED=true
+    volumes:
+      # Data persistency
+      # sudo mkdir -p /data/influxdb/data
+      - /data/influxdb/data:/var/lib/influxdb
+      - ./configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+
+#   telegraf:
+#     image: telegraf:latest
+#     container_name: monitoring_telegraf
+#     restart: unless-stopped
+#   links:
+#     - influxdb
+#   volumes:
+#     - ./configs/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+#  docker-registry:
+#    image: registry:2
+#    ports:
+#      - 5002:5000
+#    environment:
+#      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+#    volumes:
+#      - /data/registry/data:/data
+
 #  logstash:
 #    image: docker.elastic.co/logstash/logstash:${TAG}
 #    container_name: logstash
@@ -473,12 +513,12 @@ volumes:
 networks:
   #elastic:
   #ingress:
-  
-  default:    
+
+  default:
     driver: bridge
     #driver: host
     #external:
-    #  name: test    
+    #  name: test
     ipam:
       config:
         - subnet: 172.16.59.0/24 # bypass openvpn
