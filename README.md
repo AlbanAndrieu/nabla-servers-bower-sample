@@ -1,5 +1,5 @@
 # nabla-servers-bower-sample
-![nabla-servers-bower-sample](http://albandrieu.com:7075/images/mroizo.1f00120c.png)
+![nabla-servers-bower-sample](http://albandrieu.com/sample/mroizo.1f00120c.png)
 
 [![License: APACHE](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

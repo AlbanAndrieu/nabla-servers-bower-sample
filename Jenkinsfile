@@ -22,7 +22,7 @@ String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
 String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
 
 String RELEASE_VERSION=""
-String GIT_COMMIT_REV=""
+//String GIT_COMMIT_REV=""
 
 def NODES_USED = []
 
@@ -54,9 +54,6 @@ pipeline {
     //        label 'molecule'
     //        additionalBuildArgs ' --build-arg JENKINS_USER_HOME=/home/jenkins --label "version=1.0.1" --label "maintaner=Alban Andrieu <alban.andrieu@gmail.com>" '
     //    }
-    //}
-    //triggers {
-        //upstream(upstreamProjects: 'job1,job2', threshold: hudson.model.Result.SUCCESS)
     //}
     parameters {
         string(defaultValue: 'master', description: 'Default git branch to override', name: 'GIT_BRANCH_NAME', trim: true)
@@ -95,7 +92,6 @@ pipeline {
         RELEASE_VERSION = "${params.RELEASE_VERSION}"
         GIT_PROJECT = "nabla"
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
-        //GIT_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         GIT_URL = "ssh://git@github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         DOCKER_TAG = dockerTag()
     }
@@ -432,15 +428,6 @@ exit 0
                                         sh "$WORKSPACE/clean.sh"
                                     }
 
-                                    env.SCONS_OPTS = "gcc_version=4.8.5 color=False"
-                                    if (env.DEBUG_RUN == true) {
-                                      env.SCONS_OPTS += " verbose=True opt=False"
-                                    } else {
-                                      env.SCONS_OPTS += " -j32 opt=True"
-                                    }
-
-                                    sh "ls -lrta /home/jenkins/.config || true"
-
                                     withMavenWrapper(profile: "jacoco", // signing
                                         skipObfuscation: false,
                                         skipIntegration: false,
@@ -486,7 +473,7 @@ exit 0
 
                                     //perfpublisher healthy: '', metrics: '', name: '**/target/surefire-reports/**/*.xml', threshold: '', unhealthy: ''
 
-                                    recordIssues enabledForFailure: true, tool: checkStyle()
+                                    //recordIssues enabledForFailure: true, tool: checkStyle()
                                     recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
                                     recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
                                     //recordIssues enabledForFailure: true, tool: pit()
@@ -560,7 +547,7 @@ exit 0
                                     //perfpublisher healthy: '', metrics: '', name: '**/target/surefire-reports/**/*.xml', threshold: '', unhealthy: ''
 
                                     recordIssues enabledForFailure: true, tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc()]
-                                    recordIssues enabledForFailure: true, tool: checkStyle()
+                                    //recordIssues enabledForFailure: true, tool: checkStyle()
                                     recordIssues enabledForFailure: true, tool: spotBugs()
                                     recordIssues enabledForFailure: true, tool: cpd(pattern: '**/target/cpd.xml')
                                     recordIssues enabledForFailure: true, tool: pmdParser(pattern: '**/target/pmd.xml')
@@ -598,6 +585,13 @@ exit 0
 //                                                  if (env.CLEAN_RUN) {
 //                                                      env.SCONS_OPTS += "--cache-disable"
 //                                                      //sh "rm -f .sconsign.dblite"
+//                                                  }
+//
+//                                                  env.SCONS_OPTS = "gcc_version=4.8.5 color=False"
+//                                                  if (env.DEBUG_RUN == true) {
+//                                                    env.SCONS_OPTS += " verbose=True opt=False"
+//                                                  } else {
+//                                                    env.SCONS_OPTS += " -j32 opt=True"
 //                                                  }
 //
 //                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
@@ -762,20 +756,6 @@ exit 0
                                             //    //sh "java -jar test.jar --help"
                                             //}
 
-                                            //step(
-                                            //  [
-                                            //    $class               : 'RobotPublisher',
-                                            //    outputPath           : "/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}",
-                                            //    outputFileName       : "output.xml",
-                                            //    reportFileName       : 'report.html',
-                                            //    logFileName          : 'log.html',
-                                            //    disableArchiveOutput : false,
-                                            //    passThreshold        : 100.0,
-                                            //    unstableThreshold    : 80.0,
-                                            //    otherFiles           : "*.png,*.jpg",
-                                            //  ]
-                                            //)
-
                                             //unstash 'maven-artifacts'
 
                                             getContainerResults(DOCKER_TEST_CONTAINER: "${DOCKER_TEST_TAG}_web_1") {
@@ -932,66 +912,8 @@ exit 0
                     } // post
                 } // stage Quality - Security - Dependency check
 
-                stage('\u2795 Quality - Security - Checkmarx') {
-                    agent {
-                        docker {
-                            image DOCKER_IMAGE
-                            reuseNode false
-                            args DOCKER_OPTS_BASIC
-                            label 'molecule'
-                        }
-                    }
-                    when {
-                        expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
-                    }
-                    steps {
-                        script {
-
-                            if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
-                                checkout scm
-
-                                withCheckmarxWrapper(excludeFolders: ", bm", projectName: 'nabla-servers-bower-sample_Checkmarx')
-
-                            }
-                        } // script
-                    } // steps
-                    post {
-                        success {
-                            script {
-                                manager.createSummary("completed.gif").appendText("<h2>2-4 &#2690;</h2>", false)
-                            } //script
-                        } // success
-                    } // post
-                } // stage Quality - Security - Dependency check
             } // parallel
         } // Main
-
-        // First, you need SonarQube server 6.2+
-        // TODO https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/
-        // No need to occupy a node
-        stage("\u2795 Quality - Quality Gate") {
-            agent {
-                docker {
-                    image DOCKER_IMAGE
-                    reuseNode true
-                    args DOCKER_OPTS_BASIC
-                    label 'molecule'
-                }
-            }
-            when {
-                expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
-            }
-            steps {
-                script {
-                    //if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
-                        //checkout scm
-
-                        echo "TODO"
-
-                    //} // if DRY_RUN
-                } // script
-            } // steps
-        } // stage Quality Gate
 
         stage('\u277A Push') {
             failFast true
@@ -1062,15 +984,6 @@ exit 0
                               reportName: "Mobile CSS Diff Report"
                             ])
 
-                            //publishHTML (target: [
-                            //  allowMissing: true,
-                            //  alwaysLinkToLastBuild: false,
-                            //  keepAll: true,
-                            //  //reportDir: 'target/*',
-                            //  reportFiles: 'gc.png speed.har CHANGELOG.html',
-                            //  reportName: "Reports"
-                            //])
-
                             //stash includes: '${ARTIFACTS}', name: 'app'
                             //unstash 'app'
 
@@ -1081,22 +994,6 @@ exit 0
                                 echo 'Publishing'
 
                             }
-
-                            //nexusArtifactUploader artifacts: [
-                            //    [
-                            //        artifactId: 'arc-package-rhel7',
-                            //        classifier: 'debug',
-                            //        file: 'arc/Almonde/Output/Latest-x86_64-rhel7.tar.gz',
-                            //        type: 'tar.gz'
-                            //    ]
-                            //    ],
-                            //    credentialsId: 'Dantooine',
-                            //    groupId: 'com.finastra.arc',
-                            //    nexusUrl: 'dantooine:8081/nexus',
-                            //    nexusVersion: 'nexus2',
-                            //    protocol: 'http',
-                            //    repository: 'Components',
-                            //    version: '1.7.1'
 
                         } // script
                     } // steps
@@ -1184,30 +1081,6 @@ exit 0
             node('molecule') {
                 dockerCleaning()
             }
-
-            script {
-                UNCLEANED = []
-                if (NODES_USED.size() != 0) {
-                    echo NODES_USED.toSet().toString()
-                    NODES_USED.toSet().each(){ n->
-                        if (n!="") {
-                          echo n
-                          try{
-                             timeout(time: 2, unit: 'MINUTES') {
-                                 wrapCleanWsOnNode(nodeLabel:n, isEmailEnabled: false, isCleaningCachesEnabled: true)
-                             }
-                          }
-                          catch (Exception err){
-                            echo "Could not clean node ${n}"
-                            UNCLEANED.add(n)
-                          }
-
-                        } // if
-
-                    }
-                    echo "FOLLOWING NODES WERE NOT CLEANED: "+ UNCLEANED.toString()
-                }
-            } // script
         }
     } // post
 } // pipeline

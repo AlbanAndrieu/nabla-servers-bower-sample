@@ -4,7 +4,8 @@ version: '3.7'
 services:
 
   jenkins:
-    image: jenkins:local
+    #image: nabla/jenkins:local
+    image: nabla/jenkins:1.0.0
     container_name: devops_jenkins
     restart: unless-stopped
     user: root
@@ -87,10 +88,11 @@ services:
     # - ALPINE_CORS_EXPOSE_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count
     # - ALPINE_CORS_ALLOW_CREDENTIALS=true
     # - ALPINE_CORS_MAX_AGE=3600
-    image: 'owasp/dependency-track'
+    #image: owasp/dependency-track:3.8.0
+    image: owasp/dependency-track:latest
     container_name: devops_dtrack
     #hostname: albandrieu-dtrack
-    restart: unless-stopped
+    #restart: unless-stopped
     #deploy:
     #  resources:
     #    limits:
@@ -511,9 +513,6 @@ volumes:
     driver: local
 
 networks:
-  #elastic:
-  #ingress:
-
   default:
     driver: bridge
     #driver: host
@@ -522,3 +521,5 @@ networks:
     ipam:
       config:
         - subnet: 172.16.59.0/24 # bypass openvpn
+#  inside:
+#    internal: true
