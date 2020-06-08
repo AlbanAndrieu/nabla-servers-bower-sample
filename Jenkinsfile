@@ -370,7 +370,7 @@ exit 0
                     milestone 2
 
                     gitCheckoutTEST() {
-                        getEnvironementData(filePath: "./env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                        getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                         echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
                         echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"
@@ -596,7 +596,7 @@ exit 0
 //
 //                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
 //
-//                                                  getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+//                                                  getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 //
 //                                                  ansiColor('xterm') {
 //sh '''
