@@ -137,7 +137,7 @@ pipeline {
 
                                 if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
-                                    getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                                getEnvironementData(filePath: "./env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                                 if (env.DEBUG_RUN) {
 sh '''
@@ -370,7 +370,7 @@ exit 0
                     milestone 2
 
                     gitCheckoutTEST() {
-                        getEnvironementData(filePath: "./step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                        getEnvironementData(filePath: "./env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                         echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
                         echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"

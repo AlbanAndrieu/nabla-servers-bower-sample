@@ -4,7 +4,6 @@ version: '3.7'
 services:
 
   jenkins:
-    #image: nabla/jenkins:local
     image: nabla/jenkins:1.0.0
     container_name: devops_jenkins
     restart: unless-stopped
@@ -142,41 +141,41 @@ services:
 #        soft: 32000
 #        hard: 40000
 
-  prometheus:
-    image: prom/prometheus:v2.16.0
-    user: root
-    container_name: monitoring_prometheus
-    restart: unless-stopped
-    volumes:
-      - ${PWD}/configs/prometheus/:/etc/prometheus/
-      - /data/prometheus/data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      #- '--storage.tsdb.retention.time=365d'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-    ports:
-      - 9091:9090
-    links:
-      - cadvisor:monitoring_cadvisor
-      - node-exporter:node-monitoring_node_exporter
-    #networks:
-    #  - elastic
-    #  - ingress
-
-  alertmanager:
-    image: prom/alertmanager:v0.20.0
-    ports:
-      - 9093:9093
-    volumes:
-      - ./configs/alertmanager/:/etc/alertmanager/
-    restart: unless-stopped
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
-    #networks:
-    #  - elastic
+#  prometheus:
+#    image: prom/prometheus:v2.16.0
+#    user: root
+#    container_name: monitoring_prometheus
+#    restart: unless-stopped
+#    volumes:
+#      - ${PWD}/configs/prometheus/:/etc/prometheus/
+#      - /data/prometheus/data:/prometheus
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--storage.tsdb.path=/prometheus'
+#      #- '--storage.tsdb.retention.time=365d'
+#      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+#      - '--web.console.templates=/usr/share/prometheus/consoles'
+#    ports:
+#      - 9091:9090
+#    links:
+#      - cadvisor:monitoring_cadvisor
+#      - node-exporter:node-monitoring_node_exporter
+#    #networks:
+#    #  - elastic
+#    #  - ingress
+#
+#  alertmanager:
+#    image: prom/alertmanager:v0.20.0
+#    ports:
+#      - 9093:9093
+#    volumes:
+#      - ./configs/alertmanager/:/etc/alertmanager/
+#    restart: unless-stopped
+#    command:
+#      - '--config.file=/etc/alertmanager/config.yml'
+#      - '--storage.path=/alertmanager'
+#    #networks:
+#    #  - elastic
 
   node-exporter:
     image: prom/node-exporter:v0.18.1
@@ -217,42 +216,42 @@ services:
     #  - elastic
     #  - ingress
 
-  grafana:
-    image: grafana/grafana:6.7.1
-    #user: "1000"
-    user: root
-    container_name: monitoring_grafana
-    restart: unless-stopped
-    links:
-      - prometheus:monitoring_prometheus
-    volumes:
-      - /data/grafana/data:/var/lib/grafana
-      - /data/grafana/provisioning/:/etc/grafana/provisioning/
-      #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
-      #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      #- ./grafana/dashboards:/var/lib/grafana/dashboards
-    environment:
-       - GF_SECURITY_ADMIN_USER=admin
-       - GF_SECURITY_ADMIN_PASSWORD=admin
-       - GF_USERS_ALLOW_SIGN_UP=false
-      #- GF_USERS_ALLOW_SIGN_UP=true
-      #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
-      #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-      #- GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
-    depends_on:
-      - prometheus
-    ports:
-      - '3000:3000'
- #     - GF_SERVER_DOMAIN=myrul.com
- #     - GF_SMTP_ENABLED=true
- #     - GF_SMTP_HOST=smtp.gmail.com:587
- #     - GF_SMTP_USER=myadrress@gmail.com
- #     - GF_SMTP_PASSWORD=mypassword
- #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
-    #networks:
-    #  - elastic
-    #  - ingress
+#  grafana:
+#    image: grafana/grafana:6.7.1
+#    #user: "1000"
+#    user: root
+#    container_name: monitoring_grafana
+#    restart: unless-stopped
+#    links:
+#      - prometheus:monitoring_prometheus
+#    volumes:
+#      - /data/grafana/data:/var/lib/grafana
+#      - /data/grafana/provisioning/:/etc/grafana/provisioning/
+#      #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+#      #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
+#      #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
+#      #- ./grafana/dashboards:/var/lib/grafana/dashboards
+#    environment:
+#       - GF_SECURITY_ADMIN_USER=admin
+#       - GF_SECURITY_ADMIN_PASSWORD=admin
+#       - GF_USERS_ALLOW_SIGN_UP=false
+#      #- GF_USERS_ALLOW_SIGN_UP=true
+#      #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
+#      #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+#      #- GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+#    depends_on:
+#      - prometheus
+#    ports:
+#      - '3000:3000'
+# #     - GF_SERVER_DOMAIN=myrul.com
+# #     - GF_SMTP_ENABLED=true
+# #     - GF_SMTP_HOST=smtp.gmail.com:587
+# #     - GF_SMTP_USER=myadrress@gmail.com
+# #     - GF_SMTP_PASSWORD=mypassword
+# #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
+#    #networks:
+#    #  - elastic
+#    #  - ingress
 
   elasticsearch-hq:
     image: elastichq/elasticsearch-hq:latest # v3.5.12
@@ -440,26 +439,26 @@ services:
     #networks:
     #  - elastic
 
-  influxdb:
-    image: influxdb:1.8.0
-    container_name: monitoring_influxdb
-    restart: unless-stopped
-    ports:
-      #- "8083:8083"
-      - "8086:8086"
-      #- "8090:8090"
-      - "2003:2003"
-    #env_file:
-    #  - 'env.influxdb'
-    #environment:
-    #  - INFLUXDB_DATA_ENGINE=tsm1
-    #  - INFLUXDB_REPORTING_DISABLED=false
-    #  - INFLUXDB_GRAPHITE_ENABLED=true
-    volumes:
-      # Data persistency
-      # sudo mkdir -p /data/influxdb/data
-      - /data/influxdb/data:/var/lib/influxdb
-      - ./configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+#  influxdb:
+#    image: influxdb:1.8.0
+#    container_name: monitoring_influxdb
+#    restart: unless-stopped
+#    ports:
+#      #- "8083:8083"
+#      - "8086:8086"
+#      #- "8090:8090"
+#      - "2003:2003"
+#    #env_file:
+#    #  - 'env.influxdb'
+#    #environment:
+#    #  - INFLUXDB_DATA_ENGINE=tsm1
+#    #  - INFLUXDB_REPORTING_DISABLED=false
+#    #  - INFLUXDB_GRAPHITE_ENABLED=true
+#    volumes:
+#      # Data persistency
+#      # sudo mkdir -p /data/influxdb/data
+#      - /data/influxdb/data:/var/lib/influxdb
+#      - ./configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
 
 #   telegraf:
 #     image: telegraf:latest
