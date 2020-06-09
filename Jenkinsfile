@@ -275,7 +275,7 @@ exit 0
                                                          ].join(" ")
                                 }
                                 DOCKER_BUILD_ARGS = [ "${DOCKER_BUILD_ARGS}",
-                                                      "--target build",
+                                                      "--target BUILD",
                                                       "--label 'version=1.0.0'",
                                                     ].join(" ")
 

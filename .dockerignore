@@ -2,9 +2,15 @@
 hooks
 doc/
 *.tmp/*
-#.bower/
 .settings/
 */target*
 *.md
 !README.md
-docker-compose/data/grafana/data/
+docker-compose/data/*
+**/node_modules/
+**/bower_components/
+npm/
+.bower/
+.git/
+dist/
+.sass-cache/

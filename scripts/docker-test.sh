@@ -77,7 +77,7 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
   export MICROSCANNER_OPTIONS="--html"
   cd ${WORKING_DIR}/microscanner-wrapper/
   #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_IMAGE}" | tee aqua-scan.log
-  echo -e "grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html ${NC}"
+  echo -e "${WORKING_DIR}/microscanner-wrapper/grabhtml.sh \"${DOCKER_IMAGE}\" > aqua-grab.html ${NC}"
   ${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
 
 else

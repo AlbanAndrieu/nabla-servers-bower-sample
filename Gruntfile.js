@@ -1298,11 +1298,11 @@ module.exports = function(grunt) {
         //url: 'bababou.eu'
         //url: 'http://localhost:9090/'
         //url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: 'http://albandrieu.com/sample/'
+        url: "http://albandrieu.com"
       },
       //prod: {
       //  options: {
-      //    url: "https://developers.google.com/speed/docs/insights/v1/getting_started",
+      //    url: "https://albandrieu.com/sample/#/about",
       //    locale: "en_GB",
       //    strategy: "desktop",
       //    threshold: 80
@@ -1310,9 +1310,9 @@ module.exports = function(grunt) {
       //},
       paths: {
         options: {
-          paths: ['#/about', '#/'],
-          locale: 'en_GB',
-          strategy: 'desktop',
+          paths: ["sample/#/about", "sample/#/", "nabla/#/"],
+          locale: "en_GB",
+          strategy: "desktop",
           threshold: 58
         }
       }
@@ -1321,7 +1321,7 @@ module.exports = function(grunt) {
     'pagespeed_junit': {
       options: {
         //urls: ['http://albandrieu.com:9090/'],
-        urls: ['http://albandrieu.com/sample/'],
+        urls: ['http://albandrieu.com/nabla/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 60,
@@ -1514,7 +1514,7 @@ module.exports = function(grunt) {
    * Run acceptance tests to teach ZAProxy how to use the app.
    **/
   grunt.registerTask('acceptance-test', function() {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     //var done = this.async();
     //
@@ -1556,7 +1556,7 @@ module.exports = function(grunt) {
     //'zap_start',
     //'connect:test',
     //'connect:coverageE2E',
-    'acceptance-test',
+    'acceptance-test'
     //'protractor_coverage:chrome',
     //'makeReport',
     //'zap_spider',
@@ -1565,8 +1565,8 @@ module.exports = function(grunt) {
     //'zap_report',
     //'penthouse',
     //'yslow_test', #buggy
-    'pagespeed',
-    'pagespeed_junit'
+    //'pagespeed',
+    //'pagespeed_junit'
     //'sitespeedio',
     //'phantomas'
     //'wpt',
