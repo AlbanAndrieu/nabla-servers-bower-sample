@@ -137,7 +137,7 @@ pipeline {
 
                                 if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
-                                getEnvironementData(filePath: "./env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                                getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                                 if (env.DEBUG_RUN) {
 sh '''
@@ -182,7 +182,7 @@ echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
 
 #curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=tomcat&password=microsoft"
 
-wget --http-user=admin --http-password=Motdepasse12 "http://albandrieu.albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
+wget --http-user=admin --http-password=Motdepasse12 "http://albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
 
 #Xvfb :99 -ac -screen 0 1280x1024x24 &
 #export DISPLAY=":99"
@@ -1077,10 +1077,10 @@ exit 0
                 manager.removeSummaries()
             } // script
         } // success
-        cleanup {
-            node('molecule') {
-                dockerCleaning()
-            }
-        }
+        //cleanup {
+        //    node('molecule') {
+        //        dockerCleaning()
+        //    }
+        //}
     } // post
 } // pipeline
