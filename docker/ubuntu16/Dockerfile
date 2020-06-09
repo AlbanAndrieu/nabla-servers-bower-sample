@@ -54,7 +54,7 @@ RUN apt-get -q update &&\
 RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
 RUN python3 -m pip install --upgrade pip==19.2.3 \
-    && pip install ansible==2.8.6 zabbix-api==0.5.3
+    && pip install ansible==2.8.6 zabbix-api==0.5.3 docker-compose==1.25.3
 
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
@@ -74,7 +74,7 @@ RUN apt-get update && apt-get install -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2
 #     && \
 #    npm set progress=false && \
 #    npm config set depth 0;
-#npm@6.14.4    
+#npm@6.14.4
 RUN npm install -g npm
 RUN apt purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
 #hash -d npm
@@ -91,12 +91,8 @@ RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_USER_HOME: ${JENKINS_
     printf "\033[1;32mWITH $USER\ngroup: $GROUP \033[0m\n"
 
 RUN groupmod -g ${GID} docker
-#RUN cat /etc/group | grep docker || true
-#RUN id docker
-#RUN getent passwd 2000 || true
 
 # Add user jenkins to the image
-#RUN groupadd -g ${GID} docker && \
 RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
     echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 # Set password for the jenkins user (you may want to alter this).
@@ -122,12 +118,6 @@ RUN usermod -a -G docker jenkins
 # Working dir
 WORKDIR $JENKINS_USER_HOME
 
-#RUN cat /etc/resolv.conf
-
-# Install a basic SSH server
-#RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd
-#RUN mkdir -p /var/run/sshd
-
 # Clean up APT when done.
 #RUN AUTO_ADDED_PACKAGES=$(apt-mark showauto) \
 #&& apt-get remove --purge -y $BUILD_PACKAGES $AUTO_ADDED_PACKAGES &&
@@ -140,34 +130,46 @@ COPY . $JENKINS_USER_HOME/
 # Execute
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
 RUN ./clean.sh
-RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME" && chmod -R 777 "$JENKINS_USER_HOME"
+#RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME" && chmod -R 777 "$JENKINS_USER_HOME"
 
 ADD https://get.aquasec.com/microscanner /
 RUN chmod +x /microscanner
 
-#ADD https://albandri/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
+#ADD http://albandrieu.com/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
 #RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
+
 ENV HOME=${JENKINS_USER_HOME}
 # && mkdir ${HOME}/.config && mkdir ${HOME}/.local
-RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && chmod -R 777 ${HOME} && mkdir -p ${HOME}/.config/configstore || true
+RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && mkdir -p ${HOME}/.config/configstore || true
+#RUN chmod -R 777 ${HOME}
 #RUN id jenkins && ls -lrtai $HOME/ && ls -lrtai $HOME/.sonar
 
 #RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME/.[^.]* && chmod -R 777 $JENKINS_USER_HOME/.[^.]* && ls -lrta -R $JENKINS_USER_HOME
 #RUN ls -lrta -R $JENKINS_USER_HOME
 #RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME && chmod 777 $JENKINS_USER_HOME
 
+#WARNING below give access to all servers
+RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME}/.ssh/authorized_keys ${HOME}/.ssh/known_hosts || true
+
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x
 RUN ./mvnw --batch-mode install -Dserver=jetty9x -Dmaven.test.skip=true
 
+USER root
+
 RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_USER_HOME}/microscanner.log
 #RUN echo "No vulnerabilities!"
-#RUN rm /microscanner
+RUN rm /microscanner || true
 
-FROM openjdk:11-jre-slim
+# drop back to the regular jenkins user - good practice
+USER jenkins
+
+EXPOSE 8080
+
+FROM openjdk:11-jre-slim as runtime
 
 COPY --from=BUILD /home/jenkins/target/test.war /opt/
 WORKDIR /opt/

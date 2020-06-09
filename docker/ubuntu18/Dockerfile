@@ -71,7 +71,7 @@ RUN apt-get update && apt-get install -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2
 #     && \
 #    npm set progress=false && \
 #    npm config set depth 0;
-#npm@6.14.4    
+#npm@6.14.4
 RUN npm install -g npm
 RUN apt purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
 #hash -d npm
@@ -126,7 +126,7 @@ COPY . $JENKINS_USER_HOME/
 
 # Execute
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
-#RUN ./clean.sh
+RUN ./clean.sh
 
 ADD https://get.aquasec.com/microscanner /
 RUN chmod +x /microscanner
@@ -134,14 +134,16 @@ RUN chmod +x /microscanner
 #ADD http://albandrieu.com/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
 #RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
 
-ENV HOME=${JENKINS_USER_HOME}
-RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && chmod -R 777 ${HOME} && mkdir -p ${HOME}/.config/configstore || true
-
-#WARNING below give access to all servers
-RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME}/.ssh/authorized_keys ${HOME}/.ssh/known_hosts || true
 
 # drop back to the regular jenkins user - good practice
 USER jenkins
+
+ENV HOME=${JENKINS_USER_HOME}
+RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repository && mkdir -p ${HOME}/.config/configstore || true
+#RUN chmod -R 777 ${HOME}
+
+#WARNING below give access to all servers
+RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME}/.ssh/authorized_keys ${HOME}/.ssh/known_hosts || true
 
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x
@@ -157,7 +159,8 @@ RUN rm /microscanner || true
 
 RUN rm -Rf /tmp/* /home/jenkins/.npm/ /home/jenkins/.git/ /home/jenkins/.node_cache || true
 #RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME/.[^.]* && chmod -R 777 $JENKINS_USER_HOME/.[^.]* && ls -lrta -R $JENKINS_USER_HOME
-RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME" && chmod -R 777 "$JENKINS_USER_HOME"
+RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME"
+#RUN chmod -R 777 "$JENKINS_USER_HOME"
 #RUN chmod g-w,o-w ${HOME} # Home directory on the server should not be writable by others
 
 # drop back to the regular jenkins user - good practice
