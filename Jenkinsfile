@@ -182,7 +182,7 @@ echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
 
 #curl -i -v -k ${SERVER_URL}${SERVER_CONTEXT} --data "username=tomcat&password=microsoft"
 
-wget --http-user=admin --http-password=Motdepasse12 "http://albandrieu.com:8280/manager/text/undeploy?path=/test" -O -
+wget --http-user=admin --http-password=microsoft "http://192.168.1.57:8280/manager/text/undeploy?path=/test" -O -
 
 #Xvfb :99 -ac -screen 0 1280x1024x24 &
 #export DISPLAY=":99"
