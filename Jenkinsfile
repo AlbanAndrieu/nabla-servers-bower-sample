@@ -1,25 +1,25 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 
-String DOCKER_REGISTRY="index.docker.io/v1".trim()
-String DOCKER_ORGANISATION="nabla".trim()
-String DOCKER_TAG="latest".trim()
+String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "registry.hub.docker.com".toLowerCase().trim() // index.docker.io/v1
+String DOCKER_ORGANISATION_HUB="nabla".trim()
+String DOCKER_IMAGE_TAG=env.DOCKER_IMAGE_TAG ?: "latest".trim()
 //String DOCKER_USERNAME="nabla"
 String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
 
-String DOCKER_REGISTRY_URL="https://${DOCKER_REGISTRY}".trim()
-String DOCKER_REGISTRY_CREDENTIAL=env.DOCKER_REGISTRY_CREDENTIAL ?: "hub-docker-nabla".trim()
-String DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}".trim()
+String DOCKER_REGISTRY_HUB_URL=env.DOCKER_REGISTRY_HUB_URL ?: "https://${DOCKER_REGISTRY_HUB}".trim()
+String DOCKER_REGISTRY_HUB_CREDENTIAL=env.DOCKER_REGISTRY_HUB_CREDENTIAL ?: "hub-docker-nabla".trim()
+String DOCKER_IMAGE="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME}:${DOCKER_IMAGE_TAG}".trim()
 
 String DOCKER_OPTS_BASIC = getDockerOpts()
 String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
 String DOCKER_NAME_BUILD="ansible-jenkins-slave-test".trim()
 String DOCKER_BUILD_TAG=dockerTag("temp").trim()
-String DOCKER_BUILD_IMG="${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
+String DOCKER_BUILD_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
 String DOCKER_RUNTIME_TAG="latest".trim()
 String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
-String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
+String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
 
 String RELEASE_VERSION=""
 //String GIT_COMMIT_REV=""
@@ -114,8 +114,8 @@ pipeline {
                             image DOCKER_IMAGE
                             alwaysPull true
                             reuseNode true
-                            //registryUrl DOCKER_REGISTRY_URL
-                            //registryCredentialsId DOCKER_REGISTRY_CREDENTIAL
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_BASIC
                             label 'molecule'
                         }
@@ -137,7 +137,7 @@ pipeline {
 
                                 if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
-                                getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                                //getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                                 if (env.DEBUG_RUN) {
 sh '''
@@ -245,7 +245,9 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             alwaysPull true
-                            reuseNode false
+                            reuseNode true
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_COMPOSE
                             label 'molecule'
                         }
@@ -279,7 +281,11 @@ exit 0
                                                       "--label 'version=1.0.0'",
                                                     ].join(" ")
 
-                                docker.withRegistry("${DOCKER_REGISTRY_URL}", "${DOCKER_REGISTRY_CREDENTIAL}") {
+
+                                echo "DOCKER_REGISTRY_HUB_URL : ${DOCKER_REGISTRY_HUB_URL} "
+                                echo "DOCKER_REGISTRY_HUB_CREDENTIAL : ${DOCKER_REGISTRY_HUB_CREDENTIAL} "
+
+                                docker.withRegistry(DOCKER_REGISTRY_HUB_URL, DOCKER_REGISTRY_HUB_CREDENTIAL) {
 
                                     //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.misys.global.ad'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
 
@@ -321,7 +327,6 @@ exit 0
                                     echo "DRY_RUN : ${env.DRY_RUN}"
 
                                     if (!env.DRY_RUN.toBoolean() && isReleaseBranch()) {
-                                        //pushDockerImage(container, "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_NAME_BUILD}", "${DOCKER_TAG}")
                                         echo "Push the container to the custom Registry"
                                         //customImage.push()
                                         container.push('latest')
@@ -357,6 +362,8 @@ exit 0
                     image DOCKER_IMAGE
                     alwaysPull true
                     reuseNode true
+                    registryUrl DOCKER_REGISTRY_HUB_URL
+                    registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                     args DOCKER_OPTS_BASIC
                     label 'molecule'
                 }
@@ -370,7 +377,7 @@ exit 0
                     milestone 2
 
                     gitCheckoutTEST() {
-                        getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                        //getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                         echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
                         echo "BRANCH_JIRA : ${env.BRANCH_JIRA}"
@@ -404,6 +411,8 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             reuseNode true
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_COMPOSE
                             label 'molecule'
                         }
@@ -672,8 +681,8 @@ exit 0
 
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
-                                    withCSTWrapper(imageName: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
-                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY}", skipFailure: true)
+                                    withCSTWrapper(imageName: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
+                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY_HUB}", skipFailure: true)
 
                                 } // script
                             } // steps
@@ -706,6 +715,11 @@ exit 0
 
                                             checkout scm
                                             echo "DOCKER_TEST_TAG : ${DOCKER_TEST_TAG}"
+
+                                            sh "less ~/.docker/config.json || true"
+                                            sh "rm ~/.docker/config.json || true"
+
+                                            sh "cp /usr/bin/docker-credential-pass ~/ || true"
 
                                             if (env.CLEAN_RUN) {
                                                 sh "./docker-compose/docker-compose-down.sh"
@@ -818,6 +832,8 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             reuseNode false
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_BASIC
                             label 'molecule'
                         }
@@ -866,6 +882,8 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             reuseNode false
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_BASIC
                             label 'molecule'
                         }
@@ -923,6 +941,8 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             reuseNode true
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_COMPOSE
                             label 'molecule'
                         }
@@ -1013,6 +1033,8 @@ exit 0
                         docker {
                             image DOCKER_IMAGE
                             reuseNode false
+                            registryUrl DOCKER_REGISTRY_HUB_URL
+                            registryCredentialsId DOCKER_REGISTRY_HUB_CREDENTIAL
                             args DOCKER_OPTS_BASIC
                             label 'molecule'
                         }
