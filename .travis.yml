@@ -46,18 +46,6 @@ cache:
     - node_modules
     - travis_phantomjs
 
-branches:
-  only:
-  - master
-
-notifications:
-  webhooks:
-    urls:
-    - https://webhooks.gitter.im/e/47b10b81867bd0063cf5
-    on_success: change
-    on_failure: always
-    on_start: false
-
 env:
   matrix:
   - EMBER_VERSION=default
@@ -89,6 +77,7 @@ before_install:
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
   - "phantomjs --version"
+  
 install:
   - npm install
   - travis_retry bower install
@@ -98,3 +87,16 @@ install:
   - grunt unit-test
   - grunt package
   # - grunt integration-test
+
+branches:
+  only:
+  - master
+
+notifications:
+  email: false
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/47b10b81867bd0063cf5
+    on_success: change
+    on_failure: always
+    on_start: false
