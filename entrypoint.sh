@@ -9,9 +9,8 @@ echo "JAVA_HOME : ${JAVA_HOME}"
 #ls -lrta /usr/bin/java
 java -version
 
-# check if there was a command passed
-# required by Jenkins Docker plugin: https://github.com/docker-library/official-images#consistency
-if [ "$1" ]; then
-    # execute it
-    exec "$@"
+if ! type "$1" &>/dev/null; then
+	set -- java -jar "-Djava.io.tmpdir=$JETTY_TMP" "-Djetty.base=$JETTY_BASE" "$JETTY_HOME/start.jar" "$@"
 fi
+
+exec "$@"

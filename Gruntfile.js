@@ -873,13 +873,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= config.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -1104,7 +1097,7 @@ module.exports = function(grunt) {
     protractor: {
       options: {
         //keepAlive: true,
-        configFile: 'protractor.conf.js',
+        configFile: 'test/protractor.conf.js',
         //debug: true,
         args: {
           //directConnect: true,
@@ -1132,7 +1125,7 @@ module.exports = function(grunt) {
         format: 'tap',
         //format: 'junit',
         //ruleset: 'yblog',
-        cdns: 'nabla.mobi,home.nabla.mobi,albandri,localhost,127.0.0.1',
+        cdns: 'nabla.mobi,albandrieu.com,albandri,localhost,127.0.0.1',
         threshold: '\'{"overall": "C", "ycdn": "F", "yexpires": "F", "ynumreq": "E", "yminify": "B", "ycompress": "C", "ydns": "D", "yno404": "F", "yexpressions": "B", "ymindom": "F"}\'',
         urls: [SERVER_PROD_URL + SERVER_CONTEXT,
                SERVER_PROD_URL + SERVER_CONTEXT + '#/about'],
@@ -1287,7 +1280,7 @@ module.exports = function(grunt) {
     sitespeedio: {
       default: {
         options: {
-          //url: 'http://home.nabla.mobi:9090/',
+          //url: 'http://albandrieu.com:9090/',
           url: SERVER_PROD_URL + SERVER_CONTEXT,
           deepth: 1,
           resultBaseDir: './build/sitespeedio/'
@@ -1298,7 +1291,7 @@ module.exports = function(grunt) {
     pagespeed: {
       options: {
         nokey: true,
-        //url: 'http://home.nabla.mobi/alban/'
+        //url: 'http://albandrieu.com/alban/'
         //url: 'alban-andrieu.com'
         //url: 'alban-andrieu.eu'
         //url: 'alban-andrieu.fr'
@@ -1310,7 +1303,7 @@ module.exports = function(grunt) {
       },
       //prod: {
       //  options: {
-      //    url: "https://developers.google.com/speed/docs/insights/v1/getting_started",
+      //    url: "https://albandrieu.com/sample/#/about",
       //    locale: "en_GB",
       //    strategy: "desktop",
       //    threshold: 80
@@ -1318,9 +1311,9 @@ module.exports = function(grunt) {
       //},
       paths: {
         options: {
-          paths: ['#/about', '#/'],
-          locale: 'en_GB',
-          strategy: 'desktop',
+          paths: ["sample/#/about", "sample/#/", "nabla/#/"],
+          locale: "en_GB",
+          strategy: "desktop",
           threshold: 58
         }
       }
@@ -1328,8 +1321,8 @@ module.exports = function(grunt) {
 
     'pagespeed_junit': {
       options: {
-        //urls: ['http://home.nabla.mobi:9090/'],
-        urls: ['http://albandrieu.com/sample/'],
+        //urls: ['http://albandrieu.com:9090/'],
+        urls: ['http://albandrieu.com/nabla/'],
         //key: '<API_KEY>',
         reports: ['target/surefire-reports/TEST-pagespeed.xml'],
         threshold: 60,
@@ -1345,7 +1338,7 @@ module.exports = function(grunt) {
       sideroad: {
         options: {
           url: [
-            //'http://home.nabla.mobi:9090/'
+            //'http://albandrieu.com:9090/'
             //SERVER_PROD_URL + SERVER_CONTEXT
             'https://albandrieu.com/sample/'
           ]
@@ -1357,7 +1350,7 @@ module.exports = function(grunt) {
     perfbudget: {
       default: {
         options: {
-          //url: 'http://home.nabla.mobi:9090/',
+          //url: 'http://albandrieu.com:9090/',
           //url: SERVER_PROD_URL + SERVER_CONTEXT,
           url: 'https://albandrieu.com/sample/',
           timeout: 500,
@@ -1442,6 +1435,8 @@ module.exports = function(grunt) {
                   "angular-translate-loader-static-files", "angular-translate-storage-local",
                   "angular-bootstrap", "angular-gravatar",
                   "github-fork-ribbon-css",
+                  "jasmine-spec-reporter",
+                  "grunt-contrib-imagemin",
                   "font-awesome"],
           hideUpToDate: true
         }
@@ -1537,7 +1532,7 @@ module.exports = function(grunt) {
    * Run acceptance tests to teach ZAProxy how to use the app.
    **/
   grunt.registerTask('acceptance-test', function() {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     //var done = this.async();
     //
@@ -1579,7 +1574,7 @@ module.exports = function(grunt) {
     //'zap_start',
     //'connect:test',
     //'connect:coverageE2E',
-    'acceptance-test',
+    'acceptance-test'
     //'protractor_coverage:chrome',
     //'makeReport',
     //'zap_spider',
@@ -1588,8 +1583,8 @@ module.exports = function(grunt) {
     //'zap_report',
     //'penthouse',
     //'yslow_test', #buggy
-    'pagespeed',
-    'pagespeed_junit'
+    //'pagespeed',
+    //'pagespeed_junit'
     //'sitespeedio',
     //'phantomas'
     //'wpt',
@@ -1639,8 +1634,8 @@ module.exports = function(grunt) {
     grunt.task.run([
     'newer:jshint',
     'newer:jscs',
-    'checkDependencies',
-    'versioncheck'
+    'checkDependencies'
+    //'versioncheck'
     ]);
   });
 
@@ -1665,7 +1660,6 @@ module.exports = function(grunt) {
     'ngtemplates',
     'concat',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'replace:debugMode',
     'replace:versionTag',

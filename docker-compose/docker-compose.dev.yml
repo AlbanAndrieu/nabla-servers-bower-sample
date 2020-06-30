@@ -1,0 +1,27 @@
+---
+version: '3.7'
+
+services:
+
+  web:
+    #build: 
+    #  context: ..
+    #  dockerfile: ../docker/centos7/Dockerfile
+    #volumes:
+    #  - '..:/code'
+    ports:
+     #- 1099:1099 #jmx remote
+     - 9090:8080 #http
+     #- 9443:9443 #https
+     #- 2924:2924 #eclipse
+    #environment:
+    #  DEBUG: 'true'
+
+  db:
+    command: '-d'
+    ports:
+      - 3307:3306
+
+  cache:
+    ports:
+      - 6379:6379

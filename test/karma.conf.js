@@ -106,6 +106,7 @@ module.exports = function(config) {
     // - PhantomJS (is dead : https://semaphoreci.com/blog/2018/03/27/phantomjs-is-dead-use-chrome-headless-in-continuous-integration.html)
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
     browsers: ['ChromeHeadlessNoSandbox'],
+    // browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',
@@ -115,6 +116,7 @@ module.exports = function(config) {
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
+    browserNoActivityTimeout: 30000,
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit

@@ -1,5 +1,5 @@
 ---
-# Copyright Alban Andrieu 2013-2017
+# Copyright Alban Andrieu 2013-2020
 # Distributed under the GPL-3.0
 # (See accompanying file LICENSE.md)
 
@@ -13,11 +13,9 @@ jdk:
   - openjdk8
 #  - openjdk11
 
-script:
-- sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
-- gcc --version
-
 addons:
+  chrome: stable
+  #firefox: latest
   apt:
     sources:
     - ubuntu-toolchain-r-test
@@ -26,14 +24,19 @@ addons:
     - g++-5
 #    - ruby-compass
 
-language: java
+language: nodejs
 
 node_js:
-  - "8"
+#  - "8"
   - "11"
+
+compiler:
+#  - clang
+  - gcc
 
 services:
   - docker
+  - xvfb
 
 cache:
   pip: true
@@ -50,7 +53,8 @@ env:
   matrix:
   - EMBER_VERSION=default
   global:
-    secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
+  - MOZ_HEADLESS=1
+  - secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
 
 matrix:
   fast_finish: true
@@ -59,11 +63,15 @@ matrix:
   - env: EMBER_VERSION=beta
   - env: EMBER_VERSION=canary
 
+# See https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
+
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - sudo apt-get install -qq xvfb  
+  #- export CHROME_BIN=chromium-browser
+  - sudo apt-get install -qq xvfb
   - export DISPLAY=:99.0
-  #- sh -e /etc/init.d/xvfb start
+  #- "sh -e /etc/init.d/xvfb start"
+  #- sleep 3 # give xvfb some time to start
+
   - npm config set spin false
   #- 'gem install sass --version "=3.2.12"'
   #- 'gem install compass --version "=0.12.2"'
@@ -77,8 +85,12 @@ before_install:
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
   - "phantomjs --version"
-  
+
+  - # start your web application and listen on `localhost`
+  - # google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
+
 install:
+  - npm set progress=false
   - npm install
   - travis_retry bower install
   - grunt prepare
@@ -100,3 +112,7 @@ notifications:
     on_success: change
     on_failure: always
     on_start: false
+
+#script:
+#  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+#  - gcc --version

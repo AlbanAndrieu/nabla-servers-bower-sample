@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "jquery": "2.1.4",
-    "bootstrap-sass-official": "3.3.7",
+    "bootstrap-sass-official": "3.4.1",
     "angular": "1.4.8",
     "font-awesome": "4.7.0",
     "angular-animate": "1.4.8",
@@ -58,7 +58,7 @@
     "angular-touch": "1.4.8",
     "angular-translate": "2.17.0",
     "font-awesome": "4.7.0",
-    "bootstrap-sass-official": "3.3.7",
+    "bootstrap-sass-official": "3.4.1",
     "jquery": "2.1.4"
   }
 }

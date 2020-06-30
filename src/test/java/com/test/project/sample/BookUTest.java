@@ -2,6 +2,8 @@ package com.test.project.sample;
 
 import org.junit.Assert;
 import org.junit.Test;
+//import static com.test.project.sample.HasPrivateDefaultConstructor.hasPrivateDefaultConstructor;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class BookUTest {
 
@@ -9,15 +11,6 @@ public class BookUTest {
     public static final Integer DEFAULT_EXPECTED_ISBN = new Integer(1_000);
     public static final String DEFAULT_TITLE = "Bible";
     public static final String DEFAULT_AUTHOR = "God";
-
-    @Test(expected = AssertionError.class)
-    public final void testEmptyContructor()
-    {
-
-        final Book book = new Book();
-        Assert.assertNotNull(book);
-
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public final void testProductNull()
@@ -28,6 +21,21 @@ public class BookUTest {
         Assert.assertNotNull(book);
 
     }
+    
+    @Test
+    public final void testContructorWithISBN()
+    {
+
+        final Book book = new Book(0);
+        Assert.assertNotNull(book);
+
+
+    }
+
+    //@Test
+    //public void constructor() {
+    //    assertThat(Book.class, hasPrivateDefaultConstructor());
+    //}
 
     @Test
     public final void testGetter()

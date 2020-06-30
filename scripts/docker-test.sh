@@ -8,17 +8,22 @@ set -eo pipefail
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 # shellcheck source=/dev/null
-tput colors && source "${WORKING_DIR}/../step-0-color.sh"
+source "${WORKING_DIR}/step-0-color.sh"
 
 export DOCKER_NAME=$1
 export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"}
 
 echo "DOCKER_NAME : $DOCKER_NAME"
 
+if [[ $DOCKER_NAME == "" ]]; then
+    echo "Missing DOCKER_NAME"
+    #exit 1
+fi
+
 export DOCKER_TAG=$2
-#if [[ $DOCKER_TAG == "" ]]; then
-#    echo "Missing DOCKER_TAG"
-#fi
+if [[ $DOCKER_TAG == "" ]]; then
+    echo "Missing DOCKER_TAG"
+fi
 
 echo "DOCKER_TAG : $DOCKER_TAG"
 
@@ -42,8 +47,20 @@ else
   #curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
 fi
 
-echo -e "container-structure-test test --image ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG} --config ${WORKING_DIR}/../${CST_CONFIG} ${NC}"
-/usr/local/bin/container-structure-test test --image "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" --config ${WORKING_DIR}/../${CST_CONFIG}
+if [ -n "${BUILD_NUMBER}" ]; then
+  # shellcheck disable=SC2154
+  # Add DOCKER_REGISTRY to DOCKER_IMAGE
+  export DOCKER_IMAGE="${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+  echo -e "${green} BUILD_NUMBER is defined ${happy_smiley} : ${BUILD_NUMBER} ${NC}"
+else
+  # shellcheck disable=SC2154
+  echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : BUILD_NUMBER, use the default one ${NC}"
+  export DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+  echo -e "${magenta} BUILD_NUMBER : ${BUILD_NUMBER} ${NC}"
+fi
+
+echo -e "container-structure-test test --image ${DOCKER_IMAGE} --config ${WORKING_DIR}/../${CST_CONFIG} ${NC}"
+/usr/local/bin/container-structure-test test --image "${DOCKER_IMAGE}" --config ${WORKING_DIR}/../${CST_CONFIG}
 
 if [ -n "${MICROSCANNER_TOKEN}" ]; then
   # shellcheck disable=SC2154
@@ -55,12 +72,13 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
     git clone https://github.com/lukebond/microscanner-wrapper ${WORKING_DIR}/microscanner-wrapper
   fi
 
-  echo -e "${WORKING_DIR}/microscanner-wrapper/scan.sh ${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG} ${NC}"
+  echo -e "${WORKING_DIR}/microscanner-wrapper/scan.sh ${DOCKER_IMAGE} ${NC}"
 
   export MICROSCANNER_OPTIONS="--html"
-  cd "${WORKING_DIR}/microscanner-wrapper/"
-  #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-scan.log
-  grabhtml.sh "${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}" | tee aqua-grabhtml.log
+  cd ${WORKING_DIR}/microscanner-wrapper/
+  #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_IMAGE}" | tee aqua-scan.log
+  echo -e "${WORKING_DIR}/microscanner-wrapper/grabhtml.sh \"${DOCKER_IMAGE}\" > aqua-grab.html ${NC}"
+  ${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
 
 else
   # shellcheck disable=SC2154
@@ -69,10 +87,10 @@ else
   echo -e "${magenta} MICROSCANNER_TOKEN : ${MICROSCANNER_TOKEN} ${NC}"
 fi
 
-echo -e "docker pull registry.misys.global.ad/global-bakery/aquasec-scanner-cli:latest"
-echo -e "docker run --rm --volume ${WORKING_DIR}:/mnt --volume /var/run/docker.sock:/var/run/docker.sock registry.misys.global.ad/global-bakery/aquasec-scanner-cli:latest scan --user scanner --password password --host http://aqua:8080 --local --direct-cc --jsonfile /mnt/test.AquaSec --htmlfile /mnt/test hub.docker.com/nabla/ansible-jenkins-slave-test:latest"
+echo -e "docker pull nabla/aquasec-scanner-cli:latest"
+echo -e "docker run --rm --volume ${WORKING_DIR}:/mnt --volume /var/run/docker.sock:/var/run/docker.sock nabla/aquasec-scanner-cli:latest scan --user scanner --password password --host http://aqua:8080 --local --direct-cc --jsonfile /mnt/test.AquaSec --htmlfile /mnt/test nabla/nabla-servers-bower-sample:latest"
 
-echo -e "http://aqua:8080/#!/app/images/hub-docker/nabla~2Fansible-jenkins-slave-test/latest"
-echo -e "docker run -e BUILD_JOB_NAME=NABLA-aqua/nabla-servers-bower-sample/develop -e BUILD_URL=https://jenkins.nabla.mobi/jenkins/job/NABLA-aqua/job/nabla-servers-bower-sample/job/develop/62/ -e BUILD_NUMBER=62 --rm -v /var/run/docker.sock:/var/run/docker.sock registry.misys.global.ad/global-bakery/aquasec-scanner-cli:latest scan --host http://aqua:8080 --local hub.docker.com/nabla/ansible-jenkins-slave:latest --registry hub.docker.com --register --show-negligible --checkonly --no-verify --html --user scanner --password password"
+echo -e "http://aqua:8080/#!/app/images/hub-docker/nabla/ansible-jenkins-slave-test/latest"
+echo -e "docker run -e BUILD_JOB_NAME=NABLA-aqua/nabla-servers-bower-sample/develop -e BUILD_URL=https://jenkins.nabla.mobi/jenkins/job/NABLA-aqua/job/nabla-servers-bower-sample/job/develop/62/ -e BUILD_NUMBER=62 --rm -v /var/run/docker.sock:/var/run/docker.sock nabla/aquasec-scanner-cli:latest scan --host http://aqua:8080 --local hub.docker.com/nabla/ansible-jenkins-slave:latest --registry hub.docker.com --register --show-negligible --checkonly --no-verify --html --user scanner --password password"
 
 exit 0

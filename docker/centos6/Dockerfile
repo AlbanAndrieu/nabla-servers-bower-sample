@@ -1,13 +1,15 @@
 # CentOS based image (RHEL6-compatible):
 FROM centos:6.9
 
+LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
+
 ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003
 ARG GID=1002
 
 ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-openjdk"}
-ARG CERT_NAME=${CERT_NAME:-"UK1VSWCERT01-CA-5.crt"}
-ARG CERT_URL=${CERT_URL:-"http://fr1cslfrbm0059.misys.global.ad/download/certs/${CERT_NAME}"}
+ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
+ARG CERT_URL=${CERT_URL:-"http://home.albandrieu.com/download/certs/${CERT_NAME}"}
 
 ENV TERM="xterm-256color"
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
@@ -114,4 +116,5 @@ RUN echo "jenkins:jenkins1234" | chpasswd
 
 USER jenkins
 
-#ENTRYPOINT [ "/usr/bin/entrypoint.sh" ]
+CMD ["/bin/bash"]
+EXPOSE 8080
