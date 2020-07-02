@@ -157,10 +157,8 @@ COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
 # TODO : Here takes too long
 #COPY . $JENKINS_USER_HOME/
 
-#RUN npm install --only=production
-#TODO -Dserver=tomcat8x
-RUN ls -lrta ./
-RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -Dmaven.test.skip=true
+#RUN ls -lrta ./
+#RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -Dmaven.test.skip=true
 
 USER root
 
