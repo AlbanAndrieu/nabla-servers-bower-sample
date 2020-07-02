@@ -4,7 +4,7 @@
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
+// If you want to recursively match all subfolders, use:
 // 'test/spec/**/*.js'
 //var path = require('path');
 
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
   var SERVER_SECURE_PORT = 9443;
   //console.log('SERVER_PORT : ' + SERVER_PORT);
   var SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT;
-  var SERVER_URL =  process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
+  var SERVER_URL = process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT;
   var SERVER_SECURE_URL = process.env.SERVER_SECURE_URL || 'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT;
   var SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/test/#/';
 
@@ -363,15 +363,6 @@ module.exports = function(grunt) {
             //args: {}
             args: {
                 baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
-            }
-        },
-        phantom: {
-            options: {
-                args: {
-                    //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9190 ) + '/',
-                    // Arguments passed to the command
-                    'browser': 'phantomjs'
-                }
             }
         },
         chrome: {
@@ -1462,6 +1453,9 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-reload");
+
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function() {
     grunt.log.ok('Waiting for server reload...');
@@ -1632,8 +1626,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'clean:coverageE2E',
-    //'wiredep:app', //remove boostrap after the test
-    'wiredep',
+    'wiredep', //remove boostrap after the test
     //'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
