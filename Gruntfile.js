@@ -41,6 +41,7 @@ module.exports = function(grunt) {
   require('jit-grunt')(grunt, {
     bower: 'grunt-bower-task',
     versioncheck: 'grunt-version-check',
+    retire: 'grunt-retire',
     //configureProxies: 'grunt-connect-proxy',
     'zap_start': 'grunt-zaproxy',
     'zap_spider': 'grunt-zaproxy',
@@ -1289,7 +1290,7 @@ module.exports = function(grunt) {
         //url: 'bababou.eu'
         //url: 'http://localhost:9090/'
         //url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: "http://albandrieu.com"
+        url: 'http://albandrieu.com/sample/'
       },
       //prod: {
       //  options: {
@@ -1432,6 +1433,22 @@ module.exports = function(grunt) {
         }
       }
     },
+    
+    retire: {
+      js: ['app/src/*.js'], /** Which js-files to scan. **/
+      node: ['node'], /** Which node directories to scan (containing package.json). **/
+      options: {
+         proxy: 'http://albandrieu.com',
+         verbose: true,
+         packageOnly: true, 
+         jsRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
+         nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
+         outputFile: './target/retire-output.json',
+         ignore: 'documents,java',
+         /** list of files to ignore **/
+         ignorefile: '.retireignore.json' //or '.retireignore'
+      }
+    },   
 
     checkDependencies: {
         this: {}
@@ -1451,6 +1468,7 @@ module.exports = function(grunt) {
         }
       }
     }
+    
   });
 
   grunt.loadNpmTasks("grunt-contrib-watch");
