@@ -47,15 +47,16 @@ else
   #curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64 && chmod +x container-structure-test-linux-amd64 && sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
 fi
 
+export DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+
 if [ -n "${BUILD_NUMBER}" ]; then
   # shellcheck disable=SC2154
   # Add DOCKER_REGISTRY to DOCKER_IMAGE
-  export DOCKER_IMAGE="${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
+  #export DOCKER_IMAGE="${DOCKER_REGISTRY}${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
   echo -e "${green} BUILD_NUMBER is defined ${happy_smiley} : ${BUILD_NUMBER} ${NC}"
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : BUILD_NUMBER, use the default one ${NC}"
-  export DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_TAG}"
   echo -e "${magenta} BUILD_NUMBER : ${BUILD_NUMBER} ${NC}"
 fi
 
@@ -78,7 +79,7 @@ if [ -n "${MICROSCANNER_TOKEN}" ]; then
   cd ${WORKING_DIR}/microscanner-wrapper/
   #${WORKING_DIR}/microscanner-wrapper/scan.sh "${DOCKER_IMAGE}" | tee aqua-scan.log
   echo -e "${WORKING_DIR}/microscanner-wrapper/grabhtml.sh \"${DOCKER_IMAGE}\" > aqua-grab.html ${NC}"
-  ${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
+  #${WORKING_DIR}/microscanner-wrapper/grabhtml.sh "${DOCKER_IMAGE}" > aqua-grab.html
 
 else
   # shellcheck disable=SC2154
