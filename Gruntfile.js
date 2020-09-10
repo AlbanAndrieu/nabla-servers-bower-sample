@@ -1433,14 +1433,14 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     retire: {
       js: ['app/src/*.js'], /** Which js-files to scan. **/
       node: ['node'], /** Which node directories to scan (containing package.json). **/
       options: {
          proxy: 'http://albandrieu.com',
          verbose: true,
-         packageOnly: true, 
+         packageOnly: true,
          jsRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
          nodeRepository: 'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
          outputFile: './target/retire-output.json',
@@ -1448,7 +1448,7 @@ module.exports = function(grunt) {
          /** list of files to ignore **/
          ignorefile: '.retireignore.json' //or '.retireignore'
       }
-    },   
+    },
 
     checkDependencies: {
         this: {}
@@ -1468,7 +1468,7 @@ module.exports = function(grunt) {
         }
       }
     }
-    
+
   });
 
   grunt.loadNpmTasks("grunt-contrib-watch");

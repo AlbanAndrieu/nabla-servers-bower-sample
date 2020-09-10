@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 
-String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "registry.hub.docker.com".toLowerCase().trim() // index.docker.io/v1
+String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "registry.hub.docker.com".toLowerCase().trim() // registry.hub.docker.com
 String DOCKER_ORGANISATION_HUB="nabla".trim()
 String DOCKER_IMAGE_TAG=env.DOCKER_IMAGE_TAG ?: "latest".trim()
 //String DOCKER_USERNAME="nabla"
@@ -343,7 +343,7 @@ exit 0
                         always {
                             script {
                                  archiveArtifacts artifacts: '*.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
-                                 junit testResults: 'target/ansible-lint.xml', healthScaleFactor: 2.0, allowEmptyResults: true, keepLongStdio: true
+                                 //junit testResults: 'target/ansible-lint.xml', healthScaleFactor: 2.0, allowEmptyResults: true, keepLongStdio: true
                             } //script
                         }
                         success {
@@ -1069,7 +1069,6 @@ exit 0
                 } // stage Git Tag
             } // parallel
         } // stage Push
-
     } // stages
     post {
         // always means, well, always run.
