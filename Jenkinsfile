@@ -682,7 +682,7 @@ exit 0
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
                                     withCSTWrapper(imageName: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
-                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY_HUB}", skipFailure: true)
+                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY_HUB}", skipAquaFailure: true)
 
                                 } // script
                             } // steps
