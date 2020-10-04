@@ -96,7 +96,7 @@ pipeline {
         DOCKER_TAG = dockerTag()
     }
     options {
-        skipDefaultCheckout()
+        //skipDefaultCheckout()
         disableConcurrentBuilds()
         skipStagesAfterUnstable()
         parallelsAlwaysFailFast()
@@ -133,7 +133,7 @@ pipeline {
                             properties(createPropertyList())
                             getJenkinsOpts()
 
-                            gitCheckoutTEST() {
+                            //gitCheckoutTEST() {
 
                                 if (!isReleaseBranch()) { abortPreviousRunningBuilds() }
 
@@ -201,7 +201,7 @@ exit 0
                                     "pre-commit run -a || true\n" +
                                     "kubectl --kubeconfig ${params.CONFIG_DIR}/kube.config cluster-info || true\n"
                                 } // if
-                            } // gitCheckoutTEST
+                            //} // gitCheckoutTEST
 
                             echo "DOCKER_OPTS_COMPOSE: ${DOCKER_OPTS_COMPOSE}"
                             echo "DOCKER_OPTS_BASIC: ${DOCKER_OPTS_BASIC}"
@@ -261,7 +261,7 @@ exit 0
                     steps {
                         script {
 
-                            checkout scm
+                            //checkout scm
 
                             tee("docker-build.log") {
 
@@ -376,7 +376,7 @@ exit 0
                 script {
                     milestone 2
 
-                    gitCheckoutTEST() {
+                    //gitCheckoutTEST() {
                         //getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                         echo "PULL_REQUEST_ID : ${env.PULL_REQUEST_ID}"
@@ -391,7 +391,7 @@ exit 0
                         echo "RELEASE : ${env.RELEASE} - ${env.RELEASE}.toBoolean()"
                         //echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
                         echo "SONAR_USER_HOME : ${env.SONAR_USER_HOME}"
-                    }
+                    //}
                 } // script
             } // steps
             post {
@@ -431,7 +431,7 @@ exit 0
                             steps {
                                 script {
 
-                                    checkout scm
+                                    //checkout scm
 
                                     if (env.CLEAN_RUN) {
                                         sh "$WORKSPACE/clean.sh"
@@ -509,7 +509,7 @@ exit 0
                             steps {
                                 script {
 
-                                    checkout scm
+                                    //checkout scm
 
                                     if (env.CLEAN_RUN) {
                                         sh "${WORKSPACE}/clean.sh"
@@ -581,7 +581,7 @@ exit 0
 //                          steps {
 //                              script {
 //
-//                                  gitCheckoutTEST()
+//                                  //gitCheckoutTEST()
 //
 //                                  dir ("test/") {
 //                                      script {
@@ -713,7 +713,7 @@ exit 0
                                     if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                         try {
 
-                                            checkout scm
+                                            //checkout scm
                                             echo "DOCKER_TEST_TAG : ${DOCKER_TEST_TAG}"
 
                                             sh "less ~/.docker/config.json || true"
@@ -847,7 +847,7 @@ exit 0
                                 script {
                                     if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
 
-                                         checkout scm
+                                         //checkout scm
 
                                          //unstash 'sources'
                                          //unstash 'sources-tools'
@@ -897,7 +897,7 @@ exit 0
                             if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                 //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'
 
-                                checkout scm
+                                //checkout scm
 
                                 //unstash 'sources'
                                 //unstash 'sources-tools'
@@ -950,7 +950,7 @@ exit 0
                     steps {
                         script {
 
-                            checkout scm
+                            //checkout scm
 
                             //unstash 'sources'
 
@@ -1046,7 +1046,7 @@ exit 0
                         script {
                             //milestone 4
 
-                            checkout scm
+                            //checkout scm
 
                             withTag()
 
