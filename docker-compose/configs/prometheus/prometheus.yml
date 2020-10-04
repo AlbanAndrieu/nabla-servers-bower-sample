@@ -54,7 +54,7 @@ scrape_configs:
       - 'tasks.node-exporter'
       type: 'A'
       port: 9100
-    
+
     static_configs:
          - targets: ['monitoring_node_exporter:9100']
 
@@ -66,6 +66,7 @@ scrape_configs:
     #bearer_token: <INSERT TOKEN HERE>
     static_configs:
         - targets: ['devops_jenkins:8080']
+        #- targets: ['192.168.1.62:8686']
     # The Prometheus metrics plugin exposes metrics with the "job" label which are transformed into "exported_job".
     # Turn them into "jenkins_job" instead.
     metric_relabel_configs:
@@ -76,13 +77,13 @@ scrape_configs:
       regex: exported_job
 
   - job_name: 'jenkins-nabla'
-    metrics_path: '/prometheus/'
+    metrics_path: '/jenkins/prometheus/'
     #scheme: https
     #tls_config:
     #  insecure_skip_verify: true
     #bearer_token: <INSERT TOKEN HERE>
     static_configs:
-        - targets: ['192.168.1.62:80/jenkins']
+        - targets: ['192.168.1.62:80']
     # The Prometheus metrics plugin exposes metrics with the "job" label which are transformed into "exported_job".
     # Turn them into "jenkins_job" instead.
     metric_relabel_configs:
@@ -91,9 +92,7 @@ scrape_configs:
       target_label: jenkins_job
     - action: labeldrop
       regex: exported_job
-      
-  - job_name: 'freenas'
 
-    static_configs:
-         - targets: ['192.168.1.24:9103']
-
+#  - job_name: 'freenas'
+#    static_configs:
+#         - targets: ['192.168.1.24:9103']

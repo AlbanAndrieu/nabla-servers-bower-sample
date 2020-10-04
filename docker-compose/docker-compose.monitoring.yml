@@ -4,7 +4,7 @@ version: '3.7'
 services:
 
   jenkins:
-    image: nabla/jenkins:1.0.0
+    image: nabla/jenkins:1.0.1
     container_name: devops_jenkins
     restart: unless-stopped
     user: root
@@ -13,20 +13,29 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JENKINS_HOME=/jenkins
-    dns_search:
-      - misys.global.ad
-      - albandrieu.com
-    dns:
-      - 10.21.200.3
-      - 10.25.200.3
-      - 192.168.1.1
+    #dns_search:
+    #  - misys.global.ad
+    #  - finastra.global
+    #  - albandrieu.com
+    #dns:
+    #  - 10.21.200.3
+    #  - 10.25.200.3
+    #  - 192.168.1.1
     ports:
-      - 8686:8080
-      - 50000:50000
+      - '8686:8080'
+      - '50000:50000'
     depends_on:
       - elasticsearch
       - nexus
-    #networks:
+    extra_hosts:
+      - "github.com:140.82.121.3"
+      #- "albandrieu.com:82.124.243"
+      #- "albandrieu.com:192.168.1.62"
+      #- "registry.hub.docker.com:3.83.63.98"
+    #network_mode: "host"
+    networks:
+       - default
+    #   - openvpn
     #  - elastic
     #  - ingress
 
@@ -106,6 +115,7 @@ services:
       - '/data:/data'
     depends_on:
       - jenkins
+    #network_mode: "host"
     #networks:
     #  - ingress
 
@@ -141,29 +151,31 @@ services:
 #        soft: 32000
 #        hard: 40000
 
-#  prometheus:
-#    image: prom/prometheus:v2.16.0
-#    user: root
-#    container_name: monitoring_prometheus
-#    restart: unless-stopped
-#    volumes:
-#      - ${PWD}/configs/prometheus/:/etc/prometheus/
-#      - /data/prometheus/data:/prometheus
-#    command:
-#      - '--config.file=/etc/prometheus/prometheus.yml'
-#      - '--storage.tsdb.path=/prometheus'
-#      #- '--storage.tsdb.retention.time=365d'
-#      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-#      - '--web.console.templates=/usr/share/prometheus/consoles'
-#    ports:
-#      - 9091:9090
-#    links:
-#      - cadvisor:monitoring_cadvisor
-#      - node-exporter:node-monitoring_node_exporter
-#    #networks:
-#    #  - elastic
-#    #  - ingress
-#
+  prometheus:
+    image: prom/prometheus:v2.21.0
+    user: root
+    container_name: monitoring_prometheus
+    restart: unless-stopped
+    volumes:
+      - ${PWD}/configs/prometheus/:/etc/prometheus/
+      - /data/prometheus/data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      #- '--storage.tsdb.retention.time=365d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9091:9090
+    links:
+      - cadvisor:monitoring_cadvisor
+      - node-exporter:node-monitoring_node_exporter
+    #network_mode: "host"
+    #networks:
+    #  - openvpn
+    #  - elastic
+    #  - ingress
+
 #  alertmanager:
 #    image: prom/alertmanager:v0.20.0
 #    ports:
@@ -183,6 +195,7 @@ services:
     restart: unless-stopped
     ports:
       - 9100:9100
+    #network_mode: "host"
     #networks:
     #  - elastic
     #  - ingress
@@ -212,6 +225,7 @@ services:
     #links:
     #  - elasticsearch
     #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
+    #network_mode: "host"
     #networks:
     #  - elastic
     #  - ingress
@@ -249,6 +263,7 @@ services:
 # #     - GF_SMTP_USER=myadrress@gmail.com
 # #     - GF_SMTP_PASSWORD=mypassword
 # #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
+#    network_mode: "host"
 #    #networks:
 #    #  - elastic
 #    #  - ingress
@@ -319,6 +334,7 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    #network_mode: "host"
     #networks:
     #  - elastic
 
@@ -515,8 +531,14 @@ networks:
   default:
     driver: bridge
     #driver: host
-    #external:
-    #  name: test
+    ipam:
+      config:
+        - subnet: 172.16.59.0/24 # bypass openvpn
+  test_default:
+    external:
+      name: test_default
+  openvpn:
+    driver: bridge
     ipam:
       config:
         - subnet: 172.16.59.0/24 # bypass openvpn

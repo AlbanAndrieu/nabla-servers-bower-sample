@@ -859,7 +859,8 @@ exit 0
 
                                          //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                         withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x",
+                                         withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
+                                                              mavenHome: "/home/jenkins/.m2/",
                                                               shellOutputFile: "maven-site.log",
                                                               skipSonarCheck: true)
 
@@ -904,7 +905,9 @@ exit 0
 
                                 //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x",
+                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
+                                                                mavenHome: "/home/jenkins/.m2/",
+                                                                shellOutputFile: "maven-depcheck.log",
                                                                 skipSonarCheck: true) {
 
                                     archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.xml', onlyIfSuccessful: true

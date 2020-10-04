@@ -24,9 +24,9 @@
         <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
         <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
         <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
-        <tag>HEAD</tag>        
+        <tag>HEAD</tag>
     </scm>
-    
+
     <issueManagement>
         <system>GitHub Issues</system>
         <url>https://github.com/AlbanAndrieu/nabla-servers-bower/issues</url>
@@ -1084,7 +1084,7 @@
                 </configuration>
             </plugin>
             -->
-            <!-- groovydoc 
+            <!-- groovydoc
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -1324,6 +1324,7 @@
                 </plugins>
             </build>
         </profile>
+        <!-- mvn clean install jfx:native -Pjavafx
         <profile>
             <id>javafx</id>
             <dependencies>
@@ -1338,7 +1339,6 @@
             </dependencies>
             <build>
                 <plugins>
-                    <!-- mvn clean install jfx:native -Pjavafx -->
                     <plugin>
                         <groupId>com.zenjava</groupId>
                         <artifactId>javafx-maven-plugin</artifactId>
@@ -1350,6 +1350,7 @@
                 </plugins>
             </build>
         </profile>
+        -->
         <profile>
             <id>env.JAVA_HOME.default</id>
             <activation>
