@@ -21,11 +21,11 @@ heartbeat.config.monitors:
 
 # Configure monitors inline
 heartbeat.monitors:
-- name: Local heartbeat test for elasticsearch 
+- name: Local heartbeat test for elasticsearch
   type: http
   urls: ["http://localhost:9200"]
   schedule: "@every 10s"
-  
+
 #- type: icmp
 #  schedule: '*/5 * * * * * *'
 #  hosts: ["filebeat","metricbeat","packetbeat","elasticsearch","kibana","jenkins","nexus"] # ,"apache2","nginx","mysql

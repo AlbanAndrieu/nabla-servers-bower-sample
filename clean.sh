@@ -17,9 +17,9 @@ rm -f checkstyle.xml package-lock.json
 
 echo -e "${magenta} NPM cleaning started. ${NC}"
 
+npm --version
 npm cache clean || true
 npm cache verify
-
 echo -e "${green} Cleaning DONE. ${NC}"
 
 exit 0

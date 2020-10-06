@@ -166,7 +166,7 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
-      - 9091:9090
+      - 9092:9090
     links:
       - cadvisor:monitoring_cadvisor
       - node-exporter:node-monitoring_node_exporter

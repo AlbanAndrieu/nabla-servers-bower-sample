@@ -30,4 +30,4 @@ groups:
       severity: critical
     annotations:
       summary: "CAdvisor container down"
-      description: "Cadvisor container is down for more than 30 seconds." 
+      description: "Cadvisor container is down for more than 30 seconds."

@@ -5,7 +5,7 @@
   },
 
   "extends": [
-    //"plugin:prettier/recommended", 
+    //"plugin:prettier/recommended",
     //"eslint:recommended"
   ],
 
@@ -19,7 +19,7 @@
     "dot-notation": [2, {"allowKeywords": true, "allowPattern": ""}],
     "space-before-function-paren": ["error", "never"]
   },
-  
+
   "overrides": [
     {
       "files": ["bin/*.js", "lib/*.js"],
@@ -28,5 +28,5 @@
         "quotes": ["error", "single"]
       }
     }
-  ]  
+  ]
 }

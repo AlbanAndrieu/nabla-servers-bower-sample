@@ -4,7 +4,7 @@
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 # shellcheck source=/dev/null
-tput colors && source "${WORKING_DIR}/../../../step-0-color.sh"
+source "${WORKING_DIR}/../../scripts/step-0-color.sh"
 
 #mkdir ./target/ || true
 #cp ${WORKING_DIR}/target/test.war ./target/

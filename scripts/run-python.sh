@@ -83,6 +83,7 @@ fi
 
 echo -e "${cyan} =========== ${NC}"
 echo -e "${green} Display virtual env ${NC}"
+virtualenv --version || true
 pip -V || true
 pip freeze | grep ansible || true
 

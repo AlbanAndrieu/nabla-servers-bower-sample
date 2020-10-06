@@ -72,17 +72,13 @@ RUN add-apt-repository \
 RUN apt-get update -qq && apt-get install -qqy docker-ce=5:19.03.4~3-0~ubuntu-bionic && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL3008,DL3015
-RUN apt-get update && apt-get install -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2-0ubuntu4 && apt-get clean && rm -rf /var/lib/apt/lists/*
-#     && \
-#    npm set progress=false && \
-#    npm config set depth 0;
-#npm@6.14.4
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update && apt-get install -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2-0ubuntu4 && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    npm set progress=false && \
+    npm config set depth 0;
 RUN npm install -g npm && apt purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
-#hash -d npm
-RUN npm -v && command -v npm
-RUN npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.1
-RUN npm install -g shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11 json2csv@4.3.3 phantomas@1.20.1
-# nsp@3.2.1
+RUN npm -v && command -v npm # 6.14.4
+RUN npm install -g bower@1.8.8 grunt@1.0.4 grunt-cli@1.3.2 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.1 nsp@3.2.1 shrinkwrap@0.4.0 newman@4.5.5 xunit-viewer@5.1.11 json2csv@4.3.3 phantomas@1.20.1
 
 ARG USER=${USER:-jenkins}
 ARG GROUP=${GROUP:-docker}
@@ -125,16 +121,15 @@ WORKDIR $JENKINS_USER_HOME
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man /tmp/* /var/tmp/* \
 && ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
 
+COPY . $JENKINS_USER_HOME/
+
 # Execute
-#RUN echo '{ "allow_root": true }' > /root/.bowerrc
+RUN echo '{ "allow_root": true }' > /root/.bowerrc
+RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME" && chmod -R 777 "$JENKINS_USER_HOME"
 
 ADD https://get.aquasec.com/microscanner /
 RUN chmod +x /microscanner
 
-#USER root
-
-# Cleaning
-#RUN ./clean.sh
 RUN rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ node_modules/ .sass-cache/ .scannerwork/ .repository/ target/ target-eclipse/ build/ phantomas/ dist/ docs/groovydocs/ docs/js/ docs/partials/ site/ coverage/
 
 RUN pwd && ls -lrta ./
@@ -157,7 +152,7 @@ RUN mkdir ${HOME}/workspace && mkdir ${HOME}/.sonar && mkdir -p ${HOME}/.m2/repo
 #WARNING below give access to all servers
 RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME}/.ssh/authorized_keys ${HOME}/.ssh/known_hosts || true
 
-COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
+#COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
 
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x

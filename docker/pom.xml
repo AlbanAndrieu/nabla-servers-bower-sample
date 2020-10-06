@@ -18,7 +18,7 @@
         <connection>scm:git:git://github.com/AlbanAndrieu/nabla-servers-bower-sample.git</connection>
         <developerConnection>scm:git:git@github.com:AlbanAndrieu/nabla-servers-bower-sample.git</developerConnection>
         <url>https://github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
-        <tag>HEAD</tag>        
+        <tag>HEAD</tag>
     </scm>
 
     <!--
@@ -31,7 +31,7 @@
 
     <properties>
 
-        <maven.fabric8-docker-maven.plugin.version>0.32.0</maven.fabric8-docker-maven.plugin.version>
+        <maven.fabric8-docker-maven.plugin.version>0.33.0</maven.fabric8-docker-maven.plugin.version>
         <maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 
@@ -46,7 +46,7 @@
         <cargo.docker.basedir>${project.basedir}/src/main/resources/</cargo.docker.basedir>
         <cargo.docker.registry>hub.docker.com</cargo.docker.registry>
         <cargo.docker.organisation>nabla</cargo.docker.organisation>
-        <cargo.docker.image.name>${cargo.docker.organisation}/cargo</cargo.docker.image.name>
+        <cargo.docker.image.name>${cargo.docker.organisation}/test</cargo.docker.image.name>
     </properties>
 
     <dependencyManagement>
@@ -252,13 +252,14 @@
                     <verbose>true</verbose>
                     <images>
                         <image>
-                            <name>${cargo.docker.registry}/${cargo.docker.image.name}</name>
-                            <!--if using <registry> tag, docker plugin  will create temporary name,-->
+                            <name>${cargo.docker.image.name}:${project.version}</name>
+                            <registry>${cargo.docker.registry}</registry>
                             <!--which will fail the build if temporary name clashes with existing one-->
                             <build>
                                 <dockerFileDir>${cargo.docker.basedir}</dockerFileDir>
                                 <tags>
                                     <tag>latest-${git.branch}</tag>
+                                    <tag>${project.version}</tag>
                                     <tag>${git.branch}-${git.commit.id.abbrev}</tag>
                                     <!--<tag>${git.branch}-${timestamp}</tag>-->
                                 </tags>

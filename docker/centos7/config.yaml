@@ -11,7 +11,7 @@ fileExistenceTests:
  - name: 'sonar-build-wrapper'
    path: '/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64'
    shouldExist: true
-   permissions: '-rwxr-xr-x'
+   permissions: '-rwxrwxr-x'
 
  - name: 'sonar-scanner'
    path: '/usr/local/sonar-runner/bin/sonar-scanner'
@@ -39,17 +39,17 @@ commandTests:
  - name: "check openjdk 1.8.0"
    command: "${JAVA_HOME}/bin/java"
    args: ["-version"]
-   expectedError: ['openjdk version \"1\.8\.0_242\".*']
+   expectedError: ['openjdk version \"1\.8\..*\".*']
 
  - name: "check python 2.7.15+"
    command: "python"
    args: ["--version"]
    expectedError: ['Python 2.7.*']
 
-# - name: "check pip 19.3.1"
+# - name: "check pip 8.1.2"
 #   command: "pip"
 #   args: ["--version"]
-#   expectedOutput: ['pip 19.3.1 from /usr/local/lib/python2.7/dist-packages/pip (python 2.7)']
+#   expectedOutput: ["pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)*"]
 
  - name: "check python 3"
    command: "python3"

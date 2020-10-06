@@ -7,9 +7,9 @@ ARG JENKINS_HOME=${JENKINS_HOME:-/home/jenkins}
 ARG UID=1003
 ARG GID=1002
 
-ARG JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-openjdk"}
+ENV JAVA_HOME="/usr/lib/jvm/java-openjdk"
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
-ARG CERT_URL=${CERT_URL:-"http://home.albandrieu.com/download/certs/${CERT_NAME}"}
+ARG CERT_URL=${CERT_URL:-"http://albandrieu.com/download/certs/${CERT_NAME}"}
 
 ENV TERM="xterm-256color"
 ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
@@ -27,15 +27,13 @@ RUN yum -y update ;\
 RUN cd /etc/pki/ca-trust/source/anchors/ && wget --no-check-certificate ${CERT_URL}
 RUN update-ca-trust
 
-RUN cd /tmp &&\
-    wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm &&\
-    yum -y install epel-release-latest-6.noarch.rpm
+ADD https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm /tmp
+RUN yum -y install /tmp/epel-release-latest-6.noarch.rpm && yum -y clean all
 
-RUN cd /tmp &&\
-    wget https://centos6.iuscommunity.org/ius-release.rpm &&\
-    rpm -ivh ius-release.rpm
+ADD https://repo.ius.io/ius-release-el6.rpm /tmp/ius-release-el6.rpm
+RUN rpm -ivh /tmp/ius-release-el6.rpm && yum -y clean all
 
-RUN wget http://people.centos.org/tru/devtools-2/devtools-2.repo -O /etc/yum.repos.d/devtools-2.repo
+ADD http://people.centos.org/tru/devtools-2/devtools-2.repo/etc/yum.repos.d/devtools-2.repo
 
 # Compilation tools
 RUN yum -y install \
@@ -50,7 +48,6 @@ RUN yum -y install \
     libcurl-devel \
     libzip \
     libxml2-devel \
-    wget \
     unzip \
     devtoolset-2-gcc \
     devtoolset-2-binutils \

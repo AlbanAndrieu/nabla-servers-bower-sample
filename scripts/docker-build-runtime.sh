@@ -53,7 +53,7 @@ echo -e "    docker run -it -d --name sandbox ${DOCKER_ORGANISATION}/${DOCKER_NA
 echo -e "    docker exec -it sandbox /bin/bash"
 echo -e ""
 
-echo -e "docker build -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --pull -f ${WORKING_DIR}/../docker/centos7/Dockerfile ./"
+echo -e "docker build -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --pull -f ${WORKING_DIR}/${DOCKER_FILE} ./"
 echo -e "docker run -p 9090:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --version"
 echo -e "docker run -p 9090:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest /home/jenkins/test.war"
 echo -e ""
