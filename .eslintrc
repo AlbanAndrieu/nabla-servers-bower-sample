@@ -16,7 +16,7 @@
   "rules": {
     //"prettier/prettier": ["error", {"singleQuote": true, "dot-notation":false, "parser": "flow"}],
     "semi": ["error", "always"],
-    "dot-notation": [2, {"allowKeywords": true, "allowPattern": ""}],
+    "dot-notation": [2, { "allowKeywords": true, "allowPattern": "" }],
     "space-before-function-paren": ["error", "never"]
   },
 

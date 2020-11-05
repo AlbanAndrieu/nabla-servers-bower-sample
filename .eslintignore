@@ -1,1 +1,4 @@
 !.eslintrc.js
+test/*
+docs/js
+target

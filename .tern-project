@@ -1,1 +1,10 @@
-{"ide":{"scriptPaths":[{"type":"FOLDER","path":"app"},{"type":"FOLDER","path":"bower_components"}]},"libs":["ecma5"],"plugins":{"guess-types":{}}}
+{
+  "ide": {
+    "scriptPaths": [
+      { "type": "FOLDER", "path": "app" },
+      { "type": "FOLDER", "path": "bower_components" }
+    ]
+  },
+  "libs": ["ecma5"],
+  "plugins": { "guess-types": {} }
+}

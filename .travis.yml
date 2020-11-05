@@ -8,8 +8,8 @@ dist: travis_lts
 #dist: bionic
 
 jdk:
-#  - oraclejdk8
-#  - oraclejdk11
+  #  - oraclejdk8
+  #  - oraclejdk11
   - openjdk8
 #  - openjdk11
 
@@ -18,20 +18,20 @@ addons:
   #firefox: latest
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - gcc-5
-    - g++-5
+      - gcc-5
+      - g++-5
 #    - ruby-compass
 
 language: nodejs
 
 node_js:
-#  - "8"
+  #  - "8"
   - "11"
 
 compiler:
-#  - clang
+  #  - clang
   - gcc
 
 services:
@@ -51,17 +51,17 @@ cache:
 
 env:
   matrix:
-  - EMBER_VERSION=default
+    - EMBER_VERSION=default
   global:
-  - MOZ_HEADLESS=1
-  - secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
+    - MOZ_HEADLESS=1
+    - secure: AZtlXwv64rBSAE1L7cNGhGnXZxs+zrBrKqYfs1o0s9n+7bo6XDJtDtPCaNODonoXo9+WY0NpZErFUsx/FvCXhOgkjpMP1OLdi7iX2R7qMntl8YtDOWI8NCYggCIeqRG8EsN9hjL/6IClvkfudyDLV0aKUyWRrVzwciDsLhgStyo=
 
 matrix:
   fast_finish: true
   allow_failures:
-  - env: EMBER_VERSION=release
-  - env: EMBER_VERSION=beta
-  - env: EMBER_VERSION=canary
+    - env: EMBER_VERSION=release
+    - env: EMBER_VERSION=beta
+    - env: EMBER_VERSION=canary
 
 # See https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
 
@@ -75,8 +75,8 @@ before_install:
   - npm config set spin false
   #- 'gem install sass --version "=3.2.12"'
   #- 'gem install compass --version "=0.12.2"'
-  - 'gem install sass'
-  - 'gem install compass'
+  - "gem install sass"
+  - "gem install compass"
   - npm install -g bower karma grunt-cli jshint
   # Upgrade PhantomJS to v2.1.1.
   - "export PHANTOMJS_VERSION=2.1.1"
@@ -86,8 +86,8 @@ before_install:
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
   - "phantomjs --version"
 
-  - # start your web application and listen on `localhost`
-  - # google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
+  -  # start your web application and listen on `localhost`
+  -  # google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
 
 install:
   - npm set progress=false
@@ -102,17 +102,16 @@ install:
 
 branches:
   only:
-  - master
+    - master
 
 notifications:
   email: false
   webhooks:
     urls:
-    - https://webhooks.gitter.im/e/47b10b81867bd0063cf5
+      - https://webhooks.gitter.im/e/47b10b81867bd0063cf5
     on_success: change
     on_failure: always
     on_start: false
-
 #script:
 #  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 #  - gcc --version

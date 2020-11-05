@@ -844,7 +844,8 @@ exit 0
                         }
                     }
                     when {
-                        expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+                        expression { BRANCH_NAME ==~ /NOK/  }
+                        //expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
                     }
                     steps {
                         script {
@@ -895,7 +896,8 @@ exit 0
                         }
                     }
                     when {
-                        expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
+                        expression { BRANCH_NAME ==~ /NOK/  }
+                        //expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
                     }
                     steps {
                         script {
