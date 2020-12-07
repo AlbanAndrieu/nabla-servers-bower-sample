@@ -1,0 +1,14 @@
+{
+  "directory": "bower_components",
+  "analytics": false,
+  "timeout": 120000,
+  "registry": "https://registry.bower.io",
+  "register": "http://192.168.1.61:5678",
+  "publish": "http://192.168.1.61:5678",
+  "storage": {
+    "packages" : ".bower/packages",
+    "registry" : ".bower/registry"
+  },
+  "tmp": ".bower/tmp",
+  "allow_root": true
+}
