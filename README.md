@@ -1,4 +1,5 @@
 # nabla-servers-bower-sample
+
 ![nabla-servers-bower-sample](http://albandrieu.com/sample/mroizo.1f00120c.png)
 
 [![License: APACHE](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -24,6 +25,7 @@ Javascript project
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
 
 ## Quality
+
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample%3Amaster&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample%3Abower-sample)
 [![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
 [![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
@@ -64,42 +66,49 @@ Javascript project
 [![Inline docs](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME}.svg?branch=master)](http://inch-ci.org/github/{ORG-or-USERNAME}/{REPO-NAME})
 [![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)
 -->
+
 [![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://alban-andrieu.com)
 
-A bower project sample.
-=============
+# Table of contents
+
+<!-- toc -->
+
+<!-- tocstop -->
+
+# A bower project sample.
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
 
 This project is also used to test integration of build tools like:
 
- * private-bower (bower repo and caching)
- * nexus (npm and java packages repo and caching)
- * jenkins (continuous delivery in a jetty embedded)
- * sonar multi-languages and coverage (QA metrics except JIRA and perf metrics)
- * yeoman/nodejs/npm/grunt/bower and maven integration
- * zaproxy (security tests), checkmarx, dependency-check and nsp (thirdparty security check)
- * performance (jmx, phantomas, pagespeed, webpagetest, yslow, junitperf in jenkins)
- * sonar / stash / jira / jenkins /git /checkmarx integration
+- private-bower (bower repo and caching)
+- nexus (npm and java packages repo and caching)
+- jenkins (continuous delivery in a jetty embedded)
+- sonar multi-languages and coverage (QA metrics except JIRA and perf metrics)
+- yeoman/nodejs/npm/grunt/bower and maven integration
+- zaproxy (security tests), checkmarx, dependency-check and nsp (thirdparty security check)
+- performance (jmx, phantomas, pagespeed, webpagetest, yslow, junitperf in jenkins)
+- sonar / stash / jira / jenkins /git /checkmarx integration
 
 languages like :
 
- * javascript
-    * unit tests (karma) + LCOV coverage
-    * end2end tests (protractor)
- * java
-    * unit tests (junit and jmockit) + Jacoco coverage
-    * integration tests (junit) + Jacoco coverage
- * groovy
-    * unit tests (junit) + Jacoco coverage
-    * integration tests (junit) + Jacoco coverage
+- javascript
+  - unit tests (karma) + LCOV coverage
+  - end2end tests (protractor)
+- java
+  - unit tests (junit and jmockit) + Jacoco coverage
+  - integration tests (junit) + Jacoco coverage
+- groovy
+  - unit tests (junit) + Jacoco coverage
+  - integration tests (junit) + Jacoco coverage
 
 jmeter, gatling, mutation testing and arquillian are available in other sample project
 
 ## Create project
 
 as local user
+
 ```
 #npm install generator-angular
 #npm install generator-angular-fullstack
@@ -109,7 +118,9 @@ set NODE_TLS_REJECT_UNAUTHORIZED=0
 yarn install
 
 ```
+
 as local user
+
 ```
 yo angular translate
 ```
@@ -129,7 +140,7 @@ yo angular translate
 ### TODO
 
 TODO use https://angular-ui.github.io/bootstrap/ for language
-TODO remvove app/styles/components/_header.scss language-select
+TODO remvove app/styles/components/\_header.scss language-select
 TODO https://github.com/rackerlabs/angular-bootstrap-nav
 SEE https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js
 SEE https://github.com/angular-ui/angular-google-maps
@@ -167,7 +178,7 @@ Run custom hook `pre-commit run git-branches-check`
 
 ### takari maven wrapper
 
-See [takari-maven-wrapper] (https://github.com/takari/maven-wrapper)
+See [takari-maven-wrapper](https://github.com/takari/maven-wrapper)
 
 ```
 mvn -N io.takari:maven:wrapper
@@ -210,11 +221,13 @@ Build image is :
 See [ansible-jenkins-slave-docker](https://hub.docker.com/ansible-jenkins-slave-docker/)
 
 #### Pull image
+
 ```
 docker pull registry.misys.global.ad/fusion-risk/ansible-jenkins-slave-test:latest
 ```
 
 #### Start container
+
 ```
 #Sample using container to buid my local workspace
 id albandri
@@ -223,6 +236,7 @@ docker run -it -u 1000:999 --userns=host -v /etc/passwd:/etc/passwd:ro -v /etc/g
 ```
 
 #### Maven
+
 Run `mvnw clean install` for building.
 Run `grunt` for building and `grunt serve` for preview.
 Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
@@ -237,11 +251,13 @@ npm ls --licenses
 Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
 as root
+
 ```
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
 ```
 
 #### Docker compose
+
 ```
 cd ./docker-compose
 ./docker-compose-up.sh
@@ -277,11 +293,13 @@ grunt imagemin:dist
 ## Testing
 
 test (dev mode)
+
 ```
 grunt serve watch -v
 ```
 
 test (deployment mode)
+
 ```
 grunt serve:dist
 ```
@@ -464,13 +482,13 @@ grunt --gruntfile Gruntfile-e2e.js
 
 ## Eclipse
 
- Uninstall Nodeclipse Core & Node.js
+Uninstall Nodeclipse Core & Node.js
 
 Add plugins
 
- - Groovy/Grails Tool Suite (GGTS) for Eclipse 3.6.4.RELEASE
- - Nodeclipse "Enide Studio 2014" is Tool Suite for Node.js
- - AngularJS Eclipse Plugin
+- Groovy/Grails Tool Suite (GGTS) for Eclipse 3.6.4.RELEASE
+- Nodeclipse "Enide Studio 2014" is Tool Suite for Node.js
+- AngularJS Eclipse Plugin
 
 ### Import as Maven project
 
@@ -482,12 +500,12 @@ bower-sample/target-eclipse/classes
 
 Exclude validation for
 
- - node
- - node_modules
- - bower_components
- - dist
- - app
- - coverage
+- node
+- node_modules
+- bower_components
+- dist
+- app
+- coverage
 
 ### Javascript
 
@@ -499,7 +517,7 @@ Project Properties | JavasScript | Include Paths | Source | Add folders "script"
 Based on the following sample : https://github.com/oasp/oasp4js
 
 Project | Configure | Convert to AngularJS Project…
-Project Properties | Resource | Link Resources |  ../bower_components
+Project Properties | Resource | Link Resources | ../bower_components
 Project Properties | Tern | Script Paths | Add folder "app" -> JavaScript files and others available in project explorer
 Project Properties | Resource | Resource Filters | Exclude | Exclude all | Name node_modules, Name dist -> fixes most Web Resource Problems
 
@@ -509,6 +527,24 @@ Project Properties | Validation | Project specific settings | Web Resources Vali
 Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
 
 See https://github.com/oasp/oasp4js/issues/24 for more details
+
+Update README.md Table of Contents
+-----------------------------------
+
+
+  * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
+  * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
+
+`
+npm install --save markdown-toc
+`
+
+  * [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
+
+`
+brew install github-markdown-toc
+gh-md-toc --insert README.md
+`
 
 ## Other resources
 
@@ -523,11 +559,10 @@ The [issue tracker](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/i
 
 For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
-License
--------
+## License
 
 [Apache v2](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-***
+---
 
 Alban Andrieu [linkedin](https://fr.linkedin.com/in/nabla/)

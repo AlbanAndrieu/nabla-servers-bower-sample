@@ -1,43 +1,41 @@
 ---
-version: '3.7'
+version: "3.7"
 
 services:
-
-  jenkins:
-    image: nabla/jenkins:1.0.1
-    container_name: devops_jenkins
-    restart: unless-stopped
-    user: root
-    volumes:
-      - /jenkins:/jenkins
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - JENKINS_HOME=/jenkins
-    #dns_search:
-    #  - misys.global.ad
-    #  - finastra.global
-    #  - albandrieu.com
-    #dns:
-    #  - 10.21.200.3
-    #  - 10.25.200.3
-    #  - 192.168.1.1
-    ports:
-      - '8686:8080'
-      - '50000:50000'
-    depends_on:
-      - elasticsearch
-      - nexus
-    extra_hosts:
-      - "github.com:140.82.121.3"
-      #- "albandrieu.com:82.124.243"
-      #- "albandrieu.com:192.168.1.62"
-      #- "registry.hub.docker.com:3.83.63.98"
-    #network_mode: "host"
-    networks:
-       - default
-    #   - openvpn
-    #  - elastic
-    #  - ingress
+  # # jenkins is now on kubernetes
+  #jenkins:
+  #  image: nabla/jenkins-pipeline-scripts:1.0.0
+  #  container_name: devops_jenkins
+  #  restart: unless-stopped
+  #  user: root
+  #  volumes:
+  #    - /jenkins:/jenkins
+  #    - /var/run/docker.sock:/var/run/docker.sock
+  #  environment:
+  #    - JENKINS_HOME=/jenkins
+  #  #dns_search:
+  #  #  - albandrieu.com
+  #  #dns:
+  #  #  - 10.21.200.3
+  #  #  - 10.25.200.3
+  #  #  - 192.168.1.1
+  #  ports:
+  #    - "8686:8080"
+  #    - "50000:50000"
+  #  depends_on:
+  #    - elasticsearch
+  #    - nexus
+  #  extra_hosts:
+  #    - "github.com:140.82.121.3"
+  #    #- "albandrieu.com:82.124.243"
+  #    #- "albandrieu.com:192.168.1.62"
+  #    #- "registry.hub.docker.com:3.83.63.98"
+  #  #network_mode: "host"
+  #  networks:
+  #    - default
+  #  #   - openvpn
+  #  #  - elastic
+  #  #  - ingress
 
   dtrack:
     ## Pull the image from the Docker Hub OWASP repo
@@ -110,11 +108,11 @@ services:
     #  restart_policy:
     #    condition: on-failure
     ports:
-      - '8087:8080'
+      - "8087:8080"
     volumes:
-      - '/data:/data'
-    depends_on:
-      - jenkins
+      - "/data:/data"
+    #depends_on:
+    #  - jenkins
     #network_mode: "host"
     #networks:
     #  - ingress
@@ -128,28 +126,28 @@ services:
     volumes:
       - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
     ports:
-      - '8081:8081'
+      - "8081:8081"
     network_mode: "host"
     #networks:
     #  - ingress
 
-#  artifactory:
-#    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
-#    image: docker.bintray.io/jfrog/artifactory-cpp-ce
-#    container_name: artifactory
-#    ports:
-#     - 80:8081
-#    volumes:
-#     - /data/artifactory:/var/opt/jfrog/artifactory
-##    Add extra Java options by uncommenting the following lines
-##    environment:
-##     - EXTRA_JAVA_OPTIONS=-Xmx4g
-#    restart: always
-#    ulimits:
-#      nproc: 65535
-#      nofile:
-#        soft: 32000
-#        hard: 40000
+  #  artifactory:
+  #    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
+  #    image: docker.bintray.io/jfrog/artifactory-cpp-ce
+  #    container_name: artifactory
+  #    ports:
+  #     - 80:8081
+  #    volumes:
+  #     - /data/artifactory:/var/opt/jfrog/artifactory
+  ##    Add extra Java options by uncommenting the following lines
+  ##    environment:
+  ##     - EXTRA_JAVA_OPTIONS=-Xmx4g
+  #    restart: always
+  #    ulimits:
+  #      nproc: 65535
+  #      nofile:
+  #        soft: 32000
+  #        hard: 40000
 
   prometheus:
     image: prom/prometheus:v2.21.0
@@ -160,11 +158,11 @@ services:
       - ${PWD}/configs/prometheus/:/etc/prometheus/
       - /data/prometheus/data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
       #- '--storage.tsdb.retention.time=365d'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
     ports:
       - 9092:9090
     links:
@@ -176,18 +174,18 @@ services:
     #  - elastic
     #  - ingress
 
-#  alertmanager:
-#    image: prom/alertmanager:v0.20.0
-#    ports:
-#      - 9093:9093
-#    volumes:
-#      - ./configs/alertmanager/:/etc/alertmanager/
-#    restart: unless-stopped
-#    command:
-#      - '--config.file=/etc/alertmanager/config.yml'
-#      - '--storage.path=/alertmanager'
-#    #networks:
-#    #  - elastic
+  #  alertmanager:
+  #    image: prom/alertmanager:v0.20.0
+  #    ports:
+  #      - 9093:9093
+  #    volumes:
+  #      - ./configs/alertmanager/:/etc/alertmanager/
+  #    restart: unless-stopped
+  #    command:
+  #      - '--config.file=/etc/alertmanager/config.yml'
+  #      - '--storage.path=/alertmanager'
+  #    #networks:
+  #    #  - elastic
 
   node-exporter:
     image: prom/node-exporter:v0.18.1
@@ -207,7 +205,7 @@ services:
     #deploy:
     #  replicas: 1
     volumes:
-    - ./configs/blackbox:/config
+      - ./configs/blackbox:/config
     #networks:
     #  - ingress
 
@@ -230,43 +228,43 @@ services:
     #  - elastic
     #  - ingress
 
-#  grafana:
-#    image: grafana/grafana:6.7.1
-#    #user: "1000"
-#    user: root
-#    container_name: monitoring_grafana
-#    restart: unless-stopped
-#    links:
-#      - prometheus:monitoring_prometheus
-#    volumes:
-#      - /data/grafana/data:/var/lib/grafana
-#      - /data/grafana/provisioning/:/etc/grafana/provisioning/
-#      #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-#      #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
-#      #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
-#      #- ./grafana/dashboards:/var/lib/grafana/dashboards
-#    environment:
-#       - GF_SECURITY_ADMIN_USER=admin
-#       - GF_SECURITY_ADMIN_PASSWORD=admin
-#       - GF_USERS_ALLOW_SIGN_UP=false
-#      #- GF_USERS_ALLOW_SIGN_UP=true
-#      #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
-#      #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
-#      #- GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
-#    depends_on:
-#      - prometheus
-#    ports:
-#      - '3000:3000'
-# #     - GF_SERVER_DOMAIN=myrul.com
-# #     - GF_SMTP_ENABLED=true
-# #     - GF_SMTP_HOST=smtp.gmail.com:587
-# #     - GF_SMTP_USER=myadrress@gmail.com
-# #     - GF_SMTP_PASSWORD=mypassword
-# #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
-#    network_mode: "host"
-#    #networks:
-#    #  - elastic
-#    #  - ingress
+  #  grafana:
+  #    image: grafana/grafana:6.7.1
+  #    #user: "1000"
+  #    user: root
+  #    container_name: monitoring_grafana
+  #    restart: unless-stopped
+  #    links:
+  #      - prometheus:monitoring_prometheus
+  #    volumes:
+  #      - /data/grafana/data:/var/lib/grafana
+  #      - /data/grafana/provisioning/:/etc/grafana/provisioning/
+  #      #- ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+  #      #- ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml. 1860
+  #      #- ./grafana/grafana.ini:/etc/grafana/grafana.ini
+  #      #- ./grafana/dashboards:/var/lib/grafana/dashboards
+  #    environment:
+  #       - GF_SECURITY_ADMIN_USER=admin
+  #       - GF_SECURITY_ADMIN_PASSWORD=admin
+  #       - GF_USERS_ALLOW_SIGN_UP=false
+  #      #- GF_USERS_ALLOW_SIGN_UP=true
+  #      #- GF_SECURITY_ADMIN_PASSWORD="secure_pass"
+  #      #- GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+  #      #- GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+  #    depends_on:
+  #      - prometheus
+  #    ports:
+  #      - '3000:3000'
+  # #     - GF_SERVER_DOMAIN=myrul.com
+  # #     - GF_SMTP_ENABLED=true
+  # #     - GF_SMTP_HOST=smtp.gmail.com:587
+  # #     - GF_SMTP_USER=myadrress@gmail.com
+  # #     - GF_SMTP_PASSWORD=mypassword
+  # #     - GF_SMTP_FROM_ADDRESS=guillaume.denis@finastra.com
+  #    network_mode: "host"
+  #    #networks:
+  #    #  - elastic
+  #    #  - ingress
 
   elasticsearch-hq:
     image: elastichq/elasticsearch-hq:latest # v3.5.12
@@ -364,10 +362,10 @@ services:
     environment:
       - setup.kibana.host=monitoring_kibana:5601
       - output.elasticsearch.hosts=["monitoring_elasticsearchmonitoring_elasticsearch:9200"]
-    cap_add: ['AUDIT_CONTROL', 'AUDIT_READ']
+    cap_add: ["AUDIT_CONTROL", "AUDIT_READ"]
     pid: "host"
     volumes:
-    #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
+      #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
       - /var/run/docker.sock:/var/run/docker.sock
     #networks:
     #  - elastic
