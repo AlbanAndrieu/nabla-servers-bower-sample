@@ -40,7 +40,7 @@
         <docker.compose.version>0.9.9</docker.compose.version>
         <system.rules.version>1.18.0</system.rules.version>
 
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.lang.version>2.6</commons.lang.version>
 
         <cargo.docker.basedir>${project.basedir}/src/main/resources/</cargo.docker.basedir>
