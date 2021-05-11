@@ -1,21 +1,21 @@
 schemaVersion: "2.0.0"
 
 commandTests:
-- name: "check jenkins user"
-  command: "whoami"
-  expectedOutput: ["jenkins"]
-  #expectedOutput: ["root"]
+  - name: "check jenkins user"
+    command: "whoami"
+    expectedOutput: ["jenkins"]
 
-- name: "check jenkins uid/gid used for config generation"
-  command: "id"
-  expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
-  #expectedOutput: ["uid=0.root. gid=0.root. groups=0.root.*"]
+    #expectedOutput: ["root"]
+  - name: "check jenkins uid/gid used for config generation"
+    command: "id"
+    expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
 
-- name:  "apt-get upgrade"
-  command: "apt-get"
-  args: ["-qqs", "upgrade"]
-  excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
-  excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
+    #expectedOutput: ["uid=0.root. gid=0.root. groups=0.root.*"]
+  - name: "apt-get upgrade"
+    command: "apt-get"
+    args: ["-qqs", "upgrade"]
+    excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
+    excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
 
 fileExistenceTests:
 # - name: 'jenkins directory'

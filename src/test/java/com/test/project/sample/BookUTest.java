@@ -21,7 +21,7 @@ public class BookUTest {
         Assert.assertNotNull(book);
 
     }
-    
+
     @Test
     public final void testContructorWithISBN()
     {

@@ -461,7 +461,7 @@ exit 0
 
                                     }
 
-                                    withShellCheckWrapper(pattern: "*.sh")
+                                    withShellCheckWrapper(pattern: "*.sh", skipShellCheckFailure: true)
 
                                     step([
                                         $class: 'CoberturaPublisher',
@@ -477,8 +477,6 @@ exit 0
                                         sourceEncoding: 'ASCII',
                                         zoomCoverageChart: false
                                         ])
-
-                                    step([$class: "TapPublisher", testResults: "target/yslow.tap"])
 
                                     //jacoco buildOverBuild: false, changeBuildStatus: false, execPattern: '**/target/**-it.exec'
 
@@ -553,8 +551,6 @@ exit 0
                                         ])
 
                                     publishCoverage adapters: [jacocoAdapter(mergeToOneReport: true, path: 'target/jacoco.exec, target/jacoco-it.exec')], failNoReports: true, sourceFileResolver: sourceFiles('STORE_LAST_BUILD')
-
-                                    step([$class: "TapPublisher", testResults: "target/yslow.tap"])
 
                                     //jacoco buildOverBuild: false, changeBuildStatus: false, execPattern: '**/target/**-it.exec'
 

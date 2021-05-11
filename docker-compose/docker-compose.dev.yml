@@ -1,8 +1,7 @@
 ---
-version: '3.7'
+version: "3.7"
 
 services:
-
   web:
     #build:
     #  context: ..
@@ -10,15 +9,15 @@ services:
     #volumes:
     #  - '..:/code'
     ports:
-     #- 1099:1099 #jmx remote
-     - 9090:8080 #http
-     #- 9443:9443 #https
-     #- 2924:2924 #eclipse
+      #- 1099:1099 #jmx remote
+      - 9090:8080 #http
+      #- 9443:9443 #https
+      #- 2924:2924 #eclipse
     #environment:
     #  DEBUG: 'true'
 
   db:
-    command: '-d'
+    command: "-d"
     ports:
       - 3307:3306
 

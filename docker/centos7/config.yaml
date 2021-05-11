@@ -1,92 +1,92 @@
-
 schemaVersion: "2.0.0"
 
 fileExistenceTests:
- - name: 'jenkins directory'
-   path: '/home/jenkins'
-   shouldExist: true
-   permissions: 'drwx------'
-   uid: 1100
+  - name: "jenkins directory"
+    path: "/home/jenkins"
+    shouldExist: true
+    permissions: "drwx------"
+    uid: 1100
 
- - name: 'sonar-build-wrapper'
-   path: '/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64'
-   shouldExist: true
-   permissions: '-rwxrwxr-x'
+  - name: "sonar-build-wrapper"
+    path: "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64"
+    shouldExist: true
+    permissions: "-rwxrwxr-x"
 
- - name: 'sonar-scanner'
-   path: '/usr/local/sonar-runner/bin/sonar-scanner'
-   shouldExist: true
-   permissions: '-rwxr-xr-x'
+  - name: "sonar-scanner"
+    path: "/usr/local/sonar-runner/bin/sonar-scanner"
+    shouldExist: true
+    permissions: "-rwxr-xr-x"
 
 commandTests:
- - name: "check jenkins user"
-   command: "whoami"
-   expectedOutput: ["jenkins"]
+  - name: "check jenkins user"
+    command: "whoami"
+    expectedOutput: ["jenkins"]
 
- - name: "check jenkins uid/gid used for config generation"
-   command: "id"
-   expectedOutput: ["uid=1100.jenkins. gid=1101.docker. .*"]
+  - name: "check jenkins uid/gid used for config generation"
+    command: "id"
+    expectedOutput: ["uid=1100.jenkins. gid=1101.docker. .*"]
 
- - name: "check PATH"
-   command: "echo"
-   args: ["${PATH}"]
+  - name: "check PATH"
+    command: "echo"
+    args: ["${PATH}"]
    expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
 
-#- name:  "yum update"
-#  command: "yum"
-#  args: ["update", "-y"]
+  #- name:  "yum update"
+  #  command: "yum"
+  #  args: ["update", "-y"]
 
- - name: "check openjdk 1.8.0"
-   command: "${JAVA_HOME}/bin/java"
-   args: ["-version"]
-   expectedError: ['openjdk version \"1\.8\..*\".*']
+  - name: "check openjdk 1.8.0"
+    command: "${JAVA_HOME}/bin/java"
+    args: ["-version"]
+    expectedError: ['openjdk version \"1\.8\..*\".*']
 
- - name: "check python 2.7.15+"
-   command: "python"
-   args: ["--version"]
-   expectedError: ['Python 2.7.*']
+  - name: "check python 2.7.15+"
+    command: "python"
+    args: ["--version"]
+    expectedError: ["Python 2.7.*"]
 
-# - name: "check pip 8.1.2"
-#   command: "pip"
-#   args: ["--version"]
-#   expectedOutput: ["pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)*"]
+  # - name: "check pip 8.1.2"
+  #   command: "pip"
+  #   args: ["--version"]
+  #   expectedOutput: ["pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)*"]
 
- - name: "check python 3"
-   command: "python3"
-   args: ["--version"]
-   expectedOutput: ['Python 3.6.*']
+  - name: "check python 3"
+    command: "python3"
+    args: ["--version"]
+    expectedOutput: ["Python 3.6.*"]
 
-#- name: "check python 3.5.7"
-#   command: "python3.5"
-#   args: ["--version"]
-#   expectedOutput: ['Python 3.5.*']
+  #- name: "check python 3.5.7"
+  #   command: "python3.5"
+  #   args: ["--version"]
+  #   expectedOutput: ['Python 3.5.*']
 
- - name: "check python 3.6.8"
-   command: "python3.6"
-   args: ["--version"]
-   expectedOutput: ['Python 3.6.*']
+  - name: "check python 3.6.8"
+    command: "python3.6"
+    args: ["--version"]
+    expectedOutput: ["Python 3.6.*"]
 
- - name: "check pip 19.3.1"
-   command: "pip3"
-   args: ["--version"]
-   expectedOutput: ["pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)*"]
+  - name: "check pip 19.3.1"
+    command: "pip3"
+    args: ["--version"]
+    expectedOutput:
+      ["pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)*"]
 
- - name: "check docker 19.03.4"
-   command: "docker"
-   args: ["--version"]
-   expectedOutput: ['Docker version 19.03.*']
+  - name: "check docker 19.03.4"
+    command: "docker"
+    args: ["--version"]
+    expectedOutput: ["Docker version 19.03.*"]
 
 metadataTest:
   env:
     - key: "PATH"
       value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-#  labels:
-#    - key: 'com.example.vendor'
-#      value: 'ACME Incorporated'
+  #  labels:
+  #    - key: 'com.example.vendor'
+  #      value: 'ACME Incorporated'
   exposedPorts: ["8080"]
-#  exposedPorts: ["8080", "2345"]
+  #  exposedPorts: ["8080", "2345"]
   volumes: []
-#  volumes: ["/test"]
+  #  volumes: ["/test"]
   entrypoint: ["java", "-Djava.io.tmpdir=/tmp/jetty", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
   cmd: ["/home/jenkins/test.war"]
   workdir: "/home/jenkins"

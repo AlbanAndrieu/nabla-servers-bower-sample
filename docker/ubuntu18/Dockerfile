@@ -138,10 +138,8 @@ RUN rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ no
 RUN pwd && ls -lrta ./
 RUN ls -lrta .cache/pip && ls -lrta .config/configstore
 # TODO : Here takes too long
-RUN chmod -R 777 ${HOME}
-
-#ADD http://albandrieu.com/download/docker/config.json ${JENKINS_USER_HOME}/.docker/config.json
-#RUN chown -R ${UID}:${GID} ${JENKINS_USER_HOME}/.docker
+#RUN chmod -R 777 ${HOME}
+RUN chmod 777 ${HOME}
 
 # drop back to the regular jenkins user - good practice
 USER jenkins

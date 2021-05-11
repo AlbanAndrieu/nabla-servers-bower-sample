@@ -443,6 +443,19 @@ grunt pagespeed
 grunt wpt
 ```
 
+
+## Refresh from upstream
+
+```
+git remote add upstream https://github.com/AlbanAndrieu/nabla-servers-bower-sample.git
+git remote -v
+git fetch upstream
+git checkout master
+git rebase upstream/master
+git rebase --continue
+git push origin master --force
+```
+
 ## Deploy to internet
 
 Page deployed at :

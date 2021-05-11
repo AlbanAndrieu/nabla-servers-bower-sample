@@ -24,44 +24,51 @@ heartbeat.config.monitors:
 
 # Configure monitors inline
 heartbeat.monitors:
-- type: icmp
-  schedule: '*/5 * * * * * *'
-  hosts: ["filebeat","metricbeat","packetbeat","elasticsearch","kibana","jenkins"] # ,"apache2","nginx","mysql","nexus"
-  ipv4: true
-  ipv6: true
-  mode: any
-  timeout: 16s
-  wait: 1s
-#Monitor the ES instance over http with a GET to the /  - checking for a 200 response
-- name: Elasticsearch service running
-  type: http
-  enabled: true
-  schedule: '@every 5s'
-  urls: ["http://monitoring_elasticsearch:9200"]
-  ipv4: true
-  ipv6: true
-  mode: any
-  timeout: 5s
-  #username: '${ES_USERNAME:elastic}'
-  #password: '${ES_PASSWORD:changeme}'
-  check.request:
-    method: "GET"
-  check.response:
-    status: 200
-#Monitor the Kibana instance with a http GET to / - checking for a 200 response code
-- name: Kibana service running
-  type: http
-  enabled: true
-  schedule: '@every 5s'
-  urls: ["http://monitoring_kibana:5601/app/kibana"]
-  ipv4: true
-  ipv6: true
-  mode: any
-  timeout: 5s
-  check.request:
-    method: "GET"
-  check.response:
-    status: 200
+  - type: icmp
+    schedule: "*/5 * * * * * *"
+    hosts: [
+        "filebeat",
+        "metricbeat",
+        "packetbeat",
+        "elasticsearch",
+        "kibana",
+        "jenkins",
+      ] # ,"apache2","nginx","mysql","nexus"
+    ipv4: true
+    ipv6: true
+    mode: any
+    timeout: 16s
+    wait: 1s
+  #Monitor the ES instance over http with a GET to the /  - checking for a 200 response
+  - name: Elasticsearch service running
+    type: http
+    enabled: true
+    schedule: "@every 5s"
+    urls: ["http://monitoring_elasticsearch:9200"]
+    ipv4: true
+    ipv6: true
+    mode: any
+    timeout: 5s
+    #username: '${ES_USERNAME:elastic}'
+    #password: '${ES_PASSWORD:changeme}'
+    check.request:
+      method: "GET"
+    check.response:
+      status: 200
+  #Monitor the Kibana instance with a http GET to / - checking for a 200 response code
+  - name: Kibana service running
+    type: http
+    enabled: true
+    schedule: "@every 5s"
+    urls: ["http://monitoring_kibana:5601/app/kibana"]
+    ipv4: true
+    ipv6: true
+    mode: any
+    timeout: 5s
+    check.request:
+      method: "GET"
+    check.response:
+      status: 200
 #Monitor the Nginx instance with a http GET to /server-status - checking for a 200 response code
 #- type: http
 #  enabled: true
@@ -109,19 +116,16 @@ setup.template.settings:
 #fields:
 #  env: staging
 
-
 #============================== Kibana =====================================
 
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
 # This requires a Kibana endpoint configuration.
 setup.kibana:
-
   # Kibana Host
   # Scheme and port can be left out and will be set to the default (http and 5601)
   # In case you specify and additional path, the scheme is required: http://localhost:5601/path
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
   #host: "localhost:5601"
-
   # Kibana Space ID
   # ID of the Kibana Space into which the dashboards should be loaded. By default,
   # the Default Space will be used.
@@ -151,7 +155,6 @@ output.elasticsearch:
 
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
-
   # Authentication credentials - either API key or username/password.
   #api_key: "id:api_key"
   #username: "elastic"
@@ -159,18 +162,18 @@ output.elasticsearch:
 
 #----------------------------- Logstash output --------------------------------
 #output.logstash:
-  # The Logstash hosts
-  #hosts: ["localhost:5044"]
+# The Logstash hosts
+#hosts: ["localhost:5044"]
 
-  # Optional SSL. By default is off.
-  # List of root certificates for HTTPS server verifications
-  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+# Optional SSL. By default is off.
+# List of root certificates for HTTPS server verifications
+#ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 
-  # Certificate for SSL client authentication
-  #ssl.certificate: "/etc/pki/client/cert.pem"
+# Certificate for SSL client authentication
+#ssl.certificate: "/etc/pki/client/cert.pem"
 
-  # Client Certificate Key
-  #ssl.key: "/etc/pki/client/cert.key"
+# Client Certificate Key
+#ssl.key: "/etc/pki/client/cert.key"
 
 #================================ Processors =====================================
 
@@ -178,12 +181,10 @@ processors:
   - add_observer_metadata:
   # Optional, but recommended geo settings for the location Heartbeat is running in
   #geo:
-    # Token describing this location
-    #name: home
-
-    # Lat, Lon "
-    #location: "48.8534, 2.3488"
-
+  # Token describing this location
+  #name: home
+  # Lat, Lon "
+  #location: "48.8534, 2.3488"
 #================================ Logging =====================================
 
 # Sets log level. The default log level is info.

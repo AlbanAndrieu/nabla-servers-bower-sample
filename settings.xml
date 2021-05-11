@@ -133,9 +133,8 @@ under the License.
     -->
 
     <server>
-      <id>nabla-tomcat</id>
-      <username>admin</username>
-      <password>microsoft</password>
+      <id>github</id>
+      <password>${env.GITHUB_TOKEN}</password>
     </server>
 
   </servers>
@@ -184,26 +183,18 @@ under the License.
     -->
 
     <!--This sends everything else to /public -->
+    <!--
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
-      <!--<mirrorOf>central</mirrorOf>-->
       <url>http://192.168.1.57:8081/repository/maven-public/</url>
     </mirror>
-    <!--
+    -->
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
       <url>http://albandrieu.com:8081/nexus/content/groups/public/</url>
     </mirror>
-    -->
-    <!--
-    <mirror>
-      <id>nexus</id>
-      <mirrorOf>*</mirrorOf>
-      <url>https://bm-artifacts.misys.global.ad/nexus/content/groups/mgr-public/</url>
-    </mirror>
-    -->
   </mirrors>
 
   <!-- profiles
@@ -757,7 +748,6 @@ under the License.
   -->
 
   <activeProfiles>
-    <!--<activeProfile>cloudbees</activeProfile>-->
     <activeProfile>nexus</activeProfile>
     <!--<activeProfile>nabla</activeProfile>-->
     <!--<activeProfile>unittest</activeProfile>-->

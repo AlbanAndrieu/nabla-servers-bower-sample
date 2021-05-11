@@ -150,7 +150,7 @@ services:
   #        hard: 40000
 
   prometheus:
-    image: prom/prometheus:v2.21.0
+    image: prom/prometheus:v2.25.2
     user: root
     container_name: monitoring_prometheus
     restart: unless-stopped

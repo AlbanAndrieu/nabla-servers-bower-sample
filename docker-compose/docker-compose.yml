@@ -1,11 +1,11 @@
 ---
-version: '3.7'
+version: "3.7"
 
 services:
   web:
-#    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME:-bower-fr-integration-test}:${DOCKER_TAG:-latest}
+    #    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME:-bower-fr-integration-test}:${DOCKER_TAG:-latest}
     image: nabla/nabla-servers-bower-sample:latest
-#    container_name: sample
+    #    container_name: sample
     hostname: sample
     #domainname: sample.fr
     #restart: on-failure:2
@@ -36,7 +36,7 @@ services:
       - db
       - cache
     healthcheck:
-      test: ["CMD", "curl","-s" ,"-f", "http://localhost:8080/#/"]
+      test: ["CMD", "curl", "-s", "-f", "http://localhost:8080/#/"]
 
   selenium-hub:
     image: selenium/hub:3.12.0-cobalt
