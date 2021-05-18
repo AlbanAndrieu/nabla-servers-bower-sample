@@ -9,9 +9,6 @@
   "disallowSpaceAfterPrefixUnaryOperators": ["++", "--", "+", "-", "~", "!"],
   "disallowSpaceBeforeBinaryOperators": [","],
   "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
-  "disallowSpacesInAnonymousFunctionExpression": {
-    "beforeOpeningRoundBrace": true
-  },
   "disallowSpacesInCallExpression": true,
   "disallowSpacesInFunctionDeclaration": {
     "beforeOpeningRoundBrace": true
@@ -22,7 +19,7 @@
   "disallowSpacesInsideArrayBrackets": true,
   "requireSpaceBeforeKeywords": ["else", "while", "catch"],
   "disallowSpacesInsideParentheses": true,
-  "disallowTrailingComma": true,
+  "disallowTrailingComma": false,
   "disallowTrailingWhitespace": true,
   "requireCommaBeforeLineBreak": true,
   "requireLineFeedAtFileEnd": true,
