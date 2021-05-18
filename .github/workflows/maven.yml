@@ -10,6 +10,8 @@ jobs:
     name: Build template
     runs-on: ubuntu-20.04
     steps:
+    - name: Install maven
+      run: sudo apt update && sudo apt install maven
     - uses: actions/checkout@v2
     - name: Set up JDK 11
       uses: actions/setup-java@v2
@@ -17,4 +19,4 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build with Maven
-      run: ./mvnw -B package --file pom.xml -Dserver=jetty9x
+      run: ./mvnw -B package --file pom.xml
