@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
-
     // base path, that will be used to resolve files and exclude
-    basePath: '../',
+    basePath: "../",
 
     // frameworks to use
-    frameworks: ['jasmine'],
+    frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+      'bower_components/jquery-ui/jquery-ui.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
@@ -31,54 +31,53 @@ module.exports = function(config) {
       'bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
-      'app/scripts/**/*.js',
-      'test/spec/**/*.js'
+      "app/scripts/**/*.js",
+      "test/spec/**/*.js",
     ],
 
     // list of files to exclude
     exclude: [],
 
     plugins: [
-      'karma-chrome-launcher',
-      'karma-firefox-launcher',
-      'karma-ie-launcher',
-      'karma-junit-reporter',
-      'karma-tapfile-reporter',
-      'karma-coverage',
-      'karma-jasmine'
+      "karma-chrome-launcher",
+      "karma-firefox-launcher",
+      "karma-ie-launcher",
+      "karma-junit-reporter",
+      "karma-tapfile-reporter",
+      "karma-coverage",
+      "karma-jasmine",
     ],
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['dots', 'progress', 'junit', 'coverage'],
+    reporters: ["dots", "progress", "junit", "coverage"],
 
     preprocessors: {
-      'app/**/*.js': ['coverage']
+      "app/**/*.js": ["coverage"],
     },
 
     coverageReporter: {
       //type: 'lcov',
-      dir: './target/karma-coverage',
+      dir: "./target/karma-coverage",
       //file: 'lcov-karma.info'
       reporters: [
         // reporters not supporting the `file` property
-        { type: 'html', subdir: 'report-html' },
-        { type: 'lcov', subdir: 'report-lcov'},
+        { type: "html", subdir: "report-html" },
+        { type: "lcov", subdir: "report-lcov" },
         // reporters supporting the `file` property, use `subdir` to directly
         // output them in the `dir` directory
-        { type: 'cobertura', subdir: '.', file: 'cobertura.txt' },
-        { type: 'lcovonly', subdir: '.', file: 'lcov-karma.info' }
+        { type: "cobertura", subdir: ".", file: "cobertura.txt" },
+        { type: "lcovonly", subdir: ".", file: "lcov-karma.info" },
         //{ type: 'teamcity', subdir: '.', file: 'teamcity.txt' },
         //{ type: 'text', subdir: '.', file: 'text.txt' },
         //{ type: 'text-summary', subdir: '.', file: 'text-summary.txt' },
-      ]
-
+      ],
     },
 
     junitReporter: {
       //outputFile: './target/surefire-reports/TEST-default-KarmaTest.xml',
-      outputDir: './target/surefire-reports/',
-      suite: 'KarmaTest'
+      outputDir: "./target/surefire-reports/",
+      suite: "KarmaTest",
     },
 
     // web server port
@@ -105,13 +104,13 @@ module.exports = function(config) {
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     // - PhantomJS (is dead : https://semaphoreci.com/blog/2018/03/27/phantomjs-is-dead-use-chrome-headless-in-continuous-integration.html)
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['ChromeHeadlessNoSandbox'],
+    browsers: ["ChromeHeadlessNoSandbox"],
     // browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      }
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox"],
+      },
     },
 
     // If browser does not capture in given timeout [ms], kill it
@@ -120,6 +119,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: true
+    singleRun: true,
   });
 };
