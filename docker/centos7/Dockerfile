@@ -1,7 +1,7 @@
 # CentOS based image (RHEL7-compatible):
 FROM centos:7.5.1804 as BUILD
 
-LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
+LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -30,6 +30,7 @@ RUN yum -y install epel-release && yum -y clean all
 ADD https://repo.ius.io/ius-release-el7.rpm /tmp/ius-release-el7.rpm
 RUN rpm -ivh /tmp/ius-release-el7.rpm && yum -y clean all
 
+# hadolint ignore=DL3059
 RUN yum-config-manager \
     --add-repo \
     https://download.docker.com/linux/centos/docker-ce.repo
@@ -58,6 +59,10 @@ RUN yum makecache fast \
     docker-compose \
     && yum -y clean all
 
+# hadolint ignore=DL3059
+#RUN debuginfo-install -y java-1.8.0-openjdk
+
+# hadolint ignore=DL3059
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 # Disable requiretty.
@@ -71,8 +76,10 @@ RUN echo "export JAVA_HOME=${JAVA_HOME}" >> /etc/environment && \
     echo "export JRE_HOME=${JAVA_HOME}/jre" >> /etc/environment && \
     echo "export PATH=$PATH:${JAVA_HOME}/bin:${JAVA_HOME}/jre/bin" >>/etc/environment
 
+# hadolint ignore=DL3059
 RUN alternatives --list
-RUN ls -lrta /usr/lib/jvm/
+#RUN ls -lrta /usr/lib/jvm/
+# hadolint ignore=DL3059
 RUN ln -sf /etc/pki/java/cacerts ${JAVA_HOME}/jre/lib/security/cacerts
 
 
@@ -86,14 +93,14 @@ ADD ${HELM_URL} /tmp/${HELM_FILENAME}
 RUN tar -zxvf /tmp/${HELM_FILENAME} -C /tmp \
   && chmod +x /tmp/linux-amd64/helm \
   && mv /tmp/linux-amd64/helm /bin/helm \
-  && rm -rf /tmp
+  && rm -rf /tmp/*
 
 ENV KUBECTL_VERSION=v1.18.3
 
 ADD https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl /tmp/kubectl
 RUN chmod +x /tmp/kubectl \
   && mv /tmp/kubectl /bin/kubectl \
-  && rm -rf /tmp
+  && rm -rf /tmp/*
 
 # Sonar tools
 #ARG SONAR_SCANNER_URL="https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873.zip"
@@ -119,8 +126,8 @@ RUN python3 -m pip install --no-cache-dir --proxy=${http_proxy} --upgrade pip==2
     && pip install --no-cache-dir --proxy=${http_proxy} ansible==2.9.1 zabbix-api==0.5.3 docker-compose==1.25.5 distro==1.5.0
 
 # Install Ansible inventory file.
-RUN mkdir -p /etc/ansible
-RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+RUN mkdir -p /etc/ansible \
+    && printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 # Add user jenkins to the image
 ARG USER=${USER:-jenkins}
@@ -140,7 +147,7 @@ RUN adduser --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} ${USER} && \
 RUN echo "jenkins:jenkins1234" | chpasswd
 
 ENV JETTY_TMP /tmp/jetty
-RUN mkdir ${JETTY_TMP} && chown -R ${USER}:${GROUP} ${JETTY_TMP}
+RUN mkdir -p ${JETTY_TMP} && chown -R ${USER}:${GROUP} ${JETTY_TMP}
 ENV JETTY_BASE /var/lib/jetty
 RUN mkdir ${JETTY_BASE} && chown -R ${USER}:${GROUP} ${JETTY_BASE}
 ENV JETTY_HOME /usr/local/jetty
