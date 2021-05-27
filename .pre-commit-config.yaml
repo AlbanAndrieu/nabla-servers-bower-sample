@@ -164,7 +164,7 @@ repos:
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
 -   repo: https://github.com/AlbanAndrieu/nabla-hooks.git
-    rev: v1.0.1
+    rev: v1.0.2
     hooks:
       - id: git-branches-check
         always_run: true
