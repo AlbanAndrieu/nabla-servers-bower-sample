@@ -126,7 +126,7 @@ unidiff==0.5.5
 #unity-scope-yelp==0.1
 #unity-scope-zotero==0.1
 #unity-tweak-tool==0.0.7
-urllib3==1.22
+urllib3==1.26.5
 #usb-creator==0.3.3
 #vboxapi==1.0
 virtualenv==15.2.0
