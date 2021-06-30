@@ -46,7 +46,7 @@ docker-pycreds==0.3.0
 dockerpty==0.4.1
 docopt==0.6.2
 docutils==0.14
-ecdsa==0.13
+ecdsa==0.13.3
 entrypoints==0.2.3
 et-xmlfile==1.0.1
 fasteners==0.14.1
