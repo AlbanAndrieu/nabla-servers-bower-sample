@@ -4,7 +4,7 @@
 }
 
 .language-select {
-  $height: $font-size-base*$line-height-base + 14px;
+  $height: $font-size-base * $line-height-base + 14px;
   line-height: $height;
   margin-top: 8px;
 
@@ -19,10 +19,10 @@
   padding: 30px 15px 40px; /* side padding builds on .container 15px, so 30px */
   font-size: 16px;
   text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
   color: #cdbfe3;
   background-color: #563d7c;
-  background-image: url('../images/header.png');
+  background-image: url("../images/header.png");
 }
 .bs-header a {
   color: #fff;
@@ -38,7 +38,6 @@
 .bs-header .container {
   position: relative;
 }
-
 
 @media (min-width: 768px) {
   .bs-header {
@@ -65,9 +64,7 @@
 }
 
 @media (min-width: 768px) {
-
   .bs-social {
     text-align: left;
   }
-
 }

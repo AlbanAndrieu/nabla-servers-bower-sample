@@ -119,14 +119,14 @@ services:
 
   nexus:
     #docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
-    image: sonatype/nexus3:3.0.0
+    image: sonatype/nexus3:3.31.1
     container_name: devops_nexus3
     #hostname: albandrieu-nexus
     restart: unless-stopped
     volumes:
       - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
-    ports:
-      - "8081:8081"
+    #ports:
+    #  - "8081:8081"
     network_mode: "host"
     #networks:
     #  - ingress

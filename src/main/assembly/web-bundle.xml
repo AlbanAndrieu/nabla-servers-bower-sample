@@ -23,7 +23,6 @@
   <files>
     <file>
       <source>src/main/assembly/embedded-jetty-web-for-webbundle.xml</source>
-      <outputDirectory>WEB-INF</outputDirectory>
       <destName>jetty-web.xml</destName>
     </file>
     <!--

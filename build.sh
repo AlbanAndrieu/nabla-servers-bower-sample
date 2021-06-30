@@ -29,7 +29,7 @@ echo -e "${green} ./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:ru
 
 #./docker-build.sh
 
-npm list  > list.log
+npm list  > list.log || true
 #npm shrinkwrap
 
 #sudo npm install -g npm-license
@@ -43,7 +43,7 @@ docker-compose -f docker-compose/docker-compose.yml -p TEST ps
 echo -e "${magenta} Building helm testChart ${NC}"
 
 #helm create charts
-helm lint charts
-helm package charts
+helm lint testChart/
+helm package testChart/
 
 exit 0

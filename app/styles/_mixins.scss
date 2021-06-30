@@ -5,7 +5,7 @@
   left: 50%;
 
   opacity: $opacity;
-  content: '';
+  content: "";
   border-radius: 50%;
 
   font-size: $size/4;
@@ -14,11 +14,10 @@
   margin: -0.5em 0 0 -0.5em;
 
   box-shadow: 0 -1.6em 0 0 rgba($color, 1),
-  -1.12em -1.12em 0 0 rgba($color, .75),
-  -1.6em 0 0 0 rgba($color, .50),
-  -1.12em 1.12em 0 0 rgba($color, .25);
+    -1.12em -1.12em 0 0 rgba($color, 0.75), -1.6em 0 0 0 rgba($color, 0.5),
+    -1.12em 1.12em 0 0 rgba($color, 0.25);
 
-  animation: .85s circle-loader steps(8) infinite;
+  animation: 0.85s circle-loader steps(8) infinite;
   @content;
 }
 

@@ -1,6 +1,10 @@
 "use strict";
 
 module.exports = function (config) {
+
+  const process = require('process');
+  process.env.CHROME_BIN = require('puppeteer').executablePath();
+
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: "../",
@@ -105,16 +109,22 @@ module.exports = function (config) {
     // - PhantomJS (is dead : https://semaphoreci.com/blog/2018/03/27/phantomjs-is-dead-use-chrome-headless-in-continuous-integration.html)
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
     browsers: ["ChromeHeadlessNoSandbox"],
-    // browsers: ['Chrome', 'ChromeHeadless', 'ChromeHeadlessNoSandbox'],
+    //browsers: ["ChromiumHeadless"],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: "ChromeHeadless",
-        flags: ["--no-sandbox"],
+        flags: [
+          '--headless',
+          '--no-sandbox',
+          '--disable-gpu'
+        ]
       },
     },
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
+    browserDisconnectTolerance: 5,
+    browserDisconnectTimeout : 30000,
     browserNoActivityTimeout: 30000,
 
     // Continuous Integration mode

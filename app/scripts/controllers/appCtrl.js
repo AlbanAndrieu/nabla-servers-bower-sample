@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * @ngdoc function
@@ -7,8 +7,17 @@
  * # AppController
  * Common application controller
  */
-angular.module('myTestApp')
-  .controller('AppController', function($scope, $location, $anchorScroll, $rootScope, $translate, $interval, VERSION_TAG) {
+angular
+  .module("myTestApp")
+  .controller("AppController", function(
+    $scope,
+    $location,
+    $anchorScroll,
+    $rootScope,
+    $translate,
+    $interval,
+    VERSION_TAG
+  ) {
     /**
      * Cache busting
      */
@@ -17,14 +26,16 @@ angular.module('myTestApp')
     /**
      * Translations for the view
      */
-    var pageTitleTranslationId = 'PAGE_TITLE';
-    var pageContentTranslationId = 'PAGE_CONTENT';
+    var pageTitleTranslationId = "PAGE_TITLE";
+    var pageContentTranslationId = "PAGE_CONTENT";
 
-    $translate(pageTitleTranslationId, pageContentTranslationId)
-      .then(function(translatedPageTitle, translatedPageContent) {
-        $rootScope.pageTitle = translatedPageTitle;
-        $rootScope.pageContent = translatedPageContent;
-      });
+    $translate(pageTitleTranslationId, pageContentTranslationId).then(function(
+      translatedPageTitle,
+      translatedPageContent
+    ) {
+      $rootScope.pageTitle = translatedPageTitle;
+      $rootScope.pageContent = translatedPageContent;
+    });
 
     /**
      * $scope.locale
@@ -34,7 +45,7 @@ angular.module('myTestApp')
     /**
      * Provides info about current route path
      */
-    $rootScope.$on('$routeChangeSuccess', function(event, current) {
+    $rootScope.$on("$routeChangeSuccess", function(event, current) {
       $scope.currentPath = current.$$route.originalPath;
     });
 
@@ -46,11 +57,10 @@ angular.module('myTestApp')
       $scope.currentTime = Date.now();
     }, 1000);
 
-
     /**
      * EVENTS
      */
-    $rootScope.$on('$translateChangeSuccess', function(event, data) {
+    $rootScope.$on("$translateChangeSuccess", function(event, data) {
       $scope.locale = data.language;
       $rootScope.pageTitle = $translate.instant(pageTitleTranslationId);
       $rootScope.pageContent = $translate.instant(pageContentTranslationId);
@@ -60,8 +70,7 @@ angular.module('myTestApp')
      * SCROLL TO TOP
      */
     $scope.scrollTo = function(id) {
-       $location.hash(id);
-       $anchorScroll();
+      $location.hash(id);
+      $anchorScroll();
     };
-
-});
+  });

@@ -59,12 +59,12 @@ services:
     image: docker.bintray.io/jfrog/artifactory-cpp-ce
     container_name: artifactory
     ports:
-     - 80:8081
+      - 80:8081
     volumes:
-     - /workspace/data/artifactory:/var/opt/jfrog/artifactory
-#    Add extra Java options by uncommenting the following lines
-#    environment:
-#     - EXTRA_JAVA_OPTIONS=-Xmx4g
+      - /workspace/data/artifactory:/var/opt/jfrog/artifactory
+    #    Add extra Java options by uncommenting the following lines
+    #    environment:
+    #     - EXTRA_JAVA_OPTIONS=-Xmx4g
     restart: always
     ulimits:
       nproc: 65535
@@ -84,8 +84,8 @@ services:
     image: elasticsearch:2.3.3
     container_name: elasticsearch
     ports:
-     - "9200:9200"
-     - "9300:9300"
+      - "9200:9200"
+      - "9300:9300"
     ## uncomment and adjust the path before the colon to some local directory where the data should be stored at
     ## NOTE: if you don't do that, the data will not be persistent!
     #volumes:
@@ -102,7 +102,6 @@ services:
       ##  only needed if you want to cluster elasticsearch across multiple hosts
       #--network.publish_host <ip of docker host>
       #--discovery.zen.ping.unicast.hosts <ip of other ES hosts>
-
       ##  Note:
       #   set 'node.box_type hot' for your beefy nodes with SSDs which hold the new indices and 'node.box_type cold' for historical nodes (see https://github.com/stagemonitor/stagemonitor/wiki/Elasticsearch#hot-cold-architecture)
       #   increase 'index.number_of_replicas' if you want backups (needs more disk space)
@@ -115,9 +114,9 @@ services:
     image: kibana:4.5.1
     container_name: kibana
     ports:
-     - "5601:5601"
+      - "5601:5601"
     links:
-     - elasticsearch:elasticsearch
+      - elasticsearch:elasticsearch
     #log_driver: "json-file"
     #log_opt: # log rotation
     #  max-size: "10m"

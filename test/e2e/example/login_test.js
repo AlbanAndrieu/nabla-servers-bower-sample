@@ -1,35 +1,31 @@
-'use strict';
+"use strict";
 
 //browser.ignoreSynchronization = false;
 
-describe('Protractor Demo Sample', function() {
+describe("Protractor Demo Sample", function () {
   //browser.driver.manage().window().maximize();
 
   //browser.sleep(10000);
   //browser.waitForAngular();
 
-  beforeEach(function() {
+  beforeEach(function () {
     //var params = browser.params;
     //console.log('Opening browser... ' + browser.baseUrl + '/' + params.appContext);
 
-    console.log('Opening browser... ' + browser.baseUrl);
-
+    console.log("Opening browser... " + browser.baseUrl);
   });
 
-  it('should have a title', function() {
-
-    expect(browser.getTitle()).toEqual('i18n for your AngularJS applications');
-
+  it("should have a title", function () {
+    expect(browser.getTitle()).toEqual("i18n for your AngularJS applications");
   });
 
-  it('should have a text', function() {
-
-    browser.get('#/project');
+  it("should have a text", function () {
+    browser.get("#/project");
 
     //var data = element(by.css('.jumbotron.ng-scope'));
-    var data = element(by.css('.jumbotron'));
-    var header = data.element(by.tagName('h2'));
-    expect(header.getText()).toContain('i18n for your AngularJS applications');
+    var data = element(by.css(".jumbotron"));
+    var header = data.element(by.tagName("h2"));
+    expect(header.getText()).toContain("i18n for your AngularJS applications");
 
     //expect(header.getText()).toContain('\'Allo, \'Allo!');
   });
@@ -44,5 +40,4 @@ describe('Protractor Demo Sample', function() {
   //  //var header = data.element(by.tagName('h1'));
   //  //expect(header.getText()).toContain('\'Allo, \'Allo!');
   //});
-
 });

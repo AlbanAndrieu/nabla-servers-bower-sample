@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * @ngdoc function
@@ -7,13 +7,14 @@
  * # BootstrapController
  * Controller of the myTestApp
  */
-angular.module('myTestApp')
-  .controller('BootstrapController', function($scope) {
+angular
+  .module("myTestApp")
+  .controller("BootstrapController", function($scope) {
     // Yeoman part (for tests)
     $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'Bootstrap',
-      'AngularJS',
-      'Karma'
+      "HTML5 Boilerplate",
+      "Bootstrap",
+      "AngularJS",
+      "Karma",
     ];
   });

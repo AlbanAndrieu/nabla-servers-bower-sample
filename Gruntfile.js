@@ -8,7 +8,7 @@
 // 'test/spec/**/*.js'
 //var path = require('path');
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   var localConfig;
   try {
     localConfig = require("./server/config/local.env");
@@ -54,9 +54,9 @@ module.exports = function (grunt) {
     zap_stop: "grunt-zaproxy",
     zap_results: "grunt-zaproxy",
     //'validate-package': 'grunt-nsp-package',
-    protractor_coverage: "grunt-protractor-coverage",
-    instrument: "grunt-istanbul",
-    makeReport: "grunt-istanbul",
+    //protractor_coverage: "grunt-protractor-coverage",
+    //instrument: "grunt-istanbul",
+    //makeReport: "grunt-istanbul",
     //phantomcss: 'grunt-phantomcss',
     usebanner: "grunt-banner",
     replace: "grunt-text-replace",
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
   var serveStatic = require("serve-static");
   var serveIndex = require("serve-index");
 
-  var parseVersionFromPomXml = function () {
+  var parseVersionFromPomXml = function() {
     var fs = require("fs-extra");
     var parseString = require("xml2js").parseString;
     var version;
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
         console.log("Missing pom.xml");
       }
     }
-    parseString(pomXml, { trim: true }, function (err, result) {
+    parseString(pomXml, { trim: true }, function(err, result) {
       version = result.project.parent[0].version;
       //console.dir(result.project.version);
       //version = result.project.version;
@@ -114,7 +114,7 @@ module.exports = function (grunt) {
 
   //console.log('Done.');
 
-  var getVersion = function () {
+  var getVersion = function() {
     // TODO use https://www.npmjs.com/package/grunt-jenkins-build-info
     var POM_VERSION = parseVersionFromPomXml();
     //console.log('POM_VERSION : ' + POM_VERSION);
@@ -141,14 +141,14 @@ module.exports = function (grunt) {
     dist: "dist",
     e2e: "coverage/e2e",
     //instrumentedServer: 'coverage/server/instrument',
-    instrumentedE2E: "coverage/e2e/instrumented",
+    //instrumentedE2E: "coverage/e2e/instrumented",
   };
 
   //const imagemin = require('imagemin');
   //const imageminMozjpeg = require('imagemin-mozjpeg');
   //const imageminPngquant = require('imagemin-pngquant');
 
-  var corsMiddleware = function (req, res, next) {
+  var corsMiddleware = function(req, res, next) {
     console.log("cors");
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "*");
@@ -255,7 +255,7 @@ module.exports = function (grunt) {
         options: {
           open: true,
           debug: true,
-          middleware: function (connect, options, middlewares) {
+          middleware: function(connect, options, middlewares) {
             if (!Array.isArray(options.base)) {
               options.base = [options.base];
             }
@@ -288,7 +288,7 @@ module.exports = function (grunt) {
           protocol: "https",
           //open: true,
           singleRun: true,
-          middleware: function (connect, options, middlewares) {
+          middleware: function(connect, options, middlewares) {
             return [
               serveStatic(".tmp"),
               serveStatic("test"),
@@ -310,7 +310,7 @@ module.exports = function (grunt) {
           //livereload: false,
           singleRun: true,
           //base: '<%= config.instrumentedE2E %>/app',
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               serveStatic(".tmp"),
               //serveStatic('test'),
@@ -319,7 +319,7 @@ module.exports = function (grunt) {
                 serveStatic("./bower_components")
               ),
               connect().use("/fonts", serveStatic(appConfig.dist + "/fonts")),
-              serveStatic(appConfig.instrumentedE2E + "/app"),
+              //serveStatic(appConfig.instrumentedE2E + "/app"),
               //serveStatic(config.app)
             ];
           },
@@ -760,14 +760,16 @@ module.exports = function (grunt) {
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
-        files: [
-          {
-            expand: true,
-            cwd: "<%= config.app %>/images",
-            src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
-            dest: "<%= config.dist %>/images",
-          },
-        ],
+        dynamic: {
+          files: [
+            {
+              expand: true,
+              cwd: "<%= config.app %>/images",
+              src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
+              dest: "<%= config.dist %>/images",
+            },
+          ],
+        },
       },
     },
 
@@ -1046,14 +1048,6 @@ module.exports = function (grunt) {
         "compass",
       ],
       dist: ["copy:styles", "compass:dist", "imagemin", "svgmin"],
-    },
-
-    ngdocs: {
-      options: {
-        scripts: ["angular.js", "../src.js"],
-        html5Mode: false,
-      },
-      all: ["app/**/*.js"],
     },
 
     // Test settings
@@ -1528,15 +1522,16 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks("grunt-contrib-watch");
-  grunt.loadNpmTasks("grunt-reload");
+  grunt.loadNpmTasks("grunt-contrib-imagemin");
+  //grunt.loadNpmTasks("grunt-reload");
 
   // Used for delaying livereload until after server has restarted
-  grunt.registerTask("wait", function () {
+  grunt.registerTask("wait", function() {
     grunt.log.ok("Waiting for server reload...");
 
     var done = this.async();
 
-    setTimeout(function () {
+    setTimeout(function() {
       grunt.log.writeln("Done waiting!");
       done();
     }, 1500);
@@ -1545,7 +1540,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     "serve",
     "start the server and preview your app, --allow-remote for remote access",
-    function (target) {
+    function(target) {
       if (grunt.option("allow-remote")) {
         grunt.config.set("connect.options.hostname", "0.0.0.0");
       }
@@ -1579,7 +1574,7 @@ module.exports = function (grunt) {
   grunt.registerTask(
     "server",
     "DEPRECATED TASK. Use the \"serve\" task instead",
-    function (target) {
+    function(target) {
       grunt.log.warn(
         "The `server` task has been deprecated. Use `grunt serve` to start a server."
       );
@@ -1590,7 +1585,7 @@ module.exports = function (grunt) {
   /**
    * Run acceptance tests to teach ZAProxy how to use the app.
    **/
-  grunt.registerTask("acceptance-test", function () {
+  grunt.registerTask("acceptance-test", function() {
     //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     //var done = this.async();
@@ -1664,7 +1659,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask("test", ["unit-test"]);
 
-  grunt.registerTask("unit-test", function (target) {
+  grunt.registerTask("unit-test", function(target) {
     if (target !== "watch") {
       grunt.task.run([
         //'check',
@@ -1683,7 +1678,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask("check", function () {
+  grunt.registerTask("check", function() {
     grunt.task.run([
       "newer:jshint",
       "newer:jscs",
@@ -1719,11 +1714,11 @@ module.exports = function (grunt) {
     "htmlmin",
     "replace:dist",
     "usebanner",
-    "copy:coverageE2E",
-    "instrument",
+    //"copy:coverageE2E",
+    //"instrument",
   ]);
 
-  grunt.registerTask("docs", ["clean:docs", "ngdocs"]);
+  grunt.registerTask("docs", ["clean:docs"]);
 
   grunt.registerTask("test-docs", ["docs", "connect"]);
 

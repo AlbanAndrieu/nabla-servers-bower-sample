@@ -1,6 +1,5 @@
 <div class="container">
-
-  <br/>
+  <br />
 
   <div class="clearfix">
     <div class="pull-right">
@@ -13,13 +12,19 @@
     <h2>{{"views.main.i18n for your AngularJS applications" | translate}}</h2>
 
     <p class="lead">
-      <img ng-src="images/no-filerev/yeoman-{{locale}}.png?v={{VERSION_TAG}}" alt="{{'views.main.I\'m Yeoman' | translate}}"><br>
+      <img
+        ng-src="images/no-filerev/yeoman-{{locale}}.png?v={{VERSION_TAG}}"
+        alt="{{'views.main.I\'m Yeoman' | translate}}"
+      /><br />
       {{"views.main.Always a pleasure scaffolding your apps." | translate}}
     </p>
 
-    <p><a class="btn btn-lg btn-success" ng-href="#/">
-      {{"views.main.Splendid!" | translate}}
-      <span class="glyphicon glyphicon-ok"></span></a></p>
+    <p>
+      <a class="btn btn-lg btn-success" ng-href="#/">
+        {{"views.main.Splendid!" | translate}}
+        <span class="glyphicon glyphicon-ok"></span
+      ></a>
+    </p>
   </div>
 
   <div class="row marketing">
@@ -48,8 +53,7 @@
   <div class="github-fork-ribbon-wrapper right-bottom" hidden-when-loading>
     <div class="github-fork-ribbon">
       <a href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample">
-        {{"views.Fork me on" | translate}}
-        GitHub
+        {{"views.Fork me on" | translate}} GitHub
       </a>
     </div>
   </div>
@@ -58,5 +62,4 @@
       <p translate="XSS_TEST" translate-values="{username: '<span style=\'color:red;\'>WARNING! TRANSLATE XSS HACKED if you can see this text in RED</span>'}"></p>
       <p translate="XSS_TEST" translate-values="{username: '<SCRIPT>alert(\'Cookie\'+document.cookie)</SCRIPT>'}"></p>
   </div>
-
 </div>

@@ -15,6 +15,6 @@
 /*jshint strict: false */
 /*jshint unused: false */
 function square(n) {
-  'use strict';
+  "use strict";
   return n * n;
 }

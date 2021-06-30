@@ -15,7 +15,7 @@ String DOCKER_OPTS_BASIC = getDockerOpts()
 String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
 String DOCKER_NAME_BUILD="ansible-jenkins-slave-test".trim()
-String DOCKER_BUILD_TAG=dockerTag("temp").trim()
+String DOCKER_BUILD_TAG=dockerTag().trim()
 String DOCKER_BUILD_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
 String DOCKER_RUNTIME_TAG="latest".trim()
 String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
@@ -81,15 +81,8 @@ pipeline {
         //TARGET_PROJECT = sh(returnStdout: true, script: "echo ${env.JOB_NAME} | cut -d'/' -f -1").trim()
         //BRANCH_NAME = "${env.BRANCH_NAME}".replaceAll("feature/","")
         BUILD_ID = "${env.BUILD_ID}"
-        DRY_RUN = "${params.DRY_RUN}".toBoolean()
-        CLEAN_RUN = "${params.CLEAN_RUN}".toBoolean()
-        DEBUG_RUN = "${params.DEBUG_RUN}".toBoolean()
-        MVNW_VERBOSE = "${params.MVNW_VERBOSE}".toBoolean()
         SERVER_URL = "${params.SERVER_URL}"
         SERVER_CONTEXT = "${params.SERVER_CONTEXT}"
-        RELEASE = "${params.RELEASE}".toBoolean()
-        RELEASE_BASE = "${params.RELEASE_BASE}"
-        RELEASE_VERSION = "${params.RELEASE_VERSION}"
         GIT_PROJECT = "nabla"
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
         GIT_URL = "ssh://git@github.com/AlbanAndrieu/${GIT_PROJECT}.git"
