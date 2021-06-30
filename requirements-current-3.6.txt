@@ -143,7 +143,7 @@ python-dateutil==2.7.5
 python-debian==0.1.33
 python-debianbts==2.7.3
 python-gilt==1.2.1
-python-gnupg==0.4.3
+python-gnupg==0.4.4
 python-keyczar==0.716
 python-magic==0.4.15
 python-owasp-zap-v2.4==0.0.14
