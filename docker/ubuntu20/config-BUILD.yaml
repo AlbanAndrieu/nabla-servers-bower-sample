@@ -16,20 +16,21 @@ commandTests:
     excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
 
 fileExistenceTests:
-# - name: 'jenkins directory'
-#   path: '/home/jenkins'
-#   shouldExist: true
-#   permissions: 'drwxrwxrwx'
-#   uid: 2000
+  - name: "jenkins directory"
+    path: "/home/jenkins"
+    shouldExist: true
+    permissions: "drwxrwxrwx"
+    uid: 2000
 
 # - name: 'war file'
 #   path: '/opt/test.war'
 #   shouldExist: true
 #   permissions: '-rw-r--r--'
-#   uid: 0
+##   uid: 0
 #   uid: 2000
 
 metadataTest:
-  exposedPorts: [8080]
+  #  exposedPorts: [22]
+  exposedPorts: []
   volumes: []
-#  cmd: []
+  cmd: ["/opt/bin/entry_point.sh"]

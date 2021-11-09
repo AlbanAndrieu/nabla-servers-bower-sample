@@ -10,5 +10,12 @@
     "registry" : ".bower/registry"
   },
   "tmp": ".bower/tmp",
-  "allow_root": true
+  "allow_root": true,
+  "resolvers" : [ "bower-nexus3-resolver" ],
+  "shallowCloneHosts": [
+    "albandri.misys.global.ad"
+  ],
+  "ignoredDependencies": [
+    "nabla-test"
+  ]
 }

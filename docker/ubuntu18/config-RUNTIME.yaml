@@ -1,0 +1,75 @@
+
+schemaVersion: "2.0.0"
+
+globalEnvVars:
+  - key: "VIRTUAL_ENV"
+    value: "/opt/ansible/env36"
+  - key: "PATH"
+    value: "/env/bin:$PATH"
+  - key: "JAVA_HOME"
+    value: "/usr/lib/jvm/java-8-openjdk-amd64"
+
+commandTests:
+  - name: "check jenkins user"
+    command: "whoami"
+    expectedOutput: ["jenkins"]
+
+    #expectedOutput: ["root"]
+  - name: "check jenkins uid/gid used for config generation"
+    command: "id"
+    expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
+
+    #expectedOutput: ["uid=0.root. gid=0.root. groups=0.root.*"]
+  - name: "apt-get upgrade"
+    command: "apt-get"
+    args: ["-qqs", "upgrade"]
+    excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
+    excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
+
+#  - name: "check chromium-browser 91.0 version"
+#    command: "/usr/bin/chromium-browser"
+#    args: ["--version"]
+#    expectedOutput: ['Chromium 91.0..* Built on Ubuntu.*']
+#
+#  - name: "check chromedriver 91.0 version"
+#    command: "/usr/bin/chromedriver"
+#    args: ["--version"]
+#    expectedOutput: ['ChromeDriver 91.0..*']
+#
+#  - name: "check google-chrome 81.0"
+#    command: "/usr/bin/google-chrome"
+#    args: ["--version"]
+#    expectedOutput: ["Google Chrome 81..*"]
+#
+#  - name: "check chromedriver 81.0"
+#    command: "/usr/bin/chromedriver"
+#    args: ["--version"]
+#    expectedOutput: ["ChromeDriver 81.0..*"]
+
+fileExistenceTests:
+# - name: 'jenkins directory'
+#   path: '/home/jenkins'
+#   shouldExist: true
+#   permissions: 'drwxrwxrwx'
+#   uid: 2000
+
+# - name: 'war file'
+#   path: '/opt/test.war'
+#   shouldExist: true
+#   permissions: '-rw-r--r--'
+#   uid: 0
+#   uid: 2000
+
+metadataTest:
+  env:
+#    - key: TZ
+#      value: 'Europe/Paris'
+    - key: "PATH"
+      value: "/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    - key: "JAVA_HOME"
+      value: "/usr/local/openjdk-11"
+#    - key: "HOME"
+#      value: "/home/jenkins"
+  exposedPorts: [8080]
+  volumes: []
+#  cmd: []

@@ -18,6 +18,7 @@ repos:
         args: ["--maxkb=123"]
         exclude: >
           (?x)^(
+              .pnp.cjs|
               package-lock.json|
               npm-shrinkwrap.json
           )$
