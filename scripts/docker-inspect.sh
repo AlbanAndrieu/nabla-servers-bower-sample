@@ -23,7 +23,8 @@ docker/docker-bench-security
 
 echo -e "${green} Quality ${NC}"
 echo -e "${magenta} docker run --rm  -v /home/jenkins/.kube:/root/.kube -v $(pwd):/tmp --workdir /tmp -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro --group-add 2000 --group-add 1101 --group-add 998 --group-add 789 quay.io/derailed/popeye --save --out html --output-file popeye.html --context devops-nabla --namespace nabla-standalone-aandrieu-pr -f k8s/spinach.yml  ${NC}"
-docker run --rm  -v /home/jenkins/.kube:/root/.kube -v $(pwd):/tmp --workdir /tmp -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro --group-add 2000 --group-add 1101 --group-add 998 --group-add 789 quay.io/derailed/popeye --save --out "html" --output-file "popeye.html" --context "devops-nabla" --namespace "nabla-standalone-aandrieu-pr" -f k8s/spinach.yml
+# shellcheck disable=SC2046
+docker run --rm  -v /home/jenkins/.kube:/root/.kube -v $(pwd):/tmp --workdir /tmp -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro --group-add 2000 --group-add 1101 --group-add 998 --group-add 789 quay.io/derailed/popeye --save --out html --output-file "popeye.html" --context "devops-nabla" --namespace "nabla-standalone-aandrieu-pr" -f k8s/spinach.yml
 
 echo -e "${magenta} sudo lynis audit dockerfile docker/ubuntu20/Dockerfile ${NC}"
 
