@@ -74,12 +74,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD: root
       - MYSQL_DATABASE: nabla
-     restart: always
-     environment:
-       MYSQL_ROOT_PASSWORD: root
-       MYSQL_DATABASE: nabla
-       MYSQL_USER: nabla
-       MYSQL_PASSWORD: nabla
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nabla
+      MYSQL_USER: nabla
+      MYSQL_PASSWORD: nabla
     volumes:
       #- "./conf.d:/etc/mysql/conf.d:ro"
       - db_data:/var/lib/mysql
