@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "testChart.fullname" . }}
+  # See https://helm.sh/docs/chart_best_practices/labels/
+  labels:
+    environment: staging
+    app.kubernetes.io/name: "{{ template "testChart.name" . }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service  }}"
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/version: "{{ .Chart.Version | replace "+" "_" }}"
+    app.kubernetes.io/component: sample
+    app.kubernetes.io/part-of: test
+    app.kubernetes.io/managed-by: helm
+    app: "{{ template "testChart.name" . }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    heritage: "{{ .Release.Service  }}"
+    release: "{{ .Release.Name }}"
+    {{- include "testChart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "testChart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "testChart.selectorLabels" . | nindent 8 }}
+        app: {{ template "testChart.name" . }}
+        chart: {{ template "testChart.chart" . }}
+        tier: frontend
+        track: canary
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "testChart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      shareProcessNamespace: true
+      initContainers:
+        - name: sleep
+          image: debian:stretch
+          imagePullPolicy: Always
+          command:
+            - sh
+            - -c
+            - 'echo "create by init-container" > /secrets/file'
+          volumeMounts:
+            - mountPath: /secrets
+              name: shared
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          env:
+          - name: JETTY_TMP
+            value: '/home/jenkins/'
+          - name: JETTY_BASE
+            value: '/home/jenkins/'
+          - name: JETTY_HOME
+            value: '/home/jenkins/home/'
+          - name: TITLE
+            value: "Welcome to Azure Kubernetes Service (AKS)"
+          image: "{{ .Values.global.registry }}/{{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion  }}"
+          #command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
+          command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
+          #args: ["--version"]
+          #imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+          terminationMessagePath: "/tmp/my-log"
+          ports:
+            - name: http
+              #containerPort: 80
+              containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          # See https://kubernetes.io/fr/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+          readinessProbe:
+            httpGet:
+              path: /#/
+              port: http
+            #tcpSocket:
+            #  port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 12 # ~2 minutes
+          livenessProbe:
+            httpGet:
+              path: /#/
+              port: http
+            #tcpSocket:
+            #  port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /secrets
+              name: shared
+        - name: shell
+          image: busybox
+          securityContext:
+            capabilities:
+              add:
+              - SYS_PTRACE
+          stdin: true
+          tty: true
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: shared
+          #emptyDir: {}
+          emptyDir:
+            medium: Memory

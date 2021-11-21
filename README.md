@@ -19,8 +19,9 @@ Javascript project
 
 [![Grunt](https://gruntjs.com/cdn/builtwith.png)](http://gruntjs.com/)
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
-[![Jenkins Build Status](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com:8381/job/nabla-servers-bower-sample-nightly)
+<!--[![Jenkins Build Status](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly)-->
 [![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
+[![Build Status](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml)
 
 ## Quality
 
