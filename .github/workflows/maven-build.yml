@@ -46,5 +46,8 @@ jobs:
     #- name: Build React App
     #  run: yarn build
 
+    - name: Install compass
+      run: sudo apt-get install -y ruby-compass
+
     - name: Build with Maven
       run: ./mvnw -B package --file pom.xml
