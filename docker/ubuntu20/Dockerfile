@@ -90,13 +90,15 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 ### JAVASCRIPT
 
 # hadolint ignore=DL3008,DL3015
-RUN wget --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get update && apt-get install -y nodejs=14* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 RUN npm install -g npm@7.11.2 && apt-get purge -y npm # && ln -s /usr/local/bin/npm /usr/bin/npm
 RUN npm -v && command -v npm # 6.14.12
 RUN npm install -g bower@1.8.12 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.4
+
+### USER
 
 ARG USER=${USER:-jenkins}
 ARG GROUP=${GROUP:-docker}
@@ -147,7 +149,7 @@ RUN chmod +x /tmp/kubectl \
 # COMPASS
 # need rubygems
 #RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
-RUN gem install sass && gem install compass
+RUN gem install sass && gem install compass && gem cleanup all
 RUN sass -v & compass -v
 
 # Working dir

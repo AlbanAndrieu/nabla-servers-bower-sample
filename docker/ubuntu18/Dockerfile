@@ -60,10 +60,15 @@ RUN apt-get -q update &&\
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
 
+# Remove unnecessary getty and udev targets that result in high CPU usage when using
+# multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
+RUN rm -f /lib/systemd/system/systemd*udev* \
+  && rm -f /lib/systemd/system/getty.target
+
 # Fix potential UTF-8 errors with ansible-test.
 RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
-### PYTHON
+### PYTHON 3
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip==20.2.3 \
     && pip install --no-cache-dir ansible==2.9.1 zabbix-api==0.5.3 docker-compose==1.25.5 distro==1.5.0
@@ -129,6 +134,8 @@ RUN usermod -a -G docker jenkins
 #    -keypass changeit \
 #    -storepass changeit
 
+RUN ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
+
 ### HELM
 
 ENV HELM_VERSION=${HELM_VERSION:-"v3.5.4"}
@@ -156,7 +163,7 @@ RUN chmod +x /tmp/kubectl \
 
 # COMPASS
 # need rubygems
-RUN gem install sass && gem install compass
+RUN gem install sass && gem install compass && gem cleanup all
 
 # Working dir
 WORKDIR $JENKINS_USER_HOME
@@ -262,4 +269,7 @@ ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Djetty.base=/var
 #CMD ["/bin/bash"]
 CMD ["/bin/bash", "-c", "find /opt/ -type f -name '*.war' | xargs java -jar /opt/jetty-runner.jar"]
 EXPOSE 8080
+
+#HEALTHCHECK NONE
+HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
 
