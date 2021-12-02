@@ -3,20 +3,19 @@
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
 #FROM ubuntu:20.04 as BUILD
-FROM p21d13401013001.azurecr.io/selenium/standalone-chrome:3.141.59-20210128 as BUILD
+FROM selenium/standalone-chrome:3.141.59-20210128 as BUILD
 
 # dockerfile_lint - ignore
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.0"
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu20.04."
-LABEL com.example.vendor="ACME Incorporated"
-
-ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
-#ENV http_proxy=${http_proxy:-"http://10.21.185.171:3128"}
-#ENV https_proxy=${https_proxy:-"${http_proxy}"}
-ENV no_proxy=${no_proxy:-"localhost,127.0.0.1,.finastra.com,.misys.global.ad,.finastra.global,.azure.io,10.199.52.11,albandri,10.41.40.139"}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
+#ENV http_proxy=${http_proxy:-"http://127.0.0.1:3128"}
+#ENV https_proxy=${https_proxy:-"${http_proxy}"}
+ENV no_proxy=${no_proxy:-"localhost,127.0.0.1,.albandrieu.com,.azure.io,albandri,albandrieu"}
 
 ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
 
@@ -57,6 +56,7 @@ RUN apt-get -q update &&\
     python3-setuptools python3 python3-pip python3-dev python3-apt \
     openjdk-8-dbg openjdk-11-dbg maven \
     net-tools iputils-ping x11-apps \
+    ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
 
 # Remove unnecessary getty and udev targets that result in high CPU usage when using
@@ -70,7 +70,7 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_U
 ### PYTHON
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip==20.3.4 \
-    && pip3 install --no-cache-dir  ansible==2.10.3 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
+    && pip3 install --no-cache-dir ansible==2.10.3 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
 
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
@@ -113,7 +113,8 @@ RUN groupmod -g ${GID} docker
 
 # Add user jenkins to the image
 #RUN groupadd -g ${GID} docker && \
-RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins
+RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
+    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 # Set password for the jenkins user (you may want to alter this).
 RUN echo "jenkins:jenkins1234" | chpasswd
 RUN usermod -a -G docker jenkins
@@ -143,6 +144,11 @@ RUN chmod +x /tmp/kubectl \
   && mv /tmp/kubectl /bin/kubectl \
   && rm -rf /tmp/*
 
+# COMPASS
+# need rubygems
+#RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
+RUN gem install sass && gem install compass
+RUN sass -v & compass -v
 
 # Working dir
 WORKDIR $JENKINS_USER_HOME
@@ -183,7 +189,7 @@ COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
 
 #RUN npm install --only=production
 #TODO -Dserver=tomcat8x
-RUN ./mvnw --batch-mode install -Dserver=jetty9x -Dmaven.test.skip=true
+RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -DskipTests=true
 
 #RUN ls -lrta -R $JENKINS_USER_HOME && ls -lrtan /home/jenkins/target/test.war
 
@@ -200,4 +206,3 @@ USER jenkins
 EXPOSE 8080
 
 HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
-

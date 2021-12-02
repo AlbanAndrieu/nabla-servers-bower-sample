@@ -1,14 +1,19 @@
 #!/bin/bash
 #set -xve
 
+#if [ "$0" = "${BASH_SOURCE[0]}" ]; then
+#    echo "This script has to be sourced and not executed..."
+#    exit 1
+#fi
+
 WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 # source only if terminal supports color, otherwise use unset color vars
 # shellcheck source=/dev/null
-source "${WORKING_DIR}/step-0-color.sh"
+. "${WORKING_DIR}/step-0-color.sh"
 
 # shellcheck source=/dev/null
-source "${WORKING_DIR}/step-1-os.sh"
+. "${WORKING_DIR}/step-1-os.sh"
 
 if [ -n "${USE_SUDO}" ]; then
   echo -e "${green} USE_SUDO is defined ${happy_smiley} : ${USE_SUDO} ${NC}"
@@ -29,7 +34,7 @@ if [ -n "${PYTHON_MAJOR_VERSION}" ]; then
   unset PYTHON_CMD
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : PYTHON_MAJOR_VERSION, use the default one ${NC}"
-  export PYTHON_MAJOR_VERSION=3.6
+  export PYTHON_MAJOR_VERSION=3.8
   echo -e "${magenta} PYTHON_MAJOR_VERSION : ${PYTHON_MAJOR_VERSION} ${NC}"
 fi
 
@@ -67,10 +72,10 @@ echo -e "${cyan} Use virtual env ${VIRTUALENV_PATH}/bin/activate ${NC}"
 
 #sudo virtualenv -p /usr/bin/python3.5 /opt/ansible/env35
 echo -e "${green} virtualenv --no-site-packages ${VIRTUALENV_PATH} -p python${PYTHON_MAJOR_VERSION} ${NC}"
-echo -e "${green} source ${VIRTUALENV_PATH}/bin/activate ${NC}"
+echo -e "${green} . ${VIRTUALENV_PATH}/bin/activate ${NC}"
 if [ -f "${VIRTUALENV_PATH}/bin/activate" ]; then
   # shellcheck disable=SC1090
-  source "${VIRTUALENV_PATH}/bin/activate" || exit 2
+  . "${VIRTUALENV_PATH}/bin/activate" || exit 2
 
   #export PYTHONPATH="/usr/local/lib/python${PYTHON_MAJOR_VERSION}/dist-packages/"
   export PATH="${VIRTUALENV_PATH}/bin:${PATH}"
@@ -104,7 +109,7 @@ if [ -f "${WORKING_DIR}/../playbooks/files/python/requirements-current-${PYTHON_
   echo -e "${cyan} =========== ${NC}"
   echo -e "${green} Install virtual env requirements : pip install -r ${WORKING_DIR}/../playbooks/files/python/requirements-current-${PYTHON_MAJOR_VERSION}.txt ${NC}"
   #"${VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION}" install -r "${WORKING_DIR}/../playbooks/files/python/requirements-current-${PYTHON_MAJOR_VERSION}.txt"
-  pip install -r "${WORKING_DIR}/../playbooks/files/python/requirements-current-${PYTHON_MAJOR_VERSION}.txt"
+  pip${PYTHON_MAJOR_VERSION} install -r "${WORKING_DIR}/../playbooks/files/python/requirements-current-${PYTHON_MAJOR_VERSION}.txt"
   RC=$?
   if [ ${RC} -ne 0 ]; then
     echo ""

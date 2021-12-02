@@ -20,8 +20,8 @@ if [ -n "${DOCKER_BUILD_ARGS}" ]; then
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_BUILD_ARGS, use the default one ${NC}"
-  export DOCKER_BUILD_ARGS="--pull"
-  #export DOCKER_BUILD_ARGS="--build-arg --no-cache"
+  export DOCKER_BUILD_ARGS="--pull --target BUILD"
+  #export DOCKER_BUILD_ARGS="--build-arg --no-cache --disable-content-trust=false"
   echo -e "${magenta} DOCKER_BUILD_ARGS : ${DOCKER_BUILD_ARGS} ${NC}"
 fi
 
@@ -31,7 +31,8 @@ if [ -n "${CST_CONFIG}" ]; then
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : CST_CONFIG, use the default one ${NC}"
-  export CST_CONFIG="docker/ubuntu16/config.yaml" # build image
+  export CST_CONFIG="docker/ubuntu18/config-BUILD.yaml" # build image
+  #export CST_CONFIG="docker/ubuntu18/config-RUNTIME.yaml" # runtime image
   #export CST_CONFIG="docker/centos7/config.yaml" # runtime image
   echo -e "${magenta} CST_CONFIG : ${CST_CONFIG} ${NC}"
 fi
@@ -42,8 +43,8 @@ if [ -n "${DOCKER_NAME}" ]; then
 else
   # shellcheck disable=SC2154
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_NAME, use the default one ${NC}"
-  #export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"} # build image
-  export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"} # runtime image
+  export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"} # build image
+  #export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"} # runtime image
   echo -e "${magenta} DOCKER_NAME : ${DOCKER_NAME} with ${CST_CONFIG} ${NC}"
 fi
 
@@ -68,7 +69,7 @@ else
 fi
 
 #readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-"https://hub.docker.com/"}
-readonly DOCKER_REGISTRY=${DOCKER_REGISTRY:-""}
+export DOCKER_REGISTRY=${DOCKER_REGISTRY:-"hub.docker.com"}
 readonly DOCKER_ORGANISATION=${DOCKER_ORGANISATION:-"nabla"}
 readonly DOCKER_USERNAME=${DOCKER_USERNAME:-"nabla"}
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}

@@ -9,7 +9,7 @@ WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 export DOCKER_TAG=${DOCKER_TAG:-"2.0.0"}
 
-export DOCKER_NAME=${DOCKER_NAME:-"bower-fr-integration-test"}
+export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 #export DOCKER_FILE="docker/centos7/Dockerfile"
 #export CST_CONFIG="docker/centos7/config.yaml"
 export DOCKER_FILE="docker/ubuntu20/Dockerfile"

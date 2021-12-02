@@ -36,8 +36,10 @@ RUN yum-config-manager \
     https://download.docker.com/linux/centos/docker-ce.repo
 
 # Add git lfs repo for yum
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh | bash
-RUN rpm -U http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+ADD https://packagecloud.io/install/repositories/github/git-lfs/script.rpm.sh /tmp/script.rpm.sh
+RUN bash /tmp/script.rpm.sh
+ADD http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm /tmp/wandisco-git-release-7-2.noarch.rpm
+RUN rpm -ivh /tmp/wandisco-git-release-7-2.noarch.rpm && yum -y clean all
 
 # Runtime tools
 # hadolint ignore=DL3033
@@ -60,7 +62,7 @@ RUN yum makecache fast \
     && yum -y clean all
 
 # hadolint ignore=DL3059
-#RUN debuginfo-install -y java-1.8.0-openjdk
+RUN debuginfo-install -y java-1.8.0-openjdk
 
 # hadolint ignore=DL3059
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
@@ -166,6 +168,8 @@ COPY --chown=jenkins:docker target/dependency/jetty-runner.jar target/test.war $
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 
 #ENTRYPOINT ["java", "-Djava.io.tmpdir=/tmp/jetty", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
-ENTRYPOINT ["java", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
 CMD ["/home/jenkins/test.war"]
 EXPOSE 8080
+
+HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1

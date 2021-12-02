@@ -2,7 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "testChart.fullname" . }}
+  # See https://helm.sh/docs/chart_best_practices/labels/
   labels:
+    environment: dev
+    app.kubernetes.io/name: "{{ template "testChart.name" . }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    app.kubernetes.io/managed-by: "{{ .Release.Service  }}"
+    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/version: "{{ .Chart.Version | replace "+" "_" }}"
+    app.kubernetes.io/component: sample
+    app.kubernetes.io/part-of: test
+    app.kubernetes.io/managed-by: helm
+    app: "{{ template "testChart.name" . }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    heritage: "{{ .Release.Service  }}"
+    release: "{{ .Release.Name }}"
     {{- include "testChart.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
@@ -13,6 +27,10 @@ spec:
     metadata:
       labels:
         {{- include "testChart.selectorLabels" . | nindent 8 }}
+        app: {{ template "testChart.name" . }}
+        chart: {{ template "testChart.chart" . }}
+        tier: frontend
+        track: canary
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -21,12 +39,24 @@ spec:
       serviceAccountName: {{ include "testChart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      shareProcessNamespace: true
+      initContainers:
+        - name: sleep
+          image: debian:stretch
+          imagePullPolicy: Always
+          command:
+            - sh
+            - -c
+            - 'echo "create by init-container" > /secrets/file'
+          volumeMounts:
+            - mountPath: /secrets
+              name: shared
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           ports:
             - name: http
               containerPort: 80

@@ -7,15 +7,20 @@ fileExistenceTests:
     permissions: "drwx------"
     uid: 1100
 
-  - name: "sonar-build-wrapper"
-    path: "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64"
-    shouldExist: true
-    permissions: "-rwxrwxr-x"
+#  - name: "sonar-build-wrapper"
+#    path: "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64"
+#    shouldExist: true
+#    permissions: "-rwxr-xr-x"
+#
+#  - name: "sonar-scanner"
+#    path: "/usr/local/sonar-runner/bin/sonar-scanner"
+#    shouldExist: true
+#    permissions: "-rwxr-xr-x"
 
-  - name: "sonar-scanner"
-    path: "/usr/local/sonar-runner/bin/sonar-scanner"
-    shouldExist: true
-    permissions: "-rwxr-xr-x"
+# Should not exist as it is a runtime image
+  - name: 'maven'
+    path: '/usr/bin/mvn'
+    shouldExist: false
 
 commandTests:
   - name: "check jenkins user"
@@ -29,7 +34,7 @@ commandTests:
   - name: "check PATH"
     command: "echo"
     args: ["${PATH}"]
-   expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
+    expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
 
   #- name:  "yum update"
   #  command: "yum"
@@ -65,16 +70,16 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["Python 3.6.*"]
 
-  - name: "check pip 19.3.1"
+  - name: "check pip 20.2.3"
     command: "pip3"
     args: ["--version"]
     expectedOutput:
-      ["pip 9.0.3 from /usr/lib/python3.6/site-packages (python 3.6)*"]
+      ["pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*"]
 
-  - name: "check docker 19.03.4"
+  - name: "check docker 20.10.0"
     command: "docker"
     args: ["--version"]
-    expectedOutput: ["Docker version 19.03.*"]
+    expectedOutput: ["Docker version 20.10.*"]
 
 metadataTest:
   env:
@@ -87,6 +92,14 @@ metadataTest:
   #  exposedPorts: ["8080", "2345"]
   volumes: []
   #  volumes: ["/test"]
-  entrypoint: ["java", "-Djava.io.tmpdir=/tmp/jetty", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
+  entrypoint:
+    [
+      "java",
+      "-Djava.security.egd=file:/dev/./urandom",
+      # "-Djava.io.tmpdir=/tmp/jetty",
+      "-Djetty.base=/var/lib/jetty",
+      "-jar",
+      "/home/jenkins/jetty-runner.jar",
+    ]
   cmd: ["/home/jenkins/test.war"]
   workdir: "/home/jenkins"

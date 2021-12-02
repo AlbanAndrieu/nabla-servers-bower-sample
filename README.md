@@ -20,17 +20,14 @@ Javascript project
 [![Grunt](https://gruntjs.com/cdn/builtwith.png)](http://gruntjs.com/)
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
 <!--[![Jenkins Build Status](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly)-->
-[![Jenkins tests](https://img.shields.io/jenkins/t/https/jenkins.qa.ubuntu.com/view/Precise/view/All%20Precise/job/precise-desktop-amd64_default.svg)]()
 [![Build Status](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml)
 
 ## Quality
 
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample%3Amaster&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.nabla.project.servers.sample%3Abower-sample)
-[![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)]()
-[![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)]()
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=com.nabla.project.servers.sample%3Abower-sample)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample&metric=coverage)](https://sonarcloud.io/summary/new_code?id=com.nabla.project.servers.sample%3Abower-sample)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.nabla.project.servers.sample%3Abower-sample&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=com.nabla.project.servers.sample%3Abower-sample)
 
-[![Dependency Status](https://img.shields.io/david/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample)
-[![devDependency Status](https://img.shields.io/david/dev/AlbanAndrieu/nabla-servers-bower-sample.svg?style=flat-square)](https://david-dm.org/AlbanAndrieu/nabla-servers-bower-sample#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample)
 
 [![Code Climate](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample/badges/gpa.svg)](https://codeclimate.com/github/AlbanAndrieu/nabla-servers-bower-sample)
@@ -64,7 +61,7 @@ Javascript project
 [![Xing](http://www.xing.com/img/buttons/45_fr_btn.gif)](http://www.xing.com/profile/Alban_Andrieu)
 -->
 
-[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://alban-andrieu.com)
+[![Website](https://img.shields.io/website-up-down-green-red/http/shields.io.svg?label=nabla)](http://albanandrieu.com)
 
 # Table of contents
 

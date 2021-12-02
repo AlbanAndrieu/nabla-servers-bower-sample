@@ -50,6 +50,8 @@ export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
 
 ./scripts/docker-build-runtime-20.sh
 
+echo -e "${magenta} Building helm helm-sample ${NC}"
+
 export HELM_TAG=${HELM_TAG:-"1.0.0"}
 echo -e "${magenta} k config get-contexts ${NC}"
 
@@ -57,6 +59,8 @@ export HELM_CONFIG_HOME=${HELM_CONFIG_HOME:-"${HOME}/.kube"}
 export HELM_KUBECONTEXT=${HELM_KUBECONTEXT:-"microk8s"}
 export HELM_NAMESPACE=${HELM_NAMESPACE:-"jenkins"}
 export HELM_DEPLOYEMENT=${HELM_DEPLOYEMENT:-"helm-sample"}
+
+echo -e "${magenta} helm lint ./packs/helm-sample/charts --kubeconfig ${HELM_CONFIG_HOME}/config --kube-context ${HELM_KUBECONTEXT} ${NC}"
 
 echo -e "${magenta} helm package ./packs/helm-sample/charts --kubeconfig ${HELM_CONFIG_HOME}/config --kube-context ${HELM_KUBECONTEXT} --namespace ${HELM_NAMESPACE} --version ${HELM_TAG} --app-version ${DOCKER_TAG} --dependency-update ${NC}"
 echo -e "${magenta} helm install --kubeconfig ${HELM_CONFIG_HOME}/config --kube-context ${HELM_KUBECONTEXT} --namespace ${HELM_NAMESPACE} my-develop helm-sample-${HELM_TAG}.tgz --timeout 5m0s --wait --atomic --devel --replace --dependency-update --set imagePullPolicy=Always ${NC}"
@@ -68,12 +72,6 @@ echo -e "${magenta} helm schema-gen packs/helm-sample/values.yaml ${NC}"
 echo -e "${magenta} helmfile diff ${NC}"
 
 docker-compose -f docker-compose/docker-compose.yml -p TEST ps
-
-echo -e "${magenta} Building helm testChart ${NC}"
-
-#helm create charts
-helm lint testChart/
-helm package testChart/
 
 echo -e "${magenta} kubectl flame helm-sample -t 1m --lang java -f /tmp/flamegraph.svg --kubeconfig=$HOME/.kube/config ${NC}"
 
