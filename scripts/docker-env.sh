@@ -76,3 +76,7 @@ export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_NAME_BUILD=${DOCKER_NAME_BUILD:-"ansible-jenkins-slave-test"}
 export DOCKER_RUNTIME_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_TAG=${DOCKER_TAG:-"latest"}
+
+export HELM_CONTEXT=${HELM_CONTEXT:-"microk8s"}
+export HELM_NAMESPACE=${HELM_NAMESPACE:-"jenkins"}
+

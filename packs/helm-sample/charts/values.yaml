@@ -7,9 +7,11 @@ replicaCount: 1
 global:
   # See https://kubernetes.io/fr/docs/concepts/containers/images/
   imagePullPolicy: IfNotPresent
+  #registry: nabla
 
 image:
   repository: nabla/nabla-servers-bower-sample
+  #imagePullPolicy: IfNotPresent
   imagePullPolicy: Always
   tag: latest
   # tag: "{{ default .Chart.AppVersion latest }}"

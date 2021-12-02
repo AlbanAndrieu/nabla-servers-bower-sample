@@ -4,7 +4,7 @@ metadata:
   name: {{ include "testChart.fullname" . }}
   # See https://helm.sh/docs/chart_best_practices/labels/
   labels:
-    environment: staging
+    environment: dev
     app.kubernetes.io/name: "{{ template "testChart.name" . }}"
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     app.kubernetes.io/managed-by: "{{ .Release.Service  }}"

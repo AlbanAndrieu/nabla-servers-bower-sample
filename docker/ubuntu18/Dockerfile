@@ -214,7 +214,7 @@ COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
 #COPY . $JENKINS_USER_HOME/
 
 RUN ls -lrta ./
-#RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -DskipTests=true
+RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -DskipTests=true
 
 #RUN ls -lrta -R $JENKINS_USER_HOME && ls -lrtan /home/jenkins/target/test.war
 

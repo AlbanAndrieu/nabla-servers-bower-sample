@@ -13,6 +13,8 @@
     "**/target/**",
     "src/test/resources/callstacks/**",
     "src/test/jenkins/lib/**",
+    "docker/ubuntu16/**",
+    "docker/ubuntu18/**",
     "**/*.svg"
   ]
 }
