@@ -52,12 +52,6 @@
     "grunt": ">=1.4.1"
   },
   "engine-strict": true,
-  "browserslist": [
-    "last 1 version",
-    "> 1%",
-    "maintained node versions",
-    "not dead"
-  ],
   "eslintConfig": {
     "parserOptions": {
       "ecmaVersion": 6

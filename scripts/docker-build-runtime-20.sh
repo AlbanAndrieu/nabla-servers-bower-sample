@@ -15,6 +15,8 @@ export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_FILE="docker/ubuntu20/Dockerfile"
 export CST_CONFIG="docker/ubuntu20/config.yaml"
 
+export DOCKER_BUILD_ARGS="--pull --no-cache --target RUNTIME"
+
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
@@ -60,7 +62,7 @@ echo -e " ${NC}"
 
 echo -e "docker build -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --pull -f ${DOCKER_FILE} ./ ${NC}"
 echo -e "docker run -p 9090:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest --version"
-echo -e "docker run -p 9090:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest /home/jenkins/test.war"
+echo -e "docker run -p 9090:8080 -t ${DOCKER_ORGANISATION}/${DOCKER_NAME}:latest /opt/test.war"
 echo -e " ${NC}"
 
 "${WORKING_DIR}/docker-test.sh" "${DOCKER_NAME}"

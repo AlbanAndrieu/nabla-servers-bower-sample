@@ -67,7 +67,7 @@ RUN rm -f /lib/systemd/system/systemd*udev* \
 # Fix potential UTF-8 errors with ansible-test.
 RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_US.UTF-8
 
-### PYTHON
+### PYTHON 3
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip==20.3.4 \
     && pip3 install --no-cache-dir ansible==2.10.3 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
@@ -90,8 +90,8 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 ### JAVASCRIPT
 
 # hadolint ignore=DL3008,DL3015
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get update && apt-get install -y nodejs=14* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 RUN npm install -g npm@7.11.2 && apt-get purge -y npm # && ln -s /usr/local/bin/npm /usr/bin/npm
@@ -207,4 +207,44 @@ USER jenkins
 
 EXPOSE 8080
 
+FROM openjdk:11-jre-slim as RUNTIME
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
+
+ARG USER=${USER:-jenkins}
+ARG GROUP=${GROUP:-docker}
+ARG UID=${UID:-2000}
+ARG GID=${GID:-2000}
+# hadolint ignore=SC2059
+RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_USER_HOME: ${JENKINS_USER_HOME} \033[0m\n" && \
+    printf "\033[1;32mWITH $USER\ngroup: $GROUP \033[0m\n"
+
+# Add user jenkins to the image
+RUN groupadd -g ${GID} docker && \
+    adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
+    echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
+# Set password for the jenkins user (you may want to alter this).
+RUN echo "jenkins:jenkins1234" | chpasswd
+RUN usermod -a -G docker jenkins
+
+USER jenkins
+
+#RUN find / \( -uid 429679 \)  -ls 2>/dev/null || true
+
+COPY --from=BUILD /home/jenkins/target/test.war /home/jenkins/target/dependency/jetty-runner.jar /opt/
+WORKDIR /opt/
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
+
+#java -jar target/dependency/jetty-runner.jar target/test.war
+
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Djetty.base=/var/lib/jetty", "-jar", "/opt/jetty-runner.jar"]
+#CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c", "find /opt/ -type f -name '*.war' | xargs java -jar /opt/jetty-runner.jar"]
+EXPOSE 8080
+
+#HEALTHCHECK NONE
 HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
+#HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost:8080/actuator/health/ || exit 1

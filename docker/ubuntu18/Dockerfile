@@ -26,6 +26,7 @@ ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
 
+#Below HOME is needed to override seluser (selenium user)
 ENV HOME=${JENKINS_USER_HOME}
 ENV CHROME_BIN=/usr/bin/google-chrome
 #ENV CHROMIUM_BIN=/usr/bin/chromium-browser # chromium-browser: command not found
@@ -99,7 +100,9 @@ RUN wget --no-check-certificate -q -O - https://deb.nodesource.com/setup_12.x | 
     npm config set depth 0;
 RUN npm install -g npm@6.14.4 && apt-get purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
 RUN npm -v && command -v npm # 6.14.4
-RUN npm install -g bower@1.8.12 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 bower-nexus3-resolver@1.0.2
+RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 bower-nexus3-resolver@1.0.2
+
+### USER
 
 ARG USER=${USER:-jenkins}
 ARG GROUP=${GROUP:-docker}
@@ -188,7 +191,7 @@ RUN chown -R "jenkins:docker" $JENKINS_USER_HOME/.* && chmod 777 ${HOME}
 # TODO : Here takes too long
 #RUN chmod -R 777 ${HOME}
 
-ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"70.0.3538.102"}
+ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"80.0.3987.106"}
 RUN webdriver-manager update --versions.chrome ${WEBDRIVER_CHROME_VERSION}
 
 # drop back to the regular jenkins user - good practice
@@ -203,8 +206,6 @@ RUN google-chrome --version
 RUN ls -lrta /home/jenkins/.local/share/applications/mimeapps.list
 #RUN chromium-browser --version
 
-ENV HELM_REGISTRY_REPO_URL=${HELM_REGISTRY_REPO_URL:-"https://registry-tmp.misys.global.ad/chartrepo/fusion-risk"}
-#RUN helm repo add custom ${HELM_REGISTRY_REPO_URL} --insecure-skip-tls-verify
 #WARNING below give access to all servers
 # hadolint ignore=SC2015
 RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME}/.ssh/authorized_keys ${HOME}/.ssh/known_hosts || true
@@ -265,7 +266,7 @@ VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 
 #java -jar target/dependency/jetty-runner.jar target/test.war
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-Djetty.base=/var/lib/jetty", "-jar", "/opt/jetty-runner.jar"]
 #CMD ["/bin/bash"]
 CMD ["/bin/bash", "-c", "find /opt/ -type f -name '*.war' | xargs java -jar /opt/jetty-runner.jar"]
 EXPOSE 8080
