@@ -9,7 +9,7 @@ WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
 
 export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
 
-export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
+export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"}
 export DOCKER_FILE="../docker/ubuntu18/Dockerfile"
 
 

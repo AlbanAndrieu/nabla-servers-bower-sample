@@ -24,8 +24,6 @@ String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${D
 String RELEASE_VERSION=""
 //String GIT_COMMIT_REV=""
 
-def NODES_USED = []
-
 String ARTIFACTS = ['*_VERSION.TXT',
                 '**/target/*.log',
                 //'**/target/*.jar',
@@ -120,8 +118,6 @@ pipeline {
                               cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
                               //cleanStash()
                             }
-
-                            NODES_USED.add(env.NODE_NAME)
 
                             properties(createPropertyList())
                             getJenkinsOpts()
@@ -280,7 +276,7 @@ exit 0
 
                                 docker.withRegistry(DOCKER_REGISTRY_HUB_URL, DOCKER_REGISTRY_HUB_CREDENTIAL) {
 
-                                    //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.misys.global.ad'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
+                                    //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.hub.docker.com'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
 
                                     def container = docker.build("${DOCKER_BUILD_IMG}", "${DOCKER_BUILD_ARGS} . ")
                                     container.inside {
@@ -1072,10 +1068,6 @@ exit 0
     post {
         // always means, well, always run.
         always {
-            script {
-              echo "NODES_USED : " + NODES_USED.toString()
-            } // script
-
             node('molecule') {
                 runHtmlPublishers(["LogParserPublisher"])
             }

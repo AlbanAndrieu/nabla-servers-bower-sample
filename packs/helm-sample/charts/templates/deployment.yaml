@@ -63,8 +63,8 @@ spec:
           - name: JETTY_HOME
             value: '/home/jenkins/home/'
           - name: TITLE
-            value: "Welcome to Azure Kubernetes Service (AKS)"
-          image: "{{ .Values.global.registry }}/{{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion  }}"
+            value: "Welcome to (AKS)"
+          image: "{{ .Values.global.registry }}{{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion  }}"
           #command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
           command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
           #args: ["--version"]
@@ -74,15 +74,15 @@ spec:
             - name: http
               #containerPort: 80
               containerPort: 8080
-              hostPort: 8080
+              hostPort: 9093
               protocol: TCP
           # See https://kubernetes.io/fr/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
           readinessProbe:
             httpGet:
               path: /#/
               port: http
-            #tcpSocket:
-            #  port: 8080
+            tcpSocket:
+              port: 9093
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5
@@ -91,8 +91,8 @@ spec:
             httpGet:
               path: /#/
               port: http
-            #tcpSocket:
-            #  port: 8080
+            tcpSocket:
+              port: 9093
             initialDelaySeconds: 15
             periodSeconds: 20
           resources:

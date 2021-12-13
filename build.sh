@@ -56,7 +56,7 @@ docker-compose -f docker-compose/docker-compose.yml -p TEST ps
 
 echo -e ""
 echo -e "${green} Please validate the repo. ${happy_smiley} ${NC}"
-echo -e "${magenta} git tag ${HELM_TAG} ${NC}"
+echo -e "${magenta} git tag ${DOCKER_TAG} ${NC}"
 echo -e "${magenta} git push origin --tags ${NC}"
 echo -e ""
 

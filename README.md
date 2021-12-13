@@ -257,7 +257,7 @@ See [ansible-jenkins-slave-docker](https://hub.docker.com/ansible-jenkins-slave-
 #### Pull image
 
 ```
-docker pull registry.misys.global.ad/fusion-risk/ansible-jenkins-slave-test:latest
+docker pull registry.hub.docker.com/nabla/ansible-jenkins-slave-test:latest
 ```
 
 #### Start container
@@ -266,7 +266,7 @@ docker pull registry.misys.global.ad/fusion-risk/ansible-jenkins-slave-test:late
 #Sample using container to buid my local workspace
 id albandri
 #uid=1000(albandri) gid=999(docker) groups=999(docker)
-docker run -it -u 1000:999 --userns=host -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /var/run/docker.sock:/var/run/docker.sock -v /data1/home/albandri/:/data1/home/albandri/ -v /workspace/users/albandri30:/workspace/users/albandri30 -w /sandbox/project-to-build -v /workspace/users/albandri30/bower-fr-integration-test/:/sandbox/project-to-build:rw -v /jenkins:/home/jenkins -v /jenkins:/jenkins -v /etc/bash_completion.d:/etc/bash_completion.d:ro --name sandbox --entrypoint /bin/bash registry.misys.global.ad/fusion-risk/ansible-jenkins-slave:latest
+docker run -it -u 1000:999 --userns=host -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /var/run/docker.sock:/var/run/docker.sock -v /data1/home/albandri/:/data1/home/albandri/ -v /workspace/users/albandri30:/workspace/users/albandri30 -w /sandbox/project-to-build -v /workspace/users/albandri30/bower-fr-integration-test/:/sandbox/project-to-build:rw -v /jenkins:/home/jenkins -v /jenkins:/jenkins -v /etc/bash_completion.d:/etc/bash_completion.d:ro --name sandbox --entrypoint /bin/bash registry.hub.docker.com/nabla/ansible-jenkins-slave:latest
 ```
 
 #### Maven
@@ -322,6 +322,12 @@ mkdocs gh-deploy
 ```
 npm install optipng-bin@3.1.4
 grunt imagemin:dist
+```
+
+## List browser compatibility
+
+```
+npx browserslist
 ```
 
 ## Testing
