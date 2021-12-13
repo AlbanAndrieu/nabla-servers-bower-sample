@@ -53,7 +53,7 @@ lazr.restfulclient==0.13.5
 lazr.uri==1.0.3
 LibAppArmor==2.11.0
 louis==3.0.0
-lxml==4.2.1
+lxml==4.6.5
 Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
