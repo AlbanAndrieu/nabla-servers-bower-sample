@@ -66,7 +66,7 @@ spec:
             value: "Welcome to (AKS)"
           image: "{{ .Values.global.registry }}{{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion  }}"
           #command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
-          command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
+          command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/opt/jetty-runner.jar", "/opt/test.war"]
           #args: ["--version"]
           #imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           terminationMessagePath: "/tmp/my-log"
@@ -81,8 +81,6 @@ spec:
             httpGet:
               path: /#/
               port: http
-            tcpSocket:
-              port: 9093
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5
@@ -91,8 +89,6 @@ spec:
             httpGet:
               path: /#/
               port: http
-            tcpSocket:
-              port: 9093
             initialDelaySeconds: 15
             periodSeconds: 20
           resources:

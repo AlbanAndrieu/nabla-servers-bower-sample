@@ -46,9 +46,9 @@ mvn -T1 dependency:tree -DoutputFile=whitesource_mvn_dependency_tree.txt
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war ${NC}"
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
-
 ./scripts/docker-build-runtime-20.sh
+
+export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
 
 ./scripts/helm-build.sh
 

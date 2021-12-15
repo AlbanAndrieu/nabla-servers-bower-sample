@@ -12,9 +12,7 @@ ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8"
 ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
 ARG CERT_URL=${CERT_URL:-"https://albandrieu.com/download/certs/"}
 
-ARG MICROSCANNER_TOKEN=${MICROSCANNER_TOKEN:-"NzdhNTQ2ZGZmYmEz"}
-
-LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
+LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
 
@@ -161,10 +159,6 @@ RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -Dmaven.test.sk
 
 USER root
 
-RUN /microscanner ${MICROSCANNER_TOKEN} --continue-on-failure 2>&1 > ${JENKINS_USER_HOME}/microscanner.log
-#RUN echo "No vulnerabilities!"
-RUN rm /microscanner || true
-
 RUN rm -Rf /tmp/* /home/jenkins/.npm/ /home/jenkins/.git/ /home/jenkins/.node_cache || true
 #RUN chown -R jenkins:$(id -gn jenkins) $JENKINS_USER_HOME/.[^.]* && chmod -R 777 $JENKINS_USER_HOME/.[^.]* && ls -lrta -R $JENKINS_USER_HOME
 RUN chown -R "jenkins:$(id -gn jenkins)" "$JENKINS_USER_HOME"
@@ -219,7 +213,7 @@ EXPOSE 8080
 ## This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 #FROM tomcat:8-jre8 as runner
 #
-#LABEL Name="nabla-servers-bower-sample" Vendor="TEST" Version="1.0.0"
+#LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
 #LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
 # this image is running on Ubuntu 16.04."
 #
