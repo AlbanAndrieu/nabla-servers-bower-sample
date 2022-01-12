@@ -87,8 +87,8 @@
 		<jaxb.version>2.2.11</jaxb.version>
 
 		<jdk.level>11</jdk.level>
-		<jdk.target>1.11.0</jdk.target>
-		<jdk.version>1.11.0</jdk.version>
+		<jdk.target>${jdk.level}</jdk.target>
+		<jdk.version>${jdk.level}</jdk.version>
 		<!--
 		<jdk.level>1.8</jdk.level>
 		<jdk.version>1.8.0</jdk.version>
@@ -920,7 +920,7 @@
             -->
 						<jdk>
 							<version>[11,)</version>
-							<vendor>sun</vendor>
+							<!--<vendor>sun</vendor>-->
 						</jdk>
 						<!--
 						<jdk>
