@@ -82,7 +82,7 @@
 		<javax.servlet.api.version>4.0.1</javax.servlet.api.version>
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
 		<jaxb.api.version>${jaxb.version}</jaxb.api.version>
-		<jaxb.core.version>${jaxb.version}</jaxb.core.version>
+		<jaxb.core.version>3.0.2</jaxb.core.version>
 		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
 		<jaxb.version>2.2.11</jaxb.version>
 
