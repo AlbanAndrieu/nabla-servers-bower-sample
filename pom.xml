@@ -73,7 +73,7 @@
 		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
 		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
 		<hibernate.version>4.3.6.Final</hibernate.version>
-		<http.builder.version>0.6</http.builder.version>
+		<http.builder.version>0.7.1</http.builder.version>
 
 		<jacoco.version>0.8.5</jacoco.version>
 		<java.ws.version>2.0</java.ws.version>
