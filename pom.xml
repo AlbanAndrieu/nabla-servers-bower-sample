@@ -1894,7 +1894,7 @@
 				<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
 				<cargo.port>${jetty.port}</cargo.port>
 				<datasource>${datasource.name}</datasource>
-				<jetty.version>${jetty9.version}</jetty.version>
+				<jetty.version>9.4.44.v20210927</jetty.version>
 				<scope.tomcat.never.type>${scope.provided}</scope.tomcat.never.type>
 				<scope.tomcat.only.type>${scope.compile}</scope.tomcat.only.type>
 				<scope.type>${scope.compile}</scope.type>
