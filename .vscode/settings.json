@@ -1,0 +1,4 @@
+{
+  "maven.view": "flat",
+  "maven.executable.options": "-Dserver=jetty9x -Pjetty9x"
+}

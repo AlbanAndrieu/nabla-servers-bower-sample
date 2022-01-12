@@ -1,0 +1,113 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "grunt",
+      "task": "serve",
+      "problemMatcher": [],
+      "label": "grunt: serve"
+    },
+    {
+      "type": "grunt",
+      "task": "build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "grunt: build"
+    },
+    {
+      "label": "compile",
+      "type": "shell",
+      "command": "mvn -B -Dserver=jetty9x compile",
+      "group": "build"
+    },
+    {
+      "label": "mvnSpringBootDebug",
+      "type": "shell",
+      "command": "mvn spring-boot:run -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005\"",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": "\\b\\B",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Attaching agents:.*",
+            "endsPattern": "^.*Listening for transport dt_socket at address.*"
+          }
+        }
+      ]
+    },
+    {
+      "label": "mvnCargoDebug",
+      "type": "shell",
+      "command": "mvn install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -Dcargo.start.jvmargs=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005\"",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": "\\b\\B",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Attaching agents:.*",
+            "endsPattern": "^.*Listening for transport dt_socket at address.*"
+          }
+        }
+      ]
+    },
+    {
+      "version": "2.0.0",
+      "tasks": [
+        {
+          "label": "run-tomcat",
+          "type": "shell",
+          "command": "MAVEN_OPTS=\"$MAVEN_OPTS -agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n\" ./mvnw tomcat7:run",
+          "group": "build",
+          "isBackground": true,
+          "problemMatcher": [
+            {
+              "pattern": [
+                {
+                  "regexp": "\\b\\B",
+                  "file": 1,
+                  "location": 2,
+                  "message": 3
+                }
+              ],
+              "background": {
+                "activeOnStart": true,
+                "beginsPattern": "^.*Listening for",
+                "endsPattern": "^.*transport dt_socket at address.*"
+              }
+            }
+          ]
+        },
+        {
+          "label": "stop-tomcat",
+          "type": "shell",
+          "command": "echo ${input:terminate}}",
+          "problemMatcher": []
+        }
+      ],
+      "inputs": [
+        {
+          "id": "terminate",
+          "type": "command",
+          "command": "workbench.action.tasks.terminate",
+          "args": "run-tomcat"
+        }
+      ]
+    }
+  ]
+}

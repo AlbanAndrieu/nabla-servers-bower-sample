@@ -1,5 +1,6 @@
 !.eslintrc.js
 test/*
 docs/js
-target
+target/*
 dist/*
+report/*

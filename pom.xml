@@ -12,6 +12,14 @@
 		<!-- lookup parent from repository -->
 	</parent>
 
+<!--
+	<parent>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<groupId>org.springframework.boot</groupId>
+		<version>2.2.0.RELEASE</version>
+	</parent>
+-->
+
 	<groupId>com.nabla.project.servers.sample</groupId>
 	<artifactId>bower-sample</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
@@ -49,7 +57,6 @@
 		<!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 		<cargo.protocol>http</cargo.protocol>
 
-		<com.oracle.javafx.version>2.2.3</com.oracle.javafx.version>
 		<commons.io.version>2.6</commons.io.version>
 		<commons.version>1.10</commons.version>
 		<docker.compose.version>0.9.9</docker.compose.version>
@@ -78,6 +85,8 @@
 		<jaxb.core.version>${jaxb.version}</jaxb.core.version>
 		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
 		<jaxb.version>2.2.11</jaxb.version>
+		<jdk.level>11</jdk.level>
+		<jdk.version>1.11.0</jdk.version>
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
 		<jersey.version>2.28</jersey.version>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
@@ -95,8 +104,10 @@
 
 		<jmockit.version>1.19</jmockit.version>
 		<jsr305.version>2.0.1</jsr305.version>
+    <junit.bom.version>5.7.1</junit.bom.version>
 		<junit.version>4.12</junit.version>
 		<log4j.core.version>2.17.1</log4j.core.version>
+		<log4j.version>1.2.17</log4j.version>
 		<logback.version>1.2.0</logback.version>
 		<maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
@@ -110,18 +121,20 @@
 		<maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
 		<maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
+		<maven.exec.skip>false</maven.exec.skip>
 		<maven.fabric8-docker-maven.plugin.version>0.33.0</maven.fabric8-docker-maven.plugin.version>
 		<maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
 		<maven.failsafe.plugin.version>${maven.surefire.plugin.version}</maven.failsafe.plugin.version>
 
-		<maven.frontend.plugin.version>1.11.0</maven.frontend.plugin.version>
+		<maven.frontend.plugin.version>1.12.0</maven.frontend.plugin.version>
 		<maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
 		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
 		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
+		<maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
 		<maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
-		<maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+		<maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
 		<maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
 		<maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
 		<maven.jenkinsfile.plugin.version>1.0.1</maven.jenkinsfile.plugin.version>
@@ -139,12 +152,14 @@
 		<maven.sortpom.plugin.version>2.8.0</maven.sortpom.plugin.version>
 		<maven.spotbugs.plugin.version>3.1.12</maven.spotbugs.plugin.version>
 		<maven.spring.boot.plugin.version>2.3.5.RELEASE</maven.spring.boot.plugin.version>
-		<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
+		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
 		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
 		<maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
 		<maven.war.plugin.version>2.4</maven.war.plugin.version>
 		<maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
 		<maven.zkm.version>12.0.0</maven.zkm.version>
+    <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 
 		<!--<node.version>9.3.0</node.version> FreeNas -->
 		<!--<node.version>8.9.3</node.version> NOK -->
@@ -159,12 +174,13 @@
 		<server.version>${jetty.version}</server.version>
 		<slf4j.version>1.7.13</slf4j.version>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
+		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
+		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>-->
+		<spring.boot.starter.parent.version>2.3.12.RELEASE</spring.boot.starter.parent.version>
 		<!--<spring.boot.admin.version>2.2.3</spring.boot.admin.version>-->
 		<spring.boot.starter.web.version>2.3.5.RELEASE</spring.boot.starter.web.version>
 
 		<spring.boot.version>2.2.2.RELEASE</spring.boot.version>
-		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
-		<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>
 		<spring.metrics.version>0.5.1.RELEASE</spring.metrics.version>
 		<spring.version>5.2.2.RELEASE</spring.version>
 		<springdoc.openapi.version>1.2.32</springdoc.openapi.version>
@@ -175,16 +191,13 @@
 
 		<testcontainers.version>1.9.1</testcontainers.version>
 
+		<!-- jenkins cargo 8182,8183 -->
+		<tomcat.port>8280</tomcat.port>
 		<webdriver.base.url>${cargo.protocol}://${cargo.host}:${cargo.port}</webdriver.base.url>
 		<yarn.version>1.12.3</yarn.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.codehaus.groovy</groupId>
-				<artifactId>groovy</artifactId>
-				<version>${groovy.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
 				<artifactId>jersey-bom</artifactId>
@@ -200,12 +213,33 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy</artifactId>
+				<version>${groovy.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>${junit.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-parent</artifactId>
+				<version>${spring.boot.starter.parent.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+<!--
+			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-parent</artifactId>
 				<version>${spring.cloud.starter.parent.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+-->
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -254,6 +288,7 @@
 			<artifactId>groovy-all</artifactId>
 			<version>${groovy.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -284,6 +319,46 @@
 			<optional>true</optional>
 			<!-- needed only for annotations -->
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet.api.version}</version>
+			<scope>provided</scope>
+			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
+		</dependency>
+
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-test</artifactId>
+			<version>${groovy.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
+			<artifactId>http-builder</artifactId>
+			<version>${http.builder.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>${hamcrest.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- jmockit musr be after junit in the classpath -->
+		<dependency>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>${jmockit.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
@@ -307,59 +382,72 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet.api.version}</version>
-			<scope>provided</scope>
-			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<!--<version>${spring.boot.version}</version>-->
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-test</artifactId>
-			<version>${groovy.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
-			<artifactId>http-builder</artifactId>
-			<version>${http.builder.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
-			<artifactId>groovy-test</artifactId>
-			<version>${groovy.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
-			<artifactId>http-builder</artifactId>
-			<version>${http.builder.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- test dependencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-core</artifactId>
-			<version>${hamcrest.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- jmockit musr be after junit in the classpath -->
-		<dependency>
-			<groupId>org.jmockit</groupId>
-			<artifactId>jmockit</artifactId>
-			<version>${jmockit.version}</version>
-			<scope>test</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<!--<version>${prometheus.version}</version>-->
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- if a war
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.starter.web.version}</version>
+        </dependency>
+    -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<!--<version>${lombok.version}</version>
+		  <scope>provided</scope>-->
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>junit-vintage-engine</artifactId>
+					<groupId>org.junit.vintage</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.7.0</version>
+			</extension>
+		</extensions>
 		<finalName>test</finalName>
 		<pluginManagement>
 			<plugins>
@@ -538,6 +626,18 @@
 					</configuration>
 				</plugin>
 				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${maven.jacoco.plugin.version}</version>
+					<configuration>
+						<!-- includes> <include>com.test.project.**</include> </includes -->
+						<dumpOnExit>true</dumpOnExit>
+						<append>true</append>
+						<output>file</output>
+						<!--classDumpDir>${project.build.directory}/jacoco-instrumented</classDumpDir -->
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jarsigner-plugin</artifactId>
 					<version>${maven.jarsigner.plugin.version}</version>
@@ -568,6 +668,11 @@
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>buildnumber-maven-plugin</artifactId>
 					<version>${maven.buildnumber.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven.jar.plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -755,6 +860,102 @@
 					</environmentVariables>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-eclipse-compiler</artifactId>
+						<version>${groovy.eclipse.compiler.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-eclipse-batch</artifactId>
+						<version>${groovy.eclipse.batch.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<source>${jdk.level}</source>
+					<target>${jdk.level}</target>
+					<!--<release>11</release>-->
+					<compilerId>groovy-eclipse-compiler</compilerId>
+					<verbose>true</verbose>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<compilerArgs>
+						<compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+						<compilerArg>-Amapstruct.suppressGeneratorVersionInfoComment=true</compilerArg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<version>${maven.toolchains.plugin.version}</version>
+				<configuration>
+					<toolchains>
+						<jdk>
+							<version>[1.8,)</version>
+							<vendor>sun</vendor>
+						</jdk>
+						<jdk>
+							<version>[14,)</version>
+							<!--<vendor>sun</vendor>-->
+						</jdk>
+					</toolchains>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${maven.build.helper.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/groovy</source>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/test/groovy</source>
+							</sources>
+						</configuration>
+					</execution>
+					<!-- Build helper maven plugin sets the parsedVersion.osgiVersion property -->
+					<execution>
+						<id>set-osgi-version</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!--
             <plugin>
                 <groupId>com.github.eirslett</groupId>
@@ -886,43 +1087,8 @@
 					<groovydocJavaSources>false</groovydocJavaSources>
 					<groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
 					<testGroovyDocOutputDirectory>${project.basedir}/target/site/testgapidocs</testGroovyDocOutputDirectory>
+					<invokeDynamic>true</invokeDynamic>
 				</configuration>
-			</plugin>
-			<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-toolchains-plugin</artifactId>
-                <version>1.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>toolchain</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <toolchains>
-                        <jdk>
-                            <version>1.8</version>
-                            <vendor>oracle</vendor>
-                        </jdk>
-                    </toolchains>
-                </configuration>
-            </plugin>
-            -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${maven.build.helper.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>set-osgi-version</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>parse-version</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -1020,13 +1186,13 @@
 				<version>${maven.pitest.plugin.version}</version>
 			</plugin>
 			<!-- for automatic running of integration tests with Jetty -->
-			<!-- mvn clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
+			<!-- mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>
 				<version>${maven.cargo.maven2.plugin.version}</version>
 				<configuration>
-					<skip>${maven.test.skip}</skip>
+					<!--<skip>${maven.test.skip}</skip>-->
 					<wait>${cargo.wait}</wait>
 					<container>
 						<!-- 5 minutes -->
@@ -1062,7 +1228,7 @@
 					</container>
 					<configuration>
 						<properties>
-							<cargo.protocol>${cargo.protocol}</cargo.protocol>
+<!--							<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1362,6 +1528,56 @@
 					<password>${env.JENKINS_USER_TOKEN}</password>
 				</configuration>
 			</plugin>
+			<!--
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${maven.spring.boot.plugin.version}</version>
+                <configuration>
+                  <excludes>
+                    <exclude>
+                      <groupId>org.projectlombok</groupId>
+                      <artifactId>lombok</artifactId>
+                    </exclude>
+                    <exclude>
+                      <groupId>org.springframework.boot</groupId>
+                      <artifactId>spring-boot-configuration-processor</artifactId>
+                    </exclude>
+                  </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.openapitools</groupId>
+              <artifactId>openapi-generator-maven-plugin</artifactId>
+              <version>${maven.openapi.generator.plugin.version}</version>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>generate</goal>
+                  </goals>
+                  <configuration>-->
+			<!--<inputSpec>${project.basedir}/src/main/resources/client/api.yaml</inputSpec>-->
+			<!--
+                    <inputSpec>${project.basedir}/src/main/resources/public/api.yaml</inputSpec>-->
+			<!--<generatorName>java</generatorName>-->
+			<!--
+                    <generatorName>spring</generatorName>
+                    <configOptions>
+                       <sourceFolder>src/generated/java/main</sourceFolder>
+                                     <java8>true</java8>
+                                     <dateLibrary>java8</dateLibrary>
+                                     <interfaceOnly>true</interfaceOnly>
+                                     <apiPackage>com.test.project.sample.client.rest.api</apiPackage>
+                                     <modelPackage>com.test.project.sample.client.rest.model</modelPackage>
+                                     <configPackage>com.test.project.sample.client.rest.configuration</configPackage>-->
+			<!--<library>spring-cloud</library>-->
+			<!--
+                    </configOptions>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+            -->
 			<plugin>
 				<groupId>external.atlassian.jgitflow</groupId>
 				<artifactId>jgitflow-maven-plugin</artifactId>
@@ -1409,94 +1625,7 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>obfuscation-DISABLED</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<version>${maven.dependency.plugin.version}</version>
-						<!--$NO-MVN-MAN-VER$ -->
-						<executions>
-							<!-- added for obfuscation tool to find lib -->
-							<execution>
-								<id>copy-dependencies</id>
-								<phase>package</phase>
-								<goals>
-									<goal>copy-dependencies</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>target/lib</outputDirectory>
-									<!--<excludeArtifactIds>spring-boot-devtools,junit</excludeArtifactIds> -->
-									<overWriteSnapshots>true</overWriteSnapshots>
-									<includeScope></includeScope>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>com.zelix.plugins</groupId>
-						<artifactId>zkm-plugin</artifactId>
-						<version>${maven.zkm.plugin.version}</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>obfuscate</goal>
-								</goals>
-							</execution>
-						</executions>
-						<!--
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.nabla.plugins</groupId>
-                                <artifactId>zkm</artifactId>
-                                <version>${maven.zkm.version}</version>-->
-						<!-- <scope>system</scope> <systemPath>${ZKM_HOME}/ZKM.jar</systemPath> -->
-						<!--
-                            </dependency>
-                        </dependencies>
-                        -->
-						<configuration>
-							<!-- Will be used to inject values into the plugin but will not be
-                                in project properties -->
-							<isSkip>false</isSkip>
-							<isVerbose>true</isVerbose>
-							<isParseOnly>false</isParseOnly>
-							<scriptFile>zkm.txt</scriptFile>
-							<classpathLibs>
-								<lib>${java.home}/jre/lib/rt.jar</lib>
-								<!-- <lib>D:\Java\apache-ant-1.9.2\lib\ant.jar</lib> -->
-							</classpathLibs>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-			<!--
-            <activation>
-                <property>
-                    <name>!profile.activation</name>
-                </property>
-            </activation>
-            -->
-			<dependencies>
-				<dependency>
-					<!-- for the obfuscator -->
-					<groupId>javax.servlet</groupId>
-					<artifactId>jsp-api</artifactId>
-					<version>${javax.jsp.api.version}</version>
-					<scope>provided</scope>
-				</dependency>
-				<dependency>
-					<!-- for the obfuscator -->
-					<groupId>org.apache.ant</groupId>
-					<artifactId>ant</artifactId>
-					<version>${ant.version}</version>
-					<scope>provided</scope>
-				</dependency>
-			</dependencies>
-		</profile>
+
 		<!-- mvn clean install jfx:native -Pjavafx
         <profile>
             <id>javafx</id>
@@ -1524,95 +1653,6 @@
             </dependencies>
         </profile>
         -->
-		<profile>
-			<id>env.JAVA_HOME.default</id>
-			<activation>
-				<property>
-					<name>!env.JAVA_HOME</name>
-				</property>
-			</activation>
-			<properties>
-				<env.JAVA_HOME>/usr/lib/jvm/java-1.8.0-openjdk-amd64</env.JAVA_HOME>
-				<java.home>/usr/lib/jvm/java-1.8.0-openjdk-amd64</java.home>
-			</properties>
-		</profile>
-		<profile>
-			<id>env.KEYSTORE.default</id>
-			<activation>
-				<property>
-					<name>!env.KEYSTORE</name>
-				</property>
-			</activation>
-			<properties>
-				<!-- keytool -list -keystore $JAVA_HOME/jre/lib/security/cacerts -v -->
-				<env.KEYSTORE>${java.home}/jre/lib/security/cacerts</env.KEYSTORE>
-			</properties>
-		</profile>
-		<!--
-        <profile>
-            <id>env.STOREPASS.default</id>
-            <activation>
-                <property>
-                    <name>!env.STOREPASS</name>
-                </property>
-            </activation>
-            <properties>
-                <env.STOREPASS>{XiDq7l+KqFIHGOjOS2YJ+aZn+/VDNkepsecgIHQvW0U=}</env.STOREPASS>
-            </properties>
-        </profile>
-        -->
-		<profile>
-			<id>env.ALIAS.default</id>
-			<activation>
-				<property>
-					<name>!env.ALIAS</name>
-				</property>
-			</activation>
-			<properties>
-				<env.ALIAS>test</env.ALIAS>
-			</properties>
-		</profile>
-		<profile>
-			<id>signing</id>
-			<!--
-            <activation>
-                <property>
-                    <name>!profile.activation</name>
-                </property>
-            </activation>
-            -->
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jarsigner-plugin</artifactId>
-						<version>${maven.jarsigner.plugin.version}</version>
-						<executions>
-							<execution>
-								<id>sign</id>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>verify</id>
-								<goals>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<!--<removeExistingSignatures>true</removeExistingSignatures>-->
-							<keystore>${env.KEYSTORE}</keystore>
-							<alias>${env.ALIAS}</alias>
-							<storepass>${env.STOREPASS}</storepass>
-							<!--<verbose>true</verbose>-->
-							<certs>true</certs>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<id>config</id>
 			<activation>
@@ -1823,9 +1863,11 @@
 			<id>jetty9x</id>
 			<activation>
 				<property>
+          <name>!profile.activation</name>
+<!--
 					<name>server</name>
 					<value>jetty9x</value>
-					<!-- <name>!server</name> -->
+					 -->
 				</property>
 			</activation>
 			<properties>
@@ -1858,6 +1900,20 @@
 				</dependency>
 				<dependency>
 					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-http</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-rewrite</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-server</artifactId>
 					<version>${jetty.version}</version>
 				</dependency>
@@ -1875,20 +1931,6 @@
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-util</artifactId>
 					<version>${jetty.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-http</artifactId>
-					<version>${jetty.version}</version>
-					<type>jar</type>
-					<scope>runtime</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-rewrite</artifactId>
-					<version>${jetty.version}</version>
-					<type>jar</type>
-					<scope>runtime</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.eclipse.jetty</groupId>
