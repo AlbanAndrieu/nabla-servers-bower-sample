@@ -85,12 +85,14 @@
 		<jaxb.core.version>${jaxb.version}</jaxb.core.version>
 		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
 		<jaxb.version>2.2.11</jaxb.version>
-		<!--
+
 		<jdk.level>11</jdk.level>
+		<jdk.target>1.11.0</jdk.target>
 		<jdk.version>1.11.0</jdk.version>
-    -->
+		<!--
 		<jdk.level>1.8</jdk.level>
 		<jdk.version>1.8.0</jdk.version>
+    -->
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
 		<jersey.version>2.28</jersey.version>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
@@ -882,7 +884,7 @@
 				</dependencies>
 				<configuration>
 					<source>${jdk.level}</source>
-					<target>${jdk.level}</target>
+					<!--<target>${jdk.target}</target>-->
 					<!--<release>11</release>-->
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<verbose>true</verbose>
@@ -910,8 +912,14 @@
 				<version>${maven.toolchains.plugin.version}</version>
 				<configuration>
 					<toolchains>
+						<!--
 						<jdk>
 							<version>[1.8,)</version>
+							<vendor>sun</vendor>
+						</jdk>
+            -->
+						<jdk>
+							<version>[11,)</version>
 							<vendor>sun</vendor>
 						</jdk>
 						<!--
