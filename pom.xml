@@ -12,7 +12,7 @@
 		<!-- lookup parent from repository -->
 	</parent>
 
-<!--
+	<!--
 	<parent>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<groupId>org.springframework.boot</groupId>
@@ -85,8 +85,12 @@
 		<jaxb.core.version>${jaxb.version}</jaxb.core.version>
 		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
 		<jaxb.version>2.2.11</jaxb.version>
+		<!--
 		<jdk.level>11</jdk.level>
 		<jdk.version>1.11.0</jdk.version>
+    -->
+		<jdk.level>1.8</jdk.level>
+		<jdk.version>1.8.0</jdk.version>
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
 		<jersey.version>2.28</jersey.version>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
@@ -104,7 +108,7 @@
 
 		<jmockit.version>1.19</jmockit.version>
 		<jsr305.version>2.0.1</jsr305.version>
-    <junit.bom.version>5.7.1</junit.bom.version>
+		<junit.bom.version>5.7.1</junit.bom.version>
 		<junit.version>4.12</junit.version>
 		<log4j.core.version>2.17.1</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
@@ -120,6 +124,7 @@
 		<maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
 		<maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
+		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 		<maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
 		<maven.exec.skip>false</maven.exec.skip>
 		<maven.fabric8-docker-maven.plugin.version>0.33.0</maven.fabric8-docker-maven.plugin.version>
@@ -159,7 +164,6 @@
 		<maven.war.plugin.version>2.4</maven.war.plugin.version>
 		<maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
 		<maven.zkm.version>12.0.0</maven.zkm.version>
-    <maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 
 		<!--<node.version>9.3.0</node.version> FreeNas -->
 		<!--<node.version>8.9.3</node.version> NOK -->
@@ -199,6 +203,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy</artifactId>
+				<version>${groovy.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
 				<artifactId>jersey-bom</artifactId>
 				<version>${jersey.bom.version}</version>
@@ -211,11 +220,6 @@
 				<version>${groovy.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.groovy</groupId>
-				<artifactId>groovy</artifactId>
-				<version>${groovy.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit</groupId>
@@ -231,7 +235,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-<!--
+			<!--
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-parent</artifactId>
@@ -319,12 +323,76 @@
 			<optional>true</optional>
 			<!-- needed only for annotations -->
 		</dependency>
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>${jaxb.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>${jaxb.impl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>${javax.activation.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<!--<version>${spring.boot.version}</version>-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- if a war
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.starter.web.version}</version>
+        </dependency>
+    -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<!--<version>${lombok.version}</version>
+		  <scope>provided</scope>-->
+			<optional>true</optional>
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.api.version}</version>
 			<scope>provided</scope>
 			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<!--<version>${prometheus.version}</version>-->
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- test dependencies -->
@@ -358,70 +426,6 @@
 			<artifactId>jmockit</artifactId>
 			<version>${jmockit.version}</version>
 			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>${jaxb.api.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>${jaxb.core.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>${jaxb.impl.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.activation</groupId>
-			<artifactId>activation</artifactId>
-			<version>${javax.activation.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-			<!--<version>${spring.boot.version}</version>-->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-			<!--<version>${prometheus.version}</version>-->
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- if a war
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.starter.web.version}</version>
-        </dependency>
-    -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<!--<version>${lombok.version}</version>
-		  <scope>provided</scope>-->
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -910,10 +914,12 @@
 							<version>[1.8,)</version>
 							<vendor>sun</vendor>
 						</jdk>
+						<!--
 						<jdk>
 							<version>[14,)</version>
-							<!--<vendor>sun</vendor>-->
+							<vendor>oracle</vendor>
 						</jdk>
+            -->
 					</toolchains>
 				</configuration>
 			</plugin>
@@ -1228,7 +1234,7 @@
 					</container>
 					<configuration>
 						<properties>
-<!--							<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
+							<!--							<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1863,8 +1869,8 @@
 			<id>jetty9x</id>
 			<activation>
 				<property>
-          <name>!profile.activation</name>
-<!--
+					<name>!profile.activation</name>
+					<!--
 					<name>server</name>
 					<value>jetty9x</value>
 					 -->
@@ -1900,20 +1906,6 @@
 				</dependency>
 				<dependency>
 					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-http</artifactId>
-					<version>${jetty.version}</version>
-					<type>jar</type>
-					<scope>runtime</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.eclipse.jetty</groupId>
-					<artifactId>jetty-rewrite</artifactId>
-					<version>${jetty.version}</version>
-					<type>jar</type>
-					<scope>runtime</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-server</artifactId>
 					<version>${jetty.version}</version>
 				</dependency>
@@ -1931,6 +1923,20 @@
 					<groupId>org.eclipse.jetty</groupId>
 					<artifactId>jetty-util</artifactId>
 					<version>${jetty.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-http</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-rewrite</artifactId>
+					<version>${jetty.version}</version>
+					<type>jar</type>
+					<scope>runtime</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.eclipse.jetty</groupId>
