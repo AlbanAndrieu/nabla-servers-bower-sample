@@ -65,6 +65,8 @@ Javascript project
 
 # Table of contents
 
+// spell-checker:disable
+
 <!-- toc -->
 
 - [A bower project sample.](#a-bower-project-sample)
@@ -108,6 +110,8 @@ Javascript project
   * [License](#license)
 
 <!-- tocstop -->
+
+// spell-checker:enable
 
 # A bower project sample.
 
