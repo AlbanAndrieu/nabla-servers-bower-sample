@@ -182,7 +182,7 @@
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
 		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>-->
-		<spring.boot.starter.parent.version>2.3.12.RELEASE</spring.boot.starter.parent.version>
+		<spring.boot.starter.parent.version>2.6.2</spring.boot.starter.parent.version>
 		<!--<spring.boot.admin.version>2.2.3</spring.boot.admin.version>-->
 		<spring.boot.starter.web.version>2.3.5.RELEASE</spring.boot.starter.web.version>
 
