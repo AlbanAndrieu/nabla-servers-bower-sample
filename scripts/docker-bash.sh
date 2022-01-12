@@ -5,7 +5,7 @@ shopt -s extglob
 #set -ueo pipefail
 set -eo pipefail
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/../step-0-color.sh"
@@ -22,12 +22,12 @@ export DOCKER_TAG=$2
 
 echo "DOCKER_TAG : $DOCKER_TAG"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC2154
 echo -e "${magenta} Using build image ${NC}"

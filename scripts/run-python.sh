@@ -6,7 +6,7 @@
 #    exit 1
 #fi
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # source only if terminal supports color, otherwise use unset color vars
 # shellcheck source=/dev/null
@@ -181,7 +181,7 @@ if [ -n "${PYTHON_CMD}" ]; then
     "${VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION}" list --format=freeze | grep docker || true
 
     echo -e "${magenta} ${VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION} freeze > requirements-${PYTHON_MAJOR_VERSION}.txt ${NC}"
-    "${VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION}" freeze > requirements-${PYTHON_MAJOR_VERSION}.txt
+    "${VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION}" freeze >requirements-${PYTHON_MAJOR_VERSION}.txt
   else
     echo -e "${red} Please install VIRTUALENV_PATH}/bin/pip${PYTHON_MAJOR_VERSION} first ${NC}"
   fi

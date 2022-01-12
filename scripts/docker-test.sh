@@ -5,7 +5,7 @@ shopt -s extglob
 #set -ueo pipefail
 set -eo pipefail
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/step-0-color.sh"
@@ -15,23 +15,23 @@ export DOCKER_NAME=$1
 echo "DOCKER_NAME : $DOCKER_NAME"
 
 if [[ $DOCKER_NAME == "" ]]; then
-    echo "Missing DOCKER_NAME"
-    #exit 1
+  echo "Missing DOCKER_NAME"
+  #exit 1
 fi
 
 export DOCKER_TAG=$2
 if [[ $DOCKER_TAG == "" ]]; then
-    echo "Missing DOCKER_TAG"
+  echo "Missing DOCKER_TAG"
 fi
 
 echo "DOCKER_TAG : $DOCKER_TAG"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck disable=SC2154
 echo -e "${magenta} Testing TEST runtime image ${NC}"

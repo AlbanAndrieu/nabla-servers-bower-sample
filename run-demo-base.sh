@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ -n "$DEBUG" ]] &&  set -x
+[[ -n "$DEBUG" ]] && set -x
 
 export JETTY_VERSION=9.3.3.v20150827
 

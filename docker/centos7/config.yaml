@@ -7,19 +7,19 @@ fileExistenceTests:
     permissions: "drwx------"
     uid: 1100
 
-#  - name: "sonar-build-wrapper"
-#    path: "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64"
-#    shouldExist: true
-#    permissions: "-rwxr-xr-x"
-#
-#  - name: "sonar-scanner"
-#    path: "/usr/local/sonar-runner/bin/sonar-scanner"
-#    shouldExist: true
-#    permissions: "-rwxr-xr-x"
+  #  - name: "sonar-build-wrapper"
+  #    path: "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64"
+  #    shouldExist: true
+  #    permissions: "-rwxr-xr-x"
+  #
+  #  - name: "sonar-scanner"
+  #    path: "/usr/local/sonar-runner/bin/sonar-scanner"
+  #    shouldExist: true
+  #    permissions: "-rwxr-xr-x"
 
-# Should not exist as it is a runtime image
-  - name: 'maven'
-    path: '/usr/bin/mvn'
+  # Should not exist as it is a runtime image
+  - name: "maven"
+    path: "/usr/bin/mvn"
     shouldExist: false
 
 commandTests:
@@ -34,7 +34,8 @@ commandTests:
   - name: "check PATH"
     command: "echo"
     args: ["${PATH}"]
-    expectedOutput: ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
+    expectedOutput:
+      ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
 
   #- name:  "yum update"
   #  command: "yum"
@@ -74,7 +75,9 @@ commandTests:
     command: "pip3"
     args: ["--version"]
     expectedOutput:
-      ["pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*"]
+      [
+        "pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*",
+      ]
 
   - name: "check docker 20.10.0"
     command: "docker"
@@ -92,8 +95,7 @@ metadataTest:
   #  exposedPorts: ["8080", "2345"]
   volumes: []
   #  volumes: ["/test"]
-  entrypoint:
-    [
+  entrypoint: [
       "java",
       "-Djava.security.egd=file:/dev/./urandom",
       # "-Djava.io.tmpdir=/tmp/jetty",

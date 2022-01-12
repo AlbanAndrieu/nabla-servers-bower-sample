@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -xv
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-compose-env.sh"
@@ -9,7 +9,7 @@ source "${WORKING_DIR}/docker-compose-env.sh"
 # shellcheck disable=SC2154
 echo -e "${green} Write logs in files ${NC}"
 rm -f "${DOCKER_TEST_TAG}_*.docker.log"
-for i in $(docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" "${DOCKER_COMPOSE_OPTIONS}" ps -q); do docker container logs --details "${i}" >& "./$(docker inspect --format="{{.Name}}" "${i}").docker.log"; done
+for i in $(docker-compose -f "${WORKING_DIR}/docker-compose.yml" -f "${WORKING_DIR}/${DOCKER_COMPOSE_FILE}" "${DOCKER_COMPOSE_OPTIONS}" ps -q); do docker container logs --details "${i}" >&"./$(docker inspect --format="{{.Name}}" "${i}").docker.log"; done
 
 if [ -n "${DEBUG_RUN}" ]; then
   echo -e "${green} docker-compose -f ${WORKING_DIR}/docker-compose.yml -f ${WORKING_DIR}/${DOCKER_COMPOSE_FILE} ${DOCKER_COMPOSE_OPTIONS} logs test ${NC}"

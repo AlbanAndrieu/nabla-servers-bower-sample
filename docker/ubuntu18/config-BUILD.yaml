@@ -15,15 +15,15 @@ commandTests:
     excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
     excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
 
-#  - name: "check chromium-browser 86.0"
-#    command: "chromium-browser"
-#    args: ["--version"]
-#    expectedOutput: ["Chromium 86.0..* Built on Ubuntu.*"]
-#
-#  - name: "check chromium 86.0"
-#    command: "chromium"
-#    args: ["--version"]
-#    expectedOutput: ["Chromium 86.0..*"]
+  #  - name: "check chromium-browser 86.0"
+  #    command: "chromium-browser"
+  #    args: ["--version"]
+  #    expectedOutput: ["Chromium 86.0..* Built on Ubuntu.*"]
+  #
+  #  - name: "check chromium 86.0"
+  #    command: "chromium"
+  #    args: ["--version"]
+  #    expectedOutput: ["Chromium 86.0..*"]
 
   - name: "check google-chrome 86.0"
     command: "google-chrome"
@@ -42,17 +42,17 @@ fileExistenceTests:
     permissions: "drwxrwxrwx"
     uid: 2000
 
-# - name: 'war file'
-#   path: '/opt/test.war'
-#   shouldExist: true
-#   permissions: '-rw-r--r--'
-#   uid: 2000
+  # - name: 'war file'
+  #   path: '/opt/test.war'
+  #   shouldExist: true
+  #   permissions: '-rw-r--r--'
+  #   uid: 2000
 
-#   /usr/share/maven/bin/mvn to provide /usr/bin/mvn
-  - name: 'maven'
-    path: '/usr/bin/mvn'
+  #   /usr/share/maven/bin/mvn to provide /usr/bin/mvn
+  - name: "maven"
+    path: "/usr/bin/mvn"
     shouldExist: true
-    permissions: 'Lrwxrwxrwx'
+    permissions: "Lrwxrwxrwx"
 
 metadataTest:
   #  exposedPorts: [22]

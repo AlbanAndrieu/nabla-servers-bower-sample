@@ -7,12 +7,12 @@ set -eu
 mkdir /mnt/data
 
 docker service create \
-    --name portainer \
-    --publish 9000:9000 \
-    --replicas=1 \
-    --constraint 'node.role == manager' \
-    --mount type=bind,src=//mnt/data,dst=/data \
-    portainer/portainer
+  --name portainer \
+  --publish 9000:9000 \
+  --replicas=1 \
+  --constraint 'node.role == manager' \
+  --mount type=bind,src=//mnt/data,dst=/data \
+  portainer/portainer
 
 #docker volume create portainer_data
 #docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/data:/data portainer/portainer

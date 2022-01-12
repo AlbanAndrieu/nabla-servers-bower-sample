@@ -1,4 +1,4 @@
-version: '2.3'
+version: "2.3"
 services:
   log:
     image: goharbor/harbor-log:v2.0.0-rc2
@@ -282,8 +282,7 @@ services:
       options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "clair"
-    env_file:
-      ./common/config/clair/clair_env
+    env_file: ./common/config/clair/clair_env
   clair-adapter:
     networks:
       - harbor-clair
@@ -306,8 +305,7 @@ services:
       options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "clair-adapter"
-    env_file:
-      ./common/config/clair-adapter/env
+    env_file: ./common/config/clair-adapter/env
   chartmuseum:
     container_name: chartmuseum
     image: goharbor/chartmuseum-photon:v2.0.0-rc2
@@ -332,8 +330,7 @@ services:
       options:
         syslog-address: "tcp://127.0.0.1:1514"
         tag: "chartmuseum"
-    env_file:
-      ./common/config/chartserver/env
+    env_file: ./common/config/chartserver/env
 networks:
   harbor:
     external: false

@@ -92,16 +92,16 @@ scrape_configs:
         target_label: jenkins_job
       - action: labeldrop
         regex: exported_job
-#  - job_name: 'freenas'
-#    static_configs:
-#         - targets: ['192.168.1.24:9103']
+  #  - job_name: 'freenas'
+  #    static_configs:
+  #         - targets: ['192.168.1.24:9103']
 
   - job_name: indexer
     metrics_path: "/metrics"
     static_configs:
-      - targets: ['indexer:8089']
+      - targets: ["indexer:8089"]
 
   - job_name: matcher
     metrics_path: "/metrics"
     static_configs:
-      - targets: ['matcher:8089']
+      - targets: ["matcher:8089"]

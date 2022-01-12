@@ -1,4 +1,3 @@
-
 schemaVersion: "2.0.0"
 
 globalEnvVars:
@@ -62,14 +61,14 @@ fileExistenceTests:
 
 metadataTest:
   env:
-#    - key: TZ
-#      value: 'Europe/Paris'
+    #    - key: TZ
+    #      value: 'Europe/Paris'
     - key: "PATH"
       value: "/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     - key: "JAVA_HOME"
       value: "/usr/local/openjdk-11"
-#    - key: "HOME"
-#      value: "/home/jenkins"
+  #    - key: "HOME"
+  #      value: "/home/jenkins"
   exposedPorts: [8080]
   volumes: []
 #  cmd: []

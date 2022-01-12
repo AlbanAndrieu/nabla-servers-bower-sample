@@ -4,6 +4,7 @@ package com.test.project.sample
  * A Class description
  */
 class Person {
+
     /** the name of the person */
     String name
 
@@ -14,10 +15,11 @@ class Person {
      * @return a greeting message
      */
     String greet(String otherPerson) {
-       "Hello ${otherPerson}"
+        "Hello ${otherPerson}"
     }
 
-	String name() {
-		"Hello ${name}"
-	 }
+    String name() {
+        "Hello ${name}"
+    }
+
 }

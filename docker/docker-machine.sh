@@ -21,13 +21,13 @@ sudo su
 nano /etc/docker/daemon.json
 
 {
-	"labels": ["perf=ssd"],
-    "debug": true,
-    "log-level": "debug",
-	"cluster-store": "consul://192.168.99.100:8500/network",
-	"cluster-advertise": "eth1:2376"
+  "labels": ["perf=ssd"],
+  "debug": true,
+  "log-level": "debug",
+  "cluster-store": "consul://192.168.99.100:8500/network",
+  "cluster-advertise": "eth1:2376"
 }
-	"hosts": ["tcp://0.0.0.0:2376", "unix:///var/run/docker.sock"],
+"hosts": ["tcp://0.0.0.0:2376", "unix:///var/run/docker.sock"],
 
 /etc/init.d/docker restart
 

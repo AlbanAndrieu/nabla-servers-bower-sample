@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -xv
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/../scripts/step-0-color.sh"
@@ -13,7 +13,7 @@ echo -e "${green} pip install docker-compose==1.25.3 ${NC}"
 
 source "${WORKING_DIR}/../scripts/docker-env.sh"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if [ -n "${COMPOSE_HTTP_TIMEOUT}" ]; then
   # shellcheck disable=SC2154

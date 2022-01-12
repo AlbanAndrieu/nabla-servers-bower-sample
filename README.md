@@ -84,8 +84,13 @@ Javascript project
   * [Installation](#installation)
   * [Build & development](#build--development)
     + [Docker image](#docker-image)
+      - [Pull image](#pull-image)
+      - [Start container](#start-container)
+      - [Maven](#maven)
+      - [Docker compose](#docker-compose)
   * [Documentation](#documentation)
   * [Fix imagemin upgrade](#fix-imagemin-upgrade)
+  * [List browser compatibility](#list-browser-compatibility)
   * [Testing](#testing)
   * [Livereload](#livereload)
   * [Proxy / Rewrite jetty](#proxy--rewrite-jetty)
@@ -113,7 +118,7 @@ Javascript project
 
 // spell-checker:enable
 
-# A bower project sample.
+# A bower project sample
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
@@ -177,11 +182,11 @@ yo angular translate
 
 ### TODO
 
-TODO use https://angular-ui.github.io/bootstrap/ for language
+TODO use <https://angular-ui.github.io/bootstrap/> for language
 TODO remvove app/styles/components/\_header.scss language-select
-TODO https://github.com/rackerlabs/angular-bootstrap-nav
-SEE https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js
-SEE https://github.com/angular-ui/angular-google-maps
+TODO <https://github.com/rackerlabs/angular-bootstrap-nav>
+SEE <https://github.com/dlukez/angular-bootstrap-select/blob/master/angular-bootstrap-select.js>
+SEE <https://github.com/angular-ui/angular-google-maps>
 
 ## Quality tools
 
@@ -354,14 +359,14 @@ Running `grunt test` will run the unit tests with karma.
 
 Run with grunt watch -v then manually edit a file listed in the watch.livereload.files array. Ensure that it is triggering the file by printing the file name to the console.
 
-Then from the browser end, ensure going to http://localhost:35730/ works and displays {"tinylr":"Welcome","version":"0.2.1"} letting you know the live reload server is running.
+Then from the browser end, ensure going to <http://localhost:35730/> works and displays {"tinylr":"Welcome","version":"0.2.1"} letting you know the live reload server is running.
 
-Be sure the http://localhost:35730/livereload.js script is being loaded and you see the network socket being established.
+Be sure the <http://localhost:35730/livereload.js> script is being loaded and you see the network socket being established.
 
 ## Proxy / Rewrite jetty
 
 Proxy can be used to get access to oter URL.
-In order to be activated it must be reached once : http://localhost:9090/login
+In order to be activated it must be reached once : <http://localhost:9090/login>
 
 Even though it is strongly advice to run this project behind an apache.
 Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order to install this project behind an apache.
@@ -440,11 +445,11 @@ curl http://albandrieu.com:4444/grid/console
 
 Check result at :
 
-curl http://albandrieu.com:4444/grid/console
+curl <http://albandrieu.com:4444/grid/console>
 
-http://albandrieu.com:4444/grid/console
+<http://albandrieu.com:4444/grid/console>
 
-http://192.168.0.29:5555/wd/hub/static/resource/hub.html
+<http://192.168.0.29:5555/wd/hub/static/resource/hub.html>
 
 Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium) in order to install selenium hub and node
 
@@ -520,7 +525,7 @@ Alias /fonts "/var/www/sample/fonts"
 
 ## Performance improvements
 
-What has been done is described at https://www.youtube.com/watch?v=FEs2jgZBaQA
+What has been done is described at <https://www.youtube.com/watch?v=FEs2jgZBaQA>
 
 ## Issues
 
@@ -571,7 +576,7 @@ WARNING : Javascript is not yet well supported in Eclipse
 Project | Import as project "app"
 Project Properties | JavasScript | Include Paths | Source | Add folders "script" "bower_components"
 
-Based on the following sample : https://github.com/oasp/oasp4js
+Based on the following sample : <https://github.com/oasp/oasp4js>
 
 Project | Configure | Convert to AngularJS Project…
 Project Properties | Resource | Link Resources | ../bower_components
@@ -583,20 +588,20 @@ WARNING : Do not forget the / in order to be considered as a folder in bower_com
 Project Properties | Validation | Project specific settings | Web Resources Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined JavaScript file" in bower_components/
 Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
 
-See https://github.com/oasp/oasp4js/issues/24 for more details
+See <https://github.com/oasp/oasp4js/issues/24> for more details
 
 Update README.md Table of Contents
 -----------------------------------
 
 
-  * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
-  * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
+* [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
+* With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
 
 `
 npm install --save markdown-toc
 `
 
-  * [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
+* [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
 `
 brew install github-markdown-toc
@@ -606,7 +611,7 @@ gh-md-toc --insert README.md
 ## Other resources
 
 Yo generator :
-https://github.com/peterhendrick/openSource
+<https://github.com/peterhendrick/openSource>
 
 Thanks for reading!
 

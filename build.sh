@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/scripts/step-0-color.sh"
@@ -33,7 +33,7 @@ echo -e "${magenta} ./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:
 #brew install hadolint
 hadolint Dockerfile || true
 
-npm list > list.log || true
+npm list >list.log || true
 #npm shrinkwrap
 
 #sudo npm install -g npm-license

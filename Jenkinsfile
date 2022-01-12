@@ -1,27 +1,27 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 
-String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "registry.hub.docker.com".toLowerCase().trim() // registry.hub.docker.com
-String DOCKER_ORGANISATION_HUB="nabla".trim()
-String DOCKER_IMAGE_TAG=env.DOCKER_IMAGE_TAG ?: "latest".trim()
+String DOCKER_REGISTRY_HUB = env.DOCKER_REGISTRY_HUB ?: 'registry.hub.docker.com'.toLowerCase().trim() // registry.hub.docker.com
+String DOCKER_ORGANISATION_HUB = 'nabla'.trim()
+String DOCKER_IMAGE_TAG = env.DOCKER_IMAGE_TAG ?: 'latest'.trim()
 //String DOCKER_USERNAME="nabla"
-String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
+String DOCKER_NAME = 'ansible-jenkins-slave-docker'.trim()
 
-String DOCKER_REGISTRY_HUB_URL=env.DOCKER_REGISTRY_HUB_URL ?: "https://${DOCKER_REGISTRY_HUB}".trim()
-String DOCKER_REGISTRY_HUB_CREDENTIAL=env.DOCKER_REGISTRY_HUB_CREDENTIAL ?: "hub-docker-nabla".trim()
-String DOCKER_IMAGE="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME}:${DOCKER_IMAGE_TAG}".trim()
+String DOCKER_REGISTRY_HUB_URL = env.DOCKER_REGISTRY_HUB_URL ?: "https://${DOCKER_REGISTRY_HUB}".trim()
+String DOCKER_REGISTRY_HUB_CREDENTIAL = env.DOCKER_REGISTRY_HUB_CREDENTIAL ?: 'hub-docker-nabla'.trim()
+String DOCKER_IMAGE = "${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME}:${DOCKER_IMAGE_TAG}".trim()
 
 String DOCKER_OPTS_BASIC = getDockerOpts()
 String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
 
-String DOCKER_NAME_BUILD="ansible-jenkins-slave-test".trim()
-String DOCKER_BUILD_TAG=dockerTag().trim()
-String DOCKER_BUILD_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
-String DOCKER_RUNTIME_TAG="latest".trim()
-String DOCKER_RUNTIME_NAME="nabla-servers-bower-sample-test".trim()
-String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
+String DOCKER_NAME_BUILD = 'ansible-jenkins-slave-test'.trim()
+String DOCKER_BUILD_TAG = dockerTag().trim()
+String DOCKER_BUILD_IMG = "${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME_BUILD}:${DOCKER_BUILD_TAG}".trim()
+String DOCKER_RUNTIME_TAG = 'latest'.trim()
+String DOCKER_RUNTIME_NAME = 'nabla-servers-bower-sample-test'.trim()
+String DOCKER_RUNTIME_IMG = "${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
 
-String RELEASE_VERSION=""
+String RELEASE_VERSION = ''
 //String GIT_COMMIT_REV=""
 
 String ARTIFACTS = ['*_VERSION.TXT',
@@ -65,9 +65,9 @@ pipeline {
         booleanParam(defaultValue: false, description: 'Clean before run', name: 'CLEAN_RUN')
         booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
         booleanParam(defaultValue: false, description: 'Debug mvnw', name: 'MVNW_VERBOSE')
-        booleanParam(defaultValue: false, name: "RELEASE", description: "Perform release-type build.")
-        string(defaultValue: "", name: "RELEASE_BASE", description: "Commit tag or branch that should be checked-out for release", trim: true)
-        string(defaultValue: "", name: "RELEASE_VERSION", description: "Release version for artifacts", trim: true)
+        booleanParam(defaultValue: false, name: 'RELEASE', description: 'Perform release-type build.')
+        string(defaultValue: '', name: 'RELEASE_BASE', description: 'Commit tag or branch that should be checked-out for release', trim: true)
+        string(defaultValue: '', name: 'RELEASE_VERSION', description: 'Release version for artifacts', trim: true)
     }
     environment {
         GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}".trim()
@@ -81,7 +81,7 @@ pipeline {
         BUILD_ID = "${env.BUILD_ID}"
         SERVER_URL = "${params.SERVER_URL}"
         SERVER_CONTEXT = "${params.SERVER_CONTEXT}"
-        GIT_PROJECT = "nabla"
+        GIT_PROJECT = 'nabla'
         GIT_BROWSE_URL = "https://github.com/AlbanAndrieu/${GIT_PROJECT}/"
         GIT_URL = "ssh://git@github.com/AlbanAndrieu/${GIT_PROJECT}.git"
         DOCKER_TAG = dockerTag()
@@ -113,10 +113,9 @@ pipeline {
                     }
                     steps {
                         script {
-
                             if (env.CLEAN_RUN == true) {
-                              cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
-                              //cleanStash()
+                                cleanWs(isEmailEnabled: false, disableDeferredWipeout: true, deleteDirs: true)
+                            //cleanStash()
                             }
 
                             properties(createPropertyList())
@@ -129,13 +128,13 @@ pipeline {
                                 //getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
 
                                 if (env.DEBUG_RUN) {
-sh '''
+                                sh '''
 set -e && id && cat /etc/hostname
 
 exit 0
 '''
 
-sh '''
+                                sh '''
 set -e
 #set -xve
 
@@ -184,10 +183,10 @@ echo "ZAPROXY_HOME : ${ZAPROXY_HOME}"
 exit 0
 '''
 
-                                  sh "#!/bin/bash \n" +
-                                    "whoami \n" +
-                                    "source ./scripts/run-python.sh\n" +
-                                    "pre-commit run -a || true\n" +
+                                sh '#!/bin/bash \n' +
+                                    'whoami \n' +
+                                    'source ./scripts/run-python.sh\n' +
+                                    'pre-commit run -a || true\n' +
                                     "kubectl --kubeconfig ${params.CONFIG_DIR}/kube.config cluster-info || true\n"
                                 } // if
                             //} // gitCheckoutTEST
@@ -195,36 +194,35 @@ exit 0
                             echo "DOCKER_OPTS_COMPOSE: ${DOCKER_OPTS_COMPOSE}"
                             echo "DOCKER_OPTS_BASIC: ${DOCKER_OPTS_BASIC}"
 
-                            RELEASE_VERSION = getSemVerReleasedVersion() ?: "LATEST"
+                            RELEASE_VERSION = getSemVerReleasedVersion() ?: 'LATEST'
 
                             echo "RELEASE_VERSION: ${RELEASE_VERSION} - ${env.RELEASE_VERSION}"
 
                             setBuildName("Test project ${RELEASE_VERSION}")
                             //createVersionTextFile("Sample", "TEST_VERSION.TXT")
-                            createManifest(description: "Sample", filename: "TEST_VERSION.TXT")
+                            createManifest(description: 'Sample', filename: 'TEST_VERSION.TXT')
 
                             echo "GIT_COMMIT_SHORT: ${env.GIT_COMMIT_SHORT}"
 
                             //printEnvironment()
                             def fields = env.getEnvironment()
                             fields.each {
-                                 key, value -> println("${key} = ${value}");
-                             }
+                                 key, value -> println("${key} = ${value}")
+                            }
 
                             println(env.PATH)
 
-                            sh "printenv | sort"
+                            sh 'printenv | sort'
 
-                            //stash excludes: '**/target/, **/.bower/, **/.tmp/, **/.git, **/.repository/, **/.mvn/, **/bower_components/, **/node/, **/node_modules/, **/npm/, **/coverage/, **/build/, docs/, hooks/, ansible/, screenshots/', includes: '**', name: 'sources'
-                            //stash includes: "**/.git/**/*", useDefaultExcludes: false , name: 'git'
-                            //stash includes: "**/.mvn/", name: 'sources-tools'
-
+                        //stash excludes: '**/target/, **/.bower/, **/.tmp/, **/.git, **/.repository/, **/.mvn/, **/bower_components/, **/node/, **/node_modules/, **/npm/, **/coverage/, **/build/, docs/, hooks/, ansible/, screenshots/', includes: '**', name: 'sources'
+                        //stash includes: "**/.git/**/*", useDefaultExcludes: false , name: 'git'
+                        //stash includes: "**/.mvn/", name: 'sources-tools'
                         } // script
                     } // steps
                     post {
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>1-1 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>1-1 &#2690;</h2>', false)
                             } //script
                         } // success
                     } // post
@@ -242,40 +240,36 @@ exit 0
                         }
                     }
                     environment {
-                        CST_CONFIG = "docker/ubuntu18/config-BUILD.yaml"
+                        CST_CONFIG = 'docker/ubuntu18/config-BUILD.yaml'
                     }
                     when {
                         expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
                     }
                     steps {
                         script {
-
                             //checkout scm
 
-                            tee("docker-build.log") {
-
+                            tee('docker-build.log') {
                                 sh 'id jenkins'
                                 sh 'ls -lrta /var/run/docker.sock'
 
                                 // this give the registry
                                 // sh(returnStdout: true, script: "echo ${DOCKER_BUILD_IMG} | cut -d'/' -f -1").trim()
-                                DOCKER_BUILD_ARGS = ["--build-arg JENKINS_USER_HOME=/home/jenkins --build-arg=MICROSCANNER_TOKEN=NzdhNTQ2ZGZmYmEz"].join(" ")
+                                DOCKER_BUILD_ARGS = ['--build-arg JENKINS_USER_HOME=/home/jenkins --build-arg=MICROSCANNER_TOKEN=NzdhNTQ2ZGZmYmEz'].join(' ')
                                 if (env.CLEAN_RUN) {
-                                    DOCKER_BUILD_ARGS = ["--no-cache",
-                                                         "--pull",
-                                                         ].join(" ")
+                                    DOCKER_BUILD_ARGS = ['--no-cache',
+                                                         '--pull',
+                                                         ].join(' ')
                                 }
                                 DOCKER_BUILD_ARGS = [ "${DOCKER_BUILD_ARGS}",
-                                                      "--target BUILD",
+                                                      '--target BUILD',
                                                       "--label 'version=1.0.0'",
-                                                    ].join(" ")
-
+                                                    ].join(' ')
 
                                 echo "DOCKER_REGISTRY_HUB_URL : ${DOCKER_REGISTRY_HUB_URL} "
                                 echo "DOCKER_REGISTRY_HUB_CREDENTIAL : ${DOCKER_REGISTRY_HUB_CREDENTIAL} "
 
                                 docker.withRegistry(DOCKER_REGISTRY_HUB_URL, DOCKER_REGISTRY_HUB_CREDENTIAL) {
-
                                     //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.hub.docker.com'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
 
                                     def container = docker.build("${DOCKER_BUILD_IMG}", "${DOCKER_BUILD_ARGS} . ")
@@ -303,41 +297,39 @@ exit 0
 
                                     echo "CONTAINER STRUCTURE TEST RETURN CODE : ${cst}"
                                     if (cst == 0) {
-                                        echo "CONTAINER STRUCTURE TEST SUCCESS"
+                                        echo 'CONTAINER STRUCTURE TEST SUCCESS'
                                     } else {
-                                        echo "CONTAINER STRUCTURE TEST FAILURE"
+                                        echo 'CONTAINER STRUCTURE TEST FAILURE'
                                         currentBuild.result = 'UNSTABLE'
                                     }
 
-                                    dockerComposeLogs(dockerFilePath: "docker-compose/")
+                                    dockerComposeLogs(dockerFilePath: 'docker-compose/')
 
                                     archiveArtifacts artifacts: 'scripts/microscanner-wrapper/aqua-grab.html', excludes: null, fingerprint: false, onlyIfSuccessful: false, allowEmptyArchive: true
 
                                     echo "DRY_RUN : ${env.DRY_RUN}"
 
                                     if (!env.DRY_RUN.toBoolean() && isReleaseBranch()) {
-                                        echo "Push the container to the custom Registry"
+                                        echo 'Push the container to the custom Registry'
                                         //customImage.push()
                                         container.push('latest')
                                     }
                                 } // withRegistry
 
-                                //dockerFingerprintFrom dockerfile: 'docker/ubuntu16/Dockerfile', image: "${DOCKER_BUILD_IMG}"
-
+                            //dockerFingerprintFrom dockerfile: 'docker/ubuntu16/Dockerfile', image: "${DOCKER_BUILD_IMG}"
                             } // tee
-
                         } // script
                     } // steps
                     post {
                         always {
                             script {
-                                 archiveArtifacts artifacts: '*.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
-                                 //junit testResults: 'target/ansible-lint.xml', healthScaleFactor: 2.0, allowEmptyResults: true, keepLongStdio: true
+                                archiveArtifacts artifacts: '*.log', excludes: null, fingerprint: false, onlyIfSuccessful: false
+                            //junit testResults: 'target/ansible-lint.xml', healthScaleFactor: 2.0, allowEmptyResults: true, keepLongStdio: true
                             } //script
                         }
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>1-2 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>1-2 &#2690;</h2>', false)
                             } //script
                         } // success
                     } // post
@@ -358,8 +350,8 @@ exit 0
                 }
             }
             environment {
-                BRANCH_JIRA = "${BRANCH_NAME}".replaceAll("feature/","")
-                PROJECT_BRANCH = "${GIT_BRANCH}".replaceFirst("origin/","")
+                BRANCH_JIRA = "${BRANCH_NAME}".replaceAll('feature/', '')
+                PROJECT_BRANCH = "${GIT_BRANCH}".replaceFirst('origin/', '')
             }
             steps {
                 script {
@@ -380,13 +372,13 @@ exit 0
                         echo "RELEASE : ${env.RELEASE} - ${env.RELEASE}.toBoolean()"
                         //echo "RELEASE_VERSION : ${env.RELEASE_VERSION}"
                         echo "SONAR_USER_HOME : ${env.SONAR_USER_HOME}"
-                    //}
+                //}
                 } // script
             } // steps
             post {
                 success {
                     script {
-                        manager.createSummary("completed.gif").appendText("<h2>* &#2690;</h2>", false)
+                        manager.createSummary('completed.gif').appendText('<h2>* &#2690;</h2>', false)
                     } //script
                 } // success
             } // post
@@ -407,26 +399,25 @@ exit 0
                         }
                     }
                     environment {
-                        SCONS = "/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64 --out-dir bw-outputs scons"
-                        SCONS_OPTS = ""
-                        SONAR_SCANNER_OPTS = "-Xmx1g"
+                        SCONS = '/usr/local/sonar-build-wrapper/build-wrapper-linux-x86-64 --out-dir bw-outputs scons'
+                        SCONS_OPTS = ''
+                        SONAR_SCANNER_OPTS = '-Xmx1g'
                         SONAR_USER_HOME = "$WORKSPACE"
                     }
                     stages {
                         stage('\u27A1 Build - Maven - Release') {
                             when {
-                                  expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
+                                expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
                             }
                             steps {
                                 script {
-
                                     //checkout scm
 
                                     if (env.CLEAN_RUN) {
                                         sh "$WORKSPACE/clean.sh"
                                     }
 
-                                    withMavenWrapper(profile: "jacoco", // signing
+                                    withMavenWrapper(profile: 'jacoco', // signing
                                         skipObfuscation: false,
                                         skipIntegration: false,
                                         skipSonar: true,
@@ -437,20 +428,18 @@ exit 0
                                         skipSonarCheck: true,
                                         skipResults: true,
                                         skipArtifacts: true,
-                                        buildCmdParameters: " checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
-                                        mavenHome: "/home/jenkins/.m2/",
-                                        shellOutputFile: "maven-release.log",
-                                        artifacts: "**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip") {
-
+                                        buildCmdParameters: ' checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml',
+                                        mavenHome: '/home/jenkins/.m2/',
+                                        shellOutputFile: 'maven-release.log',
+                                        artifacts: '**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip') {
                                         sh 'echo "JAVA_HOME: ${JAVA_HOME} - PATH: ${PATH}"'
-                                        sh "java -version || true"
+                                        sh 'java -version || true'
                                         //sh "export PATH=$MVN_CMD_DIR:/bin:$PATH"
 
                                         //archiveArtifacts artifacts: "ZKM_log.txt, ChangeLog.txt", onlyIfSuccessful: false, allowEmptyArchive: false
+                                        }
 
-                                    }
-
-                                    withShellCheckWrapper(pattern: "*.sh", skipShellCheckFailure: true)
+                                    withShellCheckWrapper(pattern: '*.sh', skipShellCheckFailure: true)
 
                                     step([
                                         $class: 'CoberturaPublisher',
@@ -478,7 +467,7 @@ exit 0
                                     //taskScanner()
                                     recordIssues enabledForFailure: true,
                                                  aggregatingResults: true,
-                                                 id: "analysis-java",
+                                                 id: 'analysis-java',
                                                  tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc(),
                                                          spotBugs(),
                                                  ],
@@ -486,26 +475,24 @@ exit 0
                                                            excludeFile('node_modules\\/.*'),
                                                            excludeFile('npm\\/.*'),
                                                            excludeFile('bower_components\\/.*')]
-                                    //sonarQube()
-
+                                //sonarQube()
                                 } // script
                             } // steps
                         } // stage Maven
                         stage('\u27A1 Build - Maven') {
                             when {
-                                  expression { BRANCH_NAME ==~ /PR-.*|feature\/.*|bugfix\/.*/ }
+                                expression { BRANCH_NAME ==~ /PR-.*|feature\/.*|bugfix\/.*/ }
                             }
                             steps {
                                 script {
-
                                     //checkout scm
 
                                     if (env.CLEAN_RUN) {
                                         sh "${WORKSPACE}/clean.sh"
                                     }
 
-                                    withMavenWrapper(goal: "install",
-                                        profile: "jacoco",
+                                    withMavenWrapper(goal: 'install',
+                                        profile: 'jacoco',
                                         skipObfuscation: false,
                                         skipIntegration: false,
                                         skipSonar: false,
@@ -515,14 +502,13 @@ exit 0
                                         skipResults: true,
                                         skipArtifacts: true,
                                         skipMavenSettings: false,
-                                        mavenHome: "/home/jenkins/.m2/",
-                                        shellOutputFile: "maven-build.log",
-                                        buildCmdParameters: " checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
-                                        artifacts: "**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip") {
+                                        mavenHome: '/home/jenkins/.m2/',
+                                        shellOutputFile: 'maven-build.log',
+                                        buildCmdParameters: ' checkstyle:checkstyle pmd:pmd pmd:cpd findbugs:findbugs spotbugs:spotbugs -Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml',
+                                        artifacts: '**/target/dependency/jetty-runner.jar, **/target/test-config.jar, **/target/test.war, **/target/*.zip') {
+                                        }
 
-                                    }
-
-                                    withShellCheckWrapper(pattern: "*.sh")
+                                    withShellCheckWrapper(pattern: '*.sh')
 
                                     step([
                                         $class: 'CoberturaPublisher',
@@ -554,7 +540,7 @@ exit 0
                                     //taskScanner()
                                     recordIssues enabledForFailure: true,
                                                  aggregatingResults: true,
-                                                 id: "analysis-java",
+                                                 id: 'analysis-java',
                                                  tools: [mavenConsole(), java(reportEncoding: 'UTF-8'), javaDoc(),
                                                          spotBugs(),
                                                  ],
@@ -562,76 +548,75 @@ exit 0
                                                            excludeFile('node_modules\\/.*'),
                                                            excludeFile('npm\\/.*'),
                                                            excludeFile('bower_components\\/.*')]
-                                    //sonarQube()
-
+                                //sonarQube()
                                 } // script
                             } // steps
                         } // stage Maven
-//                      stage('\u27A1 Build - Scons') {
-//                          steps {
-//                              script {
-//
-//                                  //gitCheckoutTEST()
-//
-//                                  dir ("test/") {
-//                                      script {
-//                                          unstash 'maven-artifacts'
-//
-//                                          dir ("todo/") {
-//
-//                                              try {
-//
-//                                                  if (env.CLEAN_RUN) {
-//                                                      env.SCONS_OPTS += "--cache-disable"
-//                                                      //sh "rm -f .sconsign.dblite"
-//                                                  }
-//
-//                                                  env.SCONS_OPTS = "gcc_version=4.8.5 color=False"
-//                                                  if (env.DEBUG_RUN == true) {
-//                                                    env.SCONS_OPTS += " verbose=True opt=False"
-//                                                  } else {
-//                                                    env.SCONS_OPTS += " -j32 opt=True"
-//                                                  }
-//
-//                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
-//
-//                                                  getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
-//
-//                                                  ansiColor('xterm') {
-//sh '''
-//#set -e
-//set -xv
-//
-//echo "${SCONS} ${SCONS_OPTS}"
-//echo "GIT_REVISION: ${GIT_REVISION}"
-//
-//./step-2-2-build.sh
-//
-//exit 0
-//'''
-//                                                  } //ansiColor
-//
-//                                                  stash includes: "${ARTIFACTS}", name: 'scons-artifacts'
-//                                                  stash includes: "bw-outputs/*", name: 'bw-outputs'
-//
-//                                              } catch (e) {
-//                                                  step([$class: 'ClaimPublisher'])
-//                                                  throw e
-//                                              }
-//
-//                                          } // dir
-//
-//                                      } // script
-//                                  } // dir
-//                              } // script
-//                          } // steps
-//                      } // stage Scons
+                        //                      stage('\u27A1 Build - Scons') {
+                        //                          steps {
+                        //                              script {
+                        //
+                        //                                  //gitCheckoutTEST()
+                        //
+                        //                                  dir ("test/") {
+                        //                                      script {
+                        //                                          unstash 'maven-artifacts'
+                        //
+                        //                                          dir ("todo/") {
+                        //
+                        //                                              try {
+                        //
+                        //                                                  if (env.CLEAN_RUN) {
+                        //                                                      env.SCONS_OPTS += "--cache-disable"
+                        //                                                      //sh "rm -f .sconsign.dblite"
+                        //                                                  }
+                        //
+                        //                                                  env.SCONS_OPTS = "gcc_version=4.8.5 color=False"
+                        //                                                  if (env.DEBUG_RUN == true) {
+                        //                                                    env.SCONS_OPTS += " verbose=True opt=False"
+                        //                                                  } else {
+                        //                                                    env.SCONS_OPTS += " -j32 opt=True"
+                        //                                                  }
+                        //
+                        //                                                  echo "Scons OPTS have been specified: ${env.SCONS_OPTS}"
+                        //
+                        //                                                  getEnvironementData(filePath: "./bm/env/scripts/jenkins/step-2-0-0-build-env.sh", DEBUG_RUN: env.DEBUG_RUN)
+                        //
+                        //                                                  ansiColor('xterm') {
+                        //sh '''
+                        //#set -e
+                        //set -xv
+                        //
+                        //echo "${SCONS} ${SCONS_OPTS}"
+                        //echo "GIT_REVISION: ${GIT_REVISION}"
+                        //
+                        //./step-2-2-build.sh
+                        //
+                        //exit 0
+                        //'''
+                        //                                                  } //ansiColor
+                        //
+                        //                                                  stash includes: "${ARTIFACTS}", name: 'scons-artifacts'
+                        //                                                  stash includes: "bw-outputs/*", name: 'bw-outputs'
+                        //
+                        //                                              } catch (e) {
+                        //                                                  step([$class: 'ClaimPublisher'])
+                        //                                                  throw e
+                        //                                              }
+                        //
+                        //                                          } // dir
+                        //
+                        //                                      } // script
+                        //                                  } // dir
+                        //                              } // script
+                        //                          } // steps
+                        //                      } // stage Scons
                         stage('\u2795 Quality - SonarQube analysis') {
                             //when {
                             //    expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
                             //}
                             environment {
-                                SONAR_SCANNER_OPTS = "-Xmx1g"
+                                SONAR_SCANNER_OPTS = '-Xmx1g'
                                 SONAR_USER_HOME = "$WORKSPACE"
                             }
                             steps {
@@ -642,17 +627,17 @@ exit 0
                                         skipMaven: false,
                                         skipFailure: false,
                                         skipSonarCheck: true,
-                                        reportTaskFile: ".scannerwork/report-task.txt",
+                                        reportTaskFile: '.scannerwork/report-task.txt',
                                         isScannerHome: false,
-                                        sonarExecutable: "/usr/local/sonar-runner/bin/sonar-scanner",
-                                        project: "NABLA",
-                                        repository: "nabla-servers-bower-sample")
+                                        sonarExecutable: '/usr/local/sonar-runner/bin/sonar-scanner',
+                                        project: 'NABLA',
+                                        repository: 'nabla-servers-bower-sample')
                                 }
                             } // steps
                             post {
                                 success {
                                     script {
-                                        manager.createSummary("completed.gif").appendText("<h2>3-1 &#2690;</h2>", false)
+                                        manager.createSummary('completed.gif').appendText('<h2>3-1 &#2690;</h2>', false)
                                     } //script
                                 } // success
                             } // post
@@ -664,22 +649,20 @@ exit 0
                             //}
                             steps {
                                 script {
-
-                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_RUNTIME_NAME: DOCKER_RUNTIME_NAME, dockerFilePath: "./docker/centos7/", dockerTargetPath: "./", skipMaven: false)
+                                    env.DOCKER_RUNTIME_TAG = dockerBuildTESTRuntime(DOCKER_RUNTIME_NAME: DOCKER_RUNTIME_NAME, dockerFilePath: './docker/centos7/', dockerTargetPath: './', skipMaven: false)
                                     // Same as ./scripts/docker-build-runtime.sh
                                     // with result ./scripts/microscanner-wrapper/aqua-grab.html
 
                                     echo "DOCKER_RUNTIME_NAME - DOCKER_RUNTIME_TAG: ${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}"
 
-                                    withCSTWrapper(imageName: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: "docker/centos7/config.yaml")
-                                    withAquaWrapper(imageName: "", localImage: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: "local", registry: "${DOCKER_REGISTRY_HUB}", skipAquaFailure: true)
-
+                                    withCSTWrapper(imageName: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", configFile: 'docker/centos7/config.yaml')
+                                    withAquaWrapper(imageName: '', localImage: "${DOCKER_REGISTRY_HUB}/${DOCKER_ORGANISATION_HUB}/${DOCKER_RUNTIME_NAME}:${env.DOCKER_RUNTIME_TAG}", imageTag: "${env.DOCKER_RUNTIME_TAG}", locationType: 'local', registry: "${DOCKER_REGISTRY_HUB}", skipAquaFailure: true)
                                 } // script
                             } // steps
                             post {
                                 success {
                                     script {
-                                        manager.createSummary("completed.gif").appendText("<h2>3-2 &#2690;</h2>", false)
+                                        manager.createSummary('completed.gif').appendText('<h2>3-2 &#2690;</h2>', false)
                                     } //script
                                 } // success
                             } // post
@@ -688,45 +671,44 @@ exit 0
                         stage('\u2779 Automated Acceptance Testing') {
                             when {
                                 expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
-                                //expression { BRANCH_NAME ==~ /(none)/ }
+                            //expression { BRANCH_NAME ==~ /(none)/ }
                             }
                             environment {
-                                DOCKER_TEST_TAG=dockerTag("${env.BRANCH_NAME}", "${env.GIT_COMMIT}")
-                                DOCKER_COMPOSE_FILE="docker-compose.prod.yml"
-                                DOCKER_COMPOSE_UP_OPTIONS="--detach web "
-                                TEST_RESULTS_PATH="/tmp/result/test-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
-                                dockerResultPath="/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
-                                ADDITIONAL_ROBOT_OPTS="-s PipelineTests.TEST"
+                                DOCKER_TEST_TAG = dockerTag("${env.BRANCH_NAME}", "${env.GIT_COMMIT}")
+                                DOCKER_COMPOSE_FILE = 'docker-compose.prod.yml'
+                                DOCKER_COMPOSE_UP_OPTIONS = '--detach web '
+                                TEST_RESULTS_PATH = "/tmp/result/test-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+                                dockerResultPath = "/tmp/robot-${env.GIT_COMMIT}-${env.BUILD_NUMBER}"
+                                ADDITIONAL_ROBOT_OPTS = '-s PipelineTests.TEST'
                             }
                             steps {
                                 script {
                                     if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                         try {
-
                                             //checkout scm
                                             echo "DOCKER_TEST_TAG : ${DOCKER_TEST_TAG}"
 
-                                            sh "less ~/.docker/config.json || true"
-                                            sh "rm ~/.docker/config.json || true"
+                                            sh 'less ~/.docker/config.json || true'
+                                            sh 'rm ~/.docker/config.json || true'
 
-                                            sh "cp /usr/bin/docker-credential-pass ~/ || true"
+                                            sh 'cp /usr/bin/docker-credential-pass ~/ || true'
 
                                             if (env.CLEAN_RUN) {
-                                                sh "./docker-compose/docker-compose-down.sh"
+                                                sh './docker-compose/docker-compose-down.sh'
                                             }
 
                                             if (!env.DRY_RUN.toBoolean()) {
-                                                def up = sh script: "./docker-compose/docker-compose-up.sh", returnStatus: true
+                                                def up = sh script: './docker-compose/docker-compose-up.sh', returnStatus: true
                                                 echo "UP : ${up}"
                                                 if (up == 0) {
-                                                    echo "TEST SUCCESS"
-                                                    //dockerCheckHealth("${DOCKER_TEST_CONTAINER}","healthy")
+                                                    echo 'TEST SUCCESS'
+                                                //dockerCheckHealth("${DOCKER_TEST_CONTAINER}","healthy")
                                                 } else if (up == 1) {
-                                                    echo "TEST FAILURE"
+                                                    echo 'TEST FAILURE'
                                                     currentBuild.result = 'FAILURE'
-                                                    error "Test failed"
+                                                    error 'Test failed'
                                                 } else {
-                                                    echo "TEST UNSTABLE"
+                                                    echo 'TEST UNSTABLE'
                                                     currentBuild.result = 'UNSTABLE'
                                                 }
                                             }
@@ -736,16 +718,16 @@ exit 0
                                                     /* Wait until mysql service is up */
                                                     sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
                                                 }
-                                                //docker.image('centos:7').inside("--link ${c.id}:db") {
-                                                //    /*
-                                                //     * Run some tests which require MySQL, and assume that it is
-                                                //     * available on the host name `db`
-                                                //     */
-                                                //    sh 'make check'
-                                                //}
-                                                //docker.image('tomcat:8').withRun('-v $TESTDIR:/usr/local/tomcat/webapps/test').inside("--link ${c.id}:db") {
-                                                //    sh 'echo test'
-                                                //}
+                                            //docker.image('centos:7').inside("--link ${c.id}:db") {
+                                            //    /*
+                                            //     * Run some tests which require MySQL, and assume that it is
+                                            //     * available on the host name `db`
+                                            //     */
+                                            //    sh 'make check'
+                                            //}
+                                            //docker.image('tomcat:8').withRun('-v $TESTDIR:/usr/local/tomcat/webapps/test').inside("--link ${c.id}:db") {
+                                            //    sh 'echo test'
+                                            //}
                                             }
 
                                             // --memory 1024m --cpus="1.5"
@@ -763,55 +745,49 @@ exit 0
                                             //unstash 'maven-artifacts'
 
                                             getContainerResults(DOCKER_TEST_CONTAINER: "${DOCKER_TEST_TAG}_web_1") {
-
                                                 publishHTML([allowMissing: true,
                                                     alwaysLinkToLastBuild: false,
                                                     keepAll: true,
-                                                    reportDir: "result/latestResult/",
+                                                    reportDir: 'result/latestResult/',
                                                     //reportDir: "result/",
                                                     reportFiles: 'index.html',
                                                     reportName: 'Test Report',
                                                     reportTitles: 'TEST index'])
-
                                             } // getContainerResults
-
-                                        } catch(exc) {
-                                            echo 'Error: There were errors in tests. '+exc.toString()
+                                        } catch (exc) {
+                                            echo 'Error: There were errors in tests. ' + exc
                                             currentBuild.result = 'FAILURE'
                                             error 'There are errors in tests'
                                         } finally {
                                             try {
-                                                dockerComposeLogs(dockerFilePath: "docker-compose/")
+                                                dockerComposeLogs(dockerFilePath: 'docker-compose/')
                                             }
-                                            catch(exc) {
-                                                echo 'Warn: There was a problem taking down the docker-compose network. '+exc.toString()
+                                            catch (exc) {
+                                                echo 'Warn: There was a problem taking down the docker-compose network. ' + exc
                                             } finally {
-                                                sh "./docker-compose/docker-compose-down.sh"
+                                                sh './docker-compose/docker-compose-down.sh'
                                             }
                                         }
-
                                     } // if DRY_RUN
                                 } // script
                             } // steps
                             post {
                                 success {
                                     script {
-                                        manager.createSummary("completed.gif").appendText("<h2>4-1 &#2690;</h2>", false)
+                                        manager.createSummary('completed.gif').appendText('<h2>4-1 &#2690;</h2>', false)
                                     } //script
                                 } // success
                             } // post
                         } // stage Automated Acceptance Testing
-
                     } // stages
                     post {
                         always {
                             archiveArtifacts artifacts: ['*_VERSION.TXT', 'target/dependency/jetty-runner.jar', 'target/*.war', '*.log'].join(', '), excludes: null, fingerprint: true, onlyIfSuccessful: true
-                            //sha1 'target/test.war'
-
+                        //sha1 'target/test.war'
                         }
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>2-1 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>2-1 &#2690;</h2>', false)
                             } // script
                         } // success
                     } // post
@@ -830,31 +806,29 @@ exit 0
                     }
                     when {
                         expression { BRANCH_NAME ==~ /NOK/  }
-                        //expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+                    //expression { BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
                     }
                     steps {
                         script {
                             stage('\u2795 Quality - Site') {
                                 script {
                                     if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
-
                                          //checkout scm
 
                                          //unstash 'sources'
                                          //unstash 'sources-tools'
 
-                                         withSonarQubeEnv("${env.SONAR_INSTANCE}") {
-                                             //reportTaskFile: "${env.WORKSPACE}/target/sonar/report-task.txt"
-                                             withSonarQubeCheck(skipFailure: false)
-                                         }
+                                        withSonarQubeEnv("${env.SONAR_INSTANCE}") {
+                                            //reportTaskFile: "${env.WORKSPACE}/target/sonar/report-task.txt"
+                                            withSonarQubeCheck(skipFailure: false)
+                                        }
 
                                          //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                         withMavenSiteWrapper(buildCmdParameters: "-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
-                                                              mavenHome: "/home/jenkins/.m2/",
-                                                              shellOutputFile: "maven-site.log",
+                                        withMavenSiteWrapper(buildCmdParameters: '-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml',
+                                                              mavenHome: '/home/jenkins/.m2/',
+                                                              shellOutputFile: 'maven-site.log',
                                                               skipSonarCheck: true)
-
                                     } // if DRY_RUN
                                 } // script
                             } // stage Site
@@ -863,7 +837,7 @@ exit 0
                     post {
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>2-2 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>2-2 &#2690;</h2>', false)
                             } //script
                         } // success
                     } // post
@@ -882,11 +856,10 @@ exit 0
                     }
                     when {
                         expression { BRANCH_NAME ==~ /NOK/  }
-                        //expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
+                    //expression { BRANCH_NAME ==~ /release\/.+|master|develop/ }
                     }
                     steps {
                         script {
-
                             if (!env.DRY_RUN.toBoolean() && !env.RELEASE.toBoolean()) {
                                 //input id: 'DependencyCheck', message: 'Approve DependencyCheck?', submitter: 'aandrieu'
 
@@ -897,34 +870,30 @@ exit 0
 
                                 //buildCmdParameters: "-Dserver=jetty9x -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt -Dmaven.exec.skip=true -Denforcer.skip=true -Dmaven.test.skip=true"
 
-                                withMavenDependencyCheckWrapper(buildCmdParameters: "-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml",
-                                                                mavenHome: "/home/jenkins/.m2/",
-                                                                shellOutputFile: "maven-depcheck.log",
+                                withMavenDependencyCheckWrapper(buildCmdParameters: '-Dserver=jetty9x -Dsettings.security=/home/jenkins/.m2/settings-security.xml',
+                                                                mavenHome: '/home/jenkins/.m2/',
+                                                                shellOutputFile: 'maven-depcheck.log',
                                                                 skipSonarCheck: true) {
-
                                     archiveArtifacts allowEmptyArchive: true, artifacts: '**/dependency-check-report.xml', onlyIfSuccessful: true
 
                                     try {
                                         dependencyTrackPublisher artifact: '**/dependency-check-report.xml', artifactType: 'scanResult', projectId: 'nabla-servers-bower-sample'
-                                        //dependencyTrackPublisher artifact: '**/dependency-check-report.xml', artifactType: 'bom', synchronous: true
+                                    //dependencyTrackPublisher artifact: '**/dependency-check-report.xml', artifactType: 'bom', synchronous: true
                                     } catch (exc) {
-                                        echo "Warn: There was a problem with dependencyTrackPublisher " + exc.toString()
+                                        echo 'Warn: There was a problem with dependencyTrackPublisher ' + exc
                                     }
-
-                                }
-
+                                                                }
                             } // if DRY_RUN
                         } // script
                     } // steps
                     post {
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>2-3 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>2-3 &#2690;</h2>', false)
                             } //script
                         } // success
                     } // post
                 } // stage Quality - Security - Dependency check
-
             } // parallel
         } // Main
 
@@ -944,12 +913,11 @@ exit 0
                     }
                     steps {
                         script {
-
                             //checkout scm
 
                             //unstash 'sources'
 
-                            withArchive() {
+                            withArchive {
                                 unstash 'app'
                                 sha1 'target/test.war'
                             }
@@ -960,7 +928,7 @@ exit 0
                               keepAll: true,
                               reportDir: 'scripts/microscanner-wrapper/',
                               reportFiles: 'aqua-grab.html',
-                              reportName: "Aqua Report"
+                              reportName: 'Aqua Report'
                             ])
 
                             publishHTML (target: [
@@ -969,7 +937,7 @@ exit 0
                               keepAll: true,
                               reportDir: 'reports/',
                               reportFiles: 'JENKINS_ZAP_VULNERABILITY_REPORT-${BUILD_ID}.html',
-                              reportName: "ZaProxy Report"
+                              reportName: 'ZaProxy Report'
                             ])
 
                             publishHTML (target: [
@@ -978,7 +946,7 @@ exit 0
                               keepAll: true,
                               reportDir: 'build/phantomas/',
                               reportFiles: 'index.html',
-                              reportName: "Phantomas Report"
+                              reportName: 'Phantomas Report'
                             ])
 
                             publishHTML (target: [
@@ -987,7 +955,7 @@ exit 0
                               keepAll: true,
                               reportDir: 'screenshots/desktop/',
                               reportFiles: 'index.html.png',
-                              reportName: "Desktop CSS Diff Report"
+                              reportName: 'Desktop CSS Diff Report'
                             ])
 
                             publishHTML (target: [
@@ -996,34 +964,31 @@ exit 0
                               keepAll: true,
                               reportDir: 'screenshots/mobile/',
                               reportFiles: 'index.html.png',
-                              reportName: "Mobile CSS Diff Report"
+                              reportName: 'Mobile CSS Diff Report'
                             ])
 
                             //stash includes: '${ARTIFACTS}', name: 'app'
                             //unstash 'app'
 
-                            String remoteDirectory = "TEST/LatestBuildsUntested/" + getSemVerReleasedVersion() + "-PROMOTE"
+                            String remoteDirectory = 'TEST/LatestBuildsUntested/' + getSemVerReleasedVersion() + '-PROMOTE'
 
                             sshPublisherWrapper(remoteDirectory: remoteDirectory, sourceFiles: '**/TEST-*.tar.gz,target/test.war') {
-
                                 echo 'Publishing'
-
                             }
-
                         } // script
                     } // steps
                     post {
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>5-1 &#2690;</h2>", false)
-                                manager.addShortText("archived")
-                                manager.createSummary("gear2.gif").appendText("<h2>Successfully archived</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>5-1 &#2690;</h2>', false)
+                                manager.addShortText('archived')
+                                manager.createSummary('gear2.gif').appendText('<h2>Successfully archived</h2>', false)
                             } //script
                         } // success
                     } // post
                 } // stage Archive Artifacts
 
-                stage("Git Tag") {
+                stage('Git Tag') {
                     agent {
                         docker {
                             image DOCKER_IMAGE
@@ -1046,18 +1011,17 @@ exit 0
                             withTag()
 
                             withChangelog()
-
                        } // script
                     } // steps
                     post {
                         failure {
                             script {
-                                manager.addBadge("red.gif", "<p>&#x2620;</p>")
+                                manager.addBadge('red.gif', '<p>&#x2620;</p>')
                             } //script
                         }
                         success {
                             script {
-                                manager.createSummary("completed.gif").appendText("<h2>5.2 &#2690;</h2>", false)
+                                manager.createSummary('completed.gif').appendText('<h2>5.2 &#2690;</h2>', false)
                             } //script
                         } // success
                     } // post
@@ -1069,30 +1033,30 @@ exit 0
         // always means, well, always run.
         always {
             node('molecule') {
-                runHtmlPublishers(["LogParserPublisher"])
+                runHtmlPublishers(['LogParserPublisher'])
             }
         }
         failure {
             echo "I'm failing"
             script {
-                manager.createSummary("warning.gif").appendText("<h1>Build failed!</h1>", false, false, false, "red")
+                manager.createSummary('warning.gif').appendText('<h1>Build failed!</h1>', false, false, false, 'red')
             } //script
         }
         changed {
             echo "I'm different"
         }
         success {
-            echo "I succeeded"
+            echo 'I succeeded'
             script {
                 manager.removeBadge(0) // See issue https://issues.jenkins-ci.org/browse/JENKINS-52043
                 //manager.removeShortText("deployed")
                 manager.removeSummaries()
             } // script
         } // success
-        //cleanup {
-        //    node('molecule') {
-        //        dockerCleaning()
-        //    }
-        //}
+    //cleanup {
+    //    node('molecule') {
+    //        dockerCleaning()
+    //    }
+    //}
     } // post
 } // pipeline

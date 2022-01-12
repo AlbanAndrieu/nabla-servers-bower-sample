@@ -1,9 +1,11 @@
 package com.test.project.sample
 
 public enum GroovyEnum {
+
     DOMESTIC,
     FOREIGN,
     ALL,
+
 }
 
 static final String getCurrencyType(final GroovyEnum currencyType) {

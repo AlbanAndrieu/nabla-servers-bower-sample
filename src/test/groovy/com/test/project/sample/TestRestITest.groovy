@@ -7,41 +7,40 @@ import groovyx.net.http.HttpResponseException
 import org.junit.BeforeClass
 import org.junit.Test
 
-@org.junit.Ignore("No rest service")
+@org.junit.Ignore('No rest service')
 class TestRestITest extends GroovyTestCase {
 
-    private TestRestClient client;
+    private TestRestClient client
 
-	@BeforeClass
+    @BeforeClass
     void setUp() {
-        this.client = new TestRestClient();
+        this.client = new TestRestClient()
     }
 
     @Test
     void testBasicRest() {
         // Given
-        String docUrl = "http://" + this.client.server + ":" + this.client.port + "/" + this.client.productName;
+        String docUrl = 'http://' + this.client.server + ':' + this.client.port + '/' + this.client.productName
 
         // When
-        HttpResponseDecorator docResponse = getData(docUrl);
+        HttpResponseDecorator docResponse = getData(docUrl)
 
         // Then
         if (docResponse.status != 200) {
-            fail("Test has been not found, check if contract definition json file is deployed.");
+            fail('Test has been not found, check if contract definition json file is deployed.')
         }
-        assertEquals(200, docResponse.status);
+        assertEquals(200, docResponse.status)
     }
 
     private HttpResponseDecorator getData(String address) {
-        try
-        {
-            return client.getData(address, "text/html");
+        try {
+            return client.getData(address, 'text/html')
         }
-        catch(HttpResponseException ex)
+        catch (HttpResponseException ex)
         {
-            HttpResponseException httpEx = (HttpResponseException)ex;
-            Object data = httpEx.getResponse().getData();
-            throw new RuntimeException(String.valueOf(data),ex);
+            HttpResponseException httpEx = (HttpResponseException)ex
+            Object data = httpEx.getResponse().getData()
+            throw new RuntimeException(String.valueOf(data), ex)
         }
     }
 

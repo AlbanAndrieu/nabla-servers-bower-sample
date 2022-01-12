@@ -310,7 +310,7 @@ under the License.
       </properties>
     </profile>
     -->
-    <!-- workaround because some environment does not have the WORKSPACE global varaible -->
+    <!-- workaround because some environment does not have the WORKSPACE global variable -->
     <profile>
       <id>env.WORKSPACE.default</id>
       <activation>
@@ -612,7 +612,7 @@ under the License.
             </releases>
         </pluginRepository>
         <!--
-            be sure to add this repository to retreive the dashboard plugin
+            be sure to add this repository to retrieve the dashboard plugin
         -->
         <pluginRepository>
             <id>codehaus-repository</id>

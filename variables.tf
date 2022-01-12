@@ -29,7 +29,7 @@ variable "aws_amis" {
 
 variable "github_organization" {
   description = "Github organization"
-  default = "Banbou"
+  default     = "Banbou"
 }
 
 #variable "github_token" {

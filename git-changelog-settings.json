@@ -1,7 +1,7 @@
 {
   "fromRepo": ".",
   "fromCommit": "0000000000000000000000000000000000000000",
-  "toRef": "refs/tags/LATEST_SUCCESSFULL",
+  "toRef": "refs/tags/LATEST_SUCCESSFUL",
 
   "ignoreCommitsIfMessageMatches": "^\\[maven-release-plugin\\].*|^\\[Gradle Release Plugin\\].*|^Merge.*",
   "readableTagName": "/([^/]+?)$",

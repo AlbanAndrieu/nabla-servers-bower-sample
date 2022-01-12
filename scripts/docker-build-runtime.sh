@@ -5,7 +5,7 @@ shopt -s extglob
 #set -ueo pipefail
 set -eo pipefail
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 #export DOCKER_FILE="docker/centos7/Dockerfile"
@@ -16,7 +16,7 @@ export CST_CONFIG="docker/ubuntu20/config.yaml"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${green} Building docker image ${NC}"
 echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/../${DOCKER_FILE} -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" \"${WORKING_DIR}/..\" --tag \"$DOCKER_TAG\" ${NC}"

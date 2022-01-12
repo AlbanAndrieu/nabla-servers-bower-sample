@@ -97,8 +97,7 @@ services:
     environment:
       CLAIR_CONF: "/src/clair/local-dev/clair/config.yaml"
       CLAIR_MODE: "notifier"
-    command:
-      ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
+    command: ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
     labels:
       - "traefik.enable=true"
 
@@ -119,8 +118,7 @@ services:
       CLAIR_CONF: "/src/clair/local-dev/clair/config.yaml"
       CLAIR_MODE: "notifier"
       NOTIFIER_TEST_MODE: "true"
-    command:
-      ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
+    command: ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
     labels:
       - "traefik.enable=true"
 
@@ -139,8 +137,7 @@ services:
     environment:
       CLAIR_CONF: "/src/clair/local-dev/clair/config.yaml"
       CLAIR_MODE: "indexer"
-    command:
-      ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
+    command: ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
     labels:
       - "traefik.enable=true"
 
@@ -164,8 +161,7 @@ services:
       CLAIR_CONF: "/src/clair/local-dev/clair/config.yaml"
       CLAIR_MODE: "indexer"
     network_mode: "service:quay"
-    command:
-      ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
+    command: ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
     labels:
       - "traefik.enable=true"
 
@@ -184,8 +180,7 @@ services:
     environment:
       CLAIR_CONF: "/src/clair/local-dev/clair/config.yaml"
       CLAIR_MODE: "matcher"
-    command:
-      ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
+    command: ["bash", "-c", "cd /src/clair/cmd/clair; go run -mod vendor ."]
     labels:
       - "traefik.enable=true"
 
@@ -212,14 +207,14 @@ services:
     container_name: clair-jaeger
     image: jaegertracing/all-in-one:1.17
     ports:
-        - "5775:5775/udp"
-        - "6831:6831/udp"
-        - "6832:6832/udp"
-        - "5778:5778"
-        - "16686:16686"
-        - "14268:14268"
-        - "14250:14250"
-        - "9411:9411"
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "9411:9411"
     environment:
       COLLECTOR_ZIPKIN_HTTP_PORT: 9411
     networks:

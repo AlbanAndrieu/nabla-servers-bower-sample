@@ -5,7 +5,7 @@ shopt -s extglob
 #set -ueo pipefail
 set -eo pipefail
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
 
@@ -20,7 +20,7 @@ export DOCKER_BUILD_ARGS="--pull --no-cache --target RUNTIME"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"
 
-WORKING_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}"  )" && pwd  )"
+WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${green} Building docker image ${NC}"
 echo -e "${magenta} time docker build ${DOCKER_BUILD_ARGS} -f ${WORKING_DIR}/../${DOCKER_FILE} -t \"${DOCKER_ORGANISATION}/${DOCKER_NAME}\" \"${WORKING_DIR}/..\" --tag \"$DOCKER_TAG\" ${NC}"
