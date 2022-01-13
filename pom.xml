@@ -62,7 +62,7 @@
 		<docker.compose.version>0.9.9</docker.compose.version>
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<doxia.core.version>1.8</doxia.core.version>
-		<doxia.version>1.8.1</doxia.version>
+		<doxia.version>1.11.1</doxia.version>
 		<groovy.eclipse.batch.version>2.5.7-01</groovy.eclipse.batch.version>
 		<groovy.eclipse.compiler.version>3.4.0-01</groovy.eclipse.compiler.version>
 		<groovy.version>2.4.6</groovy.version>
@@ -73,7 +73,7 @@
 		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
 		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
 		<hibernate.version>4.3.6.Final</hibernate.version>
-		<http.builder.version>0.6</http.builder.version>
+		<http.builder.version>0.7.1</http.builder.version>
 
 		<jacoco.version>0.8.5</jacoco.version>
 		<java.ws.version>2.0</java.ws.version>
@@ -107,6 +107,7 @@
 
 		<!--<jetty9.version>9.4.28.v20200408</jetty9.version>-->
 		<jetty9.version>9.4.19.v20190610</jetty9.version>
+		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
 		<jmockit.version>1.19</jmockit.version>
 		<jsr305.version>2.0.1</jsr305.version>
@@ -115,14 +116,14 @@
 		<log4j.core.version>2.17.1</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
 		<logback.version>1.2.0</logback.version>
-		<maven.assembly.plugin.version>3.1.1</maven.assembly.plugin.version>
+		<maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
 		<maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.7.5</maven.cargo.maven2.plugin.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-		<maven.dependency.check.plugin.version>5.3.2</maven.dependency.check.plugin.version>
+		<maven.dependency.check.plugin.version>6.5.3</maven.dependency.check.plugin.version>
 		<maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
 		<maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
@@ -616,11 +617,13 @@
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${maven.site.plugin.version}</version>
 					<dependencies>
+						<!--
 						<dependency>
 							<groupId>org.apache.maven.doxia</groupId>
 							<artifactId>doxia-core</artifactId>
 							<version>${doxia.core.version}</version>
 						</dependency>
+            -->
 						<dependency>
 							<groupId>org.apache.maven.doxia</groupId>
 							<artifactId>doxia-site-renderer</artifactId>
@@ -906,31 +909,20 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
+      <!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
 				<version>${maven.toolchains.plugin.version}</version>
 				<configuration>
 					<toolchains>
-						<!--
-						<jdk>
-							<version>[1.8,)</version>
-							<vendor>sun</vendor>
-						</jdk>
-            -->
 						<jdk>
 							<version>[11,)</version>
-							<!--<vendor>sun</vendor>-->
 						</jdk>
-						<!--
-						<jdk>
-							<version>[14,)</version>
-							<vendor>oracle</vendor>
-						</jdk>
-            -->
 					</toolchains>
 				</configuration>
 			</plugin>
+      -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -1788,36 +1780,27 @@
 							</configuration>
 						</configuration>
 					</plugin>
-					<!-- DISABLE because it is too slow
-                    <plugin>
-                        <groupId>org.owasp</groupId>
-                        <artifactId>dependency-check-maven</artifactId>
-                        <version>${maven.dependency.check.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <format>XML</format>
-                            <skipProvidedScope>true</skipProvidedScope>
-                            <skipRuntimeScope>true</skipRuntimeScope>
-                            <skipSystemScope>true</skipSystemScope>
-                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                            -->
-					<!--
-                            <cveUrl12Modified>http://albandrieu.com/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                            <cveUrl20Modified>http://albandrieu.com/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                            <cveUrl12Base>http://albandrieu.com/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                            <cveUrl20Base>http://albandrieu.com/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
-                            -->
-					<!--
-                        </configuration>
-                    </plugin>
-                    -->
+					<!-- DISABLE because it is too slow mvnw dependency-check:check -->
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${maven.dependency.check.plugin.version}</version>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<format>XML</format>
+							<skipProvidedScope>true</skipProvidedScope>
+							<skipRuntimeScope>true</skipRuntimeScope>
+							<skipSystemScope>true</skipSystemScope>
+							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+						</configuration>
+					</plugin>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>

@@ -4,3 +4,4 @@ docs/js
 target/*
 dist/*
 report/*
+bower_components/*
