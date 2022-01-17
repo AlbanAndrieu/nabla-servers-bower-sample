@@ -143,7 +143,7 @@
     "grunt-version-check": "0.3.8",
     "grunt-wiredep": "3.0.1",
     "grunt-wpt": "^3.1.4",
-    "imagemin-gifsicle": "^6.0.1",
+    "imagemin-gifsicle": "^7.0.0",
     "imagemin-jpegtran": "^6.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^7.1.0",
