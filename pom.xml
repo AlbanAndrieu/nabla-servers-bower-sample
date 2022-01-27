@@ -6,7 +6,7 @@
 	<!-- @formatter:off -->
 	<parent>
 		<artifactId>sample</artifactId>
-		<groupId>com.nabla.project.servers.sample</groupId>
+		<groupId>com.nabla.project.sample</groupId>
 		<version>1.0.1-SNAPSHOT</version>
 		<relativePath></relativePath>
 		<!-- lookup parent from repository -->
