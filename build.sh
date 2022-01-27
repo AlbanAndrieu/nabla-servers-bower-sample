@@ -6,11 +6,10 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/scripts/step-0-color.sh"
 
-#sudo apt install phantomjs
-#./node_modules/protractor/bin/webdriver-manager update --versions.chrome 2.42
-#npm install -g bower@1.8.4 grunt@1.0.3 grunt-cli@1.2.0 nsp@2.6.1 webdriver-manager@12.1.0
+echo -e "${magenta} ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update --versions.chrome 97.0.4692.71 ${NC}"
+echo -e "${magenta} npm install -g bower@1.8.13 grunt-cli@1.4.3 webdriver-manager@12.1.8 ${NC}"
 #npm run update-webdriver
-#webdriver-manager update --chrome --versions.chrome=2.42
+#webdriver-manager update --chrome --versions.chrome=97.0.4692.71
 
 #TODO
 #npm install grunt-phantomas@0.14.0
@@ -34,11 +33,11 @@ echo -e "${magenta} ./mvnw gplus:generateStubs gplus:groovydoc ${NC}"
 #brew install hadolint
 hadolint Dockerfile || true
 
-npm list >list.log || true
+npm list > list.log || true
 #npm shrinkwrap
 
 #sudo npm install -g npm-license
-npm-license || true
+echo -e "${magenta} npm-license ${NC}"
 
 #npm install -g npm-check-updates
 #npx npm-check-updates
