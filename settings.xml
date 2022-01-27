@@ -193,7 +193,7 @@ under the License.
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
-      <url>http://albandrieu.com:8081/nexus/content/groups/public/</url>
+      <url>http://albandrieu.com:8081/repository/maven-public/</url>
     </mirror>
   </mirrors>
 
@@ -330,7 +330,7 @@ under the License.
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
-            <url>http://albandrieu.com:8081/nexus/content/repositories/releases</url>
+            <url>http://albandrieu.com:8081/repository/maven-releases</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -342,7 +342,7 @@ under the License.
         <repository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://albandrieu.com:8081/nexus/content/repositories/snapshots</url>
+            <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -352,32 +352,6 @@ under the License.
                 <enabled>false</enabled>
             </releases>
         </repository>
-              <!--
-        <repository>
-            <id>nabla-releases</id>
-            <name>Nabla Release Repository</name>
-            <url>http://alban.googlecode.com/svn/mavenrepo/releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>nabla-snapshots</id>
-            <name>Nabla Snapshot Repository</name>
-            <url>http://alban.googlecode.com/svn/mavenrepo/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        -->
         <repository>
             <id>openqa-releases</id>
             <name>Openqa Release Repository</name>
@@ -521,7 +495,6 @@ under the License.
         <pluginRepository>
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
-            <!--<url>dav:https://repository-nabla.forge.cloudbees.com/release</url>-->
             <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
             <snapshots>
                 <enabled>false</enabled>
@@ -672,70 +645,70 @@ under the License.
             </pluginRepository>
       </pluginRepositories>
     </profile>
-        <profile>
-            <id>nexus</id>
-            <!--all requests to nexus via the mirror -->
-            <repositories>
-                <repository>
-                    <id>nexus-releases</id>
-                    <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                </repository>
-                <repository>
-                    <id>nexus-snapshots</id>
-                    <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
-                    <releases><enabled>false</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>nexus-releases</id>
-                    <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
-                    <releases><enabled>true</enabled></releases>
-                    <snapshots><enabled>false</enabled></snapshots>
-                </pluginRepository>
-                <pluginRepository>
-                    <id>nexus-snapshots</id>
-                    <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
-                    <releases><enabled>false</enabled></releases>
-                    <snapshots><enabled>true</enabled></snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-            <!--
-        <properties>
-          <maven.clover.licenseLocation>${user.home}/clover.license</maven.clover.licenseLocation>
-        </properties>
-        -->
-        </profile>
-        <profile>
-          <id>upstream</id>
-          <repositories>
-             <repository>
+    <profile>
+        <id>nexus</id>
+        <!--all requests to nexus via the mirror -->
+        <repositories>
+            <repository>
+                <id>nexus-releases</id>
+                <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
+                <releases><enabled>true</enabled></releases>
+                <snapshots><enabled>false</enabled></snapshots>
+            </repository>
+            <repository>
+                <id>nexus-snapshots</id>
+                <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
+                <releases><enabled>false</enabled></releases>
+                <snapshots><enabled>true</enabled></snapshots>
+            </repository>
+        </repositories>
+        <pluginRepositories>
+            <pluginRepository>
+                <id>nexus-releases</id>
+                <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
+                <releases><enabled>true</enabled></releases>
+                <snapshots><enabled>false</enabled></snapshots>
+            </pluginRepository>
+            <pluginRepository>
+                <id>nexus-snapshots</id>
+                <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
+                <releases><enabled>false</enabled></releases>
+                <snapshots><enabled>true</enabled></snapshots>
+            </pluginRepository>
+        </pluginRepositories>
+        <!--
+    <properties>
+      <maven.clover.licenseLocation>${user.home}/clover.license</maven.clover.licenseLocation>
+    </properties>
+    -->
+    </profile>
+    <profile>
+      <id>upstream</id>
+      <repositories>
+         <repository>
+            <id>upstream</id>
+            <url>${env.Jenkins.Repository}</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+               <enabled>true</enabled>
+            </snapshots>
+         </repository>
+       </repositories>
+       <pluginRepositories>
+           <pluginRepository>
                 <id>upstream</id>
                 <url>${env.Jenkins.Repository}</url>
                 <releases>
-                    <enabled>true</enabled>
+                  <enabled>true</enabled>
                 </releases>
                 <snapshots>
-                   <enabled>true</enabled>
+                  <enabled>true</enabled>
                 </snapshots>
-             </repository>
-           </repositories>
-           <pluginRepositories>
-               <pluginRepository>
-                    <id>upstream</id>
-                    <url>${env.Jenkins.Repository}</url>
-                    <releases>
-                      <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                      <enabled>true</enabled>
-                    </snapshots>
-               </pluginRepository>
-           </pluginRepositories>
-        </profile>
+           </pluginRepository>
+       </pluginRepositories>
+    </profile>
   </profiles>
 
   <!-- activeProfiles

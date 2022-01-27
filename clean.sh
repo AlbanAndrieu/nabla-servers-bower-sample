@@ -13,13 +13,13 @@ rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ node_m
 #docs/
 #dist/bower_components/ dist/fonts/
 
-rm -f checkstyle.xml package-lock.json
+rm -f checkstyle.xml package-lock.json || true
 
 echo -e "${magenta} NPM cleaning started. ${NC}"
 
 npm --version
-npm cache clean || true
-npm cache verify
+#npm cache clean || true
+#npm cache verify
 echo -e "${green} Cleaning DONE. ${NC}"
 
 exit 0

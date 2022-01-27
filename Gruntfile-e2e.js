@@ -137,15 +137,6 @@ module.exports = function(grunt) {
           baseUrl: "http://localhost:9190",
         },
       },
-      phantom: {
-        options: {
-          args: {
-            //baseUrl: 'http://localhost:3000/',
-            // Arguments passed to the command
-            browser: "phantomjs",
-          },
-        },
-      },
       chrome: {
         options: {
           args: {

@@ -11,7 +11,7 @@ exports.config = {
   //baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9014 ),
   //baseUrl: 'http://localhost:9090', //default test port with Jetty
   //baseUrl: 'http://localhost:8001', //default test port with Yeoman
-  directConnect: true, //bypass selenium
+  directConnect: false, // bypass selenium
   params: {
     userName: "nabla",
     userPassword: "microsoft",

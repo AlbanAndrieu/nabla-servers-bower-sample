@@ -38,12 +38,9 @@ module.exports = function(grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require("time-grunt")(grunt);
 
-  // Load grunt tasks automatically
-  //require('load-grunt-tasks')(grunt);
   // Load grunt tasks automatically, when needed
   require("jit-grunt")(grunt, {
     bower: "grunt-bower-task",
-    versioncheck: "grunt-version-check",
     retire: "grunt-retire",
     //configureProxies: 'grunt-connect-proxy',
     zap_start: "grunt-zaproxy",
@@ -66,6 +63,10 @@ module.exports = function(grunt) {
     protractor: "grunt-protractor-runner",
     buildcontrol: "grunt-build-control",
   });
+
+  //const imageminPng = require('imagemin-pngquant');
+  //const imageminPng = require('imagemin-optipng');
+  //const imageminJpeg = require('imagemin-jpegtran');
 
   //var async = require('async'),
   //    request = require('request');
@@ -143,10 +144,6 @@ module.exports = function(grunt) {
     //instrumentedServer: 'coverage/server/instrument',
     //instrumentedE2E: "coverage/e2e/instrumented",
   };
-
-  //const imagemin = require('imagemin');
-  //const imageminMozjpeg = require('imagemin-mozjpeg');
-  //const imageminPngquant = require('imagemin-pngquant');
 
   var corsMiddleware = function(req, res, next) {
     console.log("cors");
@@ -758,18 +755,24 @@ module.exports = function(grunt) {
     },
 
     // The following *-min tasks produce minified files in the dist folder
-    imagemin: {
-      dist: {
-        files: [
-          {
-            expand: true,
-            cwd: "<%= config.app %>/images",
-            src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
-            dest: "<%= config.dist %>/images",
-          },
-        ],
-      },
-    },
+    //imagemin: {
+    //  dynamic: {
+    //    options: {
+    //        optimizationLevel: 3,
+    //        svgoPlugins: [{removeViewBox: false}],
+    //        use: [imageminPng({quality: [0.5, 0.5]}), imageminJpeg({quality: 50})]
+    //        //use: [imagemin.gifsicle(), imagemin.jpegtran(), imagemin.pngquant(), imagemin.svgo()]
+    //    },
+    //    files: [
+    //      {
+    //        expand: true,
+    //        cwd: "<%= config.app %>/images",
+    //        src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
+    //        dest: "<%= config.dist %>/images",
+    //      },
+    //    ],
+    //  },
+    //},
 
     svgmin: {
       dist: {
@@ -1045,7 +1048,11 @@ module.exports = function(grunt) {
         //'copy:styles',
         "compass",
       ],
-      dist: ["copy:styles", "compass:dist", "imagemin", "svgmin"],
+      dist: [
+        "copy:styles",
+        "compass:dist",
+        //"imagemin",
+        "svgmin"],
     },
 
     // Test settings
@@ -1228,71 +1235,15 @@ module.exports = function(grunt) {
       },
     },
 
-    phantomcss: {
-      options: {
-        mismatchTolerance: 0.05,
-        screenshots: "screenshots",
-        results: "./build/phantomcss/",
-        viewportSize: [1280, 800],
-      },
-      src: ["phantomcss.js"],
-    },
-
-    phantomflow: {
-      app: {
-        /*
-                How many threads would you like to parallelise on?
-                Default value is 4
-            */
-        threads: 4,
-
-        /*
-                Any command line options to be passed down to casper?
-                Example: ['--cookies-file=./target/cookies.txt']
-                Default value is []
-            */
-        casperArgs: [],
-
-        /*
-                Should a report/visualisation be generated after
-                the test run? Default value is false
-            */
-        createReport: true,
-
-        /*
-                Should the report output live somewhere else, e.g. for
-                proxying through a real webserver?
-                Example: '../visualtest/htdocs'
-                Default value is undefined.
-                If unset, the default set by PhantomFlow will be used.
-            */
-        reports: null,
-
-        /*
-                Do you have scripts to include?
-                Default value is ./include
-            */
-        includes: "./include",
-
-        /*
-                Where do the tests live?
-                Default value is ./test
-            */
-        tests: "./test",
-
-        /*
-                Where should the results go?
-                Default value is ./test-results
-            */
-        results: "./build/test-results",
-
-        /*
-                Hide elements in the page
-            */
-        hideElements: ["img", "input"],
-        remoteDebugPort: 8002, // default 9000
-      },
-    },
+    //phantomcss: {
+    //  options: {
+    //    mismatchTolerance: 0.05,
+    //    screenshots: "screenshots",
+    //    results: "./build/phantomcss/",
+    //    viewportSize: [1280, 800],
+    //  },
+    //  src: ["phantomcss.js"],
+    //},
 
     sitespeedio: {
       default: {
@@ -1442,43 +1393,6 @@ module.exports = function(grunt) {
       },
     },
 
-    versioncheck: {
-      target: {
-        options: {
-          skip: [
-            "semver",
-            "npm",
-            "lodash",
-            "jquery",
-            "jquery-ui",
-            "bootstrap",
-            "bootstrap-sass-official",
-            "angular",
-            "angular-animate",
-            "angular-cookies",
-            "angular-dynamic-locale",
-            "angular-i18n",
-            "angular-mocks",
-            "angular-resource",
-            "angular-route",
-            "angular-sanitize",
-            "angular-touch",
-            "angular-translate",
-            "angular-translate-handler-log",
-            "angular-translate-loader-static-files",
-            "angular-translate-storage-local",
-            "angular-bootstrap",
-            "angular-gravatar",
-            "github-fork-ribbon-css",
-            "jasmine-spec-reporter",
-            "grunt-contrib-imagemin",
-            "font-awesome",
-          ],
-          hideUpToDate: true,
-        },
-      },
-    },
-
     retire: {
       js: ["app/src/*.js"] /** Which js-files to scan. **/,
       node: [
@@ -1520,7 +1434,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks("grunt-contrib-watch");
-  grunt.loadNpmTasks("grunt-contrib-imagemin");
+  //grunt.loadNpmTasks("grunt-contrib-imagemin");
   //grunt.loadNpmTasks("grunt-reload");
 
   // Used for delaying livereload until after server has restarted
@@ -1679,9 +1593,8 @@ module.exports = function(grunt) {
   grunt.registerTask("check", function() {
     grunt.task.run([
       "newer:jshint",
-      "newer:jscs",
-      "checkDependencies",
-      //'versioncheck'
+      //"newer:jscs", // joined ESLint
+      "checkDependencies"
     ]);
   });
 

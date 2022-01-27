@@ -20,7 +20,6 @@ source "${WORKING_DIR}/scripts/step-0-color.sh"
 
 echo -e "${magenta} grunt serve:dist --debug ${NC}"
 
-rm -f package-lock.json || true
 ./clean.sh
 
 echo -e "${green} ./mvnw install -Dserver=jetty9x -Prun-integration-test ${NC}"
@@ -40,6 +39,10 @@ npm list >list.log || true
 
 #sudo npm install -g npm-license
 npm-license || true
+
+#npm install -g npm-check-updates
+#npx npm-check-updates
+ncu || true
 
 # Whiteshource is doing
 npm ls --only=prod --json

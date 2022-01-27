@@ -465,21 +465,6 @@ sudo nano /etc/init/jenkins.conf
     export PATH=$PATH:$ZAPROXY_HOME
 ```
 
-## Screenshot
-
-```
-# First generate cookies file using protractor
-grunt protractor
-chmod 444 cookies.txt
-rm ./target/test.png
-phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-file=./cookies.txt rasterize.js http://localhost:9090/ ./target/test.png
-phantomjs --debug=true --web-security=false --ignore-ssl-errors=true --cookies-file=./cookies.txt netsniff.js http://localhost:9090/ > ./target/speed.har
-#http://www.softwareishard.com/blog/har-viewer/
-```
-
-ls -lrta ~/.config/chromium/Default/Cookies
-ls -lrta ~/.config/google-chrome/Default
-
 ## Yslow Psi WebPageTest
 
 Run yslow, Psi or webpagetest
@@ -487,7 +472,6 @@ Run yslow, Psi or webpagetest
 ```
 #grunt yslow_test
 npm run pretest
-phantomjs --ignore-ssl-errors=yes test/yslow.js --info basic --format plain http://localhost:9090/test/#/
 grunt pagespeed
 grunt wpt
 ```

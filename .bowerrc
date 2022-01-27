@@ -3,8 +3,8 @@
   "analytics": false,
   "timeout": 120000,
   "registry": "https://registry.bower.io",
-  "register": "http://192.168.1.61:5678",
-  "publish": "http://192.168.1.61:5678",
+  "register": "http://albandrieu.com:8081/repository/bower-all/",
+  "publish": "http://albandrieu.com:8081/repository/bower-internal/",
   "storage": {
     "packages" : ".bower/packages",
     "registry" : ".bower/registry"
@@ -13,7 +13,7 @@
   "allow_root": true,
   "resolvers" : [ "bower-nexus3-resolver" ],
   "shallowCloneHosts": [
-    "albandri.misys.global.ad"
+    "albandrieu.com"
   ],
   "ignoredDependencies": [
     "nabla-test"

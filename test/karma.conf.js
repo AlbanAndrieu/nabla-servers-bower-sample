@@ -3,7 +3,7 @@
 module.exports = function (config) {
 
   const process = require('process');
-  process.env.CHROME_BIN = require('puppeteer').executablePath();
+  // process.env.CHROME_BIN = require('puppeteer').executablePath();
 
   config.set({
     // base path, that will be used to resolve files and exclude
