@@ -119,7 +119,8 @@
 		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
 		<maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
-		<maven.cargo.maven2.plugin.version>1.7.5</maven.cargo.maven2.plugin.version>
+		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
+		<maven.cargo.maven3.plugin.version>1.9.9</maven.cargo.maven3.plugin.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.dependency.check.plugin.version>6.5.3</maven.dependency.check.plugin.version>
@@ -1210,8 +1211,8 @@
 			<!-- mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
-				<artifactId>cargo-maven2-plugin</artifactId>
-				<version>${maven.cargo.maven2.plugin.version}</version>
+				<artifactId>cargo-maven3-plugin</artifactId>
+				<version>${maven.cargo.maven3.plugin.version}</version>
 				<configuration>
 					<!--<skip>${maven.test.skip}</skip>-->
 					<wait>${cargo.wait}</wait>
@@ -1231,21 +1232,21 @@
 							<log4j.debug>true</log4j.debug>
 						</systemProperties>
 						<!--
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.slf4j</groupId>
-                                <artifactId>slf4j-api</artifactId>
-                            </dependency>
-                            <dependency>
-                                <groupId>org.slf4j</groupId>
-                                <artifactId>slf4j-log4j12</artifactId>
-                            </dependency>
-                            <dependency>
-                                <groupId>log4j</groupId>
-                                <artifactId>log4j</artifactId>
-                            </dependency>
-                        </dependencies>
-                        -->
+            <dependencies>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </dependency>
+            </dependencies>
+            -->
 					</container>
 					<configuration>
 						<properties>
@@ -1289,19 +1290,19 @@
 						</files>
 					</configuration>
 					<!--
-                    <deployables>
-                        <deployable>
-                            <groupId>${project.groupId}</groupId>
-                            <artifactId>${project.artifactId}</artifactId>
-                            <type>war</type>
-                            <properties>
-                                <context>/test</context>
-                            </properties>
-                            <pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
-                            <pingTimeout>60000</pingTimeout>
-                        </deployable>
-                    </deployables>
-                    -->
+          <deployables>
+              <deployable>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <type>war</type>
+                  <properties>
+                      <context>/test</context>
+                  </properties>
+                  <pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
+                  <pingTimeout>60000</pingTimeout>
+              </deployable>
+          </deployables>
+          -->
 				</configuration>
 			</plugin>
 			<!-- launch mvn clean install jetty:run-war -->
@@ -1742,8 +1743,8 @@
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.cargo</groupId>
-						<artifactId>cargo-maven2-plugin</artifactId>
-						<version>${maven.cargo.maven2.plugin.version}</version>
+						<artifactId>cargo-maven3-plugin</artifactId>
+						<version>${maven.cargo.maven3.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>start-container-integration-test</id>

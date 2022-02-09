@@ -22,11 +22,12 @@ echo -e "${magenta} grunt serve:dist --debug ${NC}"
 ./clean.sh
 
 echo -e "${green} ./mvnw install -Dserver=jetty9x -Prun-integration-test ${NC}"
-./mvnw install -Dserver=jetty9x -Prun-integration-test
+echo -e "${green} ./mvnw install -Prun-integration-test ${NC}"
+./mvnw install -Prun-integration-test
 
 echo -e "${magenta} ./mvnw clean install -DskipTests=true ${NC}"
 echo -e "${magenta} ./mvnw com.github.ekryd.sortpom:sortpom-maven-plugin:sort -Dsort.keepBlankLines ${NC}"
-echo -e "${magenta} ./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -Prun-integration-test ${NC}"
+echo -e "${magenta} ./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Prun-integration-test ${NC}"
 echo -e "${magenta} ./mvnw gplus:generateStubs gplus:groovydoc ${NC}"
 
 #./docker-build.sh

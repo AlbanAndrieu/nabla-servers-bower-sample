@@ -266,94 +266,94 @@ services:
   #    #  - elastic
   #    #  - ingress
 
-  elasticsearch-hq:
-    image: elastichq/elasticsearch-hq:latest # v3.5.12
-    # Todo connect to http://monitoring_elasticsearch:9200
-    container_name: monitoring_elasticsearch-hq
-    restart: unless-stopped
-    #deploy:
-    #  resources:
-    #    limits:
-    #      memory: 1g
-    #    reservations:
-    #      memory: 512m
-    environment:
-      - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
-      #- HQ_ENABLE_SSL=False
-    ports:
-      - 5001:5000
-    depends_on:
-      - elasticsearch
-    #networks:
-    #  - elastic
+#  elasticsearch-hq:
+#    image: elastichq/elasticsearch-hq:latest # v3.5.12
+#    # Todo connect to http://monitoring_elasticsearch:9200
+#    container_name: monitoring_elasticsearch-hq
+#    restart: unless-stopped
+#    #deploy:
+#    #  resources:
+#    #    limits:
+#    #      memory: 1g
+#    #    reservations:
+#    #      memory: 512m
+#    environment:
+#      - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
+#      #- HQ_ENABLE_SSL=False
+#    ports:
+#      - 5001:5000
+#    depends_on:
+#      - elasticsearch
+#    #networks:
+#    #  - elastic
+#
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+#    container_name: monitoring_elasticsearch
+#    restart: unless-stopped
+#    #deploy:
+#    #  resources:
+#    #    limits:
+#    #      memory: 3g
+#    #    reservations:
+#    #      memory: 512m
+#    environment:
+#      - xpack.security.enabled=false
+#      - discovery.type=single-node
+#      #- http.host=0.0.0.0
+#      #- transport.host=127.0.0.1
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - http.cors.enabled=true
+#      - http.cors.allow-origin=*
+#      - xpack.monitoring.collection.enabled=true
+#      #- network.host=_eth0_
+#    #three nodes # See https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+#    #environment:
+#    #  - node.name=es01
+#    #  - cluster.name=es-docker-cluster
+#    #  - discovery.seed_hosts=es02,es03
+#    #  - cluster.initial_master_nodes=es01,es02,es03
+#    #  - bootstrap.memory_lock=true
+#    #  - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#      nofile:
+#        soft: 65536
+#        hard: 65536
+#    #cap_add:
+#    ##  - IPC_LOCK
+#    #  - ALL
+#    volumes:
+#      #- ${PWD}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+#      - esdata:/usr/share/elasticsearch/data
+#    ports:
+#      - 9200:9200
+#      - 9300:9300
+#    #network_mode: "host"
+#    #networks:
+#    #  - elastic
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
-    container_name: monitoring_elasticsearch
-    restart: unless-stopped
-    #deploy:
-    #  resources:
-    #    limits:
-    #      memory: 3g
-    #    reservations:
-    #      memory: 512m
-    environment:
-      - xpack.security.enabled=false
-      - discovery.type=single-node
-      #- http.host=0.0.0.0
-      #- transport.host=127.0.0.1
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - http.cors.enabled=true
-      - http.cors.allow-origin=*
-      - xpack.monitoring.collection.enabled=true
-      #- network.host=_eth0_
-    #three nodes # See https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
-    #environment:
-    #  - node.name=es01
-    #  - cluster.name=es-docker-cluster
-    #  - discovery.seed_hosts=es02,es03
-    #  - cluster.initial_master_nodes=es01,es02,es03
-    #  - bootstrap.memory_lock=true
-    #  - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    #cap_add:
-    ##  - IPC_LOCK
-    #  - ALL
-    volumes:
-      #- ${PWD}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - esdata:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-      - 9300:9300
-    #network_mode: "host"
-    #networks:
-    #  - elastic
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.4.0
-    container_name: monitoring_kibana
-    restart: unless-stopped
-    environment:
-      - SERVER_NAME=localhost
-      - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
-      - xpack.monitoring.enabled=true
-    # See https://www.elastic.co/guide/en/kibana/current/docker.html
-    #volumes:
-    #  - ${PWD}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml
-    ports:
-      - 5601:5601
-    depends_on:
-      - elasticsearch
-    #networks:
-    #  - elastic
-    #  - ingress
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:7.4.0
+#    container_name: monitoring_kibana
+#    restart: unless-stopped
+#    environment:
+#      - SERVER_NAME=localhost
+#      - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
+#      - xpack.monitoring.enabled=true
+#    # See https://www.elastic.co/guide/en/kibana/current/docker.html
+#    #volumes:
+#    #  - ${PWD}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml
+#    ports:
+#      - 5601:5601
+#    depends_on:
+#      - elasticsearch
+#    #networks:
+#    #  - elastic
+#    #  - ingress
 
   auditbeat:
     image: docker.elastic.co/beats/auditbeat:7.6.0
@@ -442,16 +442,16 @@ services:
     #networks:
     #    - elastic
 
-  app-search:
-    image: docker.elastic.co/app-search/app-search:7.6.0
-    ports:
-      - 3002:3002
-    environment:
-      secret_session_key: supersecretsessionkey
-      elasticsearch.host: http://monitoring_elasticsearch:9200/
-      allow_es_settings_modification: "true"
-    #networks:
-    #  - elastic
+#  app-search:
+#    image: docker.elastic.co/app-search/app-search:7.6.0
+#    ports:
+#      - 3002:3002
+#    environment:
+#      secret_session_key: supersecretsessionkey
+#      elasticsearch.host: http://monitoring_elasticsearch:9200/
+#      allow_es_settings_modification: "true"
+#    #networks:
+#    #  - elastic
 
 #  influxdb:
 #    image: influxdb:1.8.0
@@ -475,7 +475,7 @@ services:
 #      - ./configs/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
 
 #   telegraf:
-#     image: telegraf:latest
+#     image: telegraf:1.21.3
 #     container_name: monitoring_telegraf
 #     restart: unless-stopped
 #   links:
