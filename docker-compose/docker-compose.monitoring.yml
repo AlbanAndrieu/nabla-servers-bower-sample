@@ -191,9 +191,9 @@ services:
     image: prom/node-exporter:v0.18.1
     container_name: monitoring_node_exporter
     restart: unless-stopped
-    ports:
-      - 9100:9100
-    #network_mode: "host"
+    #ports:
+    #  - 9100:9100
+    network_mode: "host"
     #networks:
     #  - elastic
     #  - ingress
@@ -206,6 +206,7 @@ services:
     #  replicas: 1
     volumes:
       - ./configs/blackbox:/config
+    network_mode: "host"      
     #networks:
     #  - ingress
 
@@ -223,7 +224,6 @@ services:
     #links:
     #  - elasticsearch
     #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
-    #network_mode: "host"
     #networks:
     #  - elastic
     #  - ingress
@@ -367,6 +367,7 @@ services:
     volumes:
       #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
       - /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host"      
     #networks:
     #  - elastic
 
@@ -385,6 +386,7 @@ services:
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /proc:/hostfs/proc:ro
       - /:/hostfs:ro
+    network_mode: "host"      
     #networks:
     #  - elastic
 
@@ -396,7 +398,7 @@ services:
       - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
     volumes:
       - ${PWD}/configs/beats/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
-    #network_mode: "host"
+    network_mode: "host"
 
   packetbeat:
     image: docker.elastic.co/beats/packetbeat:7.6.0
@@ -409,23 +411,24 @@ services:
       - NET_ADMIN
     # volumes:
     #   - ${PWD}/configs/packetbeat.docker.yml:/usr/share/packetbeat/packetbeat.yml
+    network_mode: "host"    
     #networks:
     #  - elastic
 
-  filebeat:
-    image: docker.elastic.co/beats/filebeat:7.6.0
-    command: --strict.perms=false
-    environment:
-      - setup.kibana.host=monitoring_kibana:5601
-      - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
-    ports:
-      - 9000:9000
-    volumes:
-      # - ${PWD}/configs/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    #networks:
-    #  - elastic
+  #filebeat:
+  #  image: docker.elastic.co/beats/filebeat:7.6.0
+  #  command: --strict.perms=false
+  #  environment:
+  #    - setup.kibana.host=monitoring_kibana:5601
+  #    - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+  #  ports:
+  #    - 9000:9000
+  #  volumes:
+  #    # - ${PWD}/configs/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
+  #    - /var/lib/docker/containers:/var/lib/docker/containers:ro
+  #    - /var/run/docker.sock:/var/run/docker.sock
+  #  #networks:
+  #  #  - elastic
 
   apmserver:
     image: docker.elastic.co/apm/apm-server:7.6.0
@@ -521,6 +524,14 @@ services:
 #      - 24224:24224
 #      - 24224:24224/udp
 
+#  ntopng:
+#    image: vimagick/ntopng
+#    command: --community -d /var/lib/ntopng -i eno1 -r 127.0.0.1:6379@0 -w 0.0.0.0:3000
+#    volumes:
+#      - ./data/ntopng:/var/lib/ntopng
+#    network_mode: host
+#    restart: unless-stopped
+    
 volumes:
   esdata:
     driver: local
@@ -532,13 +543,13 @@ networks:
     ipam:
       config:
         - subnet: 172.16.59.0/24 # bypass openvpn
-  test_default:
-    external:
-      name: test_default
-  openvpn:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.16.59.0/24 # bypass openvpn
+#  test_default:
+#    external:
+#      name: test_default
+#  openvpn:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.16.59.0/24 # bypass openvpn
 #  inside:
 #    internal: true

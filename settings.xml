@@ -301,15 +301,6 @@ under the License.
     </profile>
     -->
 
-    <!-- defined in the project
-    <profile>
-      <id>unittest</id>
-      <properties>
-        <maven.test.skip>false</maven.test.skip>
-        <maven.failure.skip>true</maven.failure.skip>
-      </properties>
-    </profile>
-    -->
     <!-- workaround because some environment does not have the WORKSPACE global variable -->
     <profile>
       <id>env.WORKSPACE.default</id>
@@ -471,7 +462,7 @@ under the License.
         <pluginRepository>
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
-            <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
+            <url>http://albandrieu.com:8081/repository/maven-releases/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -482,7 +473,7 @@ under the License.
         <pluginRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Staging Repository</name>
-            <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
+            <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
             <snapshots>
                     <enabled>true</enabled>
             </snapshots>
@@ -588,13 +579,13 @@ under the License.
       <repositories>
           <repository>
               <id>nexus-releases</id>
-              <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
+              <url>http://albandrieu.com:8081/repository/maven-releases/</url>
               <releases><enabled>true</enabled></releases>
               <snapshots><enabled>false</enabled></snapshots>
           </repository>
           <repository>
               <id>nexus-snapshots</id>
-              <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
+              <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
               <releases><enabled>false</enabled></releases>
               <snapshots><enabled>true</enabled></snapshots>
           </repository>
@@ -602,13 +593,13 @@ under the License.
       <pluginRepositories>
           <pluginRepository>
               <id>nexus-releases</id>
-              <url>http://192.168.1.57:8081/nexus/content/repositories/releases</url>
+              <url>http://albandrieu.com:8081/repository/maven-releases/</url>
               <releases><enabled>true</enabled></releases>
               <snapshots><enabled>false</enabled></snapshots>
           </pluginRepository>
           <pluginRepository>
               <id>nexus-snapshots</id>
-              <url>http://192.168.1.57:8081/nexus/content/repositories/snapshots</url>
+              <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
               <releases><enabled>false</enabled></releases>
               <snapshots><enabled>true</enabled></snapshots>
           </pluginRepository>
@@ -629,16 +620,16 @@ under the License.
          </repository>
        </repositories>
        <pluginRepositories>
-           <pluginRepository>
-                <id>upstream</id>
-                <url>${env.Jenkins.Repository}</url>
-                <releases>
-                  <enabled>true</enabled>
-                </releases>
-                <snapshots>
-                  <enabled>true</enabled>
-                </snapshots>
-           </pluginRepository>
+				 <pluginRepository>
+						<id>upstream</id>
+						<url>${env.Jenkins.Repository}</url>
+						<releases>
+							<enabled>true</enabled>
+						</releases>
+						<snapshots>
+							<enabled>true</enabled>
+						</snapshots>
+				 </pluginRepository>
        </pluginRepositories>
     </profile>
   </profiles>
@@ -655,6 +646,5 @@ under the License.
   <activeProfiles>
     <!--<activeProfile>nexus</activeProfile>-->
     <activeProfile>nabla</activeProfile>
-    <!--<activeProfile>unittest</activeProfile>-->
   </activeProfiles>
 </settings>
