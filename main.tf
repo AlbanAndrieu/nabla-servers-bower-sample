@@ -79,13 +79,13 @@ resource "aws_security_group" "prod-web" {
 }
 
 # in main.tf, below the aforementioned boilerplate
-resource "aws_s3_bucket_object" "file" {
-  for_each = fileset(var.website_root, "**")
-
-  bucket      = aws_s3_bucket.site.id
-  key         = each.key
-  source      = "${var.website_root}/${each.key}"
-  source_hash = filemd5("${var.website_root}/${each.key}")
-  acl         = "public-read"
-}
+#resource "aws_s3_bucket_object" "file" {
+#  for_each = fileset(var.website_root, "**")
+#
+#  bucket      = aws_s3_bucket.site.id
+#  key         = each.key
+#  source      = "${var.website_root}/${each.key}"
+#  source_hash = filemd5("${var.website_root}/${each.key}")
+#  acl         = "public-read"
+#}
 
