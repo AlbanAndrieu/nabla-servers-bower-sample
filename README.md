@@ -152,7 +152,7 @@ jmeter, gatling, mutation testing and arquillian are available in other sample p
 
 as local user
 
-```
+```bash
 #npm install generator-angular
 #npm install generator-angular-fullstack
 yarn config set "strict-ssl" false -g
@@ -164,7 +164,7 @@ yarn install
 
 as local user
 
-```
+```bash
 yo angular translate
 ```
 
@@ -194,9 +194,11 @@ SEE <https://github.com/angular-ui/angular-google-maps>
 
 Install python 3.6 and virtualenv
 
-`virtualenv --no-site-packages /opt/ansible/env36 -p python3.6`
-`source /opt/ansible/env36/bin/activate`
-`pip install -r requirements-current-3.6.txt`
+```bash
+virtualenv --no-site-packages /opt/ansible/env36 -p python3.6
+source /opt/ansible/env36/bin/activate
+pip install -r requirements-current-3.6.txt
+```
 
 ### pre-commit
 
@@ -223,13 +225,13 @@ Run custom hook `pre-commit run git-branches-check`
 
 See [takari-maven-wrapper](https://github.com/takari/maven-wrapper)
 
-```
+```bash
 mvn -N io.takari:maven:wrapper
 ```
 
 ## NODE/NPM Installation
 
-```
+```bash
 #npm cache clean -f
 npm install -g n
 #n stable
@@ -246,13 +248,13 @@ env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn global add puppeteer
 
 Install NPM modules.
 
-```js
+```bash
 sudo npm install.
 ```
 
 Install Javascript dependencies.
 
-```js
+```bash
 bower install
 ```
 
@@ -265,7 +267,7 @@ See [ansible-jenkins-slave-docker](https://hub.docker.com/ansible-jenkins-slave-
 
 #### Pull image
 
-```
+```bash
 docker pull registry.hub.docker.com/nabla/ansible-jenkins-slave-test:latest
 ```
 
@@ -284,7 +286,7 @@ Run `mvnw clean install` for building.
 Run `grunt` for building and `grunt serve` for preview.
 Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building site.
 
-```
+```bash
 mvnw clean install -Dserver=jetty9x
 #mvnw clean install -Dserver=jetty9x -Dskip.npm -Dskip.grunt -Dskip.bower -Dskip.yarn
 mvnw verify gpg:sign -Dgpg.passphrase=thephrase 2>&1 sign.log
@@ -295,13 +297,13 @@ Run `mvnw site -Dskip.npm -Dskip.yarn -Dskip.bower -Dskip.grunt` for building si
 
 as root
 
-```
+```bash
 npm uninstall grunt-contrib-imagemin && npm install grunt-contrib-imagemin
 ```
 
 #### Docker compose
 
-```
+```bash
 cd ./docker-compose
 ./docker-compose-up.sh
 docker-compose -f ./docker-compose.yml -f ./docker-compose.dev.yml -p test up --force-recreate -d web
@@ -328,14 +330,14 @@ mkdocs gh-deploy
 
 ## Fix imagemin upgrade
 
-```
+```bash
 npm install optipng-bin@3.1.4
 grunt imagemin:dist
 ```
 
 ## List browser compatibility
 
-```
+```bash
 npx browserslist
 ```
 
@@ -343,13 +345,13 @@ npx browserslist
 
 test (dev mode)
 
-```
+```bash
 grunt serve watch -v
 ```
 
 test (deployment mode)
 
-```
+```bash
 grunt serve:dist
 ```
 
@@ -373,7 +375,7 @@ Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order
 
 ## Run war in jetty or using cargo
 
-```
+```bash
 mvnw jetty:run-war
 mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
@@ -382,14 +384,14 @@ mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > insta
 
 Needed for having /usr/bin/xml2-config in the PATH
 
-```
+```bash
 sudo apt-get install libxml2-dev libxslt-dev
 ```
 
 Note that ZAProxy must be installed and zap.sh must be available on the executable path for this to work.
 Make sure you are running zap 2.3.0 or 2.3.1
 
-```
+```bash
 export PATH=/usr/local/zap/zap-2.3.0/:${PATH}
 ```
 
@@ -401,7 +403,7 @@ Please use : [ansible-zaproxy](https://github.com/AlbanAndrieu/ansible-zaproxy) 
 
 Start zap by hand:
 
-```
+```bash
 sudo su - jenkins
 export DISPLAY=:99 && nohup /usr/local/zap/zap-2.3.1/zap.sh -daemon -port 8090 > zap.log &
 tail -f zap.log
@@ -411,7 +413,7 @@ tail -f zap.log
 
 How to start selenium grid
 
-```
+```bash
 #ssh -X root@albandrieu.com
 sudo su - jenkins
 #start by hand selenium grid
@@ -453,11 +455,19 @@ curl <http://albandrieu.com:4444/grid/console>
 
 Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium) in order to install selenium hub and node
 
+## Terraform
+
+```bash
+terraform plan --destroy -out=example.plan
+terraform show example.plan
+terraform state list
+```
+
 ## Jenkins
 
 In order to properly configure Jenkins master
 
-```
+```bash
 ADD /zapSource/build/zap in
 sudo nano /etc/init/jenkins.conf
     export JENKINS_HOME
@@ -469,7 +479,7 @@ sudo nano /etc/init/jenkins.conf
 
 Run yslow, Psi or webpagetest
 
-```
+```bash
 #grunt yslow_test
 npm run pretest
 grunt pagespeed
@@ -479,7 +489,7 @@ grunt wpt
 
 ## Refresh from upstream
 
-```
+```bash
 git remote add upstream https://github.com/AlbanAndrieu/nabla-servers-bower-sample.git
 git remote -v
 git fetch upstream
@@ -497,7 +507,7 @@ Page deployed at :
 
 [GitHub gh-pages](http://htmlpreview.github.io/?https://github.com/AlbanAndrieu/nabla-servers-bower-sample/blob/gh-pages/index.html)
 
-```
+```bash
 #VirtualHost *
 sudo nano /etc/apache2/sites-available/awstats.conf
 #VirtualHost *:7075
@@ -521,7 +531,7 @@ In order to workaround issue of bower_components (cssmin) absolute path instead 
 
 ## Run End2End tests
 
-```
+```bash
 mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
 grunt --gruntfile Gruntfile-e2e.js
 ```
@@ -581,16 +591,16 @@ Update README.md Table of Contents
 * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
 * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
 
-`
+```bash
 npm install --save markdown-toc
-`
+```
 
 * [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
-`
+```bash
 brew install github-markdown-toc
 gh-md-toc --insert README.md
-`
+```
 
 ## Other resources
 
