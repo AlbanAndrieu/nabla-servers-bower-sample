@@ -170,7 +170,7 @@ RUN rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ no
 
 RUN chown -R "jenkins:docker" $JENKINS_USER_HOME/.* && chmod 777 ${HOME}
 
-ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"70.0.3538.102"}
+ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"98.0.4758.102"}
 RUN webdriver-manager update --versions.chrome ${WEBDRIVER_CHROME_VERSION}
 
 # drop back to the regular jenkins user - good practice

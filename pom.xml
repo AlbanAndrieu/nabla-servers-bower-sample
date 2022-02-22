@@ -86,7 +86,7 @@
 		<jaxb.version>2.2.11</jaxb.version>
 
 		<jdk.level>11</jdk.level>
-		<jdk.target>${jdk.level}</jdk.target>
+		<jdk.target>1.8</jdk.target>
 		<jdk.version>${jdk.level}</jdk.version>
 		<!--
 		<jdk.level>1.8</jdk.level>
@@ -100,9 +100,9 @@
 		<jetty.ssl.port>9443</jetty.ssl.port>
 
 		<!--
-        <javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
-        <validation.api.version>1.1.0.Final</validation.api.version>
-        -->
+		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
+		<validation.api.version>1.1.0.Final</validation.api.version>
+		-->
 
 		<!--<jetty9.version>9.4.28.v20200408</jetty9.version>-->
 		<jetty9.version>9.4.19.v20190610</jetty9.version>
@@ -903,7 +903,7 @@
 				</dependencies>
 				<configuration>
 					<source>${jdk.level}</source>
-					<!--<target>${jdk.target}</target>-->
+					<target>${jdk.target}</target>
 					<!--<release>11</release>-->
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<verbose>true</verbose>

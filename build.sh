@@ -6,10 +6,10 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/scripts/step-0-color.sh"
 
-echo -e "${magenta} ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update --versions.chrome 97.0.4692.71 ${NC}"
+echo -e "${magenta} ./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update --versions.chrome 98.0.4758.102 ${NC}"
 echo -e "${magenta} npm install -g bower@1.8.13 grunt-cli@1.4.3 webdriver-manager@12.1.8 ${NC}"
 #npm run update-webdriver
-#webdriver-manager update --chrome --versions.chrome=97.0.4692.71
+#webdriver-manager update --chrome --versions.chrome=98.0.4758.102
 
 #TODO
 #npm install grunt-phantomas@0.14.0
