@@ -1,9 +1,11 @@
 
 resource "aws_s3_bucket" "site" {
   bucket = "${var.website_bucket_name}"
-
   tags = {
+    Name        = "website"
+    Environment = "production"
     Github = "nabla-servers-bower-sample"
+    Terraform   = "true"
   }
 }
 
@@ -74,9 +76,16 @@ resource "aws_security_group" "prod-web" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name        = "website"
-    Environment = "production"
-    Terraform   = "true"
-  }
 }
+
+# in main.tf, below the aforementioned boilerplate
+resource "aws_s3_bucket_object" "file" {
+  for_each = fileset(var.website_root, "**")
+
+  bucket      = aws_s3_bucket.site.id
+  key         = each.key
+  source      = "${var.website_root}/${each.key}"
+  source_hash = filemd5("${var.website_root}/${each.key}")
+  acl         = "public-read"
+}
+

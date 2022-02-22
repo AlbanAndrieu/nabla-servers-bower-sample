@@ -26,3 +26,9 @@ variable "website_bucket_name" {
   description = "Nabla bower site"
   default     = "nabla-tf-exemple-bucket"
 }
+# To avoid repeatedly specifying the path, we'll declare it as a variable
+variable "website_root" {
+  type        = string
+  description = "Path to the root of website content"
+  default     = "./dist"
+}

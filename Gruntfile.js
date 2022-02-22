@@ -67,6 +67,7 @@ module.exports = function(grunt) {
   //const imageminPng = require('imagemin-pngquant');
   //const imageminPng = require('imagemin-optipng');
   //const imageminJpeg = require('imagemin-jpegtran');
+  //const imageminPng = require('imagemin-mozjpeg');
 
   //var async = require('async'),
   //    request = require('request');
@@ -755,24 +756,26 @@ module.exports = function(grunt) {
     },
 
     // The following *-min tasks produce minified files in the dist folder
-    //imagemin: {
-    //  dynamic: {
-    //    options: {
-    //        optimizationLevel: 3,
-    //        svgoPlugins: [{removeViewBox: false}],
-    //        use: [imageminPng({quality: [0.5, 0.5]}), imageminJpeg({quality: 50})]
-    //        //use: [imagemin.gifsicle(), imagemin.jpegtran(), imagemin.pngquant(), imagemin.svgo()]
-    //    },
-    //    files: [
-    //      {
-    //        expand: true,
-    //        cwd: "<%= config.app %>/images",
-    //        src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
-    //        dest: "<%= config.dist %>/images",
-    //      },
-    //    ],
-    //  },
-    //},
+    imagemin: {
+      dynamic: {
+        options: {
+						progressive: true
+            //optimizationLevel: 3,
+            //svgoPlugins: [{removeViewBox: false}],
+            //use: [imageminPng()]
+            //use: [imageminPng({quality: [0.5, 0.5]}), imageminJpeg({quality: 50})]
+            //use: [imagemin.gifsicle(), imagemin.jpegtran(), imagemin.pngquant(), imagemin.svgo()]
+        },
+        files: [
+          {
+            expand: true,
+            cwd: "<%= config.app %>/images",
+            src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
+            dest: "<%= config.dist %>/images",
+          },
+        ],
+      },
+    },
 
     svgmin: {
       dist: {
@@ -1051,7 +1054,7 @@ module.exports = function(grunt) {
       dist: [
         "copy:styles",
         "compass:dist",
-        //"imagemin",
+        "imagemin",
         "svgmin"],
     },
 
