@@ -10,7 +10,7 @@ on:
     paths-ignore:
       - '**.md'
   schedule:
-    - cron: '0 6 * * 3'      
+    - cron: '0 6 * * 3'
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -47,8 +47,8 @@ jobs:
           #node-version-file: '.nvmrc'
           node-version: '14.19'
           #check-latest: true
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'          
+          #cache: 'npm'
+          #cache-dependency-path: '**/package-lock.json'
           #registry-url: 'https://registry.npmjs.org'
 
       - name: Install bower
@@ -97,7 +97,7 @@ jobs:
       #    registry: <aws-account-number>.dkr.ecr.<region>.amazonaws.com
       #    username: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #    password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          
+
       #- name: Extract metadata (tags, labels) for Docker
       #  id: meta
       #  uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
