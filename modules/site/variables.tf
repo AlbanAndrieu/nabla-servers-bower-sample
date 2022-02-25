@@ -1,6 +1,7 @@
 
 variable "aws_region" {
   description = "AWS region to launch servers."
+  type        = string
   default     = "eu-central-1"
 }
 
@@ -16,19 +17,29 @@ variable "aws_region" {
 
 variable "github_organization" {
   description = "Github organization"
+  type        = string
   default     = "Nabla"
 }
 
 #variable "github_token" {
 #  description = "Github user token"
 #}
+
 variable "website_bucket_name" {
   description = "Nabla bower site"
+  type        = string
   default     = "nabla-tf-exemple-bucket"
 }
+
 # To avoid repeatedly specifying the path, we'll declare it as a variable
 variable "website_root" {
-  type        = string
   description = "Path to the root of website content"
+  type        = string
   default     = "./dist"
+}
+
+variable "subnets" {
+  description = "Whitelist subnet"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }

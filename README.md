@@ -21,6 +21,7 @@ Javascript project
 [![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
 <!--[![Jenkins Build Status](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly)-->
 [![Build Status](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml)
+[![Release Charts](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/release.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/release.yml)
 
 ## Quality
 
@@ -461,6 +462,16 @@ Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium
 terraform plan --destroy -out=example.plan
 terraform show example.plan
 terraform state list
+```
+
+```bash
+terraform output -raw website_endpoint
+aws s3 cp /workspace/users/albandrieu30/nabla-site-apache/ s3://nabla-tf-exemple-bucket/ --recursive
+```
+
+```bash
+terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' > terraform.gv 
+terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' | dot -Tpng > terraform.png
 ```
 
 ## Jenkins

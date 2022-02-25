@@ -191,7 +191,7 @@ RUN chown -R "jenkins:docker" $JENKINS_USER_HOME/.* && chmod 777 ${HOME}
 # TODO : Here takes too long
 #RUN chmod -R 777 ${HOME}
 
-ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"80.0.3987.106"}
+ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"98.0.4758.102"}
 RUN webdriver-manager update --versions.chrome ${WEBDRIVER_CHROME_VERSION}
 
 # drop back to the regular jenkins user - good practice
