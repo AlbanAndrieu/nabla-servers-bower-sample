@@ -15,7 +15,7 @@ export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_FILE="docker/ubuntu20/Dockerfile"
 export CST_CONFIG="docker/ubuntu20/config.yaml"
 
-export DOCKER_BUILD_ARGS="--pull --network=host --target RUNTIME" #--no-cache --dns 192.168.132.133 
+export DOCKER_BUILD_ARGS="--pull --network=monitoring_default --add-host albandrieu.com:192.168.132.24 --target RUNTIME" #--no-cache --dns 192.168.132.133 NOK --network=bridge
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"

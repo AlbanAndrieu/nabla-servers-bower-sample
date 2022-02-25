@@ -542,7 +542,7 @@ networks:
     #driver: host
     ipam:
       config:
-        - subnet: 172.16.59.0/24 # bypass openvpn
+        - subnet: 172.20.59.0/24 # bypass openvpn
 #  test_default:
 #    external:
 #      name: test_default
