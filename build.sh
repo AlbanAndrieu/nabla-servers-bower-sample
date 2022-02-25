@@ -53,7 +53,7 @@ echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war
 
 ./scripts/docker-build-runtime-20.sh
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
+export DOCKER_TAG=${DOCKER_TAG:-"1.0.3"}
 
 ./scripts/helm-build.sh
 
