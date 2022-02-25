@@ -93,13 +93,13 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 
 # hadolint ignore=DL3008,DL3015
 # See issue https://askubuntu.com/questions/1036278/npm-is-incorrect-version-on-latest-ubuntu-18-04-installation
-#RUN curl -x ${http_proxy} -sL https://deb.nodesource.com/setup_12.x | bash - && \
-RUN wget --no-check-certificate -q -O - https://deb.nodesource.com/setup_12.x | bash - && \
-    apt-get update && apt-get install --no-install-recommends -y nodejs=8.10.0~dfsg-2ubuntu0.4 npm=3.5.2-0ubuntu4 && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN wget x --no-check-certificate -q -O - https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update && apt-get install --no-install-recommends -y nodejs=12* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
-RUN npm install -g npm@6.14.4 && apt-get purge -y npm && ln -s /usr/local/bin/npm /usr/bin/npm
-RUN npm -v && command -v npm # 6.14.4
+#NOK npm@7.11.2 with imagemin
+RUN npm install -g npm@6.14.16 && apt-get purge -y npm
+RUN npm -v && command -v npm # 6.14.16
 RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 bower-nexus3-resolver@1.0.2
 
 ### USER

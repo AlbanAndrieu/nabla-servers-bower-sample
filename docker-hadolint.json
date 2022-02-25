@@ -1,1 +1,1 @@
-[]
+[{"line":96,"code":"DL3008","message":"Pin versions in apt get install. Instead of `apt-get install <package>` use `apt-get install <package>=<version>`","column":1,"file":"/workspace/users/albandrieu30/nabla-servers-bower-sample/scripts/../docker/ubuntu18/Dockerfile","level":"warning"}]

@@ -8,7 +8,7 @@ FROM selenium/standalone-chrome:3.141.59-20210128 as BUILD
 # dockerfile_lint - ignore
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.0"
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
- this image is running on Ubuntu20.04."
+ this image is running on Ubuntu 20.04."
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -91,13 +91,13 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 
 # hadolint ignore=DL3008,DL3015
 RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    apt-get update && apt-get install --no-install-recommends -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 #NOK npm@7.11.2 with imagemin
 RUN npm install -g npm@6.14.16 && apt-get purge -y npm # && ln -s /usr/local/bin/npm /usr/bin/npm
-RUN npm -v && command -v npm # 6.14.12
-RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.4
+RUN npm -v && command -v npm # 6.14.16
+RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.2
 
 ### USER
 
@@ -110,12 +110,8 @@ RUN printf "\033[1;32mFROM UID:GID: ${UID}:${GID}- JENKINS_USER_HOME: ${JENKINS_
     printf "\033[1;32mWITH user: $USER\ngroup: $GROUP \033[0m\n"
 
 RUN groupmod -g ${GID} docker
-#RUN cat /etc/group | grep docker || true
-#RUN id docker
-#RUN getent passwd 2000 || true
 
 # Add user jenkins to the image
-#RUN groupadd -g ${GID} docker && \
 RUN adduser --quiet --uid ${UID} --gid ${GID} --home ${JENKINS_USER_HOME} jenkins && \
     echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers
 # Set password for the jenkins user (you may want to alter this).
@@ -190,8 +186,6 @@ RUN chmod 700 ${HOME}/.ssh && chmod 600 ${HOME}/.ssh/id_rsa* && chmod 644 ${HOME
 
 COPY --chown=jenkins:docker . $JENKINS_USER_HOME/
 
-#RUN npm install --only=production
-#TODO -Dserver=tomcat8x
 RUN ./mvnw -s settings.xml --batch-mode install -Dserver=jetty9x -DskipTests=true
 
 #RUN ls -lrta -R $JENKINS_USER_HOME && ls -lrtan /home/jenkins/target/test.war
@@ -200,8 +194,7 @@ USER root
 
 RUN rm -Rf /tmp/* /home/jenkins/.npm/ /home/jenkins/.git/ /home/jenkins/.node_cache || true
 RUN chown "jenkins:docker" "$JENKINS_USER_HOME"
-#RUN chown -R "jenkins:docker" $JENKINS_USER_HOME/.[^.]* && chmod -R 777 "$JENKINS_USER_HOME/.[^.]*" && ls -lrta -R $JENKINS_USER_HOME
-RUN chmod g-w,o-w ${HOME} # Home directory on the server should not be writable by others
+#RUN chmod g-w,o-w ${HOME} # Home directory on the server should not be writable by others
 
 # drop back to the regular jenkins user - good practice
 USER jenkins

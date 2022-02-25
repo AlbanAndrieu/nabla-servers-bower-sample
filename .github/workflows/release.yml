@@ -2,11 +2,12 @@ name: Release Charts
 
 on:
   push:
-    branches:
-      - master
+    #branches: [ master ]
+    branches-ignore: "dependabot/**"
 
 jobs:
   release:
+    # if commit.author === dependabot && event !== pull_request_target
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

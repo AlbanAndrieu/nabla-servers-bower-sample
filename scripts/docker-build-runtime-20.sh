@@ -10,11 +10,10 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export DOCKER_TAG=${DOCKER_TAG:-"2.0.0"}
 
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
-#export DOCKER_FILE="docker/centos7/Dockerfile"
-#export CST_CONFIG="docker/centos7/config.yaml"
 export DOCKER_FILE="docker/ubuntu20/Dockerfile"
 export CST_CONFIG="docker/ubuntu20/config.yaml"
 
+echo -e "${green} DOCKER_BUILD_ARGS is defined : overriding ${happy_smiley} : ${DOCKER_BUILD_ARGS} ${NC}"
 export DOCKER_BUILD_ARGS="--pull --network=monitoring_default --add-host albandrieu.com:192.168.132.24 --target RUNTIME" #--no-cache --dns 192.168.132.133 NOK --network=bridge
 
 # shellcheck source=/dev/null

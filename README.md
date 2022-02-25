@@ -70,7 +70,7 @@ Javascript project
 
 <!-- toc -->
 
-- [A bower project sample.](#a-bower-project-sample)
+- [A bower project sample](#a-bower-project-sample)
   * [Create project](#create-project)
   * [Tools](#tools)
     + [Internationalization](#internationalization)
@@ -98,8 +98,8 @@ Javascript project
   * [Run war in jetty or using cargo](#run-war-in-jetty-or-using-cargo)
   * [ZaProxy](#zaproxy)
   * [Selenium Grid](#selenium-grid)
+  * [Terraform](#terraform)
   * [Jenkins](#jenkins)
-  * [Screenshot](#screenshot)
   * [Yslow Psi WebPageTest](#yslow-psi-webpagetest)
   * [Refresh from upstream](#refresh-from-upstream)
   * [Deploy to internet](#deploy-to-internet)
@@ -604,6 +604,7 @@ Update README.md Table of Contents
 
 ```bash
 npm install --save markdown-toc
+markdown-toc README.md -i:
 ```
 
 * [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)

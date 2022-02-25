@@ -11,11 +11,11 @@ export DOCKER_TAG=${DOCKER_TAG:-"1.0.0"}
 
 export DOCKER_NAME=${DOCKER_NAME:-"ansible-jenkins-slave-test"}
 export DOCKER_FILE="../docker/ubuntu18/Dockerfile"
-
-#if [ -n "${DOCKER_BUILD_ARGS}" ]; then
-echo -e "${green} DOCKER_BUILD_ARGS is defined : overriding ${happy_smiley} : ${DOCKER_BUILD_ARGS} ${NC}"
-export DOCKER_BUILD_ARGS="--pull --no-cache --target BUILD"
 export CST_CONFIG="docker/ubuntu18/config-BUILD.yaml"
+
+echo -e "${green} DOCKER_BUILD_ARGS is defined : overriding ${happy_smiley} : ${DOCKER_BUILD_ARGS} ${NC}"
+export DOCKER_BUILD_ARGS="--pull --network=host --add-host albandrieu.com:192.168.132.24 --no-cache --target BUILD"
+
 echo -e "${magenta} DOCKER_BUILD_ARGS : ${DOCKER_BUILD_ARGS} ${NC}"
 #else
 #  echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_BUILD_ARGS, use the default one ${NC}"
