@@ -3,6 +3,23 @@ entries:
   helm-sample:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2022-02-25T19:25:48.876969417Z"
+    description: A Helm sample chart for Kubernetes
+    digest: 979ad140fc05076d6add64544b8ec26aa1ea65a094169bfe9a00e6b38608cc78
+    home: https://albandrieu.com/
+    icon: https://albandrieu.com/nabla/index/assets/nabla/nabla-2.png
+    maintainers:
+    - email: alban.andrieu@free.fr
+      name: aandrieu
+    name: helm-sample
+    sources:
+    - https://github.com/AlbanAndrieu/nabla-servers-bower-sample
+    type: application
+    urls:
+    - https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases/download/helm-sample-1.0.3/helm-sample-1.0.3.tgz
+    version: 1.0.3
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2022-02-25T19:23:32.839761457Z"
     description: A Helm sample chart for Kubernetes
     digest: 04c724fa454c28d4241f3586f1f7bf36a0c670895eea61dadf5f14683a4b8c60
@@ -35,4 +52,4 @@ entries:
     urls:
     - https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases/download/helm-sample-1.0.0/helm-sample-1.0.0.tgz
     version: 1.0.0
-generated: "2022-02-25T19:23:32.839790659Z"
+generated: "2022-02-25T19:25:48.876981517Z"
