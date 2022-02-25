@@ -1,0 +1,99 @@
+---
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+        args: ["--maxkb=123"]
+        exclude: >
+          (?x)^(
+              .pnp.cjs|
+              package-lock.json|
+              npm-shrinkwrap.json
+          )$
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+        exclude: >
+          (?x)^(
+              clean.bat|
+              build.bat|
+              mvnw.cmd|
+              .mvn/.*
+          )$
+      - id: check-json
+        exclude: ^.vscode/
+      - id: check-xml
+      - id: check-yaml
+        exclude: >
+          (?x)^(
+              packs/.*|
+              k8s/.*|
+          )$
+      - id: check-symlinks
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: detect-private-key
+        exclude: >
+          (?x)^(
+              roles/jenkins-master/defaults/main.yml|
+              roles/jenkins-master/README.md|
+              ca.key|
+              server.key
+          )$
+      - id: double-quote-string-fixer
+      - id: name-tests-test
+        exclude: >
+          (?x)^(
+              .*/molecule/default/tests/test_default.py
+          )$
+      - id: end-of-file-fixer
+      - id: fix-encoding-pragma
+      - id: requirements-txt-fixer
+      - id: sort-simple-yaml
+      - id: file-contents-sorter
+  - repo: https://github.com/pre-commit/pre-commit.git
+    rev: v2.17.0
+    hooks:
+      - id: validate_manifest
+  - repo: https://github.com/asottile/reorder_python_imports.git
+    rev: v2.7.1
+    hooks:
+      - id: reorder-python-imports
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.2.1
+    hooks:
+      - id: add-trailing-comma
+  - repo: https://github.com/doublify/pre-commit-hindent.git
+    rev: b3680b6ebf9f7cf29b19307f246adef66756feef
+    hooks:
+      - id: hindent
+  - repo: https://github.com/detailyang/pre-commit-shell
+    rev: 1.0.5
+    hooks:
+      - id: shell-lint
+        args: [-x]
+        exclude: >
+          (?x)^(
+              mvnw|
+              hooks|
+          )$
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.31.0
+    hooks:
+      - id: pyupgrade
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.6.0
+    hooks:
+      - id: autopep8
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.9.2
+    hooks:
+      - id: flake8
+        args: [--max-line-length=120]
+  - repo: https://github.com/IamTheFij/ansible-pre-commit
+    rev: v0.1.2
+    hooks:
+      - id: encryption-check
