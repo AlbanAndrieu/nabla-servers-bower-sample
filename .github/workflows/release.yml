@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    # if commit.author === dependabot && event !== pull_request_target
+    #if commit.author === github-actions[bot] && event !== pull_request_target
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

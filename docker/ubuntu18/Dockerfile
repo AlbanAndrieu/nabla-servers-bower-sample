@@ -93,7 +93,7 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 
 # hadolint ignore=DL3008,DL3015
 # See issue https://askubuntu.com/questions/1036278/npm-is-incorrect-version-on-latest-ubuntu-18-04-installation
-RUN wget x --no-check-certificate -q -O - https://deb.nodesource.com/setup_12.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     apt-get update && apt-get install --no-install-recommends -y nodejs=12* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;

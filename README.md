@@ -327,7 +327,8 @@ mkdocs gh-deploy
 #mkdocs gh-deploy -b docs
 ```
 
-[GitHub IO Documentation](http://albanandrieu.github.io/nabla-servers-bower-sample/)
+[GitHub Pages](http://albanandrieu.github.io/nabla-servers-bower-sample/)
+[github-pages](https://docs.github.com/en/pages/getting-started-with-github-pages)
 
 ## Fix imagemin upgrade
 
@@ -511,6 +512,10 @@ git push origin master --force
 ```
 
 ## Deploy to internet
+
+```bash
+grunt gh-pages --gh-pages-tag 'v1.0.3' --gh-pages-message 'Tagging v1.0.3'
+```
 
 Page deployed at :
 
