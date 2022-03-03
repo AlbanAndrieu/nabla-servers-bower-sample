@@ -44,6 +44,9 @@ echo -e "${magenta} npm-license ${NC}"
 #npx npm-check-updates
 ncu || true
 
+#pip install checkov
+#checkov -d  modules/site/
+
 # Whiteshource is doing
 npm ls --only=prod --json
 mvn -T1 dependency:tree -DoutputFile=whitesource_mvn_dependency_tree.txt

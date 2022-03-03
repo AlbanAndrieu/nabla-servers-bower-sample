@@ -166,6 +166,12 @@ repos:
           # Make the tool search for charts only under the `packs/helm-sample/charts` directory
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: '' # change to tag or sha
+    hooks:
+    - id: checkov
+      verbose: true
+      args: [--soft-fail]
   - repo: https://github.com/AlbanAndrieu/nabla-hooks.git
     rev: v1.0.3
     hooks:

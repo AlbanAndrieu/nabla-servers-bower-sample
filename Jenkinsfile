@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 
-String DOCKER_REGISTRY_HUB = env.DOCKER_REGISTRY_HUB ?: 'registry.hub.docker.com'.toLowerCase().trim() // registry.hub.docker.com
+String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "index.docker.io".toLowerCase().trim()
 String DOCKER_ORGANISATION_HUB = 'nabla'.trim()
 String DOCKER_IMAGE_TAG = env.DOCKER_IMAGE_TAG ?: 'latest'.trim()
 //String DOCKER_USERNAME="nabla"
@@ -71,13 +71,7 @@ pipeline {
     }
     environment {
         GIT_BRANCH_NAME = "${params.GIT_BRANCH_NAME}".trim()
-        //BRANCH_JIRA = "${env.BRANCH_NAME}".replaceAll("feature/","")
-        //PROJECT_BRANCH = "${env.GIT_BRANCH}".replaceFirst("origin/","")
         CARGO_RMI_PORT = "${params.CARGO_RMI_PORT}"
-        //WORKSPACE_SUFFIX = "${params.WORKSPACE_SUFFIX}"
-        //echo "JOB_NAME: ${env.JOB_NAME} : ${env.JOB_BASE_NAME}"
-        //TARGET_PROJECT = sh(returnStdout: true, script: "echo ${env.JOB_NAME} | cut -d'/' -f -1").trim()
-        //BRANCH_NAME = "${env.BRANCH_NAME}".replaceAll("feature/","")
         BUILD_ID = "${env.BUILD_ID}"
         SERVER_URL = "${params.SERVER_URL}"
         SERVER_CONTEXT = "${params.SERVER_CONTEXT}"

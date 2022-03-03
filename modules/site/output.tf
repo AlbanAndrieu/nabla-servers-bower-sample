@@ -11,3 +11,7 @@ output "app_bucket" {
 output "website_endpoint" {
   value = aws_s3_bucket.site.website_endpoint
 }
+
+#output "dns_name" {
+#  value = aws_elb.this.dns_name
+#}

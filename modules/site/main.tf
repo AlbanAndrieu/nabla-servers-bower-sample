@@ -2,16 +2,15 @@
 resource "aws_s3_bucket" "site" {
   bucket = "${var.website_bucket_name}"
   tags = {
-    Name        = "website"
+    Name        = "${var.site}"
     Environment = "production"
-    Github = "nabla-servers-bower-sample"
+    Github      = "nabla-servers-bower-sample"
     Terraform   = "true"
   }
 }
 
 resource "aws_s3_bucket_website_configuration" "site" {
   bucket = aws_s3_bucket.site.id
-
 
   index_document {
     suffix = "index.html"
@@ -48,33 +47,6 @@ resource "aws_s3_bucket_policy" "site" {
   ]
 }
 EOF
-
-}
-
-#resource "aws_default_vpc" "default" { }
-
-resource "aws_security_group" "prod-web" {
-  description = "Allow standard htpp and https ports"
-  name = "prod-web"
-
-  ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
 }
 

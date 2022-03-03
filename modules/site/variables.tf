@@ -28,7 +28,7 @@ variable "github_organization" {
 variable "website_bucket_name" {
   description = "Nabla bower site"
   type        = string
-  default     = "nabla-tf-exemple-bucket"
+  default     = "nabla-tf-site-bucket"
 }
 
 # To avoid repeatedly specifying the path, we'll declare it as a variable
@@ -38,8 +38,18 @@ variable "website_root" {
   default     = "./dist"
 }
 
-variable "subnets" {
-  description = "Whitelist subnet"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+#variable "subnets" {
+#  description = "Whitelist subnet"
+#  type        = list(string)
+#  default     = ["0.0.0.0/0"]
+#}
+#
+#variable "security_groups" {
+#  description = "Security groups"
+#  type = list(string)
+#}
+
+variable "site" {
+  description = "Site Name"
+  type        = string
 }
