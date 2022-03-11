@@ -112,7 +112,7 @@ pep8==1.7.1
 pep8-naming==0.7.0
 pexpect==4.6.0
 pies==2.6.7
-Pillow==5.3.0
+Pillow==9.0.1
 pip-review==1.0
 pip-tools==3.1.0
 pip-upgrader==1.4.6
