@@ -104,7 +104,7 @@ openpyxl==2.5.10
 packaging==18.0
 padme==1.1.1
 pandas==0.23.4
-paramiko==2.4.2
+paramiko==2.10.1
 patch==1.16
 pathspec==0.5.9
 pbr==5.1.1
