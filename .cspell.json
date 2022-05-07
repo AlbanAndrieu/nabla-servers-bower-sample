@@ -39,5 +39,15 @@
     "ngdoc",
     "lastspace",
     "navitem",
-  ]
+  ],
+	"languageSettings": [
+		{
+			"languageId": "markdown",
+			"caseSensitive": true
+		},
+		{
+			"languageId": "javascript",
+			"caseSensitive": false
+		}
+	]
 }

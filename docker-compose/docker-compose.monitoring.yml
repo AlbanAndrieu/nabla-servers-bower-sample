@@ -206,7 +206,7 @@ services:
     #  replicas: 1
     volumes:
       - ./configs/blackbox:/config
-    network_mode: "host"      
+    network_mode: "host"
     #networks:
     #  - ingress
 
@@ -367,7 +367,7 @@ services:
     volumes:
       #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
       - /var/run/docker.sock:/var/run/docker.sock
-    network_mode: "host"      
+    network_mode: "host"
     #networks:
     #  - elastic
 
@@ -386,7 +386,7 @@ services:
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /proc:/hostfs/proc:ro
       - /:/hostfs:ro
-    network_mode: "host"      
+    network_mode: "host"
     #networks:
     #  - elastic
 
@@ -411,7 +411,7 @@ services:
       - NET_ADMIN
     # volumes:
     #   - ${PWD}/configs/packetbeat.docker.yml:/usr/share/packetbeat/packetbeat.yml
-    network_mode: "host"    
+    network_mode: "host"
     #networks:
     #  - elastic
 
@@ -531,7 +531,7 @@ services:
 #      - ./data/ntopng:/var/lib/ntopng
 #    network_mode: host
 #    restart: unless-stopped
-    
+
 volumes:
   esdata:
     driver: local

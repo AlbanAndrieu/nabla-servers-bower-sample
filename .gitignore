@@ -1,3 +1,5 @@
+.infracost/
+.terraform/
 
 # Home made custom exception
 

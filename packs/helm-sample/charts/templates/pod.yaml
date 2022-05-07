@@ -29,7 +29,7 @@ spec:
   - ip: "10.41.40.40"
     hostnames:
     - "helm-sample.remote"
-    - "helm-sample.remote"      
+    - "helm-sample.remote"
   containers:
   - name: termination-demo-container
     image: debian

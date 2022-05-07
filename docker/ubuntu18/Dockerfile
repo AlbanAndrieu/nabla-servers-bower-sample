@@ -273,4 +273,3 @@ EXPOSE 8080
 
 #HEALTHCHECK NONE
 HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
-

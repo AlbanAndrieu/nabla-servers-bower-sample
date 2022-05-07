@@ -82,13 +82,11 @@ Javascript project
     + [pre-commit specific hook](#pre-commit-specific-hook)
     + [takari maven wrapper](#takari-maven-wrapper)
   * [NODE/NPM Installation](#nodenpm-installation)
+    + [Using nvm](#using-nvm)
+    + [Using apt](#using-apt)
   * [Installation](#installation)
   * [Build & development](#build--development)
     + [Docker image](#docker-image)
-      - [Pull image](#pull-image)
-      - [Start container](#start-container)
-      - [Maven](#maven)
-      - [Docker compose](#docker-compose)
   * [Documentation](#documentation)
   * [Fix imagemin upgrade](#fix-imagemin-upgrade)
   * [List browser compatibility](#list-browser-compatibility)
@@ -98,7 +96,6 @@ Javascript project
   * [Run war in jetty or using cargo](#run-war-in-jetty-or-using-cargo)
   * [ZaProxy](#zaproxy)
   * [Selenium Grid](#selenium-grid)
-  * [Terraform](#terraform)
   * [Jenkins](#jenkins)
   * [Yslow Psi WebPageTest](#yslow-psi-webpagetest)
   * [Refresh from upstream](#refresh-from-upstream)
@@ -109,8 +106,17 @@ Javascript project
   * [Eclipse](#eclipse)
     + [Import as Maven project](#import-as-maven-project)
     + [Java](#java)
-    + [Javascript](#javascript)
-  * [Update README.md Table of Contents](#update-readmemd-table-of-contents)
+  * [Terraform](#terraform)
+    + [Init](#init)
+    + [Applying terraform](#applying-terraform)
+    + [Update terraform documentation](#update-terraform-documentation)
+  * [Requirements](#requirements)
+  * [Providers](#providers)
+  * [Modules](#modules)
+  * [Resources](#resources)
+  * [Inputs](#inputs)
+  * [Outputs](#outputs)
+    + [Update README.md](#update-readmemd)
   * [Other resources](#other-resources)
 - [Contributing](#contributing)
   * [License](#license)
@@ -232,7 +238,28 @@ mvn -N io.takari:maven:wrapper
 
 ## NODE/NPM Installation
 
+### Using nvm
+
+See [nvm](https://github.com/nvm-sh/nvm)
+
 ```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+nvm ls-remote --lts
+nvm --version
+nvm version
+
+nvm install 14
+nvm install 16
+nvm use 16
+```
+
+### Using apt
+
+```bash
+curl -sL https://deb.nodesource.com/setup_16.x | bash - &&
+apt-get update && apt-get install --no-install-recommends -y nodejs=16*
+
 #npm cache clean -f
 npm install -g n
 #n stable
@@ -250,7 +277,7 @@ env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn global add puppeteer
 Install NPM modules.
 
 ```bash
-sudo npm install.
+npm install
 ```
 
 Install Javascript dependencies.
@@ -457,24 +484,6 @@ curl <http://albandrieu.com:4444/grid/console>
 
 Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium) in order to install selenium hub and node
 
-## Terraform
-
-```bash
-terraform plan --destroy -out=example.plan
-terraform show example.plan
-terraform state list
-```
-
-```bash
-terraform output -raw website_endpoint
-aws s3 cp /workspace/users/albandrieu30/nabla-site-apache/ s3://nabla-tf-exemple-bucket/ --recursive
-```
-
-```bash
-terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' > terraform.gv 
-terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' | dot -Tpng > terraform.png
-```
-
 ## Jenkins
 
 In order to properly configure Jenkins master
@@ -482,9 +491,9 @@ In order to properly configure Jenkins master
 ```bash
 ADD /zapSource/build/zap in
 sudo nano /etc/init/jenkins.conf
-    export JENKINS_HOME
-    export ZAPROXY_HOME=/zapSource/build/zap
-    export PATH=$PATH:$ZAPROXY_HOME
+export JENKINS_HOME
+export ZAPROXY_HOME=/zapSource/build/zap
+export PATH=$PATH:$ZAPROXY_HOME
 ```
 
 ## Yslow Psi WebPageTest
@@ -579,30 +588,112 @@ Exclude validation for
 - app
 - coverage
 
-### Javascript
+## Terraform
 
-WARNING : Javascript is not yet well supported in Eclipse
+### Init
 
-Project | Import as project "app"
-Project Properties | JavasScript | Include Paths | Source | Add folders "script" "bower_components"
 
-Based on the following sample : <https://github.com/oasp/oasp4js>
+#### Using terraform cloud to store Terraform State
 
-Project | Configure | Convert to AngularJS Project…
-Project Properties | Resource | Link Resources | ../bower_components
-Project Properties | Tern | Script Paths | Add folder "app" -> JavaScript files and others available in project explorer
-Project Properties | Resource | Resource Filters | Exclude | Exclude all | Name node_modules, Name dist -> fixes most Web Resource Problems
+```bash
+terraform login
+terraform init -backend-config=config.remote.tfbackend
 
-WARNING : Do not forget the / in order to be considered as a folder in bower_components/
+terraform workspace list
+```
 
-Project Properties | Validation | Project specific settings | Web Resources Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined JavaScript file" in bower_components/
-Project Properties | Validation | Project specific settings | HTML Angular Syntax Validator | Settings | Exclude Group | Folder: app/bower_components -> fixes "Undefined CSS class" in bower_components/
+#### Using consul backend to Terraform State in KV
 
-See <https://github.com/oasp/oasp4js/issues/24> for more details
+```bash
+terraform init -backend-config=config.consul.tfbackend
+terraform init -reconfigure
+#terraform init \
+#-backend-config="address=10.30.0.66:8500" \
+#-backend-config="path=uat/terraform_state" \
+#-backend-config="scheme=http"
+terraform plan
+```
 
-Update README.md Table of Contents
------------------------------------
+### Applying terraform
 
+Apply vault configuration
+
+```bash
+terraform validate
+terraform init
+terraform fmt
+terraform plan -input=false --out plan
+terraform apply
+terraform show
+terraform destroy
+```
+
+```bash
+terraform plan --destroy -out=example.plan
+terraform show example.plan
+terraform state list
+```
+
+```bash
+terraform output -raw website_endpoint
+aws s3 cp /workspace/users/albandrieu30/nabla-site-apache/ s3://nabla-tf-exemple-bucket/ --recursive
+```
+
+```bash
+terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' > terraform.gv
+terraform graph | grep -v -e 'meta' -e 'close' -e 's3' -e 'vpc' | dot -Tpng > terraform.png
+```
+
+### Update terraform documentation
+
+```bash
+terraform-docs .
+```
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.1.6 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.11.0 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_site"></a> [site](#module\_site) | ./modules/site | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | resource |
+| [aws_security_group.prod_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to launch servers. | `string` | `"eu-central-1"` | no |
+| <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization) | Github organization | `string` | `"Nabla"` | no |
+| <a name="input_site"></a> [site](#input\_site) | Site Name | `string` | n/a | yes |
+| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site | `string` | `"nabla-tf-site-bucket"` | no |
+| <a name="input_website_root"></a> [website\_root](#input\_website\_root) | Path to the root of website content | `string` | `"./dist"` | no |
+| <a name="input_whitelist"></a> [whitelist](#input\_whitelist) | n/a | `list(string)` | n/a | yes |
+
+## Outputs
+
+No outputs.
+<!-- END_TF_DOCS -->
+
+### Update README.md
 
 * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
 * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
@@ -618,6 +709,7 @@ markdown-toc README.md -i:
 brew install github-markdown-toc
 gh-md-toc --insert README.md
 ```
+
 
 ## Other resources
 

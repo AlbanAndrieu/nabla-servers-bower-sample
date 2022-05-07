@@ -1,0 +1,4 @@
+#terraform init -backend-config=config.remote.tfbackend
+workspaces { name = "nabla" }
+hostname     = "app.terraform.io"
+organization = "nabla"

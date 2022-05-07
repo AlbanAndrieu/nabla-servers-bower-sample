@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "site" {
-  bucket = "${var.website_bucket_name}"
+  bucket = var.website_bucket_name
   tags = {
     Name        = "${var.site}"
     Environment = "production"
@@ -25,7 +25,7 @@ resource "aws_s3_bucket_website_configuration" "site" {
 resource "aws_s3_bucket_acl" "site" {
   bucket = aws_s3_bucket.site.id
 
-  acl    = "public-read"
+  acl = "public-read"
 }
 
 resource "aws_s3_bucket_policy" "site" {
@@ -60,4 +60,3 @@ EOF
 #  source_hash = filemd5("${var.website_root}/${each.key}")
 #  acl         = "public-read"
 #}
-
