@@ -5,12 +5,7 @@
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
-    # pre-commit-hooks is not working on both environment
-    # You will have to switch
-    # pre-commit-hooks.git from v2.1.0 to v2.4.0
-    #    rev: v2.1.0 # ok python3.6  # 18.04.3
-    #    rev: v2.2.3 # ok python3.6  # 19.04 but failing on 18.04.3
-    rev: v4.2.0 # ok python3.6 on Ubuntu 18.04 AND python3.7 on Ubuntu 19.04
+    rev: v4.2.0 # ok python3.6 on Ubuntu 18.04 AND python3.7 on Ubuntu 19.04 AND python3.8 on Ubuntu 20.04
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -73,8 +68,6 @@ repos:
     rev: v3.1.0
     hooks:
       - id: reorder-python-imports
-    #       language_version: python3
-    #       language_version: python2.7
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v2.2.3
     hooks:
@@ -131,12 +124,12 @@ repos:
     hooks:
       - id: htmllint
         args: [--config, .htmlhintrc]
-      - id: markdown-toc
-        args: [--maxdepth, "3", -i]
+    #  - id: markdown-toc
+    #    args: [--maxdepth, "3", -i]
       - id: dockerfile_lint
         #args: [--json, --verbose, --dockerfile]
         args:
-          [--permissive, --verbose, --dockerfile, ./docker/ubuntu18/Dockerfile]
+          [--permissive, --verbose, --dockerfile, ./docker/ubuntu20/Dockerfile]
     #-   repo: https://github.com/psf/black
     #    rev: 20.8b1
     #    hooks:
@@ -181,6 +174,6 @@ repos:
     rev: v1.0.3
     hooks:
       - id: git-branches-check
-        always_run: true
+        always_run: false
         args: [--max=3]
         verbose: true
