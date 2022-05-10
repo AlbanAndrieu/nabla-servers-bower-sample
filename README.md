@@ -1,3 +1,4 @@
+<!-- markdown-link-check-disable-next-line -->
 ## [![Nabla](http://albandrieu.com/nabla/index/assets/nabla/nabla-4.png)](https://github.com/AlbanAndrieu) nabla-servers-bower-sample
 
 [![License: APACHE](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
@@ -116,6 +117,7 @@ Javascript project
   * [Resources](#resources)
   * [Inputs](#inputs)
   * [Outputs](#outputs)
+    + [Check docker image quality](#check-docker-image-quality)
     + [Update README.md](#update-readmemd)
   * [Other resources](#other-resources)
 - [Contributing](#contributing)
@@ -693,23 +695,58 @@ terraform-docs .
 No outputs.
 <!-- END_TF_DOCS -->
 
+
+### Check docker image quality
+
+#### Docker dive
+
+```bash
+dive --ci --json docker-dive-stats.json "${DOCKER_ORGANISATION}/pgclient:0.1.0" 1>docker-dive.log 2>docker-dive-error.log
+```
+
+#### Docker linter
+
+```bash
+sudo npm install -g dockerfile_lint
+dockerfile_lint --json --verbose --dockerfile Dockerfile
+```
+
+```bash
+brew install hadolint
+hadolint Dockerfile
+```
+
+#### mega-linter
+
+```bash
+npx mega-linter-runner --install
+npx mega-linter-runner
+```
+
+#### Check secret
+
+```
+npx @secretlint/quick-start "**/*"
+```
+
+#### Check cspell
+
+```
+npx cspell "**/*.{txt,js,md}"
+```
+
 ### Update README.md
 
 * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
 * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
 
-```bash
-npm install --save markdown-toc
-markdown-toc README.md -i:
 ```
-
-* [github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
-
-```bash
-brew install github-markdown-toc
-gh-md-toc --insert README.md
+sudo npm install -g markdown-toc
+markdown-toc README.md -i
+markdown-toc CHANGELOG.md -i
+sudo npm install -g markdown-link-check
+markdown-link-check ./README.md
 ```
-
 
 ## Other resources
 

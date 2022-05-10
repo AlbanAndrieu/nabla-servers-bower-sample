@@ -5,8 +5,8 @@
 #FROM ubuntu:18.04 as BUILD
 FROM selenium/standalone-chrome:3.141.59-20201117 as BUILD
 
-# dockerfile_lint - ignore
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
+# dockerfile_lint - ignore
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu 18.04."
 

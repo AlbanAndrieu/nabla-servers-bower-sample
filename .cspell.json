@@ -1,12 +1,11 @@
 {
-  "version": "0.1",
-  "language": "en",
   "ignorePaths": [
     "**/node_modules/**",
     "**/bower_components/**",
     "**/vscode-extension/**",
     "**/.git/**",
     ".vscode",
+    "megalinter",
     "package-lock.json",
     "playbooks/files/python/**",
     "requirements*.txt",
@@ -24,7 +23,8 @@
     "roles/**",
     "report"
   ],
-  // words - list of words to be always considered correct
+  "language": "en",
+  "noConfigSearch": true,
   "words": [
     "Andrieu",
     "Alban",
@@ -34,20 +34,50 @@
     "virtualenv",
     "tocstop",
     "toc",
+    "jenkins",
     "Jenkinsfile",
     "graphviz",
     "ngdoc",
     "lastspace",
     "navitem",
+    "Gitter",
+    "Xing",
+    "zaproxy",
+    "checkmarx",
+    "thirdparty",
+    "phantomas",
+    "pagespeed",
+    "webpagetest",
+    "yslow",
+    "junitperf",
+    "jira",
+    "Jacoco",
+    "jmeter",
+    "gatling",
+    "arquillian",
+    "cafile",
+    "ansible",
+    "remvove",
+    "autoupdate",
+    "takari",
+    "mvnw",
+    "mkdocs",
+    "browserslist",
+    "tinylr",
+    "nohup",
+    "firefox",
+    "Gruntfile",
+    "awstats"
   ],
-	"languageSettings": [
-		{
-			"languageId": "markdown",
-			"caseSensitive": true
-		},
-		{
-			"languageId": "javascript",
-			"caseSensitive": false
-		}
-	]
+  "languageSettings": [
+  {
+    "languageId": "markdown",
+    "caseSensitive": true
+  },
+  {
+    "languageId": "javascript",
+    "caseSensitive": false
+  }
+  ],
+  "version": "0.2"
 }
