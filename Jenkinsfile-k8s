@@ -1,0 +1,629 @@
+#!/usr/bin/env groovy
+@Library(value='jenkins-pipeline-scripts@master', changelog=false) _
+
+String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "registry.hub.docker.com".toLowerCase().trim() // registry.hub.docker.com
+String DOCKER_ORGANISATION_HUB="nabla".trim()
+String DOCKER_IMAGE_TAG=dockerImageTag(isLatest: true)
+//String DOCKER_USERNAME="nabla"
+String DOCKER_NAME="ansible-jenkins-slave-docker".trim()
+
+String DOCKER_REGISTRY_HUB_URL=env.DOCKER_REGISTRY_HUB_URL ?: "https://${DOCKER_REGISTRY_HUB}".trim()
+String DOCKER_REGISTRY_HUB_CREDENTIAL=env.DOCKER_REGISTRY_HUB_CREDENTIAL ?: "hub-docker-nabla".trim()
+String DOCKER_IMAGE="${DOCKER_ORGANISATION_HUB}/${DOCKER_NAME}:${DOCKER_IMAGE_TAG}".trim()
+
+String DOCKER_IMAGE="${DOCKER_ORGANISATION}/${DOCKER_NAME}:${DOCKER_IMAGE_TAG}".trim()
+
+String DOCKER_RUNTIME_TAG="latest".trim()
+String DOCKER_RUNTIME_NAME="bower-fr-integration-test".trim() // Runtime image using --target runtime
+String DOCKER_RUNTIME_IMG="${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}:${DOCKER_RUNTIME_TAG}".trim()
+
+String DOCKER_OPTS_COMPOSE = getDockerOpts(isDockerCompose: true, isLocalJenkinsUser: false)
+
+String CHART_NAME = "helm-sample".toLowerCase().trim()
+
+containers = [:]
+
+pipeline {
+  agent {
+    docker {
+      image DOCKER_IMAGE
+      reuseNode true
+      registryUrl DOCKER_REGISTRY_ACR_URL
+      registryCredentialsId DOCKER_REGISTRY_ACR_CREDENTIAL
+      args DOCKER_OPTS_COMPOSE
+      label 'molecule'
+    }
+  }
+  parameters {
+    booleanParam(defaultValue: false, description: 'Dry run', name: 'DRY_RUN')
+    booleanParam(defaultValue: false, description: 'Clean before run', name: 'CLEAN_RUN')
+    booleanParam(defaultValue: false, description: 'Debug run', name: 'DEBUG_RUN')
+    string(name: "DRAFT_BRANCH", defaultValue: "", description: "Draft branch to override")
+    booleanParam(defaultValue: true, description: 'Run draft', name: 'BUILD_DRAFT')
+    booleanParam(defaultValue: true, description: 'Run helm', name: 'BUILD_HELM')
+    booleanParam(defaultValue: true, description: 'Run newman', name: 'BUILD_NEWMAN')
+    booleanParam(defaultValue: true, description: 'Run nightly build', name: 'BUILD_NIGHLTY')
+    booleanParam(defaultValue: true, description: 'Change version in helm charts', name: 'HELM_VERSION')
+    booleanParam(defaultValue: true, description: 'Package helm charts, otherwise pulling them', name: 'HELM_PACKAGE')
+    booleanParam(defaultValue: false, description: 'Upgrade helm charts, otherwise unsinstall/install', name: 'HELM_UPGRADE')
+    booleanParam(defaultValue: true, description: 'Deploy helm charts', name: 'HELM_DEPLOY')
+    booleanParam(defaultValue: true, description: 'Push helm charts', name: 'HELM_PUSH')
+    string(name: "HELM_RELEASE", defaultValue: "my", description: "Helm charts release name")
+    string(name: "HELM_TAG", defaultValue: "", description: "Helm charts tag")
+    string(name: "HELM_PUSH_TARGET", defaultValue: "", description: "Helm charts repository to push to")
+    string(defaultValue: "/home/jenkins/.kube/config", name: "KUBECONFIG", description: "Kubernetes configuration directory", trim: true)
+    string(defaultValue: "devops-nabla", name: "HELM_KUBECONTEXT", description: "Kubernetes cluster", trim: true)
+    string(defaultValue: "nabla-standalone-aandrieu-pr", name: "HELM_NAMESPACE", description: "Kubernetes namespace", trim: true)
+  }
+  environment {
+    DOCKER_TAG = "1.0.0"
+    HELM_PROJECT = "nabla"
+    HELM_PROJECT_TESTED = "nabla-tested"
+  }
+  options {
+    //skipDefaultCheckout()
+    disableConcurrentBuilds()
+    //ansiColor('xterm')
+    timeout(time: 60, unit: 'MINUTES')
+    timestamps()
+  }
+  stages {
+    stage('\u2756 Runtime - Draft - Remote') {
+      when {
+        beforeAgent true
+        expression { env.BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+        expression { params.BUILD_DRAFT == true }
+      }
+      steps {
+        script {
+          setUp(branchName: "SAMPLE", cronString: "")
+
+          // RejectedAccessException: No such field found:  currentBuild.name = "TOTOTTO"
+          //setBuildName // currentBuild.displayName = "TITITIT"
+          //currentBuild.description = "<b><font color=\"red\">TODO</font></b> helmPackage: <a href='${env.BUILD_URL}artifact/helm-package-helm-sample.log/*view*/'>helmPackage</a>"
+
+          //setBuildUpstream()
+
+          echo "CHANGE_TARGET : ${env.CHANGE_TARGET}"
+          echo "CHANGE_BRANCH : ${env.CHANGE_BRANCH}"
+
+          try {
+            // Jenkins X
+            echo "PIPELINE_KIND : ${env.PIPELINE_KIND}"
+            echo "PIPELINE_CONTEXT : ${env.PIPELINE_CONTEXT}"
+            echo "REPO_OWNER : ${env.REPO_OWNER}"
+            echo "REPO_NAME : ${env.REPO_NAME}"
+            echo "JOB_TYPE : ${env.JOB_TYPE}"
+
+            echo "+++++++++++++++"
+
+            //http://[jenkins-server]/job/[job-name]/[build-number|lastBuild]/logText/progressiveText?start=0
+
+            setBuildDescription(description: "<br/>")
+
+            echo "description : " + currentBuild?.description
+
+            //echo "consoleText : ${env.BUILD_URL}consoleText"
+
+            //currentBuild.description += """
+            //<iframe src="${env.BUILD_URL}consoleText" style='width: 80%; height: 500px'>CONSOLE</iframe>
+            //"""
+
+            if (isManager()) {
+              //def summary = manager.createSummary("success.gif")
+              def summary = manager.createSummary("images/48x48/terminal.gif")
+              //summary.appendText("<h1>Please check console</h1>", false, false, false, "black")
+              //summary.appendText("<iframe src='${env.BUILD_URL}consoleText' style='width: 80%; height: 500px'>CONSOLE</iframe>", false)
+              summary.appendText("Please check console <a href='${env.BUILD_URL}consoleText'>here</a></br>", false, false, false, "black")
+
+              manager.addShortText("Checked", "black", "lightgray", "0px", "white")
+            }
+          } catch (exc) {
+            echo "Warn: There was a problem with testing stuff : " + exc.toString()
+          }
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          if (!params.DRY_RUN && !params.RELEASE) {
+
+            //isStartedByUser = isStartedByUser(DEBUG_RUN: true)
+            //echo " isStartedByUser : " + isStartedByUser
+
+            k8sConfig()
+
+            // TODO WRONG here env.HELM_NAMESPACE still nabla-standalone-aandrieu-pr
+            echo "HELM_NAMESPACE : " + env.HELM_NAMESPACE
+            echo "HELM_RELEASE : " + env.HELM_RELEASE
+
+            String INGRESS_NAMESPACE = helmNamespace()
+
+            String GLOBAL_INGRESS = "global.ingress.host=${INGRESS_NAMESPACE}.devops-nabla.devops.albandrieu.com"
+            echo "GLOBAL_INGRESS : ${GLOBAL_INGRESS} - " + env.HELM_NAMESPACE
+
+            currentBuild.description+='<h3>Validation description:</h3>'
+
+            echo "Init result: ${currentBuild.result}"
+            echo "Init currentResult: ${currentBuild.currentResult}"
+
+            echo "ENV HELM_KUBECONTEXT : " + env.HELM_KUBECONTEXT
+
+            echo "============================= POPEYE"
+
+            k8sPopeye(popeyeClusterName: "TEST",
+              skipPopeyeCleaning: false,
+              skipPopeyeCluster: true,
+              skipPopeyeContext: true,
+              popeyeContext: params.HELM_KUBECONTEXT,
+              allowEmptyResults: true)
+
+            echo "Init result: ${currentBuild.result}"
+            echo "Init currentResult: ${currentBuild.currentResult}"
+
+            echo "============================= DOCKER LINT"
+
+            dockerLint(dockerFileBuildPath: "./docker/ubuntu18/", skipDockerLintFailure: false, dockerFileId: "1")
+            dockerHadoLint(dockerFileBuildPath: "./docker/centos7/", skipDockerLintFailure: false, dockerFileId: "2")
+
+            echo "============================= HELM_TAG"
+
+            echo "PARAMS HELM_TAG : " + params.HELM_TAG
+            // TODO
+            echo "ENV HELM_TAG : " + env.HELM_TAG
+
+            if (isStartedByUser()) {
+              if (isManager()) {
+                def summary = manager.createSummary("images/48x48/user.gif")
+                summary.appendText("<h1>Started manually</h1>", false)
+              } // isManager
+              //echo "Override : Force helm deploy, when triggered by a user"
+              //env.HELM_DEPLOY = true
+              // NOK WORKING params.HELM_DEPLOY = true
+            }
+            echo "ENV HELM_DEPLOY : " + env.HELM_DEPLOY
+
+            echo "Init result: ${currentBuild.result}"
+            echo "Init currentResult: ${currentBuild.currentResult}"
+
+            echo "============================= dockerRegistryTag"
+
+            String dockerRegistryTag = dockerRegistryTag(skipDockerRegistryTagFailure: false)
+            //dockerRegistryRepository: "${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}"
+            echo " dockerRegistryTag : " + dockerRegistryTag
+
+            if (isStartedByUser(DEBUG_RUN: true)) {
+              echo "Started by user or trigger"
+            }
+
+            if (isHelmTag()) {
+              //echo "Started by upstream"
+
+              // redefine external (goal is to be independent from docker image later)
+              helmRepoExternal(HELM_REGISTRY_RISK_EXTERNAL_URL: "https://registry-tmp.albandrieu.com/chartrepo/nabla")
+
+              echo "Init result: ${currentBuild.result}"
+              echo "Init currentResult: ${currentBuild.currentResult}"
+
+            } // if DRY_RUN
+        } //script
+      } // steps
+    } // stage Draft - Remote
+    stage('\u2756 Runtime - Draft - Local') {
+      when {
+        beforeAgent true
+        expression { env.BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+        expression { params.BUILD_DRAFT == true }
+      }
+      steps {
+        script {
+          if (!params.DRY_RUN && !params.RELEASE) {
+
+            echo "============================= draftStage helm-sample "
+
+            containers = draftStage(draftPack: "helm-sample",
+              skipDraftUpdate: true,
+              skipK8sCleaning: true,
+              //skipDraftPack: false,
+              imageName: "${DOCKER_RUNTIME_NAME}",
+              helmChartName: CHART_NAME,
+              //dockerRegistryRepository: "${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}",
+              dockerTag: "${env.DOCKER_TAG}",
+              //buildArgs: "${DOCKER_BUILD_ARGS}",
+              configFile: "docker/ubuntu18/config-BUILD.yaml",
+              //configFile: "docker/centos7/config.yaml",
+              dockerFileBuildPath: "docker/ubuntu18/",
+              //skipStableRepo: false,
+              //skipCST: true,
+              skipCSTFailure: true,
+              skipAqua: true,
+              skipAquaFailure: true,
+              //skipDockerLint: true,
+              skipDockerLintFailure: true,
+              skipHelmPushFailure: true,
+              skipHelmLintFailure: true,
+              isHelmcurl: false,
+              isHelmPush: false,
+              isTemplate: false,
+              //isDependencyBuild: true,
+              isDependencyUpdate: true,
+              skipDependencyFailure: true,
+              skipHelmDeployDefault: false,
+              //skipHelmDeploy: !params.HELM_DEPLOY.toBoolean(),
+              skipTest: true,
+              skipContainers: true,
+              isHelmChartAppVersionTagLatest: true,
+              isHelmChartAppVersionTagLatestForce: true,
+              skipPackageFailure: true,
+              skipInstallFailure: true,
+              isRegistryFormat: false,
+              isCsv: true,
+              containers) {
+                sh '''pwd
+                #TARGET_FILE=`ls $WORKSPACE/target/test.war; ls $WORKSPACE/*VERSION.TXT `;
+                #echo ${TARGET_FILE}
+                mkdir -p $WORKSPACE/packs/app_target
+                #cp $TARGET_FILE $WORKSPACE/packs/app_target/;
+                ls -lrta ../
+                ls -lrta ./
+                ls -lrta $WORKSPACE/packs/ || true
+                ls -lrta ./app_target || true
+                ls -lrta ../${DOCKER_RUNTIME_NAME} || true
+                '''
+            } // draftStage
+
+
+            if (params.HELM_PACKAGE == true) {
+              //sh "ls -lrta ./${DOCKER_RUNTIME_NAME}/helm-sample-${env.DOCKER_TAG}-prerelease+build.tgz"
+
+              sh "ls -lrta ./${DOCKER_RUNTIME_NAME}/helm-sample-${env.DOCKER_TAG}*.tgz"
+            } // HELM_PACKAGE
+
+          } // if DRY_RUN
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          draftDockerTagTextFile(draftPack: "helm-sample",
+            helmChartName: CHART_NAME)
+
+        } // script
+      } // steps
+    } // stage Draft - Local
+    stage('\u2756 Runtime - Helm - Debug') {
+      when {
+        beforeAgent true
+        expression { env.BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+        expression { params.BUILD_HELM == true }
+      }
+      steps {
+        script {
+
+          echo "============================= helm repo add "
+
+          sh "ls -lrta ${params.KUBECONFIG} "
+          //sh "helm --debug repo add bitnami https://charts.bitnami.com/bitnami --force-update"
+          //sh "helm --debug repo add --kubeconfig '${params.KUBECONFIG}' jenkins https://charts.jenkins.io --force-update"
+          //sh "helm --debug repo add --kubeconfig '${params.KUBECONFIG}' monocular https://helm.github.io/monocular"
+
+          echo "============================= : k8sLog"
+
+          // TODO FAILING on purpose
+          k8sLog(kubeServiceName: "helm-sample",
+            kubeNodePort: "30037"
+          )
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          echo "============================="
+
+          String DEPLOYMENT_NAME = "${env.HELM_RELEASE}-${CHART_NAME}".toLowerCase().trim()
+
+          // ln -s helm-sample charts
+
+          echo "============================= : helmVersion"
+
+          helmVersion(helmChartName: CHART_NAME,
+            //helmDir: "packs/" + CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmUmbrellaChartVersionTag: params.HELM_TAG,
+            isHelmChartAppVersionTag: false,
+            skipVersion: !params.HELM_VERSION.toBoolean(),
+            pomFile: "pom.xml")
+
+          echo "============================= : helmPackage"
+
+          sh "rm -f ./helm-sample-*.tgz" // Clean all before helmPackage that will be used by helmDeploy
+
+          helmPackage(helmChartName: CHART_NAME,
+            //helmDir: "packs/" + CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            isHelmChartAppVersionTag: true,
+            helmChartAppVersionTag: env.DOCKER_TAG,
+            skipPackage: !params.HELM_PACKAGE.toBoolean(),
+            pomFile: "./pom.xml")
+
+          if (params.HELM_PACKAGE == true) {
+            //sh "ls -lrta ./helm-sample-${env.DOCKER_TAG}-prerelease+build.tgz"
+            sh "ls -lrta ./*.tgz"
+            //sh "rm -f ./helm-sample-*-prerelease*.tgz" // Clean all before helmDeploy
+            //sh "rm -f ./helm-sample-1.0.0-prerelease+build.tgz"
+          }
+
+          echo "============================= : helmDoc"
+
+          helmDoc(helmChartName: CHART_NAME,
+            helmDocSearchFilePath: "./packs/" + CHART_NAME + "/charts/",
+            skipDoc: false)
+
+          helmEval(helmChartName: CHART_NAME,
+            helmEvalName: "k8s/*.yaml",
+            skipEval: false)
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          echo "============================= : helmDeploy"
+
+          // helmPackage created ./helm-sample-${env.DOCKER_TAG}-prerelease+build.tgz
+
+          helmDeploy(helmChartName: CHART_NAME,
+            //helmDir: "packs/" + CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            skipK8sCleaning: true,
+            helmRelease: env.HELM_RELEASE,
+            pomFile: "./pom.xml",
+            skipStableRepo: false,
+            //helmUmbrellaChartVersionTag: params.HELM_TAG,
+            skipInstall: false,
+            //helmInstallTimeout: "20m0s".trim(),
+            isDevel: true,
+            isHelmChartAppVersionTag: true,
+            //helmChartVersion: "${env.DOCKER_TAG}-prerelease+build", // TEST OK this is working only on PR, because it is not allowed on default
+            //helmChartVersion: env.HELM_TAG,
+            helmChartAppVersionTag: env.DOCKER_TAG,
+            helmChartVersionTag:  env.DOCKER_TAG,
+            helmSetOverride: "--set imagePullPolicy=Always",
+            //isHelmInstallVersionTag: false,
+            //helmInstallVersionTag: env.HELM_TAG,
+            skipVersion: !params.HELM_VERSION.toBoolean(),
+            skipPackage: !params.HELM_PACKAGE.toBoolean(),
+            // isWait: true, // TODO
+            isAtomic: false,
+            //skipDelete: true, //  Error: cannot re-use a name that is still in use
+            skipHelmDeployDefault: false,
+            //skipHelmDeploy: !params.HELM_DEPLOY.toBoolean(),
+            skipInstallFailure: false)
+
+          echo "============================="
+
+          echo "============================= : k8sLog"
+
+          k8sLog(kubeServiceName: "helm-sample",
+            skipLogFailure: false)
+
+          // See https://kubernetes.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/
+          //sh "kubectl get pod helm-sample -o go-template="{{range .status.containerStatuses}}{{.lastState.terminated.message}}{{end}}"
+
+          echo "============================= : helmShow"
+
+          helmShow(helmChartName: CHART_NAME)
+
+          echo "============================= : helmStatus"
+
+          helmStatus(helmRelease: env.HELM_RELEASE)
+
+
+          echo "============================= : k8sEvents"
+
+          k8sEvents()
+
+          echo "============================= : k8sWait"
+
+          k8sWait(skipWaitFailure: true)
+
+          echo "============================= : k8sWait job"
+
+          k8sWait(skipWaitFailure: true,
+            kubeRessource: "job",
+            kubeCondition: "complete")
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+        } // script
+      } // steps
+    } // stage Runtime - Helm - Debug
+    stage('\u2756 Runtime - Helm - Push') {
+      when {
+        beforeAgent true
+        expression { env.BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+        expression { params.BUILD_HELM == true }
+      }
+      environment {
+        HELM_PUSH_TARGET = "nabla"
+      }
+      steps {
+        script {
+
+          helmRepoExternal()
+
+          sh "kubectl get pv --sort-by=.spec.capacity.storage"
+
+          echo "============================= : helmDelete "
+
+          helmDelete(helmChartName: CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            skipDeleteFailure: true,
+            helmRelease: env.HELM_RELEASE)
+
+          echo "============================= : helmRun - " + env.HELM_PUSH_TARGET
+
+          // kubeval k8s/*.yaml
+
+          helmRun(helmChartName: CHART_NAME,
+            //helmDir: "packs/" + CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            //dockerRegistryRepository: "${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME}",
+            helmRelease: env.HELM_RELEASE,
+            skipK8sCleaning: true,
+            pomFile: "./pom.xml",
+            skipHelmLintFailure: true,
+            isTemplate:false,
+            skipInstall: false,
+            skipDelete: true,
+            skipDoc: false,
+            skipEval: false,
+            helmEvalName: "k8s/*.yaml",
+            //isHelm2: false,
+            isHelmChartAppVersionTag: false,
+            helmChartVersion: env.DOCKER_TAG,
+            helmChartAppVersionTag: env.DOCKER_TAG,
+            helmChartVersionTag:  env.DOCKER_TAG,
+            helmInstallVersionTag: env.HELM_TAG,
+            //isHelmPush: params.HELM_PUSH.toBoolean(),
+            skipHelmDeployDefault: true,
+            //skipHelmDeploy: true,
+            //HELM_PROJECT: "nabla",
+            skipHelmPushFailure: false)
+
+          echo "============================= : helmGet"
+
+          helmGet(helmRelease: env.HELM_RELEASE)
+
+          echo "============================= : helmPull - " + env.HELM_PUSH_TARGET
+
+          helmPull(helmChartName: CHART_NAME,
+            helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+            isVersionsRegexTimestampMandatory: false,
+            skipPullFailure: false,
+            helmRelease: env.HELM_RELEASE)
+
+          echo "============================="
+
+          sh "kubectl get deploy -o wide -n " + env.HELM_NAMESPACE
+
+
+          echo "============================= : k8sImage"
+
+          k8sImage(helmChartName: CHART_NAME,
+            helmRelease: env.HELM_RELEASE,
+            imageName: "${DOCKER_RUNTIME_NAME}")
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+        } // script
+      } // steps
+    } // stage Runtime - Helm - Push
+    stage('\u2756 Runtime - Newman') {
+      when {
+        beforeAgent true
+        expression { env.BRANCH_NAME ==~ /release\/.+|master|develop|PR-.*|feature\/.*|bugfix\/.*/ }
+        expression { params.BUILD_NEWMAN == true }
+      }
+      environment {
+        NEWMAN_PATH = "test/postman/"
+        HELM_PUSH_TARGET = "nabla-tested"
+      }
+      steps {
+        script {
+
+          echo "============================= : NEW URL"
+
+          testUrl(testUrl: "http://helm-sample.devops-nabla.devops.albandrieu.com/#/")
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          echo "============================= : Jenkins API"
+
+          def albandri = testUrl(testUrl: 'http://albandri.albandrieu.com:8686/api/json?pretty=true')
+
+          echo "============================= : OLD URL"
+
+          try {
+            testUrl(testUrl: 'http://helm-sample.devops-nabla.devops.albandrieu.com/#/')
+          } catch (Exception e) {
+            echo "ERROR OLD URL not found"
+          }
+
+          // http://10.1.161.244:8080/api/
+          // http://10.152.183.83/api/
+          echo "Run newman tests for ${CHART_NAME}"
+          dir("${env.NEWMAN_PATH}") {
+            // TODO https://www.npmjs.com/package/newman-reporter-htmlextra
+            // docker run -t -v $(pwd):/etc/newman dannydainton/htmlextra run collection.json -e environment.json -r htmlextra
+            newmanTest(newmanFilePath: "./",
+              allowEmptyResults: true)
+            //sh """
+            //newman run \'collection.json\' -e \'env/environment.json\' -k \
+            //-r htmlextra,junit,cli --reporter-htmlextra-title \'API Non Regression tests\' \
+            //--reporter-htmlextra-export \'newman/newman.html\' || true
+            //"""
+          } // dir
+
+          // helmPush works only on develop / release branch
+          if (isReleaseBranch()) {
+
+            echo "============================= : helmPush - " + env.HELM_PUSH_TARGET
+
+            helmPush(HELM_PROJECT: env.HELM_PUSH_TARGET,
+              helmChartName: CHART_NAME,
+              helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+              helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+              skipPushFailure: false,
+              helmRelease: env.HELM_RELEASE)
+
+            echo "============================= : helmPull - " + env.HELM_PUSH_TARGET
+
+            helmPull(HELM_PROJECT: env.HELM_PUSH_TARGET,
+              helmChartName: CHART_NAME,
+              helmFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+              helmChartFileName: "./packs/" + CHART_NAME + "/charts/Chart.yaml",
+              isVersionsRegexTimestampMandatory: false,
+              skipPullFailure: false,
+              helmRelease: env.HELM_RELEASE)
+
+          } // isReleaseBranch
+
+          if (isManager()) {
+            def summary = manager.createSummary("images/48x48/system-log-out.gif")
+            summary.appendText("<h1>Finished</h1>", false)
+          } // isManager
+
+          echo "Init result: ${currentBuild.result}"
+          echo "Init currentResult: ${currentBuild.currentResult}"
+
+          withLogParser(unstableOnWarning: false, failBuildOnError: false)
+
+        } // script
+      } // steps
+      //post {
+      //  always {
+      //    sh "ls -lrta ${env.NEWMAN_PATH}/"
+      //    junit testResults: "${env.NEWMAN_PATH}/*.xml", healthScaleFactor: 2.0, allowEmptyResults: true, keepLongStdio: true
+      //    publishHTML (target: [
+      //          allowMissing: false,
+      //          alwaysLinkToLastBuild: false,
+      //          keepAll: true,
+      //          reportDir: "${env.NEWMAN_PATH}",
+      //          reportFiles: 'newman.html',
+      //          reportName: "Newman - non regression tests"
+      //    ])
+      //  } // always
+      //} // post
+    } // stage Runtime - Newman
+  } // stages
+  //post {
+  //  cleanup {
+  //    wrapCleanWsOnNode(isEmailEnabled: false)
+  //  } // cleanup
+  //} // post
+} // pipeline

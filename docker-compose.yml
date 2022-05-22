@@ -1,0 +1,90 @@
+# To execute this docker-compose yml file use docker-compose -f <file_name> up
+# Add the "-d" flag at the end for deattached execution
+version: "3.7"
+services:
+  sample:
+    image: nginx
+  # build:
+  #  image: sample/test:latest
+  #  container_name: sample
+  #  hostname: sample
+  #  domainname: sample.fr
+  #  cpu_shares: 73
+  #  cpu_quota: 50000
+  #  cpuset: 0-2
+  #  mem_limit: 1024m
+  #  restart: on-failure:5
+    restart: unless-stopped
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
+#          - engine.labels.operatingsystem == ubuntu 18.04
+        preferences:
+          - spread: node.labels.zone
+        com.example.description: "This label will appear on the web service"
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.25'
+          memory: 200M
+  #  ulimits:
+  #    nproc: 65535
+  #    nofile:
+  #      soft: 20000
+  #      hard: 40000
+  #  #command: sleep infinity
+  #  #read_only: true
+  #  tmpfs:
+  #    - /run
+  #    - /tmp:rw,exec,nosuid,size=2g
+  #    - /home/sample/data/tmp:rw,exec,nosuid,size=2g
+  #    - /home/sample/data/work:rw,exec,nosuid,size=2g
+  #    - /home/sample/data/profiles:rw,exec,nosuid,size=2g
+  #    - /home/sample/data/executions:rw,exec,nosuid,size=2g
+  #    - /home/sample/data/sessions:rw,exec,nosuid,size=2g
+  #    - /home/sample/webapps:rw,exec,nosuid,size=2g
+    ports:
+      - 8080:80 #nginx
+  #   - "1099:1099" #jmx remote
+  #   - "9090:9090" #http
+  #   - "9443:9443" #https
+  #   - "2924:2924" #eclipse
+    depends_on:
+      - db
+    networks:
+#      - frontend
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 6
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD: root
+      - MYSQL_DATABASE: nabla
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nabla
+      MYSQL_USER: nabla
+      MYSQL_PASSWORD: nabla
+    volumes:
+      #- "./conf.d:/etc/mysql/conf.d:ro"
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+#networks:
+#  frontend: {}

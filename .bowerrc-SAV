@@ -1,0 +1,13 @@
+{
+  "directory": "bower_components",
+  "analytics": false,
+  "timeout": 120000,
+  "registry": "http://albandrieu.com:5678",
+  "register": "http://albandrieu.com:5678",
+  "publish": "http://albandrieu.com:5678",
+  "storage": {
+    "packages" : ".bower/packages",
+    "registry" : ".bower/registry"
+  },
+  "tmp": ".bower/tmp"
+}

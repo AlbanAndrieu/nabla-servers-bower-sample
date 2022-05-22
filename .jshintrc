@@ -1,0 +1,6 @@
+{
+  "extends": ".jshintrc-base",
+  "node": true,
+  "predef": ["angular", "inject", "window", "document", "$scope"],
+  "globals": {}
+}

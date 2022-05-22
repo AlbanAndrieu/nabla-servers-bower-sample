@@ -1,0 +1,76 @@
+.navbar-header .navbar-toggle {
+  float: left;
+  margin-left: ($grid-gutter-width / 2);
+}
+
+.language-select {
+  $height: $font-size-base * $line-height-base + 14px;
+
+  line-height: $height;
+  margin-top: 8px;
+
+  select {
+    appearance: menulist-button;
+    height: $height;
+  }
+}
+
+/* Page headers */
+.bs-header {
+  padding: 30px 15px 40px; /* side padding builds on .container 15px, so 30px */
+  font-size: 16px;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+  color: #cdbfe3;
+  background-color: #563d7c;
+  background-image: url("../images/header.png");
+}
+
+.bs-header a {
+  color: #fff;
+  font-weight: normal;
+}
+
+.bs-header h1 {
+  color: #fff;
+}
+
+.bs-header p {
+  font-weight: 200;
+  line-height: 1.4;
+}
+
+.bs-header .container {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .bs-header {
+    font-size: 21px;
+    text-align: left;
+  }
+
+  .bs-header h1 {
+    font-size: 60px;
+    line-height: 1;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-header h1,
+  .bs-header p {
+    margin-right: 380px;
+  }
+}
+
+.bs-social {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .bs-social {
+    text-align: left;
+  }
+}

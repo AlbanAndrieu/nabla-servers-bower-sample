@@ -1,0 +1,148 @@
+import groovy.json.JsonSlurper
+import hudson.model.*
+
+//def createPropertyList() {
+//    def daysToKeep         = isReleaseBranch() ? '30' : '10'
+//    def numToKeep          = isReleaseBranch() ? '20' : '5'
+//    def artifactDaysToKeep = isReleaseBranch() ? '30' : '10'
+//    def artifactNumToKeep  = isReleaseBranch() ? '3'  : '1'
+//    def cronString         = isReleaseBranch() ? 'H H(3-7) * * 1-5' : ''
+//    def triggers           = isReleaseBranch() ? [snapshotDependencies(), cron(cronString)] : [cron(cronString)]
+//    def propertyList = [
+//        buildDiscarder(
+//            logRotator(
+//                daysToKeepStr:         daysToKeep,
+//                numToKeepStr:          numToKeep,
+//                artifactDaysToKeepStr: artifactDaysToKeep,
+//                artifactNumToKeepStr:  artifactNumToKeep
+//            )
+//        ), pipelineTriggers(triggers)
+//    ]
+//    return propertyList
+//}
+
+//def pathInBuildChangeset(def queriedPath) {
+//    boolean queriedPathChanged = false
+//    for (changeSetList in currentBuild.changeSets) {
+//        for (changeSet in changeSetList.getItems()) {
+//            for (affectedFile in changeSet.affectedFiles) {
+//                   if ( affectedFile.path ==~ queriedPath  ) {
+//                    queriedPathChanged = true
+//                }
+//            }
+//        }
+//    }
+//    return queriedPathChanged
+//}
+
+// TODO below is not working
+@NonCPS
+def checkAPI() {
+
+  def pattern = ~/.*src\/main\/java\/(.*)\.java:[^ ]* (.*) is Sun proprietary API and may be removed in a future release.*/
+  def map = [:]
+  manager.build.logFile.eachLine { line ->
+  	matcher = pattern.matcher(line)
+  	if(matcher.matches()) {
+  		ownClass = matcher.group(1).replaceAll("/", ".")
+  		sunClass = matcher.group(2)
+  		map[ownClass] = sunClass
+  	}
+  }
+  if(map.size() > 0) {
+  	def summary = manager.createSummary("warning.gif")
+  	summary.appendText("Classes using Sun proprietary API:<ul>", false)
+  	map.each {
+  		summary.appendText("<li><b>$it.key</b> - uses $it.value</li>", false)
+  	}
+  	summary.appendText("</ul>", false)
+  }
+
+  if(manager.logContains(".*uses or overrides a deprecated API.*")) {
+  	manager.addWarningBadge("Thou shalt not use deprecated methods.")
+  	manager.createSummary("warning.gif").appendText("<h1>You have been warned!</h1>", false, false, false, "red")
+  	manager.buildUnstable()
+  }
+
+} // checkAPI
+
+
+@NonCPS
+def cleanAction() {
+	currentBuildNumber = manager.build.number
+	if (manager.setBuildNumber(currentBuildNumber - 1)) {
+		actions = manager.build.actions
+		actions.each { action ->
+			if (action.metaClass.hasProperty(action, "text") && action.text.contains("deployed")) {
+				actions.remove(action)
+			}
+		}
+		currDate = new Date().dateTimeString
+		manager.addShortText("undeployed: $currDate", "grey", "white", "0px", "white")
+		manager.createSummary("gear2.gif").appendText("<h2>Undeployed: $currDate</h2>", false, false, false, "grey")
+	} // if
+}
+
+// See https://gist.github.com/mskutin/3b13e089eedcd365ac9a9af30ef503d2
+def manualPromotion() {
+    // we need a first milestone step so that all jobs entering this stage are tracked an can be aborted if needed
+    milestone 1
+    // time out manual approval after ten minutes
+    timeout(time: 10, unit: 'MINUTES') {
+        input message: "Does Pre-Production look good?"
+    }
+    // this will kill any job which is still in the input step
+    milestone 2
+}
+
+def getRepoSlug() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    org = tokens[tokens.size()-3]
+    repo = tokens[tokens.size()-2]
+    echo "ORG : ${org} - REPO : ${repo}"
+    //GITHUB
+    //return "${org}/${repo}"
+    //STASH
+    return "${org}/repos/${repo}"
+}
+
+// TODO TO BE tested with STASH
+void setBuildStatus(context, message, state) {
+  // partially hard coded URL because of https://issues.jenkins-ci.org/browse/JENKINS-36961, adjust to your own GitHub instance
+  step([
+      $class: "GitHubCommitStatusSetter",
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/AlbanAndrieu/${getRepoSlug()}"],
+      //reposSource: [$class: "ManuallyEnteredRepositorySource", url: ""https://github.com/${getRepoSlug()}"],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+  ]);
+}
+
+def getRepoURL() {
+  sh "git config --get remote.origin.url > .git/remote-url"
+  return readFile(".git/remote-url").trim()
+}
+
+def updateGithubCommitStatus(build) {
+  // workaround https://issues.jenkins-ci.org/browse/JENKINS-38674
+  repoUrl = getRepoURL()
+  commitSha = getCommitSha()
+
+  step([
+    $class: 'GitHubCommitStatusSetter',
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: repoUrl],
+    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
+    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
+    statusResultSource: [
+      $class: 'ConditionalStatusResultSource',
+      results: [
+        [$class: 'BetterThanOrEqualBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: build.description],
+        [$class: 'BetterThanOrEqualBuildResult', result: 'FAILURE', state: 'FAILURE', message: build.description],
+        [$class: 'AnyBuildResult', state: 'FAILURE', message: 'Loophole']
+      ]
+    ]
+  ])
+}
+
+return this

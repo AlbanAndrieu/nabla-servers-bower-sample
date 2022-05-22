@@ -1,0 +1,94 @@
+{{!
+This is a mustache template suitable for creating a HTML change log
+for git projects where bitbucket and Jira are used and integrated.
+
+It assumes that the git branches are created from Jira (the branch
+name always start with the Jira Issue ID) and that the branches
+are merged back to master (or the main branch that you would like
+to create the log on).
+
+NOTE! You need to set the ignore commits if message matches pattern to:
+^(?!Merged).*
+}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Change Log</title>
+<style>
+h2 {
+  text-decoration: underline;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+tr:nth-child(even){background-color: #f2f2f2}
+th {
+  background-color: #0099cc;
+  color: white;
+}
+</style>
+</head>
+
+
+{{#tags}}
+
+  <link rel="stylesheet" href="/jenkins/plugin/jacoco/css/style.css">
+  <a href="changes"><img src="/jenkins/static/4a96b86e/images/48x48/notepad.png" style="width: 48px; height: 48px; " class="icon-notepad icon-xlg"></a>
+  <b>Change Log - {{name}}</b>
+
+  <table>
+  <tr>
+  <th>Jira ID</th>
+  <th>Jira Title</th>
+  <th>Git merges</th>
+  </tr>
+
+  {{#issues}}
+    {{#hasIssue}}
+      <tr>
+      <td>
+      <a href="http://albandrieu.com/jira/browse/{{issue}}">{{issue}}</a>
+      </td>
+      <td>
+      {{title}}
+      </td>
+      <td>
+      {{#commits}}
+        {{{messageTitle}}}
+        <br/>
+        <a href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample/commits/{{hash}}">{{hash}}</a> {{authorName}} <i>{{commitTime}}</i>
+        <p/>
+      {{/commits}}
+      </td>
+      </tr>
+    {{/hasIssue}}
+    {{^hasIssue}}
+      {{#commits}}
+        <tr>
+        <td>
+        N/A
+        </td>
+        <td>
+        N/A
+        </td>
+        <td>
+        {{{messageTitle}}}
+        <br/>
+        <a href="https://github.com/AlbanAndrieu/nabla-servers-bower-sample/commits/{{hash}}">{{hash}}</a> {{authorName}} <i>{{commitTime}}</i>
+        </td>
+        </tr>
+      {{/commits}}
+    {{/hasIssue}}
+  {{/issues}}
+
+  </table>
+
+{{/tags}}
+
+</html>

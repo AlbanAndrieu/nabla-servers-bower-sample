@@ -1,0 +1,52 @@
+{
+  "PAGE_TITLE": "i18n pour AngularJS applications",
+  "PAGE_CONTENT": "Comment traduire des applications AngularJS sans rafraichir la page avec angular-translate",
+
+  "XSS_TEST": "{{username}}",
+
+  "views.Fork me on": "Fork moi sur",
+
+  "views.index.Nabla": "Nabla",
+  "views.index.Project version": "1.0.0",
+  "views.index.Home": "Maison",
+  "views.index.Blog": "Blog",
+  "views.index.Sample": "Example",
+  "views.index.Project": "Projet",
+  "views.index.Other": "Autre",
+  "views.index.About": "A propos",
+  "views.index.Contact": "Contact",
+  "views.index.from the Yeoman team": "de la part de l'équipe Nabla",
+  "views.index.Submit": "Soumettre",
+  "views.index.Profile": "Profile",
+  "views.index.Login": "Connexion",
+  "views.index.Logout": "Déconnexion",
+  "views.index.Language": "Langage",
+  "views.index.Search": "Recherche",
+
+  "views.main.i18n for your AngularJS applications": "i18n pour AngularJS applications",
+  "views.main.I'm Yeoman": "Je suis Yeoman",
+  "views.main.Always a pleasure scaffolding your apps.": "Toujours un plaisir d'échaffauder vos apps.",
+  "views.main.Splendid!": "Splendid!",
+  "views.main.HTML5 Boilerplate": "HTML5 Boilerplate",
+  "views.main.HTML5 Boilerplate description": "HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.",
+  "views.main.Angular": "Angular",
+  "views.main.Angular description": "AngularJS est un ensemble d'outils permettant de construire les meilleurs framework most pour vos application de developpement.",
+  "views.main.Karma": "Karma",
+  "views.main.Karma description": "Spectacular Test Runner pour JavaScript.",
+  "views.main.Bootstrap": "Bootstrap",
+  "views.main.Bootstrap description": "Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.",
+
+  "views.about.My name is...": "Mon nom est Alban Andrieu.",
+  "views.about.I'm Web Developer and...": "Je suis un Developer Web et un ingénieur en informatique avec une vaste experience dans les domains suivant Front-End, Back-End, DevOps, Sysadmin, Security, Build, Release, QA.",
+  "views.about.Author of": "L 'auteur de ce site est joignable sur",
+  "views.about.Have successful experience...": "J'ai de l'experience pour réaliser des applications Mobile Web du début a plus de 50k téléchargement (en tant que Manager, Developpeur, Testeur et Administrateur).",
+  "views.about.JS, HTML and CSS enthusiast...": "JS, HTML et CSS enthousiast. Amusez-vous bien :)",
+
+  "views.contacts.Follow me on": "Suis moi sur",
+  "views.contacts.My": "Moi",
+  "views.contacts.Mail me": "Ecrivez moi",
+  "views.contacts.Call me": "Appelez moi",
+  "views.contacts.Find me": "Où me trouver",
+
+  "directives.language-select.Language": "{{views.index.Language}}"
+}
