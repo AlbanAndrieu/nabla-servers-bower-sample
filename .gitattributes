@@ -1,0 +1,8 @@
+* text=auto
+*.png diff=exif
+*.doc diff=doc
+*.xls diff=xls
+*.xlsx diff=xlsx
+*.xlsm diff=xlsm
+*.ppt diff=ppt
+*.odt diff=odt

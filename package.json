@@ -1,0 +1,195 @@
+{
+  "name": "nabla-servers-bower-sample",
+  "description": "Bower sample",
+  "branchVersion": "^1.0.2",
+  "branchPattern": "1.0.*",
+  "version": "1.0.2",
+  "keywords": [
+    "nabla"
+  ],
+  "author": "Alban Andrieu <alban.andrieu@free.fr> (http://albandrieu.com)",
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "homepage": "http://albandrieu.com",
+  "repository": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample",
+  "files": [
+    "lib",
+    "dist",
+    "contrib"
+  ],
+  "bugs": {
+    "url": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,css,scss,less,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": "^12.20.0 || >=14.19.0 || >=16.0.0",
+    "npm": ">=6.14.16",
+    "node-gyp": ">=3.0.3",
+    "grunt": ">=1.4.1"
+  },
+  "engine-strict": true,
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "plugins": [
+      "compat"
+    ],
+    "rules": {
+      "compat/compat": "warn"
+    }
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-no-unsupported-browser-features"
+    ],
+    "rules": {
+      "plugin/no-unsupported-browser-features": true
+    },
+    "defaultSeverity": "warning"
+  },
+  "dependencies": {
+    "cli": "^1.0.1",
+    "markdown-toc": "^1.2.0",
+    "social-likes-next": "^1.1.0"
+  },
+  "devDependencies": {
+    "@secretlint/secretlint-rule-preset-recommend": "^4.1.3",
+    "apache-server-configs": "3.2.1",
+    "async": "3.1.0",
+    "autoprefixer": "9.6.5",
+    "bower": "1.8.12",
+    "bower-nexus3-resolver": "1.0.2",
+    "codeclimate-test-reporter": "0.5.1",
+    "connect-pushstate": "1.1.0",
+    "cssnano": "4.1.10",
+    "engine.io": "3.4.0",
+    "engine.io-client": "3.4.0",
+    "eslint": "8.6.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-prettier": "3.1.2",
+    "fs-extra": "8.1.0",
+    "graceful-fs": "4.2.9",
+    "grunt": "1.4.1",
+    "grunt-angular-templates": "1.2.0",
+    "grunt-banner": "0.6.0",
+    "grunt-bower-task": "0.5.0",
+    "grunt-browser-sync": "2.2.0",
+    "grunt-build-control": "0.7.1",
+    "grunt-check-dependencies": "1.0.0",
+    "grunt-cli": "1.4.3",
+    "grunt-compare-size": "0.4.2",
+    "grunt-concurrent": "3.0.0",
+    "grunt-contrib-clean": "2.0.0",
+    "grunt-contrib-compass": "1.1.1",
+    "grunt-contrib-compress": "1.6.0",
+    "grunt-contrib-concat": "1.0.1",
+    "grunt-contrib-connect": "2.1.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "3.0.0",
+    "grunt-contrib-htmlmin": "3.1.0",
+    "grunt-contrib-imagemin": "^4.0.0",
+    "grunt-contrib-jshint": "2.1.0",
+    "grunt-contrib-uglify": "5.0.1",
+    "grunt-contrib-watch": "1.1.0",
+    "grunt-critical": "2.0.1",
+    "grunt-filerev": "2.3.1",
+    "grunt-gh-pages": "^4.0.0",
+    "grunt-jscs": "3.0.1",
+    "grunt-karma": "^4.0.0",
+    "grunt-karma-coveralls": "^2.4.3",
+    "grunt-mocha": "^1.1.0",
+    "grunt-newer": "1.3.0",
+    "grunt-ng-annotate": "4.0.0",
+    "grunt-ng-constant": "2.0.3",
+    "grunt-nsp": "2.3.1",
+    "grunt-pagespeed": "2.0.1",
+    "grunt-perfbudget": "0.2.0",
+    "grunt-postcss": "0.9.0",
+    "grunt-protractor-runner": "5.0.0",
+    "grunt-release": "0.14.0",
+    "grunt-replace": "^2.0.1",
+    "grunt-retire": "^1.0.8",
+    "grunt-svgmin": "6.0.0",
+    "grunt-text-replace": "0.4.0",
+    "grunt-uncss": "0.9.1",
+    "grunt-usemin": "3.1.1",
+    "grunt-version-check": "0.3.8",
+    "grunt-wiredep": "3.0.1",
+    "grunt-wpt": "^3.1.4",
+    "imagemin-mozjpeg": "^10.0.0",
+    "istanbul-lib-coverage": "3.0.0",
+    "jasmine-bail-fast": "0.0.1",
+    "jasmine-core": "3.5.0",
+    "jasmine-reporters": "2.3.2",
+    "jasmine-spec-reporter": "4.1.0",
+    "jit-grunt": "0.10.0",
+    "jshint-stylish": "2.2.1",
+    "json2csv": "5.0.0",
+    "karma": "4.4.1",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-coverage": "2.1.0",
+    "karma-firefox-launcher": "1.3.0",
+    "karma-ie-launcher": "1.0.0",
+    "karma-jasmine": "3.1.1",
+    "karma-junit-reporter": "2.0.1",
+    "karma-ng-html2js-preprocessor": "1.0.0",
+    "karma-ng-scenario": "1.0.0",
+    "karma-script-launcher": "1.0.0",
+    "karma-tapfile-reporter": "0.0.1",
+    "lint-staged": "10.1.2",
+    "load-grunt-tasks": "5.1.0",
+    "nue": "0.7.1",
+    "phantomas": "2.4.0",
+    "pixrem": "5.0.0",
+    "pre-commit": "1.2.2",
+    "protractor": "7.0.0",
+    "qs": "6.9.3",
+    "remark-cli": "^10.0.0",
+    "remark-preset-lint-recommended": "^6.1.1",
+    "request": "2.88.2",
+    "secretlint": "^4.1.3",
+    "semver": "6.3.0",
+    "serve-index": "1.9.1",
+    "serve-static": "1.14.1",
+    "snyk": "1.305.0",
+    "socket.io-client": "2.3.0",
+    "time-grunt": "2.0.0",
+    "vinyl-fs": "3.0.3",
+    "webpagetest": "^0.5.0",
+    "wiredep": "4.0.0",
+    "xml2js": "0.4.23",
+    "yo": "3.1.1"
+  },
+  "optionalDependencies": {
+    "fsevents": "2.1.3"
+  },
+  "scripts": {
+    "install": "./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update --versions.chrome 98.0.4758.102",
+    "update-webdriver": "./node_modules/webdriver-manager/bin/webdriver-manager update --versions.chrome 98.0.4758.102",
+    "update-webdriver-protractor": "./node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update --versions.chrome 98.0.4758.102",
+    "test": "grunt test",
+    "eslint": "eslint . --ext .js,.cjs,.mjs",
+    "lint": "eslint",
+    "lint-fix": "eslint --fix",
+    "lintme": "lint-staged"
+  },
+  "private": true
+}

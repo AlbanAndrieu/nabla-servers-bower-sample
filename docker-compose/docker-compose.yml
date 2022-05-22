@@ -1,0 +1,96 @@
+---
+version: "3.7"
+
+services:
+  web:
+    #    image: ${DOCKER_REGISTRY}/${DOCKER_ORGANISATION}/${DOCKER_RUNTIME_NAME:-bower-fr-integration-test}:${DOCKER_TAG:-latest}
+    image: nabla/nabla-servers-bower-sample:latest
+    #    container_name: sample
+    hostname: sample
+    #domainname: sample.fr
+    #restart: on-failure:2
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    #command: sleep infinity
+    command: ["/home/jenkins/test.war"]
+    #command: ["--version"]
+    #read_only: true
+    #tmpfs:
+    #  - /run
+    #  - /tmp:rw,exec,nosuid,size=2g
+    #  - /home/sample/data/tmp:rw,exec,nosuid,size=2g
+    #  - /home/sample/data/work:rw,exec,nosuid,size=2g
+    #  - /home/sample/data/profiles:rw,exec,nosuid,size=2g
+    #  - /home/sample/data/executions:rw,exec,nosuid,size=2g
+    #  - /home/sample/data/sessions:rw,exec,nosuid,size=2g
+    #  - /home/sample/webapps:rw,exec,nosuid,size=2g
+    #ports:
+    # - "1099:1099" #jmx remote
+    # - "9090:8080" #http
+    # - "9443:9443" #https
+    # - "2924:2924" #eclipse
+    links:
+      - db
+      - cache
+    healthcheck:
+      test: ["CMD", "curl", "-s", "-f", "http://localhost:8080/#/"]
+
+  selenium-hub:
+    image: selenium/hub:3.12.0-cobalt
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+
+  chrome:
+    image: selenium/node-chrome:3.12.0-cobalt
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+
+  firefox:
+    image: selenium/node-firefox:3.12.0-cobalt
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+    volumes:
+      - "./conf.d:/etc/mysql/conf.d:ro"
+
+  cache:
+    image: redis:latest
+
+# use docker volume to persist test data outside of a container.
+#volumes:
+#  test_data:
+
+networks:
+  #host-exposed
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.57.0/24 # bypass openvpn
+  #inside:
+  #  internal: true
+
+secrets:
+  ca.crt:
+    file: ./config/ssl/ca/ca.crt
+  logstash.yml:
+    file: ./config/logstash/logstash.yml
+  logstash.keystore:
+    file: ./config/logstash/logstash.keystore
+  logstash.conf:
+    file: ./config/logstash/pipeline/logstash.conf

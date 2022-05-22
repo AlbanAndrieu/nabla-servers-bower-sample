@@ -1,0 +1,49 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug (Launch) - App",
+      "request": "launch",
+      "mainClass": "com.test.project.sample.App",
+      "console": "internalConsole",
+      "env": {
+        "HOST": "127.0.0.1",
+        "PORT": 9090
+      },
+      "stepFilters": {
+        "classNameFilters": [
+          "java.*",
+          "javax.*",
+          "com.sun.*",
+          "sun.*",
+          "sunw.*",
+          "org.omg.*"
+        ],
+        "skipSynthetics": true,
+        "skipStaticInitializers": true
+        //"skipConstructors": true
+      }
+    },
+    {
+      "type": "java",
+      "name": "Debug Cargo (Attach)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "preLaunchTask": "mvnCargoDebug"
+    },
+    {
+      "type": "java",
+      "name": "Debug Tomcat (Attach)",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005,
+      "preLaunchTask": "run-tomcat",
+      "postDebugTask": "stop-tomcat"
+    }
+  ]
+}

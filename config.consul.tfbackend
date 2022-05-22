@@ -1,0 +1,4 @@
+#terraform init -backend-config=config.consul.tfbackend
+address = "10.30.0.66:8500"
+path    = "uat/terraform.tfstate"
+scheme  = "http"

@@ -1,0 +1,21 @@
+{
+  "directory": "bower_components",
+  "analytics": false,
+  "timeout": 120000,
+  "registry": "https://registry.bower.io",
+  "register": "http://albandrieu.com:8081/repository/bower-all/",
+  "publish": "http://albandrieu.com:8081/repository/bower-internal/",
+  "storage": {
+    "packages" : ".bower/packages",
+    "registry" : ".bower/registry"
+  },
+  "tmp": ".bower/tmp",
+  "allow_root": true,
+  "resolvers" : [ "bower-nexus3-resolver" ],
+  "shallowCloneHosts": [
+    "albandrieu.com"
+  ],
+  "ignoredDependencies": [
+    "nabla-test"
+  ]
+}

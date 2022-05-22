@@ -1,0 +1,7 @@
+!.eslintrc.js
+test/*
+docs/js
+target/*
+dist/*
+report/*
+bower_components/*
