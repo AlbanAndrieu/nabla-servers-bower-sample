@@ -180,7 +180,7 @@
 		<prometheus.version>1.3.5</prometheus.version>
 		<restfulaudit.version>1.2.2</restfulaudit.version>
 		<server.version>${jetty.version}</server.version>
-		<slf4j.version>1.7.13</slf4j.version>
+		<slf4j.version>1.7.36</slf4j.version>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
 		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>
