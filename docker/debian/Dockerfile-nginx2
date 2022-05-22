@@ -1,0 +1,2 @@
+FROM nginx
+COPY static-html-directory/index2.html /usr/share/nginx/html/index.html

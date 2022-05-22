@@ -1,0 +1,13 @@
+---
+exclude:
+  - GCP002
+  - AWS025
+
+minimum_severity: HIGH
+min_required_version: v1.1.2
+
+severity_overrides:
+  CUS002: ERROR
+  aws-s3-encryption-customer-key: MEDIUM
+  aws-s3-no-public-buckets: MEDIUM
+  aws-dynamodb-enable-at-rest-encryption: MEDIUM

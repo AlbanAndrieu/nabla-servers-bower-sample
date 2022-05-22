@@ -1,0 +1,16 @@
+.npmignore
+.editorconfig
+.travis.yml
+.jshintrc
+.gitattributes
+bower.json
+
+.github/*
+.gitlab/*
+
+**/*.spec.js
+src/test/*
+
+.eslintrc.json
+.c8rc
+coverage/*

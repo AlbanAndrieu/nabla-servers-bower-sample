@@ -1,0 +1,27 @@
+global:
+  # The smarthost and SMTP sender used for mail notifications.
+  smtp_smarthost: "localhost:25"
+  smtp_from: "alban.andrieu@free.fr"
+  smtp_auth_username: "alban.andrieu@nabla.mobi"
+  #smtp_auth_password: 'password'
+  # The auth token for Hipchat.
+  #hipchat_auth_token: '1234556789'
+  # Alternative host for Hipchat.
+  #hipchat_api_url: 'https://hipchat.foobar.org/'
+  slack_api_url: "https://hooks.slack.com/services/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"
+
+route:
+  receiver: "slack-notifications"
+  group_by: [alertname, datacenter, app]
+
+receivers:
+  - name: "slack-notifications"
+    slack_configs:
+      - channel: "#alerts_test"
+        api_url: https://hooks.slack.com/services/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
+        icon_url: https://avatars3.githubusercontent.com/u/3380462
+        #icon_url: https://avatars1.githubusercontent.com/u/7859836
+        send_resolved: true
+        # Template for the text field in Slack messages.
+        text: "https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}"
+        #text: " \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"

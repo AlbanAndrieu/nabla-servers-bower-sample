@@ -1,0 +1,16 @@
+# comment
+hooks
+doc/
+*.tmp/*
+.settings/
+*/target*
+*.md
+!README.md
+docker-compose/data/*
+**/node_modules/
+**/bower_components/
+npm/
+.bower/
+.git/
+dist/
+.sass-cache/
