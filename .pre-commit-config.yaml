@@ -73,7 +73,7 @@ repos:
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/willthames/ansible-lint.git
-    rev: v6.2.0a0
+    rev: v6.2.1
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
@@ -160,7 +160,7 @@ repos:
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
   - repo: https://github.com/bridgecrewio/checkov.git
-    rev: '2.0.1145' # change to tag or sha
+    rev: '2.0.1159' # change to tag or sha
     hooks:
     - id: checkov
       #verbose: true

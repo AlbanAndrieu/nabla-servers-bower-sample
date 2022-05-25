@@ -9,7 +9,7 @@ exclude_paths:
 # rulesdir:
 #   - ./rule/directory/
 skip_list:
-  - '602' # See https://github.com/ansible/ansible-lint/issues/457
+  - '602'   # See https://github.com/ansible/ansible-lint/issues/457
   - '204'
   - '503'
   - 'document-start'
