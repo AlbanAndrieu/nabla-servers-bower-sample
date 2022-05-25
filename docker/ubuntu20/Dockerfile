@@ -95,9 +95,10 @@ RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x
     npm set progress=false && \
     npm config set depth 0;
 #NOK npm@7.11.2 with imagemin
+# OK npm@8.11.0
 RUN npm install -g npm@6.14.16 && apt-get purge -y npm # && ln -s /usr/local/bin/npm /usr/bin/npm
 RUN npm -v && command -v npm # 6.14.16
-RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.7 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.2
+RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.8 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.2
 
 ### USER
 
@@ -167,7 +168,7 @@ RUN rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ no
 
 RUN chown -R "jenkins:docker" $JENKINS_USER_HOME/.* && chmod 777 ${HOME}
 
-ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"98.0.4758.102"}
+ENV WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"101.0.4951.64"}
 RUN webdriver-manager update --versions.chrome ${WEBDRIVER_CHROME_VERSION}
 
 # drop back to the regular jenkins user - good practice
