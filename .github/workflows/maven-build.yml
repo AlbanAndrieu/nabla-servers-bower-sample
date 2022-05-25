@@ -120,15 +120,15 @@ jobs:
       #    images: nabla/nabla-servers-bower-sample:latest
 
       - name: Build and push debug
-        run: echo "docker push ${{ env.OWNER }}/nabla-servers-bower-sample:latest,${{ github.repository }}:${{ github.sha }}"
+        run: echo "docker push nabla/nabla-servers-bower-sample:latest,${{ github.repository }}:${{ github.sha }}"
 
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          #tags: ${{ env.OWNER }}/nabla-servers-bower-sample:latest,nabla/nabla-servers-bower-sample:${{ github.sha }}
+          #tags: nabla/nabla-servers-bower-sample:latest,nabla/nabla-servers-bower-sample:${{ github.sha }}
           tags: |
-            ${{ github.repository }}:latest
+            nabla/nabla-servers-bower-sample:latest
           build-args: |
               TEST=TODO
               BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -142,7 +142,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ github.repository }}:latest
+          image-ref: nabla/nabla-servers-bower-sample:latest
           format: "template"
           template: "@/contrib/sarif.tpl"
           output: "trivy-results.sarif"
