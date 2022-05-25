@@ -51,7 +51,7 @@ jobs:
         uses: actions/setup-node@v3.0.0
         with:
           #node-version-file: '.nvmrc'
-          node-version: '14.19'
+          node-version: '14.19'   # with npm 8.10.0
           #check-latest: true
           #cache: 'npm'
           #cache-dependency-path: '**/package-lock.json'
