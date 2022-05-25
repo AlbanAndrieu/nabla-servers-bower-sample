@@ -249,7 +249,7 @@ exit 0
 
                                 // this give the registry
                                 // sh(returnStdout: true, script: "echo ${DOCKER_BUILD_IMG} | cut -d'/' -f -1").trim()
-                                DOCKER_BUILD_ARGS = ['--build-arg JENKINS_USER_HOME=/home/jenkins --build-arg=MICROSCANNER_TOKEN=NzdhNTQ2ZGZmYmEz'].join(' ')
+                                DOCKER_BUILD_ARGS = ['--build-arg JENKINS_USER_HOME=/home/jenkins'].join(' ')
                                 if (env.CLEAN_RUN) {
                                     DOCKER_BUILD_ARGS = ['--no-cache',
                                                          '--pull',
