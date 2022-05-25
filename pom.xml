@@ -778,6 +778,17 @@
 							</arguments>
 						</configuration>
 					</execution>
+					<execution>
+						<id>exec-bash-webdriver</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>bash</executable>
+							<commandlineArgs>webdriver.sh</commandlineArgs>
+						</configuration>
+					</execution>
 					<!--
 					<execution>
 						<id>exec-yarn-install</id>
@@ -789,7 +800,7 @@
 							<executable>yarn</executable>
 							<arguments>
 								<argument>install</argument>
-                <argument>ignore-optional</argument>
+								<argument>ignore-optional</argument>
 							</arguments>
 						</configuration>
 					</execution>
