@@ -48,13 +48,13 @@ mvn -T1 dependency:tree -DoutputFile=whitesource_mvn_dependency_tree.txt
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war ${NC}"
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.3"}
+export DOCKER_TAG=${DOCKER_TAG:-"1.0.4"}
 
-./scripts/docker-build-runtime-20.sh
+./scripts/docker-build-runtime-20.sh # 1>docker-build-runtime-20.log 2>docker-build-runtime-20-error.log
 
 echo -e "${magenta} dependency-check.sh --project \"Nabla Servers Bower Sample\"  --out . --scan .  --format \"ALL\" ${NC}"
 
-dependency-check.sh --project "Nabla Servers Bower Sample"  --out . --scan .  --format "ALL" || true
+dependency-check.sh --project "Nabla Servers Bower Sample"  --out . --scan .  --format "ALL" 1>dependency-check.log 2>dependency-check-error.log || true
 
 ./scripts/helm-build.sh
 

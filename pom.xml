@@ -21,7 +21,7 @@
 -->
 
 	<artifactId>bower-sample</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Nabla Bower Sample</name>
 	<description>Bower sample components</description>

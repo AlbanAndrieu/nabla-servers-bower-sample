@@ -160,13 +160,13 @@ repos:
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
   - repo: https://github.com/bridgecrewio/checkov.git
-    rev: '2.0.1159' # change to tag or sha
+    rev: '2.0.1161' # change to tag or sha
     hooks:
     - id: checkov
       #verbose: true
       args: [--soft-fail]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.71.0
+    rev: v1.72.1
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
