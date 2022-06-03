@@ -7,7 +7,7 @@ set -eo pipefail
 
 WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.4"}
+export DOCKER_TAG=${DOCKER_TAG:-"1.0.5"}
 
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
 export DOCKER_FILE="docker/ubuntu20/Dockerfile"
