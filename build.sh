@@ -43,18 +43,18 @@ echo -e "${magenta} npm-license ${NC}"
 
 # Whiteshource is doing
 npm ls --only=prod --json
-mvn -T1 dependency:tree -DoutputFile=whitesource_mvn_dependency_tree.txt
+mvn -T1 dependency:tree -DoutputFile=./target/mvn_dependency_tree.txt
 
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war ${NC}"
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.4"}
+export DOCKER_TAG=${DOCKER_TAG:-"1.0.5"}
 
 ./scripts/docker-build-runtime-20.sh # 1>docker-build-runtime-20.log 2>docker-build-runtime-20-error.log
 
 echo -e "${magenta} dependency-check.sh --project \"Nabla Servers Bower Sample\"  --out . --scan .  --format \"ALL\" ${NC}"
 
-dependency-check.sh --project "Nabla Servers Bower Sample"  --out . --scan .  --format "ALL" 1>dependency-check.log 2>dependency-check-error.log || true
+dependency-check.sh --project "Nabla Servers Bower Sample"  --out ./target --scan .  --format "ALL" 1>dependency-check.log 2>dependency-check-error.log || true
 
 ./scripts/helm-build.sh
 
