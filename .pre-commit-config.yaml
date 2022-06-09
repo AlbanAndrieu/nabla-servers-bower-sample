@@ -108,32 +108,56 @@ repos:
         args:
         - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
--   repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.72.1
-    hooks:
-    -   id: terraform_fmt
-    -   id: terraform_docs
-    -   id: terraform_validate
-        args:
-        - --init-args=-lockfile=readonly
-    -   id: terraform_tfsec
-        args:
-        - --args=--config-file=tfsec.yml
-    -   id: terraform_providers_lock
-        args:
-        - --args=-platform=linux_amd64
-    -   id: terraform_checkov
-        args:
-        - --args=--quiet
 -   repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.15.1
     hooks:
     -   id: check-github-workflows
     -   id: check-gitlab-ci
--   repo: https://github.com/Checkmarx/kics
-    rev: v1.5.9
+#  - repo: https://github.com/bridgecrewio/checkov.git
+#    rev: '2.0.1159' # change to tag or sha
+#    hooks:
+#    - id: checkov
+#      verbose: true
+#      args: [--soft-fail]
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev:  v1.72.1
     hooks:
-    -   id: kics-scan
+      - id: terraform_fmt
+      - id: terraform_docs
+      - id: terraform_validate
+        args:
+          - --init-args=-lockfile=readonly
+      - id: terraform_tfsec
+        args:
+         - --args=--config-file=tfsec.yml
+         - --args=-m HIGH
+         - --args=--exclude-path=network/example
+      - id: terraform_providers_lock
+        args:
+          - --args=-platform=linux_amd64
+#      - id: terraform_tflint
+      - id: terraform_checkov
+        args:
+          - --args=--quiet
+        #  - --args=--skip-check CKV2_AWS_8
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.15.0
+    hooks:
+      - id: check-github-workflows
+      - id: check-gitlab-ci
+  - repo: https://github.com/Checkmarx/kics
+    rev: "v1.5.9"
+    hooks:
+      #- id: kics
+      #  exclude: >
+      #    (?x)^(
+      #        .direnv$|
+      #        .*\.terraform.*$|
+      #        .*\.tfvars$|
+      #    )$
+      - id: kics-scan
+        verbose: true
+        args: [--ignore-on-exit, "all", --config, "kics-config.json"]
 -   repo: https://github.com/AlbanAndrieu/nabla-hooks
     rev: v1.0.3
     hooks:
