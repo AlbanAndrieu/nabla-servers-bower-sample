@@ -4,16 +4,16 @@
      ".infracost/",
      ".terraform/",
      ".tfsec/",
-		 "**/*.tfvars",
-		 "^.*\\.terraform.*$"
+     "**/*.tfvars",
+     "^.*\\.terraform.*$"
   ],
-	"log-file": true,
-	"minimal-ui": false,
-	"no-color": false,
-	"no-progress": true,
-	"output-path": "./reports",
-	"preview-lines": 5,
-	"report-formats": "json,sarif",
-	"type": "terraform",
-	"verbose": true
+  "log-file": true,
+  "minimal-ui": false,
+  "no-color": false,
+  "no-progress": true,
+  "output-path": "./reports",
+  "preview-lines": 5,
+  "report-formats": "json,sarif",
+  "type": "terraform",
+  "verbose": true
 }

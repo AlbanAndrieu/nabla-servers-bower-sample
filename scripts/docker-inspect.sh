@@ -15,7 +15,7 @@ echo -e "${magenta} docker_bench_security ${NC}"
 
 export HELM_CONTEXT=${HELM_CONTEXT:-"microk8s"}    # devops-nabla
 export HELM_NAMESPACE=${HELM_NAMESPACE:-"jenkins"} # nabla-standalone-aandrieu-pr
-export HELM_HOME=${HELM_HOME:-"${HOME}"}                 # /home/jenkins
+export HELM_HOME=${HELM_HOME:-"${HOME}"}           # /home/jenkins
 
 docker run -it --net host --pid host --userns host --cap-add audit_control \
   -e DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST \

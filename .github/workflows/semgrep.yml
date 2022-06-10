@@ -35,4 +35,3 @@ jobs:
             p/secrets
           # Option 2: scan with rules set in Semgrep App's rule board
           # SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-	  
