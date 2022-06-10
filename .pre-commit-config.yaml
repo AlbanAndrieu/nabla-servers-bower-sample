@@ -158,6 +158,10 @@ repos:
       - id: kics-scan
         verbose: true
         args: [--ignore-on-exit, "all", --config, "kics-config.json"]
+  - repo: https://github.com/hadolint/hadolint
+    rev: master
+    hooks:
+      - id: hadolint-docker
 -   repo: https://github.com/AlbanAndrieu/nabla-hooks
     rev: v1.0.3
     hooks:
