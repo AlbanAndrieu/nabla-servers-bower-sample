@@ -28,7 +28,7 @@ echo -e "${magenta} ./mvnw gplus:generateStubs gplus:groovydoc ${NC}"
 #brew install hadolint
 hadolint Dockerfile || true
 
-npm list > list.log || true
+npm list >list.log || true
 #npm shrinkwrap
 
 #sudo npm install -g npm-license
@@ -54,7 +54,7 @@ export DOCKER_TAG=${DOCKER_TAG:-"1.0.5"}
 
 echo -e "${magenta} dependency-check.sh --project \"Nabla Servers Bower Sample\"  --out . --scan .  --format \"ALL\" ${NC}"
 
-dependency-check.sh --project "Nabla Servers Bower Sample"  --out ./target --scan .  --format "ALL" 1>dependency-check.log 2>dependency-check-error.log || true
+dependency-check.sh --project "Nabla Servers Bower Sample" --out ./target --scan . --format "ALL" 1>dependency-check.log 2>dependency-check-error.log || true
 
 ./scripts/helm-build.sh
 
