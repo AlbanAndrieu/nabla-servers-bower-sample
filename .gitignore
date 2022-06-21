@@ -2,6 +2,7 @@
 
 docker-compose/data
 .repository
+reports/
 
 # terraform
 
