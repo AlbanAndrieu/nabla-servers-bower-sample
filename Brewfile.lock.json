@@ -89,9 +89,9 @@
   "system": {
     "linux": {
       "Ubuntu 22.04 LTS (jammy)": {
-        "HOMEBREW_VERSION": "3.5.1",
+        "HOMEBREW_VERSION": "3.5.2",
         "HOMEBREW_PREFIX": "/home/linuxbrew/.linuxbrew",
-        "Homebrew/linuxbrew-core": "16a89bddca95ebf2a873fbbc5bc4bd9e77587156",
+        "Homebrew/linuxbrew-core": "29eff7ff8eceae892eed459a941ef15466779747",
         "GCC": "11.2.0"
       }
     }
