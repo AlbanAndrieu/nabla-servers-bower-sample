@@ -7,25 +7,48 @@ repos:
       - id: check-added-large-files
         args:
         - --maxkb=123
-        exclude: "(?x)^(\n    .pnp.cjs|\n    package-lock.json|\n    npm-shrinkwrap.json\n)$\n"
+        exclude: >
+          (?x)^(
+            .pnp.cjs|
+            package-lock.json|
+            npm-shrinkwrap.json|
+          )$
       - id: check-case-conflict
       - id: check-docstring-first
       - id: check-executables-have-shebangs
-        exclude: "(?x)^(\n    clean.bat|\n    build.bat|\n    mvnw.cmd|\n    .mvn/.*\n)$\n"
+        exclude: >
+          (?x)^(
+            clean.bat|
+            build.bat|
+            mvnw.cmd|
+            .mvn/.*|
+          )$
       - id: check-json
         exclude: ^.vscode/
       - id: check-xml
       - id: check-yaml
-        exclude: "(?x)^(\n    packs/.*|\n    k8s/.*|\n)$\n"
+        exclude: >
+          (?x)^(
+            packs/.*|
+            k8s/.*|
+          )$
       - id: check-symlinks
       - id: check-merge-conflict
       - id: debug-statements
       - id: detect-private-key
-        exclude: "(?x)^(\n    roles/jenkins-master/defaults/main.yml|\n    roles/jenkins-master/README.md|\n
-            \   ca.key|\n    server.key\n)$\n"
+        exclude: >
+          (?x)^(
+            roles/jenkins-master/defaults/main.yml|
+            roles/jenkins-master/README.md|
+            ca.key|
+            server.key|
+          )$
       - id: double-quote-string-fixer
       - id: name-tests-test
-        exclude: "(?x)^(\n    .*/molecule/default/tests/test_default.py\n)$\n"
+        exclude: >
+          (?x)^(
+            .*/molecule/default/tests/test_default.py|
+          )$
       - id: end-of-file-fixer
       - id: fix-encoding-pragma
       - id: requirements-txt-fixer
@@ -84,6 +107,10 @@ repos:
     rev: v0.1.2
     hooks:
       - id: encryption-check
+        exclude: >
+          (?x)^(
+            .github/workflows/vault.yml$|
+          )$
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
     rev: v1.1.2
     hooks:

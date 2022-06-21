@@ -27,7 +27,8 @@ jobs:
       - name: Import Secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
-          url: https://vault-cluster.vault.aa257bb4-2600-4ef4-b9ce-a97076835404.aws.hashicorp.cloud:8200
+          #url: https://vault-cluster.vault.aa257bb4-2600-4ef4-b9ce-a97076835404.aws.hashicorp.cloud:8200
+          url: http://albandrieu.com:8200
           method: token
           token: ${{ secrets.VAULT_TOKEN }}
           #caCertificate: ${{ secrets.VAULT_CA_CERT }}

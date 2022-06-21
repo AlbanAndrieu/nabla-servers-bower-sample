@@ -27,7 +27,7 @@ jobs:
           # in this example it will generate:
           # - results-dir/results.json
           # - results-dir/results.sarif
-	  fail_on: high,medium
+          fail_on: high,medium
           output_path: results-dir
           platform_type: terraform
           output_formats: 'json,sarif'
