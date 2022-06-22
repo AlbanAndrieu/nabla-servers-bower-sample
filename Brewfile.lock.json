@@ -93,6 +93,12 @@
         "HOMEBREW_PREFIX": "/home/linuxbrew/.linuxbrew",
         "Homebrew/linuxbrew-core": "7a5ca5b4b68583924015058782506f768bd4f2f0",
         "GCC": "11.2.0"
+      },
+      "Ubuntu 20.04.4 LTS (focal)": {
+        "HOMEBREW_VERSION": "3.5.2",
+        "HOMEBREW_PREFIX": "/home/albandrieu/.linuxbrew",
+        "Homebrew/linuxbrew-core": "7a5ca5b4b68583924015058782506f768bd4f2f0",
+        "GCC": "8.4.0"
       }
     }
   }
