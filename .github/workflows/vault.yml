@@ -1,17 +1,18 @@
+---
 name: Vault
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     # branches-ignore: "dependabot/**"
     paths-ignore:
-      - '**.md'
+      - "**.md"
   schedule:
-    - cron: '0 6 * * 3'
+    - cron: 0 6 * * 3
   pull_request:
-    branches: [ master ]
+    branches: [master]
     paths-ignore:
-      - '**.md'
+      - "**.md"
 
 jobs:
   build:
