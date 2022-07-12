@@ -5,7 +5,7 @@
 
 sudo: required
 dist: travis_lts
-#dist: bionic
+# dist: bionic
 
 jdk:
   #  - oraclejdk8
@@ -15,7 +15,7 @@ jdk:
 
 addons:
   chrome: stable
-  #firefox: latest
+  # firefox: latest
   apt:
     sources:
       - ubuntu-toolchain-r-test
@@ -63,28 +63,30 @@ matrix:
     - env: EMBER_VERSION=beta
     - env: EMBER_VERSION=canary
 
-# See https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-the-chrome-addon-in-the-headless-mode
+# See https://docs.travis-ci.com/user/gui-and-headless-browsers/ # using-the-chrome-addon-in-the-headless-mode
 
 before_install:
-  #- export CHROME_BIN=chromium-browser
+  # - export CHROME_BIN=chromium-browser
   - sudo apt-get install -qq xvfb
   - export DISPLAY=:99.0
-  #- "sh -e /etc/init.d/xvfb start"
-  #- sleep 3 # give xvfb some time to start
+  # - "sh -e /etc/init.d/xvfb start"
+  # - sleep 3  # give xvfb some time to start
 
   - npm config set spin false
-  #- 'gem install sass --version "=3.2.12"'
-  #- 'gem install compass --version "=0.12.2"'
-  - "gem install sass"
-  - "gem install compass"
+  # - 'gem install sass --version "=3.2.12"'
+  # - 'gem install compass --version "=0.12.2"'
+  - gem install sass
+  - gem install compass
   - npm install -g bower karma grunt-cli jshint
   # Upgrade PhantomJS to v2.1.1.
-  - "export PHANTOMJS_VERSION=2.1.1"
-  - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi"
-  - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs; fi"
-  - "phantomjs --version"
+  - export PHANTOMJS_VERSION=2.1.1
+  - export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH
+  - if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi
+  - if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then wget https://github.com/Medium/phantomjs/releases/download/v$PHANTOMJS_VERSION/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2
+    -O $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2; fi
+  - if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then tar -xvf $PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64.tar.bz2 -C $PWD/travis_phantomjs;
+    fi
+  - phantomjs --version
 
 #  - start your web application and listen on localhost
 #  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:9877 &
@@ -112,6 +114,6 @@ notifications:
     on_success: change
     on_failure: always
     on_start: false
-#script:
+# script:
 #  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
 #  - gcc --version
