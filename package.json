@@ -27,7 +27,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
+      "npx eslint --fix .",
       "git add"
     ],
     "*.{json,css,scss,less,md}": [
@@ -77,8 +77,8 @@
     "codeclimate-test-reporter": "0.5.1",
     "connect-pushstate": "1.1.0",
     "cssnano": "4.1.10",
-    "engine.io": "3.4.0",
-    "engine.io-client": "3.4.0",
+    "engine.io": "3.6.0",
+    "engine.io-client": "^3.4.0",
     "eslint": "8.6.0",
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-prettier": "3.1.2",
@@ -179,9 +179,9 @@
   },
   "scripts": {
     "test": "grunt test",
-    "eslint": "eslint . --ext .js,.cjs,.mjs",
-    "lint": "eslint",
-    "lint-fix": "eslint --fix",
+    "eslint": "npx eslint . --ext .js,.cjs,.mjs",
+    "lint": "npx eslint",
+    "lint-fix": "npx eslint --fix .",
     "lintme": "lint-staged"
   },
   "private": true

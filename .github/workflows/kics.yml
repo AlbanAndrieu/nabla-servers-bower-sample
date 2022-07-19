@@ -11,14 +11,14 @@ jobs:
     name: kics-action
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Mkdir results-dir
         # make sure results dir is created
         run: mkdir -p results-dir
 
       - name: Run KICS Scan with SARIF result
-        uses: checkmarx/kics-github-action@latest
+        uses: checkmarx/kics-github-action@v1.5
         with:
           #path: 'terraform'
           path: 'src,ansible,k8s,docker-compose,docker/ubuntu20/Dockerfile'
