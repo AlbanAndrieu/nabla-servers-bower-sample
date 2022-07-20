@@ -2,7 +2,6 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-#FROM ubuntu:20.04 as BUILD
 FROM selenium/standalone-chrome:3.141.59-20210128 as BUILD
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.0"
@@ -49,7 +48,8 @@ RUN ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && \
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 # hadolint ignore=DL3008
 RUN apt-get -q update &&\
-    apt-get -q install --no-install-recommends -y -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
+    apt-get -q --no-install-recommends install -y \
+    -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
     git bzip2 zip unzip python-yaml python-jinja2 rsyslog \
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \

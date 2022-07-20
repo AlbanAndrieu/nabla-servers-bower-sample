@@ -1,25 +1,32 @@
 ---
 exclude_paths:
-  - ./roles/alban.andrieu.virtualbox/
-  - ./roles/alban.andrieu.webmin/
+  - ./requirements.yml
+  - ./.travis.yml
+  - ./roles/alban.andrieu.*
   - ./k8s/
   - ./packs/
+  - ../../../../home/albandrieu/.cache  
 # parseable: true
 # quiet: true
 # rulesdir:
 #   - ./rule/directory/
 skip_list:
-  - '602'   # See https://github.com/ansible/ansible-lint/issues/457
-  - '204'
-  - '503'
-  - 'document-start'
+  - "602"  # See https://github.com/ansible/ansible-lint/issues/457
+  - "204"
+  - "503"
+  - "208"  # File permissions not mentioned
+  - filenotfounderror
+#  - 'document-start'
 #   - skip_this_tag
 #   - and_this_one_too
 #   - skip_this_id
-# warn_list:
-#   - yaml  # Violations reported by yamllint
 # tags:
 #   - run_this_tag
+warn_list:  # or 'skip_list' to silence them completely
+  - yaml  # Violations reported by yamllint
 use_default_rules: true
 # verbosity: 1
+
+# Offline mode disables installation of requirements.yml
 offline: true
+
