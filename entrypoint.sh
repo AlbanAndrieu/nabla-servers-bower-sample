@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo $* $(whoami)
+echo $* $(whoami) # nosemgrep: bash.lang.correctness.unquoted-expansion.unquoted-command-substitution-in-command
 
 #which java
 #ls -lrta /usr/lib/jvm/

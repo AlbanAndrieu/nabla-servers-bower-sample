@@ -1,0 +1,38 @@
+README.md
+docker/ubuntu16/Dockerfile
+docker/ubuntu18/Dockerfile
+
+popeye/popeye.html
+docker-compose.yml
+docker-compose.elk.yml
+docker-compose/generate.py
+docker-compose/docker-compose.yml
+docker-compose/docker-compose.nginx.yml
+docker-compose/docker-compose.monitoring.yml
+
+Jenkinsfile-full
+
+.npmrc
+
+# Common large paths
+node_modules/
+build/
+dist/
+vendor/
+.env/
+.venv/
+.tox/
+*.min.js
+playbooks/files/python/requirements-current-*
+.mvn/
+
+# Common test paths
+test/
+tests/
+*_test.go
+
+# Semgrep rules folder
+.semgrep
+
+# Semgrep-action log folder
+.semgrep_logs/
