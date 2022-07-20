@@ -1,6 +1,8 @@
+---
 # To execute this docker-compose yml file use docker-compose -f <file_name> up
 # Add the "-d" flag at the end for deattached execution
 version: "3.7"
+
 services:
   sample:
     image: nginx
@@ -64,16 +66,10 @@ services:
     networks:
 #      - frontend
       - backend
-    deploy:
-      mode: replicated
-      replicas: 6
   db:
     image: mysql
     ports:
       - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD: root
-      - MYSQL_DATABASE: nabla
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
