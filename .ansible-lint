@@ -6,6 +6,7 @@ exclude_paths:
   - ./k8s/
   - ./packs/
   - ../../../../home/albandrieu/.cache
+  - ./scripts/microscanner-wrapper/
 # parseable: true
 # quiet: true
 # rulesdir:

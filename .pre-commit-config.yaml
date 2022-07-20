@@ -1,3 +1,5 @@
+# vi: ft=yaml.ansible.jinja2
+---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
     rev: v4.3.0
@@ -71,7 +73,14 @@ repos:
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
-        exclude: "(?x)^(\n    .travis.yml|\n    packs/.*|\n    k8s/.*|\n)$\n"
+        exclude: >
+          (?x)^(
+            .travis.yml|
+            packs/|
+            k8s/|
+            docker/|
+            docker-compose/|
+          )$
   - repo: https://github.com/doublify/pre-commit-hindent.git
     rev: b3680b6ebf9f7cf29b19307f246adef66756feef
     hooks:
@@ -88,7 +97,11 @@ repos:
       - id: shell-lint
         args:
         - -x
-        exclude: "(?x)^(\n    mvnw|\n    hooks|\n)$\n"
+        exclude: >
+          (?x)^(
+            mvnw|
+            hooks|
+          )$
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.34.0
     hooks:
@@ -169,10 +182,9 @@ repos:
         args:
           - --args=-platform=linux_amd64
 #      - id: terraform_tflint
-      - id: terraform_checkov
-        args:
-          - --args=--quiet
-        #  - --args=--skip-check CKV2_AWS_8
+#      - id: terraform_checkov
+#        args:
+#          - --args=--quiet
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.16.0
     hooks:
@@ -191,10 +203,10 @@ repos:
 #      - id: kics-scan
 #        verbose: true
 #        args: [--ignore-on-exit, "all", --config, "kics-config.json"]
-  - repo: https://github.com/hadolint/hadolint
-    rev: v2.10.0
-    hooks:
-      - id: hadolint-docker
+#  - repo: https://github.com/hadolint/hadolint
+#    rev: v2.10.0
+#    hooks:
+#      - id: hadolint-docker
   - repo: https://github.com/AlbanAndrieu/nabla-hooks
     rev: v1.0.3
     hooks:

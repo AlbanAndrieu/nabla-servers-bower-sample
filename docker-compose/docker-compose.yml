@@ -1,3 +1,4 @@
+# vi: ft=yaml.ansible.jinja2
 ---
 version: "3.7"
 
@@ -7,36 +8,36 @@ services:
     image: nabla/nabla-servers-bower-sample:latest
     #    container_name: sample
     hostname: sample
-    #domainname: sample.fr
-    #restart: on-failure:2
+    # domainname: sample.fr
+    # restart: on-failure:2
     ulimits:
       nproc: 65535
       nofile:
         soft: 20000
         hard: 40000
-    #command: sleep infinity
+    # command: sleep infinity
     command: [/home/jenkins/test.war]
-    #command: ["--version"]
-    #read_only: true
-    #tmpfs:
-    #  - /run
-    #  - /tmp:rw,exec,nosuid,size=2g
-    #  - /home/sample/data/tmp:rw,exec,nosuid,size=2g
-    #  - /home/sample/data/work:rw,exec,nosuid,size=2g
-    #  - /home/sample/data/profiles:rw,exec,nosuid,size=2g
-    #  - /home/sample/data/executions:rw,exec,nosuid,size=2g
-    #  - /home/sample/data/sessions:rw,exec,nosuid,size=2g
-    #  - /home/sample/webapps:rw,exec,nosuid,size=2g
-    #ports:
-    # - "1099:1099" #jmx remote
-    # - "9090:8080" #http
-    # - "9443:9443" #https
-    # - "2924:2924" #eclipse
+    # command: ["--version"]
+    # read_only: true
+    # tmpfs:
+    #   - /run
+    #   - /tmp:rw,exec,nosuid,size=2g
+    #   - /home/sample/data/tmp:rw,exec,nosuid,size=2g
+    #   - /home/sample/data/work:rw,exec,nosuid,size=2g
+    #   - /home/sample/data/profiles:rw,exec,nosuid,size=2g
+    #   - /home/sample/data/executions:rw,exec,nosuid,size=2g
+    #   - /home/sample/data/sessions:rw,exec,nosuid,size=2g
+    #   - /home/sample/webapps:rw,exec,nosuid,size=2g
+    # ports:
+    #  - "1099:1099" #jmx remote
+    #  - "9090:8080" #http
+    #  - "9443:9443" #https
+    #  - "2924:2924" #eclipse
     links:
       - db
       - cache
     healthcheck:
-      test: [CMD, curl, -s, -f, http://localhost:8080/#/]
+      test: [CMD, curl, -s, -f, 'http://localhost:8080/#/']
   selenium-hub:
     image: selenium/hub:3.12.0-cobalt
     container_name: selenium-hub
@@ -71,18 +72,18 @@ services:
     image: redis:latest
 
 # use docker volume to persist test data outside of a container.
-#volumes:
-#  test_data:
+# volumes:
+#   test_data:
 
 networks:
-  #host-exposed
+  # host-exposed
   default:
     driver: bridge
     ipam:
       config:
         - subnet: 172.16.57.0/24 # bypass openvpn
-#inside:
-#  internal: true
+# inside:
+#   internal: true
 
 secrets:
   ca.crt:
