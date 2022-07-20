@@ -1,13 +1,15 @@
+---
 name: Release Charts
 
 on:
   push:
-    #branches: [ master ]
-    branches-ignore: "dependabot/**"
+    branches: [master, main]
+    paths-ignore:
+      - "**.md"
 
 jobs:
   release:
-    #if commit.author === github-actions[bot] && event !== pull_request_target
+    if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -44,13 +44,13 @@ services:
     # docker volume create --name dependency-track
     # # Run the container with 8GB RAM on port 8087
     # docker run -d -m 8192m -p 8087:8080 --name dependency-track -v dependency-track:/data owasp/dependency-track
-    # 
+    #
     # environment:
     #  The Dependency-Track container can be configured using any of the
     #  available configuration properties defined in:
     #  https://docs.dependencytrack.org/getting-started/configuration/
     #  All properties are upper case with periods replaced by underscores.
-    # 
+    #
     #  Database Properties
     #  - ALPINE_DATABASE_MODE=external
     #  - ALPINE_DATABASE_URL=jdbc:postgresql://postgres10:5432/dtrack
@@ -62,7 +62,7 @@ services:
     #  - ALPINE_DATABASE_POOL_MAX_SIZE=10
     #  - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=600000
     #  - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
-    # 
+    #
     #  Optional LDAP Properties
     #  - ALPINE_LDAP_ENABLED=
     #  - ALPINE_LDAP_SERVER_URL=ldap://ldap.example.com:389
@@ -79,13 +79,13 @@ services:
     #  - ALPINE_LDAP_USERS_SEARCH_FILTER=(&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
     #  - ALPINE_LDAP_USER_PROVISIONING=false
     #  - ALPINE_LDAP_TEAM_SYNCHRONIZATION=false
-    # 
+    #
     #  Optional HTTP Proxy Settings
     #  - ALPINE_HTTP_PROXY_ADDRESS=proxy.example.com
     #  - ALPINE_HTTP_PROXY_PORT=8888
     #  - ALPINE_HTTP_PROXY_USERNAME=
     #  - ALPINE_HTTP_PROXY_PASSWORD=
-    # 
+    #
     #  Optional Cross-Origin Resource Sharing (CORS) Headers
     #  - ALPINE_CORS_ENABLED=true
     #  - ALPINE_CORS_ALLOW_ORIGIN=*
@@ -173,7 +173,7 @@ services:
   #   - openvpn
   #   - elastic
   #   - ingress
-    
+
   #   alertmanager:
   #     image: prom/alertmanager:v0.20.0
   #     ports:
