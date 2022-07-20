@@ -5,7 +5,7 @@ exclude_paths:
   - ./roles/alban.andrieu.*
   - ./k8s/
   - ./packs/
-  - ../../../../home/albandrieu/.cache  
+  - ../../../../home/albandrieu/.cache
 # parseable: true
 # quiet: true
 # rulesdir:
@@ -29,4 +29,3 @@ use_default_rules: true
 
 # Offline mode disables installation of requirements.yml
 offline: true
-
