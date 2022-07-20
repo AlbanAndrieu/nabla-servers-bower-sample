@@ -192,6 +192,13 @@ as local user
 yo angular translate
 ```
 
+# Initiate
+
+```bash
+rm -Rf .venv/ .direnv/
+direnv allow
+```
+
 ## Tools
 
 ### Internationalization
@@ -214,14 +221,14 @@ SEE <https://github.com/angular-ui/angular-google-maps>
 
 ## Quality tools
 
-### python 3.6
+### python 3.8
 
-Install python 3.6 and virtualenv
+Install python 3.8 and virtualenv
 
 ```bash
-virtualenv --no-site-packages /opt/ansible/env36 -p python3.6
+virtualenv --no-site-packages /opt/ansible/env38 -p python3.8
 source /opt/ansible/env36/bin/activate
-pip install -r requirements-current-3.6.txt
+pip install -r requirements-current-3.8.txt
 ```
 
 ### pre-commit
@@ -738,7 +745,13 @@ brew install hadolint
 hadolint Dockerfile
 ```
 
-#### mega-linter
+#### Ansible linter
+
+```bash
+ansible-lint --write ansible/
+```
+
+#### Mega linter
 
 ```bash
 npx mega-linter-runner --install

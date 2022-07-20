@@ -1,3 +1,4 @@
+---
 #cluster.name: aandrieu-stack-cluster
 node.name: node-1
 network.host: 0.0.0.0
@@ -11,6 +12,6 @@ http.max_header_size: 16kb
 # makes sense to "disable" the distributed features:
 #
 index.number_of_shards: 1
-index.number_of_replicas: 0
+index.number_of_replicas: 00
 #node.local: true # You set the node to local(true), this means it will not discover other nodes using network, only within the same JVM
 #transport.type: local

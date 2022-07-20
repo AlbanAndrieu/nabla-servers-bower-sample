@@ -1,29 +1,28 @@
-schemaVersion: "2.0.0"
+---
+schemaVersion: 2.0.0
 
 globalEnvVars:
-  - key: "VIRTUAL_ENV"
-    value: "/opt/ansible/env36"
-  - key: "PATH"
-    value: "/env/bin:$PATH"
-  - key: "JAVA_HOME"
-    value: "/usr/lib/jvm/java-8-openjdk-amd64"
+  - key: VIRTUAL_ENV
+    value: /opt/ansible/env36
+  - key: PATH
+    value: /env/bin:$PATH
+  - key: JAVA_HOME
+    value: /usr/lib/jvm/java-8-openjdk-amd64
 
 commandTests:
-  - name: "check jenkins user"
-    command: "whoami"
-    expectedOutput: ["jenkins"]
-
+  - name: check jenkins user
+    command: whoami
+    expectedOutput: [jenkins]
     #expectedOutput: ["root"]
-  - name: "check jenkins uid/gid used for config generation"
-    command: "id"
-    expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
-
+  - name: check jenkins uid/gid used for config generation
+    command: id
+    expectedOutput: [uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*]
     #expectedOutput: ["uid=0.root. gid=0.root. groups=0.root.*"]
-  - name: "apt-get upgrade"
-    command: "apt-get"
-    args: ["-qqs", "upgrade"]
-    excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
-    excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
+  - name: apt-get upgrade
+    command: apt-get
+    args: [-qqs, upgrade]
+    excludedOutput: [.*Inst.*Security.* | .*Security.*Inst.*]
+    excludedError: [.*Inst.*Security.* | .*Security.*Inst.*]
 
 #  - name: "check chromium-browser 91.0 version"
 #    command: "/usr/bin/chromium-browser"
@@ -63,10 +62,10 @@ metadataTest:
   env:
     #    - key: TZ
     #      value: 'Europe/Paris'
-    - key: "PATH"
-      value: "/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    - key: "JAVA_HOME"
-      value: "/usr/local/openjdk-11"
+    - key: PATH
+      value: /usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - key: JAVA_HOME
+      value: /usr/local/openjdk-11
   #    - key: "HOME"
   #      value: "/home/jenkins"
   exposedPorts: [8080]

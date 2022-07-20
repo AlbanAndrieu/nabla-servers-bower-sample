@@ -1,19 +1,18 @@
-schemaVersion: "2.0.0"
+---
+schemaVersion: 2.0.0
 
 commandTests:
-  - name: "check jenkins user"
-    command: "whoami"
-    expectedOutput: ["jenkins"]
-
-  - name: "check jenkins uid/gid used for config generation"
-    command: "id"
-    expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
-
-  - name: "apt-get upgrade"
-    command: "apt-get"
-    args: ["-qqs", "upgrade"]
-    excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
-    excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
+  - name: check jenkins user
+    command: whoami
+    expectedOutput: [jenkins]
+  - name: check jenkins uid/gid used for config generation
+    command: id
+    expectedOutput: [uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*]
+  - name: apt-get upgrade
+    command: apt-get
+    args: [-qqs, upgrade]
+    excludedOutput: [.*Inst.*Security.* | .*Security.*Inst.*]
+    excludedError: [.*Inst.*Security.* | .*Security.*Inst.*]
 
 fileExistenceTests:
   # - name: 'jenkins directory'
@@ -22,10 +21,10 @@ fileExistenceTests:
   #   permissions: 'drwxrwxrwx'
   #   uid: 2000
 
-  - name: "war file"
-    path: "/opt/test.war"
+  - name: war file
+    path: /opt/test.war
     shouldExist: true
-    permissions: "-rwxrwxrwx"
+    permissions: -rwxrwxrwx
     #   uid: 0
     uid: 2000
 

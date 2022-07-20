@@ -1,3 +1,4 @@
+---
 ################### Heartbeat Configuration Example #########################
 
 # This file is an example configuration file highlighting only some common options.
@@ -23,7 +24,7 @@ heartbeat.config.monitors:
 heartbeat.monitors:
   - name: Local heartbeat test for elasticsearch
     type: http
-    urls: ["http://localhost:9200"]
+    urls: [http://localhost:9200]
     schedule: "@every 10s"
 
   #- type: icmp
@@ -60,13 +61,13 @@ heartbeat.monitors:
     type: http
     enabled: true
     schedule: "@every 5s"
-    urls: ["http://albandrieu:7075/server-status"]
+    urls: [http://albandrieu:7075/server-status]
     ipv4: true
     ipv6: true
     mode: any
     timeout: 5s
     check.request:
-      method: "GET"
+      method: GET
     check.response:
       status: 200
 #Monitor the Mysql instance by attempting a tcp connect on port 3306
@@ -134,12 +135,12 @@ setup.kibana:
   # Scheme and port can be left out and will be set to the default (http and 5601)
   # In case you specify and additional path, the scheme is required: http://localhost:5601/path
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  host: "localhost:5601"
+  host: localhost:5601
 
-  # Kibana Space ID
-  # ID of the Kibana Space into which the dashboards should be loaded. By default,
-  # the Default Space will be used.
-  #space.id:
+# Kibana Space ID
+# ID of the Kibana Space into which the dashboards should be loaded. By default,
+# the Default Space will be used.
+#space.id:
 
 #============================= Elastic Cloud ==================================
 
@@ -161,8 +162,7 @@ setup.kibana:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["localhost:9200"]
-
+  hosts: [localhost:9200]
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
   # Authentication credentials - either API key or username/password.
@@ -206,7 +206,6 @@ logging.level: debug
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publish", "service".
 logging.selectors: ["*"]
-
 logging.metrics.enabled: true
 #logging.to_files: true
 #logging.files:

@@ -1,10 +1,11 @@
-schemaVersion: "2.0.0"
+---
+schemaVersion: 2.0.0
 
 fileExistenceTests:
-  - name: "jenkins directory"
-    path: "/home/jenkins"
+  - name: jenkins directory
+    path: /home/jenkins
     shouldExist: true
-    permissions: "drwx------"
+    permissions: drwx------
     uid: 1100
 
   #  - name: "sonar-build-wrapper"
@@ -18,76 +19,64 @@ fileExistenceTests:
   #    permissions: "-rwxr-xr-x"
 
   # Should not exist as it is a runtime image
-  - name: "maven"
-    path: "/usr/bin/mvn"
+  - name: maven
+    path: /usr/bin/mvn
     shouldExist: false
 
 commandTests:
-  - name: "check jenkins user"
-    command: "whoami"
-    expectedOutput: ["jenkins"]
-
-  - name: "check jenkins uid/gid used for config generation"
-    command: "id"
-    expectedOutput: ["uid=1100.jenkins. gid=1101.docker. .*"]
-
-  - name: "check PATH"
-    command: "echo"
+  - name: check jenkins user
+    command: whoami
+    expectedOutput: [jenkins]
+  - name: check jenkins uid/gid used for config generation
+    command: id
+    expectedOutput: [uid=1100.jenkins. gid=1101.docker. .*]
+  - name: check PATH
+    command: echo
     args: ["${PATH}"]
-    expectedOutput:
-      ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
-
+    expectedOutput: [/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin]
   #- name:  "yum update"
   #  command: "yum"
   #  args: ["update", "-y"]
 
-  - name: "check openjdk 1.8.0"
-    command: "${JAVA_HOME}/bin/java"
-    args: ["-version"]
-    expectedError: ['openjdk version \"1\.8\..*\".*']
-
-  - name: "check python 2.7.15+"
-    command: "python"
-    args: ["--version"]
-    expectedError: ["Python 2.7.*"]
-
+  - name: check openjdk 1.8.0
+    command: ${JAVA_HOME}/bin/java
+    args: [-version]
+    expectedError: [openjdk version \"1\.8\..*\".*]
+  - name: check python 2.7.15+
+    command: python
+    args: [--version]
+    expectedError: [Python 2.7.*]
   # - name: "check pip 8.1.2"
   #   command: "pip"
   #   args: ["--version"]
   #   expectedOutput: ["pip 8.1.2 from /usr/lib/python2.7/site-packages (python 2.7)*"]
 
-  - name: "check python 3"
-    command: "python3"
-    args: ["--version"]
-    expectedOutput: ["Python 3.6.*"]
-
+  - name: check python 3
+    command: python3
+    args: [--version]
+    expectedOutput: [Python 3.6.*]
   #- name: "check python 3.5.7"
   #   command: "python3.5"
   #   args: ["--version"]
   #   expectedOutput: ['Python 3.5.*']
 
-  - name: "check python 3.6.8"
-    command: "python3.6"
-    args: ["--version"]
-    expectedOutput: ["Python 3.6.*"]
-
-  - name: "check pip 20.2.3"
-    command: "pip3"
-    args: ["--version"]
-    expectedOutput:
-      [
-        "pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*",
-      ]
-
-  - name: "check docker 20.10.0"
-    command: "docker"
-    args: ["--version"]
-    expectedOutput: ["Docker version 20.10.*"]
+  - name: check python 3.6.8
+    command: python3.6
+    args: [--version]
+    expectedOutput: [Python 3.6.*]
+  - name: check pip 20.2.3
+    command: pip3
+    args: [--version]
+    expectedOutput: [pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*]
+  - name: check docker 20.10.0
+    command: docker
+    args: [--version]
+    expectedOutput: [Docker version 20.10.*]
 
 metadataTest:
   env:
-    - key: "PATH"
-      value: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    - key: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   #  labels:
   #    - key: 'com.example.vendor'
   #      value: 'ACME Incorporated'
@@ -95,13 +84,6 @@ metadataTest:
   #  exposedPorts: ["8080", "2345"]
   volumes: []
   #  volumes: ["/test"]
-  entrypoint: [
-      "java",
-      "-Djava.security.egd=file:/dev/./urandom",
-      # "-Djava.io.tmpdir=/tmp/jetty",
-      "-Djetty.base=/var/lib/jetty",
-      "-jar",
-      "/home/jenkins/jetty-runner.jar",
-    ]
-  cmd: ["/home/jenkins/test.war"]
-  workdir: "/home/jenkins"
+  entrypoint: [java, -Djava.security.egd=file:/dev/./urandom, -Djetty.base=/var/lib/jetty, -jar, /home/jenkins/jetty-runner.jar]
+  cmd: [/home/jenkins/test.war]
+  workdir: /home/jenkins

@@ -1,20 +1,18 @@
-schemaVersion: "2.0.0"
+---
+schemaVersion: 2.0.0
 
 commandTests:
-  - name: "check jenkins user"
-    command: "whoami"
-    expectedOutput: ["jenkins"]
-
-  - name: "check jenkins uid/gid used for config generation"
-    command: "id"
-    expectedOutput: ["uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*"]
-
-  - name: "apt-get upgrade"
-    command: "apt-get"
-    args: ["-qqs", "upgrade"]
-    excludedOutput: [".*Inst.*Security.* | .*Security.*Inst.*"]
-    excludedError: [".*Inst.*Security.* | .*Security.*Inst.*"]
-
+  - name: check jenkins user
+    command: whoami
+    expectedOutput: [jenkins]
+  - name: check jenkins uid/gid used for config generation
+    command: id
+    expectedOutput: [uid=2000.jenkins. gid=2000.docker. groups=2000.docker.*]
+  - name: apt-get upgrade
+    command: apt-get
+    args: [-qqs, upgrade]
+    excludedOutput: [.*Inst.*Security.* | .*Security.*Inst.*]
+    excludedError: [.*Inst.*Security.* | .*Security.*Inst.*]
   #  - name: "check chromium-browser 86.0"
   #    command: "chromium-browser"
   #    args: ["--version"]
@@ -25,21 +23,20 @@ commandTests:
   #    args: ["--version"]
   #    expectedOutput: ["Chromium 86.0..*"]
 
-  - name: "check google-chrome 86.0"
-    command: "google-chrome"
-    args: ["--version"]
-    expectedOutput: ["Google Chrome 86..*"]
-
-  - name: "check chromedriver 86.0"
-    command: "chromedriver"
-    args: ["--version"]
-    expectedOutput: ["ChromeDriver 86.0..*"]
+  - name: check google-chrome 86.0
+    command: google-chrome
+    args: [--version]
+    expectedOutput: [Google Chrome 86..*]
+  - name: check chromedriver 86.0
+    command: chromedriver
+    args: [--version]
+    expectedOutput: [ChromeDriver 86.0..*]
 
 fileExistenceTests:
-  - name: "jenkins directory"
-    path: "/home/jenkins"
+  - name: jenkins directory
+    path: /home/jenkins
     shouldExist: true
-    permissions: "drwxrwxrwx"
+    permissions: drwxrwxrwx
     uid: 2000
 
   # - name: 'war file'
@@ -49,13 +46,13 @@ fileExistenceTests:
   #   uid: 2000
 
   #   /usr/share/maven/bin/mvn to provide /usr/bin/mvn
-  - name: "maven"
-    path: "/usr/bin/mvn"
+  - name: maven
+    path: /usr/bin/mvn
     shouldExist: true
-    permissions: "Lrwxrwxrwx"
+    permissions: Lrwxrwxrwx
 
 metadataTest:
   #  exposedPorts: [22]
   exposedPorts: []
   volumes: []
-  cmd: ["/opt/bin/entry_point.sh"]
+  cmd: [/opt/bin/entry_point.sh]

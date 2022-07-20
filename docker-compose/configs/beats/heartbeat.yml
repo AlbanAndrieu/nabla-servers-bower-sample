@@ -26,14 +26,7 @@ heartbeat.config.monitors:
 heartbeat.monitors:
   - type: icmp
     schedule: "*/5 * * * * * *"
-    hosts: [
-        "filebeat",
-        "metricbeat",
-        "packetbeat",
-        "elasticsearch",
-        "kibana",
-        "jenkins",
-      ] # ,"apache2","nginx","mysql","nexus"
+    hosts: [filebeat, metricbeat, packetbeat, elasticsearch, kibana, jenkins] # ,"apache2","nginx","mysql","nexus"
     ipv4: true
     ipv6: true
     mode: any
@@ -44,7 +37,7 @@ heartbeat.monitors:
     type: http
     enabled: true
     schedule: "@every 5s"
-    urls: ["http://monitoring_elasticsearch:9200"]
+    urls: [http://monitoring_elasticsearch:9200]
     ipv4: true
     ipv6: true
     mode: any
@@ -52,7 +45,7 @@ heartbeat.monitors:
     #username: '${ES_USERNAME:elastic}'
     #password: '${ES_PASSWORD:changeme}'
     check.request:
-      method: "GET"
+      method: GET
     check.response:
       status: 200
   #Monitor the Kibana instance with a http GET to / - checking for a 200 response code
@@ -60,13 +53,13 @@ heartbeat.monitors:
     type: http
     enabled: true
     schedule: "@every 5s"
-    urls: ["http://monitoring_kibana:5601/app/kibana"]
+    urls: [http://monitoring_kibana:5601/app/kibana]
     ipv4: true
     ipv6: true
     mode: any
     timeout: 5s
     check.request:
-      method: "GET"
+      method: GET
     check.response:
       status: 200
 #Monitor the Nginx instance with a http GET to /server-status - checking for a 200 response code
@@ -121,15 +114,15 @@ setup.template.settings:
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
 # This requires a Kibana endpoint configuration.
 setup.kibana:
-  # Kibana Host
-  # Scheme and port can be left out and will be set to the default (http and 5601)
-  # In case you specify and additional path, the scheme is required: http://localhost:5601/path
-  # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  #host: "localhost:5601"
-  # Kibana Space ID
-  # ID of the Kibana Space into which the dashboards should be loaded. By default,
-  # the Default Space will be used.
-  #space.id:
+# Kibana Host
+# Scheme and port can be left out and will be set to the default (http and 5601)
+# In case you specify and additional path, the scheme is required: http://localhost:5601/path
+# IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
+#host: "localhost:5601"
+# Kibana Space ID
+# ID of the Kibana Space into which the dashboards should be loaded. By default,
+# the Default Space will be used.
+#space.id:
 
 #============================= Elastic Cloud ==================================
 
@@ -151,8 +144,7 @@ setup.kibana:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["monitoring_elasticsearch:9200"]
-
+  hosts: [monitoring_elasticsearch:9200]
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
   # Authentication credentials - either API key or username/password.

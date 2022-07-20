@@ -1,21 +1,21 @@
+---
 global:
   # The smarthost and SMTP sender used for mail notifications.
-  smtp_smarthost: "localhost:25"
-  smtp_from: "alban.andrieu@free.fr"
-  smtp_auth_username: "alban.andrieu@nabla.mobi"
+  smtp_smarthost: localhost:25
+  smtp_from: alban.andrieu@free.fr
+  smtp_auth_username: alban.andrieu@nabla.mobi
   #smtp_auth_password: 'password'
   # The auth token for Hipchat.
   #hipchat_auth_token: '1234556789'
   # Alternative host for Hipchat.
   #hipchat_api_url: 'https://hipchat.foobar.org/'
-  slack_api_url: "https://hooks.slack.com/services/T010XXXX/B010NXXXX/Nq9kxCXXXXXX"
+  slack_api_url: https://hooks.slack.com/services/T010XXXX/B010NXXXX/Nq9kxCXXXXXX
 
 route:
-  receiver: "slack-notifications"
+  receiver: slack-notifications
   group_by: [alertname, datacenter, app]
-
 receivers:
-  - name: "slack-notifications"
+  - name: slack-notifications
     slack_configs:
       - channel: "#alerts_test"
         api_url: https://hooks.slack.com/services/T010XXXX/B010NXXXX/Nq9kxCXXXXXX
@@ -23,5 +23,5 @@ receivers:
         #icon_url: https://avatars1.githubusercontent.com/u/7859836
         send_resolved: true
         # Template for the text field in Slack messages.
-        text: "https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}"
+        text: https://internal.myorg.net/wiki/alerts/{{ .GroupLabels.app }}/{{ .GroupLabels.alertname }}
         #text: " \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}"
