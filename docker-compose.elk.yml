@@ -1,3 +1,4 @@
+---
 # To execute this docker-compose yml file use docker-compose -f <file_name> up
 # Add the "-d" flag at the end for deattached execution
 version: "3"
@@ -39,7 +40,7 @@ services:
     image: selenium/hub:3.12.0-cobalt
     container_name: selenium-hub
     ports:
-      - "4444:4444"
+      - 4444:4444
   chrome:
     image: selenium/node-chrome:3.12.0-cobalt
     depends_on:
@@ -74,32 +75,26 @@ services:
   mysql:
     image: mysql
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=test
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+      - ./conf.d:/etc/mysql/conf.d:ro
   elasticsearch:
     image: elasticsearch:2.3.3
     container_name: elasticsearch
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - 9200:9200
+      - 9300:9300
     ## uncomment and adjust the path before the colon to some local directory where the data should be stored at
     ## NOTE: if you don't do that, the data will not be persistent!
     #volumes:
     # - /workspace/data/docker/es-stagemonitor:/usr/share/elasticsearch/data
     #environment:
     # - ES_HEAP_SIZE=6g # adjust heap size, should be half of your nodes RAM (max 30g)
-    command:
-      elasticsearch
-      --cluster.name monitoring-cluster
-      --index.number_of_replicas 0
-      --network.bind_host _non_loopback:ipv4_
-      --node.name es-monitoring-01
-      --http.cors.enabled true
-      --http.cors.allow-origin *
+    command: elasticsearch --cluster.name monitoring-cluster --index.number_of_replicas 0 --network.bind_host _non_loopback:ipv4_ --node.name es-monitoring-01 --http.cors.enabled
+      true --http.cors.allow-origin *
       ##  only needed if you want to cluster elasticsearch across multiple hosts
       #--network.publish_host <ip of docker host>
       #--discovery.zen.ping.unicast.hosts <ip of other ES hosts>
@@ -107,25 +102,25 @@ services:
       #   set 'node.box_type hot' for your beefy nodes with SSDs which hold the new indices and 'node.box_type cold' for historical nodes (see https://github.com/stagemonitor/stagemonitor/wiki/Elasticsearch#hot-cold-architecture)
       #   increase 'index.number_of_replicas' if you want backups (needs more disk space)
       #   don't forget to change the 'node.name' if you want multiple instances
-    #log_driver: "json-file"
-    #log_opt: # log rotation
-    #  max-size: "10m"
-    #  max-file: "20"
+  #log_driver: "json-file"
+  #log_opt: # log rotation
+  #  max-size: "10m"
+  #  max-file: "20"
   kibana:
     image: kibana:4.5.1
     container_name: kibana
     ports:
-      - "5601:5601"
+      - 5601:5601
     links:
       - elasticsearch:elasticsearch
-    #log_driver: "json-file"
-    #log_opt: # log rotation
-    #  max-size: "10m"
-    #  max-file: "20"
+  #log_driver: "json-file"
+  #log_opt: # log rotation
+  #  max-size: "10m"
+  #  max-file: "20"
   grafana:
     image: grafana/grafana:3.0.4
     ports:
-      - "3000:3000"
+      - 3000:3000
     links:
       - elasticsearch:elasticsearch
     ## uncomment and adjust the path before the colon to some local directory where the data should be stored at

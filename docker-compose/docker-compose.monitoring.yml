@@ -3,133 +3,133 @@ version: "3.7"
 
 services:
   # # jenkins is now on kubernetes
-  #jenkins:
-  #  image: nabla/jenkins-pipeline-scripts:1.0.0
-  #  container_name: devops_jenkins
-  #  restart: unless-stopped
-  #  user: root
-  #  volumes:
-  #    - /jenkins:/jenkins
-  #    - /var/run/docker.sock:/var/run/docker.sock
-  #  environment:
-  #    - JENKINS_HOME=/jenkins
-  #  #dns_search:
-  #  #  - albandrieu.com
-  #  #dns:
-  #  #  - 10.21.200.3
-  #  #  - 10.25.200.3
-  #  #  - 192.168.1.1
-  #  ports:
-  #    - "8686:8080"
-  #    - "50000:50000"
-  #  depends_on:
-  #    - elasticsearch
-  #    - nexus
-  #  extra_hosts:
-  #    - "github.com:140.82.121.3"
-  #    #- "albandrieu.com:82.124.243"
-  #    #- "albandrieu.com:192.168.1.62"
-  #    #- "registry.hub.docker.com:3.83.63.98"
-  #  #network_mode: "host"
-  #  networks:
-  #    - default
-  #  #   - openvpn
-  #  #  - elastic
-  #  #  - ingress
+  # jenkins:
+  #   image: nabla/jenkins-pipeline-scripts:1.0.0
+  #   container_name: devops_jenkins
+  #   restart: unless-stopped
+  #   user: root
+  #   volumes:
+  #     - /jenkins:/jenkins
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - JENKINS_HOME=/jenkins
+  #   #dns_search:
+  #   #  - albandrieu.com
+  #   #dns:
+  #   #  - 10.21.200.3
+  #   #  - 10.25.200.3
+  #   #  - 192.168.1.1
+  #   ports:
+  #     - "8686:8080"
+  #     - "50000:50000"
+  #   depends_on:
+  #     - elasticsearch
+  #     - nexus
+  #   extra_hosts:
+  #     - "github.com:140.82.121.3"
+  #     #- "albandrieu.com:82.124.243"
+  #     #- "albandrieu.com:192.168.1.62"
+  #     #- "registry.hub.docker.com:3.83.63.98"
+  #   #network_mode: "host"
+  #   networks:
+  #     - default
+  #   #   - openvpn
+  #   #  - elastic
+  #   #  - ingress
 
   dtrack:
-    ## Pull the image from the Docker Hub OWASP repo
-    #docker pull owasp/dependency-track
-    ## Creates a dedicated volume where data can be stored outside the container
-    #docker volume create --name dependency-track
-    ## Run the container with 8GB RAM on port 8087
-    #docker run -d -m 8192m -p 8087:8080 --name dependency-track -v dependency-track:/data owasp/dependency-track
-    #
-    #environment:
-    # The Dependency-Track container can be configured using any of the
-    # available configuration properties defined in:
-    # https://docs.dependencytrack.org/getting-started/configuration/
-    # All properties are upper case with periods replaced by underscores.
-    #
-    # Database Properties
-    # - ALPINE_DATABASE_MODE=external
-    # - ALPINE_DATABASE_URL=jdbc:postgresql://postgres10:5432/dtrack
-    # - ALPINE_DATABASE_DRIVER=org.postgresql.Driver
-    # - ALPINE_DATABASE_DRIVER_PATH=/extlib/postgresql-42.2.5.jar
-    # - ALPINE_DATABASE_USERNAME=dtrack
-    # - ALPINE_DATABASE_PASSWORD=changeme
-    # - ALPINE_DATABASE_POOL_ENABLED=true
-    # - ALPINE_DATABASE_POOL_MAX_SIZE=10
-    # - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=600000
-    # - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
-    #
-    # Optional LDAP Properties
-    # - ALPINE_LDAP_ENABLED=
-    # - ALPINE_LDAP_SERVER_URL=ldap://ldap.example.com:389
-    # - ALPINE_LDAP_BASEDN=dc=example,dc=com
-    # - ALPINE_LDAP_SECURITY_AUTH=simple
-    # - ALPINE_LDAP_BIND_USERNAME=
-    # - ALPINE_LDAP_BIND_PASSWORD=
-    # - ALPINE_LDAP_AUTH_USERNAME_FORMAT=%s@example.com
-    # - ALPINE_LDAP_ATTRIBUTE_NAME=userPrincipalName
-    # - ALPINE_LDAP_ATTRIBUTE_MAIL=mail
-    # - ALPINE_LDAP_GROUPS_FILTER=(&(objectClass=group)(objectCategory=Group))
-    # - ALPINE_LDAP_USER_GROUPS_FILTER=(member:1.2.840.113556.1.4.1941:={USER_DN})
-    # - ALPINE_LDAP_GROUPS_SEARCH_FILTER=(&(objectClass=group)(objectCategory=Group)(cn=*{SEARCH_TERM}*))
-    # - ALPINE_LDAP_USERS_SEARCH_FILTER=(&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
-    # - ALPINE_LDAP_USER_PROVISIONING=false
-    # - ALPINE_LDAP_TEAM_SYNCHRONIZATION=false
-    #
-    # Optional HTTP Proxy Settings
-    # - ALPINE_HTTP_PROXY_ADDRESS=proxy.example.com
-    # - ALPINE_HTTP_PROXY_PORT=8888
-    # - ALPINE_HTTP_PROXY_USERNAME=
-    # - ALPINE_HTTP_PROXY_PASSWORD=
-    #
-    # Optional Cross-Origin Resource Sharing (CORS) Headers
-    # - ALPINE_CORS_ENABLED=true
-    # - ALPINE_CORS_ALLOW_ORIGIN=*
-    # - ALPINE_CORS_ALLOW_METHODS=GET POST PUT DELETE OPTIONS
-    # - ALPINE_CORS_ALLOW_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count, *
-    # - ALPINE_CORS_EXPOSE_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count
-    # - ALPINE_CORS_ALLOW_CREDENTIALS=true
-    # - ALPINE_CORS_MAX_AGE=3600
-    #image: owasp/dependency-track:3.8.0
+    # # Pull the image from the Docker Hub OWASP repo
+    # docker pull owasp/dependency-track
+    # # Creates a dedicated volume where data can be stored outside the container
+    # docker volume create --name dependency-track
+    # # Run the container with 8GB RAM on port 8087
+    # docker run -d -m 8192m -p 8087:8080 --name dependency-track -v dependency-track:/data owasp/dependency-track
+    # 
+    # environment:
+    #  The Dependency-Track container can be configured using any of the
+    #  available configuration properties defined in:
+    #  https://docs.dependencytrack.org/getting-started/configuration/
+    #  All properties are upper case with periods replaced by underscores.
+    # 
+    #  Database Properties
+    #  - ALPINE_DATABASE_MODE=external
+    #  - ALPINE_DATABASE_URL=jdbc:postgresql://postgres10:5432/dtrack
+    #  - ALPINE_DATABASE_DRIVER=org.postgresql.Driver
+    #  - ALPINE_DATABASE_DRIVER_PATH=/extlib/postgresql-42.2.5.jar
+    #  - ALPINE_DATABASE_USERNAME=dtrack
+    #  - ALPINE_DATABASE_PASSWORD=changeme
+    #  - ALPINE_DATABASE_POOL_ENABLED=true
+    #  - ALPINE_DATABASE_POOL_MAX_SIZE=10
+    #  - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=600000
+    #  - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
+    # 
+    #  Optional LDAP Properties
+    #  - ALPINE_LDAP_ENABLED=
+    #  - ALPINE_LDAP_SERVER_URL=ldap://ldap.example.com:389
+    #  - ALPINE_LDAP_BASEDN=dc=example,dc=com
+    #  - ALPINE_LDAP_SECURITY_AUTH=simple
+    #  - ALPINE_LDAP_BIND_USERNAME=
+    #  - ALPINE_LDAP_BIND_PASSWORD=
+    #  - ALPINE_LDAP_AUTH_USERNAME_FORMAT=%s@example.com
+    #  - ALPINE_LDAP_ATTRIBUTE_NAME=userPrincipalName
+    #  - ALPINE_LDAP_ATTRIBUTE_MAIL=mail
+    #  - ALPINE_LDAP_GROUPS_FILTER=(&(objectClass=group)(objectCategory=Group))
+    #  - ALPINE_LDAP_USER_GROUPS_FILTER=(member:1.2.840.113556.1.4.1941:={USER_DN})
+    #  - ALPINE_LDAP_GROUPS_SEARCH_FILTER=(&(objectClass=group)(objectCategory=Group)(cn=*{SEARCH_TERM}*))
+    #  - ALPINE_LDAP_USERS_SEARCH_FILTER=(&(objectClass=user)(objectCategory=Person)(cn=*{SEARCH_TERM}*))
+    #  - ALPINE_LDAP_USER_PROVISIONING=false
+    #  - ALPINE_LDAP_TEAM_SYNCHRONIZATION=false
+    # 
+    #  Optional HTTP Proxy Settings
+    #  - ALPINE_HTTP_PROXY_ADDRESS=proxy.example.com
+    #  - ALPINE_HTTP_PROXY_PORT=8888
+    #  - ALPINE_HTTP_PROXY_USERNAME=
+    #  - ALPINE_HTTP_PROXY_PASSWORD=
+    # 
+    #  Optional Cross-Origin Resource Sharing (CORS) Headers
+    #  - ALPINE_CORS_ENABLED=true
+    #  - ALPINE_CORS_ALLOW_ORIGIN=*
+    #  - ALPINE_CORS_ALLOW_METHODS=GET POST PUT DELETE OPTIONS
+    #  - ALPINE_CORS_ALLOW_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count, *
+    #  - ALPINE_CORS_EXPOSE_HEADERS=Origin, Content-Type, Authorization, X-Requested-With, Content-Length, Accept, Origin, X-Api-Key, X-Total-Count
+    #  - ALPINE_CORS_ALLOW_CREDENTIALS=true
+    #  - ALPINE_CORS_MAX_AGE=3600
+    # image: owasp/dependency-track:3.8.0
     image: owasp/dependency-track:latest
     container_name: devops_dtrack
-    #hostname: albandrieu-dtrack
-    #restart: unless-stopped
-    #deploy:
-    #  resources:
-    #    limits:
-    #      memory: 3g
-    #    reservations:
-    #      memory: 512m
-    #  restart_policy:
-    #    condition: on-failure
+    # hostname: albandrieu-dtrack
+    # restart: unless-stopped
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 3g
+    #     reservations:
+    #       memory: 512m
+    #   restart_policy:
+    #     condition: on-failure
     ports:
-      - "8087:8080"
+      - 8087:8080
     volumes:
-      - "/data:/data"
-    #depends_on:
-    #  - jenkins
-    #network_mode: "host"
-    #networks:
-    #  - ingress
+      - /data:/data
+  # depends_on:
+  #   - jenkins
+  # network_mode: "host"
+  # networks:
+  #   - ingress
 
   nexus:
-    #docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
+    # docker run -d -p 8081:8081 -v /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data --name albandrieu-nexus sonatype/nexus3:3.0.0
     image: sonatype/nexus3:3.31.1
     container_name: devops_nexus3
-    #hostname: albandrieu-nexus
+    # hostname: albandrieu-nexus
     restart: unless-stopped
     volumes:
-      - "/opt/sonatype/sonatype-work/nexus3-docker:/nexus-data"
-    #ports:
-    #  - "8081:8081"
-    network_mode: "host"
-    #networks:
-    #  - ingress
+      - /opt/sonatype/sonatype-work/nexus3-docker:/nexus-data
+    # ports:
+    #   - "8081:8081"
+    network_mode: host
+    # networks:
+    #   - ingress
 
   #  artifactory:
   #    #image: docker.bintray.io/jfrog/artifactory-oss:6.1.0
@@ -158,57 +158,57 @@ services:
       - ${PWD}/configs/prometheus/:/etc/prometheus/
       - /data/prometheus/data:/prometheus
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-      - "--storage.tsdb.path=/prometheus"
-      #- '--storage.tsdb.retention.time=365d'
-      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
-      - "--web.console.templates=/usr/share/prometheus/consoles"
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      # - '--storage.tsdb.retention.time=365d'
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
     ports:
       - 9092:9090
     links:
       - cadvisor:monitoring_cadvisor
       - node-exporter:node-monitoring_node_exporter
-    #network_mode: "host"
-    #networks:
-    #  - openvpn
-    #  - elastic
-    #  - ingress
-
-  #  alertmanager:
-  #    image: prom/alertmanager:v0.20.0
-  #    ports:
-  #      - 9093:9093
-  #    volumes:
-  #      - ./configs/alertmanager/:/etc/alertmanager/
-  #    restart: unless-stopped
-  #    command:
-  #      - '--config.file=/etc/alertmanager/config.yml'
-  #      - '--storage.path=/alertmanager'
-  #    #networks:
-  #    #  - elastic
+  # network_mode: "host"
+  # networks:
+  #   - openvpn
+  #   - elastic
+  #   - ingress
+    
+  #   alertmanager:
+  #     image: prom/alertmanager:v0.20.0
+  #     ports:
+  #       - 9093:9093
+  #     volumes:
+  #       - ./configs/alertmanager/:/etc/alertmanager/
+  #     restart: unless-stopped
+  #     command:
+  #       - '--config.file=/etc/alertmanager/config.yml'
+  #       - '--storage.path=/alertmanager'
+  #     #networks:
+  #     #  - elastic
 
   node-exporter:
     image: prom/node-exporter:v0.18.1
     container_name: monitoring_node_exporter
     restart: unless-stopped
-    #ports:
-    #  - 9100:9100
-    network_mode: "host"
-    #networks:
-    #  - elastic
-    #  - ingress
+    # ports:
+    #   - 9100:9100
+    network_mode: host
+    # networks:
+    #   - elastic
+    #   - ingress
 
   blackbox:
     image: prom/blackbox-exporter:v0.14.0
     container_name: monitoring_blackbox
     restart: unless-stopped
-    #deploy:
-    #  replicas: 1
+    # deploy:
+    #   replicas: 1
     volumes:
       - ./configs/blackbox:/config
-    network_mode: "host"
-    #networks:
-    #  - ingress
+    network_mode: host
+    # networks:
+    #   - ingress
 
   cadvisor:
     image: google/cadvisor:v0.32.0
@@ -221,12 +221,12 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 7777:8080
-    #links:
-    #  - elasticsearch
-    #command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
-    #networks:
-    #  - elastic
-    #  - ingress
+  # links:
+  #   - elasticsearch
+  # command: -storage_driver="elasticsearch" -alsologtostderr=true -storage_driver_es_host="http://monitoring_elasticsearch:9200"
+  # networks:
+  #   - elastic
+  #   - ingress
 
   #  grafana:
   #    image: grafana/grafana:6.7.1
@@ -266,94 +266,94 @@ services:
   #    #  - elastic
   #    #  - ingress
 
-#  elasticsearch-hq:
-#    image: elastichq/elasticsearch-hq:latest # v3.5.12
-#    # Todo connect to http://monitoring_elasticsearch:9200
-#    container_name: monitoring_elasticsearch-hq
-#    restart: unless-stopped
-#    #deploy:
-#    #  resources:
-#    #    limits:
-#    #      memory: 1g
-#    #    reservations:
-#    #      memory: 512m
-#    environment:
-#      - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
-#      #- HQ_ENABLE_SSL=False
-#    ports:
-#      - 5001:5000
-#    depends_on:
-#      - elasticsearch
-#    #networks:
-#    #  - elastic
-#
-#  elasticsearch:
-#    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
-#    container_name: monitoring_elasticsearch
-#    restart: unless-stopped
-#    #deploy:
-#    #  resources:
-#    #    limits:
-#    #      memory: 3g
-#    #    reservations:
-#    #      memory: 512m
-#    environment:
-#      - xpack.security.enabled=false
-#      - discovery.type=single-node
-#      #- http.host=0.0.0.0
-#      #- transport.host=127.0.0.1
-#      - bootstrap.memory_lock=true
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#      - http.cors.enabled=true
-#      - http.cors.allow-origin=*
-#      - xpack.monitoring.collection.enabled=true
-#      #- network.host=_eth0_
-#    #three nodes # See https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
-#    #environment:
-#    #  - node.name=es01
-#    #  - cluster.name=es-docker-cluster
-#    #  - discovery.seed_hosts=es02,es03
-#    #  - cluster.initial_master_nodes=es01,es02,es03
-#    #  - bootstrap.memory_lock=true
-#    #  - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#    ulimits:
-#      memlock:
-#        soft: -1
-#        hard: -1
-#      nofile:
-#        soft: 65536
-#        hard: 65536
-#    #cap_add:
-#    ##  - IPC_LOCK
-#    #  - ALL
-#    volumes:
-#      #- ${PWD}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-#      - esdata:/usr/share/elasticsearch/data
-#    ports:
-#      - 9200:9200
-#      - 9300:9300
-#    #network_mode: "host"
-#    #networks:
-#    #  - elastic
+  #  elasticsearch-hq:
+  #    image: elastichq/elasticsearch-hq:latest # v3.5.12
+  #    # Todo connect to http://monitoring_elasticsearch:9200
+  #    container_name: monitoring_elasticsearch-hq
+  #    restart: unless-stopped
+  #    #deploy:
+  #    #  resources:
+  #    #    limits:
+  #    #      memory: 1g
+  #    #    reservations:
+  #    #      memory: 512m
+  #    environment:
+  #      - HQ_DEFAULT_URL=http://monitoring_elasticsearch:9200
+  #      #- HQ_ENABLE_SSL=False
+  #    ports:
+  #      - 5001:5000
+  #    depends_on:
+  #      - elasticsearch
+  #    #networks:
+  #    #  - elastic
+  #
+  #  elasticsearch:
+  #    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.1
+  #    container_name: monitoring_elasticsearch
+  #    restart: unless-stopped
+  #    #deploy:
+  #    #  resources:
+  #    #    limits:
+  #    #      memory: 3g
+  #    #    reservations:
+  #    #      memory: 512m
+  #    environment:
+  #      - xpack.security.enabled=false
+  #      - discovery.type=single-node
+  #      #- http.host=0.0.0.0
+  #      #- transport.host=127.0.0.1
+  #      - bootstrap.memory_lock=true
+  #      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #      - http.cors.enabled=true
+  #      - http.cors.allow-origin=*
+  #      - xpack.monitoring.collection.enabled=true
+  #      #- network.host=_eth0_
+  #    #three nodes # See https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+  #    #environment:
+  #    #  - node.name=es01
+  #    #  - cluster.name=es-docker-cluster
+  #    #  - discovery.seed_hosts=es02,es03
+  #    #  - cluster.initial_master_nodes=es01,es02,es03
+  #    #  - bootstrap.memory_lock=true
+  #    #  - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #    ulimits:
+  #      memlock:
+  #        soft: -1
+  #        hard: -1
+  #      nofile:
+  #        soft: 65536
+  #        hard: 65536
+  #    #cap_add:
+  #    ##  - IPC_LOCK
+  #    #  - ALL
+  #    volumes:
+  #      #- ${PWD}/configs/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  #      - esdata:/usr/share/elasticsearch/data
+  #    ports:
+  #      - 9200:9200
+  #      - 9300:9300
+  #    #network_mode: "host"
+  #    #networks:
+  #    #  - elastic
 
-#  kibana:
-#    image: docker.elastic.co/kibana/kibana:7.4.0
-#    container_name: monitoring_kibana
-#    restart: unless-stopped
-#    environment:
-#      - SERVER_NAME=localhost
-#      - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
-#      - xpack.monitoring.enabled=true
-#    # See https://www.elastic.co/guide/en/kibana/current/docker.html
-#    #volumes:
-#    #  - ${PWD}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml
-#    ports:
-#      - 5601:5601
-#    depends_on:
-#      - elasticsearch
-#    #networks:
-#    #  - elastic
-#    #  - ingress
+  #  kibana:
+  #    image: docker.elastic.co/kibana/kibana:7.4.0
+  #    container_name: monitoring_kibana
+  #    restart: unless-stopped
+  #    environment:
+  #      - SERVER_NAME=localhost
+  #      - ELASTICSEARCH_HOSTS=http://monitoring_elasticsearch:9200
+  #      - xpack.monitoring.enabled=true
+  #    # See https://www.elastic.co/guide/en/kibana/current/docker.html
+  #    #volumes:
+  #    #  - ${PWD}/configs/kibana.yml:/usr/share/kibana/config/kibana.yml
+  #    ports:
+  #      - 5601:5601
+  #    depends_on:
+  #      - elasticsearch
+  #    #networks:
+  #    #  - elastic
+  #    #  - ingress
 
   auditbeat:
     image: docker.elastic.co/beats/auditbeat:7.6.0
@@ -362,14 +362,14 @@ services:
     environment:
       - setup.kibana.host=monitoring_kibana:5601
       - output.elasticsearch.hosts=["monitoring_elasticsearchmonitoring_elasticsearch:9200"]
-    cap_add: ["AUDIT_CONTROL", "AUDIT_READ"]
-    pid: "host"
+    cap_add: [AUDIT_CONTROL, AUDIT_READ]
+    pid: host
     volumes:
       #   - ${PWD}/configs/auditbeat.docker.yml:/usr/share/auditbeat/auditbeat.yml
       - /var/run/docker.sock:/var/run/docker.sock
-    network_mode: "host"
-    #networks:
-    #  - elastic
+    network_mode: host
+    # networks:
+    #   - elastic
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:7.6.0
@@ -386,9 +386,9 @@ services:
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
       - /proc:/hostfs/proc:ro
       - /:/hostfs:ro
-    network_mode: "host"
-    #networks:
-    #  - elastic
+    network_mode: host
+    # networks:
+    #   - elastic
 
   heartbeat:
     image: docker.elastic.co/beats/heartbeat:7.6.0
@@ -398,7 +398,7 @@ services:
       - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
     volumes:
       - ${PWD}/configs/beats/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
-    network_mode: "host"
+    network_mode: host
 
   packetbeat:
     image: docker.elastic.co/beats/packetbeat:7.6.0
@@ -411,39 +411,39 @@ services:
       - NET_ADMIN
     # volumes:
     #   - ${PWD}/configs/packetbeat.docker.yml:/usr/share/packetbeat/packetbeat.yml
-    network_mode: "host"
+    network_mode: host
     #networks:
     #  - elastic
 
-  #filebeat:
-  #  image: docker.elastic.co/beats/filebeat:7.6.0
-  #  command: --strict.perms=false
-  #  environment:
-  #    - setup.kibana.host=monitoring_kibana:5601
-  #    - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
-  #  ports:
-  #    - 9000:9000
-  #  volumes:
-  #    # - ${PWD}/configs/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
-  #    - /var/lib/docker/containers:/var/lib/docker/containers:ro
-  #    - /var/run/docker.sock:/var/run/docker.sock
-  #  #networks:
-  #  #  - elastic
+  # filebeat:
+  #   image: docker.elastic.co/beats/filebeat:7.6.0
+  #   command: --strict.perms=false
+  #   environment:
+  #     - setup.kibana.host=monitoring_kibana:5601
+  #     - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
+  #   ports:
+  #     - 9000:9000
+  #   volumes:
+  #     # - ${PWD}/configs/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml
+  #     - /var/lib/docker/containers:/var/lib/docker/containers:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   #networks:
+  #   #  - elastic
 
   apmserver:
     image: docker.elastic.co/apm/apm-server:7.6.0
     command: --strict.perms=false
     ports:
-      #- 8200:8200
+      # - 8200:8200
       - 8201:8200
     environment:
       - apm-server.host=0.0.0.0
       - setup.kibana.host=monitoring_kibana:5601
       - output.elasticsearch.hosts=["monitoring_elasticsearch:9200"]
-    # volumes:
-    #   - ${PWD}/configs/apm-server.yml:/usr/share/apm-server/apm-server.yml
-    #networks:
-    #    - elastic
+# volumes:
+#   - ${PWD}/configs/apm-server.yml:/usr/share/apm-server/apm-server.yml
+# networks:
+#     - elastic
 
 #  app-search:
 #    image: docker.elastic.co/app-search/app-search:7.6.0
@@ -539,7 +539,7 @@ volumes:
 networks:
   default:
     driver: bridge
-    #driver: host
+    # driver: host
     ipam:
       config:
         - subnet: 172.20.59.0/24 # bypass openvpn

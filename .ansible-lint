@@ -15,7 +15,7 @@ skip_list:
   - "204"
   - "503"
   - "208"  # File permissions not mentioned
-  - filenotfounderror
+#  - filenotfounderror
 #  - 'document-start'
 #   - skip_this_tag
 #   - and_this_one_too

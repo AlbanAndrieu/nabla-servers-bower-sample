@@ -13,11 +13,11 @@ services:
       - 9090:8080 #http
       #- 9443:9443 #https
       #- 2924:2924 #eclipse
-    #environment:
-    #  DEBUG: 'true'
+  #environment:
+  #  DEBUG: 'true'
 
   db:
-    command: "-d"
+    command: -d
     ports:
       - 3307:3306
 
