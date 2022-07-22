@@ -708,7 +708,7 @@ terraform-docs .
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_CI_PROJECT_NAME"></a> [CI\_PROJECT\_NAME](#input\_CI\_PROJECT\_NAME) | n/a | `string` | `"default"` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to launch servers. | `string` | `"eu-central-1"` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to launch servers. | `string` | `"eu-west-3"` | no |
 | <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization) | Github organization | `string` | `"Banbou"` | no |
 | <a name="input_site"></a> [site](#input\_site) | Site Name | `string` | n/a | yes |
 | <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site | `string` | `"nabla-tf-site-bucket"` | no |

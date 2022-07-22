@@ -32,27 +32,23 @@ terraform {
 
     # The name of the Terraform Cloud workspace to store Terraform state files in.
     workspaces {
-      #name = "nabla"
-      prefix = "bower-"
-    }
-  }
-  */
-  #backend "http" {}
-  # https://www.terraform.io/language/settings/backends/http
-  # https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html#get-started-using-local-development
-  #backend "remote" {}
-
-  backend "remote" {
-    hostname = "app.terraform.io"
-    # The name of your Terraform Cloud organization.
-    organization = "nabla"
-
-    # The name of the Terraform Cloud workspace to store Terraform state files in.
-    workspaces {
       name = "nabla"
       #prefix = "bower-"
     }
   }
+  */
+
+  #backend "http" {}
+  # https://www.terraform.io/language/settings/backends/http
+  # https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html#get-started-using-local-development
+  cloud {
+    organization = "nabla"
+
+    workspaces {
+      name = "nabla"
+    }
+  }
+
 }
 
 # See https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
