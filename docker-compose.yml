@@ -31,7 +31,7 @@ services:
         #          - engine.labels.operatingsystem == ubuntu 18.04
         preferences:
           - spread: node.labels.zone
-        com.example.description: This label will appear on the web service
+        # com.example.description: This label will appear on the web service
       resources:
         limits:
           cpus: "0.50"
@@ -76,11 +76,12 @@ services:
       MYSQL_DATABASE: nabla
       MYSQL_USER: nabla
       MYSQL_PASSWORD: nabla
-    volumes:
-      #- "./conf.d:/etc/mysql/conf.d:ro"
-      - db_data:/var/lib/mysql
+    #volumes:
+    #  #- "./conf.d:/etc/mysql/conf.d:ro"
+    #  - db_data:/var/lib/mysql
     networks:
       - backend
 
-#networks:
+networks:
+  backend: {}
 #  frontend: {}

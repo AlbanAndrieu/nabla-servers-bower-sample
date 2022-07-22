@@ -5,7 +5,7 @@ IMAGE := $(DOCKER_NAME):$(DOCKER_TAG)
 .DEFAULT_GOAL := build
 
 .PHONY: all
-all: down clean validate build up dive
+all: down clean lint build up dive
 
 .PHONY: install
 install:
@@ -22,8 +22,8 @@ clean:
 	@echo "=> Cleaning image..."
 	scripts/clean.sh
 
-.PHONY: validate
-validate:
+.PHONY: lint
+lint:
 	@echo "=> Validating..."
 	scripts/docker-validate.sh
 
