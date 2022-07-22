@@ -3,6 +3,7 @@
 docker-compose/data
 .repository
 reports/
+scripts/microscanner-wrapper/
 
 # terraform
 

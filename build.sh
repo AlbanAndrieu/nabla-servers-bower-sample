@@ -13,7 +13,7 @@ source "${WORKING_DIR}/scripts/step-0-color.sh"
 
 echo -e "${magenta} grunt serve:dist --debug ${NC}"
 
-./clean.sh
+# "${WORKING_DIR}/scripts/clean.sh"
 
 echo -e "${green} ./mvnw install -Dserver=jetty9x -Prun-integration-test ${NC}"
 echo -e "${green} ./mvnw install -Prun-integration-test ${NC}"
@@ -24,9 +24,7 @@ echo -e "${magenta} ./mvnw com.github.ekryd.sortpom:sortpom-maven-plugin:sort -D
 echo -e "${magenta} ./mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Prun-integration-test ${NC}"
 echo -e "${magenta} ./mvnw gplus:generateStubs gplus:groovydoc ${NC}"
 
-#./docker-build.sh
-#brew install hadolint
-hadolint Dockerfile || true
+# "${WORKING_DIR}/scripts/docker-validate.sh"
 
 npm list >list.log || true
 #npm shrinkwrap

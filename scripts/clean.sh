@@ -4,7 +4,9 @@ set -e
 WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # shellcheck source=/dev/null
-source "${WORKING_DIR}/scripts/step-0-color.sh"
+source "${WORKING_DIR}/step-0-color.sh"
+
+cd "${WORKING_DIR}/../"
 
 echo -e "${magenta} Cleaning started. ${NC}"
 
@@ -13,13 +15,17 @@ rm -Rf npm/ .node_cache/ .node_tmp/ .tmp/ .bower/ bower_components/ node/ node_m
 #docs/
 #dist/bower_components/ dist/fonts/
 
-rm -f checkstyle.xml package-lock.json || true
+rm -f checkstyle.xml docker-dockerfilelint.json || true
+rm -f package-lock.json Pipfile.lock || true
 
 echo -e "${magenta} NPM cleaning started. ${NC}"
 
 npm --version
 #npm cache clean || true
 #npm cache verify
+
+cd "${WORKING_DIR}"
+
 echo -e "${green} Cleaning DONE. ${NC}"
 
 exit 0
