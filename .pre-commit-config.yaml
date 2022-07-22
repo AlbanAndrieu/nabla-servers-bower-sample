@@ -58,11 +58,11 @@ repos:
       - id: sort-simple-yaml
       - id: file-contents-sorter
   - repo: https://github.com/pre-commit/pre-commit.git
-    rev: v2.19.0
+    rev: v2.20.0
     hooks:
       - id: validate_manifest
   - repo: https://github.com/asottile/reorder_python_imports.git
-    rev: v3.1.0
+    rev: v3.8.2
     hooks:
       - id: reorder-python-imports
   - repo: https://github.com/asottile/add-trailing-comma
@@ -104,7 +104,7 @@ repos:
             hooks|
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.34.0
+    rev: v2.37.2
     hooks:
       - id: pyupgrade
   - repo: https://github.com/pre-commit/mirrors-autopep8
@@ -132,15 +132,15 @@ repos:
         args:
           - --config
           - .htmlhintrc
+        files: ^src/
       - id: dockerfile_lint
         args:
           - --permissive
           - --verbose
           - --dockerfile
           - ./docker/ubuntu20/Dockerfile
-    files: ^src/
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.961
+    rev: v0.971
     hooks:
       - id: mypy
         exclude: ^(docs/|example-plugin/|tests/fixtures)
@@ -149,14 +149,14 @@ repos:
     hooks:
       - id: helmlint
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.10.0
+    rev: v1.11.0
     hooks:
       - id: helm-docs
         args:
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.16.0
+    rev: 0.17.1
     hooks:
       - id: check-github-workflows
       - id: check-gitlab-ci
@@ -167,7 +167,7 @@ repos:
   #      verbose: true
   #      args: [--soft-fail]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.72.1
+    rev: v1.74.1
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
