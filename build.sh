@@ -6,7 +6,7 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/scripts/step-0-color.sh"
 
-#./webdriver.sh
+# "${WORKING_DIR}/scripts/webdriver.sh"
 
 #npm install --save-dev grunt-dev-update
 #grunt devUpdate:main

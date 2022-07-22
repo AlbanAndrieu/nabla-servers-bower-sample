@@ -7,6 +7,11 @@ IMAGE := $(DOCKER_NAME):$(DOCKER_TAG)
 .PHONY: all
 all: down clean validate build up dive
 
+.PHONY: install
+install:
+	@echo "=> Installing..."
+	scripts/webdriver.sh
+
 .PHONY: rm
 rm: clean
 	@echo "=> Removing image..."
