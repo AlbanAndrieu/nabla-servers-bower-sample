@@ -4,6 +4,7 @@ name: scan with KICS and upload SARIF
 on:
   pull_request:
     branches: [master]
+
 jobs:
   kics-job:
     runs-on: ubuntu-latest
