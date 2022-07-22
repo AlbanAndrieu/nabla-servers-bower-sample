@@ -84,6 +84,7 @@ jobs:
 
   build-docker:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
+    name: Build Docker
     runs-on: ubuntu-18.04
     steps:
       - name: Set up Docker Buildx

@@ -32,6 +32,7 @@
     ".jscpd.json",
     ".mega-linter.yml",
     ".yamllint",
+    "pre-commit",
     ".pre-commit-config.yaml",
     "LICENSE",
     "report"
@@ -90,6 +91,8 @@
     "mvnw",
     "mkdocs",
     "browserslist",
+    "compat",
+    "stylelint",
     "tinylr",
     "nohup",
     "firefox",

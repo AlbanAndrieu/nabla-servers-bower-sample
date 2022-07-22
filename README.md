@@ -172,6 +172,17 @@ languages like :
 
 jmeter, gatling, mutation testing and arquillian are available in other sample project
 
+## Initialize
+
+```bash
+direnv allow
+pyenv install 3.10.4
+pyenv local 3.10.4
+python -m pipenv install --dev --ignore-pipfile
+direnv allow
+pre-commit install
+```
+
 ## Create project
 
 as local user
