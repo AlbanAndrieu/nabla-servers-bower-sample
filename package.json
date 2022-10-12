@@ -135,7 +135,7 @@
     "istanbul-lib-coverage": "3.0.0",
     "jasmine-bail-fast": "0.0.1",
     "jasmine-core": "3.5.0",
-    "jasmine-reporters": "2.3.2",
+    "jasmine-reporters": "2.5.0",
     "jasmine-spec-reporter": "4.1.0",
     "jit-grunt": "0.10.0",
     "jshint-stylish": "2.2.1",
