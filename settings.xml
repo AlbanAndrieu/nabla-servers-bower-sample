@@ -193,7 +193,7 @@ under the License.
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
-      <url>http://albandrieu.com:8081/repository/maven-public/</url>
+      <url>https://nexus.albandrieu.com/repository/maven-public/</url>
     </mirror>
   </mirrors>
 
@@ -321,7 +321,7 @@ under the License.
         <repository>
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
-            <url>http://albandrieu.com:8081/repository/maven-releases/</url>
+            <url>https://nexus.albandrieu.com/repository/maven-releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -333,7 +333,7 @@ under the License.
         <repository>
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
+            <url>https://nexus.albandrieu.com/repository/maven-snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
@@ -468,7 +468,7 @@ under the License.
         <pluginRepository>
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
-            <url>http://albandrieu.com:8081/repository/maven-releases/</url>
+            <url>https://nexus.albandrieu.com/repository/maven-releases/</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -479,7 +479,7 @@ under the License.
         <pluginRepository>
             <id>nexus-snapshots</id>
             <name>Nexus Staging Repository</name>
-            <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
+            <url>https://nexus.albandrieu.com/repository/maven-snapshots/</url>
             <snapshots>
                     <enabled>true</enabled>
             </snapshots>
@@ -585,13 +585,13 @@ under the License.
       <repositories>
           <repository>
               <id>nexus-releases</id>
-              <url>http://albandrieu.com:8081/repository/maven-releases/</url>
+              <url>https://nexus.albandrieu.com/repository/maven-releases/</url>
               <releases><enabled>true</enabled></releases>
               <snapshots><enabled>false</enabled></snapshots>
           </repository>
           <repository>
               <id>nexus-snapshots</id>
-              <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
+              <url>https://nexus.albandrieu.com/repository/maven-snapshots/</url>
               <releases><enabled>false</enabled></releases>
               <snapshots><enabled>true</enabled></snapshots>
           </repository>
@@ -599,13 +599,13 @@ under the License.
       <pluginRepositories>
           <pluginRepository>
               <id>nexus-releases</id>
-              <url>http://albandrieu.com:8081/repository/maven-releases/</url>
+              <url>https://nexus.albandrieu.com/repository/maven-releases/</url>
               <releases><enabled>true</enabled></releases>
               <snapshots><enabled>false</enabled></snapshots>
           </pluginRepository>
           <pluginRepository>
               <id>nexus-snapshots</id>
-              <url>http://albandrieu.com:8081/repository/maven-snapshots/</url>
+              <url>https://nexus.albandrieu.com/repository/maven-snapshots/</url>
               <releases><enabled>false</enabled></releases>
               <snapshots><enabled>true</enabled></snapshots>
           </pluginRepository>
