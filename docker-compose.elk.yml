@@ -93,7 +93,8 @@ services:
     # - /workspace/data/docker/es-stagemonitor:/usr/share/elasticsearch/data
     #environment:
     # - ES_HEAP_SIZE=6g # adjust heap size, should be half of your nodes RAM (max 30g)
-    command: elasticsearch --cluster.name monitoring-cluster --index.number_of_replicas 0 --network.bind_host _non_loopback:ipv4_ --node.name es-monitoring-01 --http.cors.enabled
+    command:
+      elasticsearch --cluster.name monitoring-cluster --index.number_of_replicas 0 --network.bind_host _non_loopback:ipv4_ --node.name es-monitoring-01 --http.cors.enabled
       true --http.cors.allow-origin *
       ##  only needed if you want to cluster elasticsearch across multiple hosts
       #--network.publish_host <ip of docker host>

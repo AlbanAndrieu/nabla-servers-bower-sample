@@ -37,7 +37,7 @@ heartbeat.monitors:
     type: http
     enabled: true
     schedule: "@every 5s"
-    urls: ['http://monitoring_elasticsearch:9200']
+    urls: ["http://monitoring_elasticsearch:9200"]
     ipv4: true
     ipv6: true
     mode: any
@@ -48,12 +48,12 @@ heartbeat.monitors:
       method: GET
     check.response:
       status: 200
-   # Monitor the Kibana instance with a http GET to / - checking for a 200 response code
+    # Monitor the Kibana instance with a http GET to / - checking for a 200 response code
   - name: Kibana service running
     type: http
     enabled: true
     schedule: "@every 5s"
-    urls: ['http://monitoring_kibana:5601/app/kibana']
+    urls: ["http://monitoring_kibana:5601/app/kibana"]
     ipv4: true
     ipv6: true
     mode: any
@@ -144,7 +144,7 @@ setup.kibana:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ['monitoring_elasticsearch:9200']
+  hosts: ["monitoring_elasticsearch:9200"]
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
   # Authentication credentials - either API key or username/password.

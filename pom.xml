@@ -786,7 +786,7 @@
 						</goals>
 						<configuration>
 							<executable>bash</executable>
-							<commandlineArgs>webdriver.sh</commandlineArgs>
+							<commandlineArgs>scripts/webdriver.sh</commandlineArgs>
 						</configuration>
 					</execution>
 					<!--

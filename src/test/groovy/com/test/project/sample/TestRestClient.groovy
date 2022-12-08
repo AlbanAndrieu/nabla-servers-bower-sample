@@ -67,11 +67,11 @@ class TestRestClient {
     }
 
     public HttpResponseDecorator postData(final String path, final String body, final String contentTypeString, final Map headers) {
-        def http = new HTTPBuilder( 'http://' + this.server + ':' + this.port + '/' + this.productName )
+        def http = new HTTPBuilder('http://' + this.server + ':' + this.port + '/' + this.productName)
         //http.auth.basic 'nabla', 'microsoft'
 
-        http.post( path: 'Trade', body: body,
-        requestContentType: 'application/json' ) { resp ->
+        http.post(path: 'Trade', body: body,
+        requestContentType: 'application/json') { resp ->
             println "Tweet response status: ${resp.statusLine}"
             assert resp.statusLine.statusCode == 200
         }

@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 @Library(value='jenkins-pipeline-scripts@master', changelog=false) _
 
-String DOCKER_REGISTRY_HUB=env.DOCKER_REGISTRY_HUB ?: "index.docker.io".toLowerCase().trim()
+String DOCKER_REGISTRY_HUB = env.DOCKER_REGISTRY_HUB ?: 'index.docker.io'.toLowerCase().trim()
 String DOCKER_ORGANISATION_HUB = 'nabla'.trim()
 String DOCKER_IMAGE_TAG = env.DOCKER_IMAGE_TAG ?: 'latest'.trim()
 //String DOCKER_USERNAME="nabla"
@@ -284,7 +284,7 @@ exit 0
                                     }
 
                                     //sh 'which container-structure-test'
-                                    cst = sh (
+                                    cst = sh(
                                       script: "./scripts/docker-test.sh ${DOCKER_NAME_BUILD} ${DOCKER_BUILD_TAG}",
                                       returnStatus: true
                                     )
@@ -916,7 +916,7 @@ exit 0
                                 sha1 'target/test.war'
                             }
 
-                            publishHTML (target: [
+                            publishHTML(target: [
                               allowMissing: true,
                               alwaysLinkToLastBuild: false,
                               keepAll: true,
@@ -925,7 +925,7 @@ exit 0
                               reportName: 'Aqua Report'
                             ])
 
-                            publishHTML (target: [
+                            publishHTML(target: [
                               allowMissing: true,
                               alwaysLinkToLastBuild: false,
                               keepAll: true,
@@ -934,7 +934,7 @@ exit 0
                               reportName: 'ZaProxy Report'
                             ])
 
-                            publishHTML (target: [
+                            publishHTML(target: [
                               allowMissing: true,
                               alwaysLinkToLastBuild: false,
                               keepAll: true,
@@ -943,7 +943,7 @@ exit 0
                               reportName: 'Phantomas Report'
                             ])
 
-                            publishHTML (target: [
+                            publishHTML(target: [
                               allowMissing: true,
                               alwaysLinkToLastBuild: false,
                               keepAll: true,
@@ -952,7 +952,7 @@ exit 0
                               reportName: 'Desktop CSS Diff Report'
                             ])
 
-                            publishHTML (target: [
+                            publishHTML(target: [
                               allowMissing: true,
                               alwaysLinkToLastBuild: false,
                               keepAll: true,

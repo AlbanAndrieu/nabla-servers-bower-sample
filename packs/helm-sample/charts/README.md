@@ -8,9 +8,9 @@ A Helm sample chart for Kubernetes
 
 ## Maintainers
 
-| Name | Email | Url |
-| ---- | ------ | --- |
-| aandrieu | alban.andrieu@free.fr |  |
+| Name     | Email                 | Url |
+|----------|-----------------------|-----|
+| aandrieu | alban.andrieu@free.fr |     |
 
 ## Source Code
 
@@ -18,42 +18,42 @@ A Helm sample chart for Kubernetes
 
 ## Values
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| affinity | object | `{}` |  |
-| clusterName | string | `"helm-sample"` |  |
-| fullnameOverride | string | `""` |  |
-| global.imagePullPolicy | string | `"IfNotPresent"` |  |
-| global.registry | string | `nil` |  |
-| image.imagePullPolicy | string | `"Always"` |  |
-| image.repository | string | `"nabla/nabla-servers-bower-sample"` |  |
-| image.tag | string | `"latest"` |  |
-| imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.enabled | bool | `true` |  |
-| ingress.hosts[0].host | string | `"helm-sample.local"` |  |
-| ingress.hosts[0].paths[0] | string | `"/"` |  |
-| ingress.tls | list | `[]` |  |
-| maxUnavailable | int | `1` |  |
-| mysql.enabled | bool | `true` |  |
-| nameOverride | string | `""` |  |
-| nodeGroup | string | `"master"` |  |
-| nodeSelector | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
-| replicaCount | int | `1` |  |
-| resources.limits.cpu | string | `"100m"` |  |
-| resources.limits.memory | string | `"512Mi"` |  |
-| resources.requests.cpu | string | `"100m"` |  |
-| resources.requests.memory | string | `"128Mi"` |  |
-| securityContext | object | `{}` |  |
-| service.port | int | `9093` |  |
-| service.type | string | `"NodePort"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `nil` |  |
-| tags.back-end | bool | `true` |  |
-| tags.front-end | bool | `false` |  |
-| tolerations | list | `[]` |  |
+| Key                        | Type   | Default                              | Description |
+|----------------------------|--------|--------------------------------------|-------------|
+| affinity                   | object | `{}`                                 |             |
+| clusterName                | string | `"helm-sample"`                      |             |
+| fullnameOverride           | string | `""`                                 |             |
+| global.imagePullPolicy     | string | `"IfNotPresent"`                     |             |
+| global.registry            | string | `nil`                                |             |
+| image.imagePullPolicy      | string | `"Always"`                           |             |
+| image.repository           | string | `"nabla/nabla-servers-bower-sample"` |             |
+| image.tag                  | string | `"latest"`                           |             |
+| imagePullSecrets           | list   | `[]`                                 |             |
+| ingress.annotations        | object | `{}`                                 |             |
+| ingress.enabled            | bool   | `true`                               |             |
+| ingress.hosts[0].host      | string | `"helm-sample.local"`                |             |
+| ingress.hosts[0].paths[0]  | string | `"/"`                                |             |
+| ingress.tls                | list   | `[]`                                 |             |
+| maxUnavailable             | int    | `1`                                  |             |
+| mysql.enabled              | bool   | `true`                               |             |
+| nameOverride               | string | `""`                                 |             |
+| nodeGroup                  | string | `"master"`                           |             |
+| nodeSelector               | object | `{}`                                 |             |
+| podSecurityContext         | object | `{}`                                 |             |
+| replicaCount               | int    | `1`                                  |             |
+| resources.limits.cpu       | string | `"100m"`                             |             |
+| resources.limits.memory    | string | `"512Mi"`                            |             |
+| resources.requests.cpu     | string | `"100m"`                             |             |
+| resources.requests.memory  | string | `"128Mi"`                            |             |
+| securityContext            | object | `{}`                                 |             |
+| service.port               | int    | `9093`                               |             |
+| service.type               | string | `"NodePort"`                         |             |
+| serviceAccount.annotations | object | `{}`                                 |             |
+| serviceAccount.create      | bool   | `true`                               |             |
+| serviceAccount.name        | string | `nil`                                |             |
+| tags.back-end              | bool   | `true`                               |             |
+| tags.front-end             | bool   | `false`                              |             |
+| tolerations                | list   | `[]`                                 |             |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)

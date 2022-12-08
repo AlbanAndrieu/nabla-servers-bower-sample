@@ -33,8 +33,9 @@ commandTests:
     expectedOutput: [uid=1100.jenkins. gid=1101.docker. .*]
   - name: check PATH
     command: echo
-    args: ['${PATH}']
-    expectedOutput: ['/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin']
+    args: ["${PATH}"]
+    expectedOutput:
+      ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
   #- name:  "yum update"
   #  command: "yum"
   #  args: ["update", "-y"]
@@ -68,7 +69,8 @@ commandTests:
   - name: check pip 20.2.3
     command: pip3
     args: [--version]
-    expectedOutput: [pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*]
+    expectedOutput:
+      [pip 20.2.* from /usr/local/lib/python3.6/site-packages/pip (python 3.6)*]
   - name: check docker 20.10.0
     command: docker
     args: [--version]
@@ -85,6 +87,13 @@ metadataTest:
   #  exposedPorts: ["8080", "2345"]
   volumes: []
   #  volumes: ["/test"]
-  entrypoint: ['java', '-Djava.security.egd=file:/dev/./urandom', '-Djetty.base=/var/lib/jetty', '-jar', '/home/jenkins/jetty-runner.jar']
-  cmd: ['/home/jenkins/test.war']
+  entrypoint:
+    [
+      "java",
+      "-Djava.security.egd=file:/dev/./urandom",
+      "-Djetty.base=/var/lib/jetty",
+      "-jar",
+      "/home/jenkins/jetty-runner.jar",
+    ]
+  cmd: ["/home/jenkins/test.war"]
   workdir: /home/jenkins
