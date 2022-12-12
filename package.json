@@ -170,7 +170,7 @@
     "socket.io-client": "2.3.0",
     "time-grunt": "2.0.0",
     "vinyl-fs": "3.0.3",
-    "webpagetest": "^0.5.0",
+    "webpagetest": "^0.6.0",
     "wiredep": "4.0.0",
     "xml2js": "0.4.23",
     "yo": "3.1.1"
