@@ -1,25 +1,33 @@
 ---
-# Configuration file for Mega-Linter
+# Configuration file for MegaLinter
 # See all available variables at https://oxsecurity.github.io/megalinter/configuration/ and in linters documentation
 
-APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
-DEFAULT_BRANCH: master # Usually master or main
-# ENABLE: # If you use ENABLE variable, all other languages/formats/tooling formats will be disabled by default
+APPLY_FIXES: all # all, none, or list of linter keys
+DEFAULT_BRANCH: main # Usually master or main
+# ENABLE: # If you use ENABLE variable, all other languages/formats/tooling-formats will be disabled by default
 # ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
 DISABLE:
   - CLOUDFORMATION
-  # - COPYPASTE # Uncomment to disable checks of abusive copy-pastes
+  # - COPYPASTE  # Uncomment to disable checks of abusive copy-pastes
   - EDITORCONFIG
-  # - SPELL # Uncomment to disable checks of spelling mistakes
-  - JAVASCRIPT
+  # - MARKDOWN
+  # - REPOSITORY
+  # - SPELL  # Uncomment to disable checks of spelling mistakes
+  # - JAVASCRIPT
   - TEKTON
+  # - YAML
 DISABLE_LINTERS:
-  - JSON_PRETTIER
-  - DOCKERFILE_HADOLINT
+  # - JSON_PRETTIER
+  # - JSON_JSONLINT
+  # - DOCKERFILE_HADOLINT
   - REPOSITORY_DEVSKIM
-  - REPOSITORY_TRIVY
+  # - REPOSITORY_TRIVY
+  - REPOSITORY_SYFT
+  - PYTHON_MYPY
+  - PYTHON_PYRIGHT
+  - PYTHON_PYLINT
 IGNORE_GITIGNORED_FILES: true
-FILTER_REGEX_EXCLUDE: (\.automation/test|\.automation/generated|\.github/workflows|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES)
+FILTER_REGEX_EXCLUDE: (\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
@@ -31,13 +39,26 @@ SPELL_MISSPELL_FILTER_REGEX_EXCLUDE: (\.automation/generated|docs/descriptors)
 DOCKERFILE_HADOLINT_ARGUMENTS:
   --ignore DL3003 --ignore DL3007 --ignore DL3013 --ignore DL3016 --ignore DL3018 --ignore DL3028 --ignore DL4001 --ignore DL4006 --ignore
   SC2015 --ignore SC2016 --ignore SC2039 --ignore SC2086 --ignore SC1091
+REPOSITORY_DEVSKIM_DISABLE_ERRORS_IF_LESS_THAN: 10
+REPOSITORY_DEVSKIM_ARGUMENTS: --severity critical,important --ignore-globs **/.git/**,**/bin/**,.mypy_cache/**,**/tests/**,**/README.md
+REPOSITORY_TRIVY_ARGUMENTS: --security-checks vuln,config,secret --vuln-type os,library --ignore-unfixed --skip-dirs .direnv --skip-dirs .venv --skip-files pip.conf --skip-files Pipfile
+REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
+REPOSITORY_GITLEAKS_DISABLE_ERRORS: false
+REPOSITORY_SECRETLINT_DISABLE_ERRORS: false
+BASH_SHELLCHECK_DISABLE_ERRORS: true
 PYTHON_BANDIT_DISABLE_ERRORS: true
+REPOSITORY_TRIVY_DISABLE_ERRORS: false
+PYTHON_MYPY_DISABLE_ERRORS: true
+PYTHON_PYLINT_DISABLE_ERRORS: true
+PYTHON_PYRIGHT_DISABLE_ERRORS: true
+EXCLUDED_DIRECTORIES:
+  [".github", ".gitlab-ci", "node_modules", ".venv", ".direnv", ".mypy_cache"]
 SHOW_ELAPSED_TIME: true
 EMAIL_REPORTER_EMAIL: alban.andrieu@free.fr
-FILEIO_REPORTER: true
 JSON_REPORTER: true
-PLUGINS:
-  - https://raw.githubusercontent.com/oxsecurity/megalinter/master/.automation/test/mega-linter-plugin-test/test.megalinter-descriptor.yml
+SARIF_REPORTER: true
+FILEIO_REPORTER: false
+VALIDATE_ALL_CODEBASE: false
 PRE_COMMANDS:
   - command: echo "This is Mega-Linter PRE_COMMAND on own Mega-Linter ! :)"
     cwd: root
