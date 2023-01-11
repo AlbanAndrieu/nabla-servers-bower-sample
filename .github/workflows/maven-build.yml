@@ -48,7 +48,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Install Node.Js
-        uses: actions/setup-node@v3.5.1
+        uses: actions/setup-node@v3.6.0
         with:
           #node-version-file: '.nvmrc'
           node-version: "14.19" # with npm 8.10.0
