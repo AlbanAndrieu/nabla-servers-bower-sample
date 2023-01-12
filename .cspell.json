@@ -31,6 +31,8 @@
     "Dockerfile(-.+)?",
     ".jscpd.json",
     ".cspell.json",
+    ".eslintignore",
+    "package.json",
     ".mega-linter.yml",
     ".yamllint",
     "pre-commit",

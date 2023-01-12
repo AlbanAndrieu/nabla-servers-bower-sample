@@ -13,7 +13,7 @@ DISABLE:
   # - MARKDOWN
   # - REPOSITORY
   # - SPELL  # Uncomment to disable checks of spelling mistakes
-  # - JAVASCRIPT
+  - JAVASCRIPT
   - TEKTON
   # - YAML
 DISABLE_LINTERS:
