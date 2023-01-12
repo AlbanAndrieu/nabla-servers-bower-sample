@@ -452,21 +452,25 @@ module.exports = function(grunt) {
     // Add vendor prefixed styles
     postcss: {
       options: {
+        //map: true, // inline sourcemaps
+
+        // or
+        //map: {
+        //    inline: false, // save all sourcemaps as separate files...
+        //    annotation: 'dist/css/maps/' // ...to the specified directory
+        //},
+
         processors: [
-          //require('pixrem')(), // add fallbacks for rem units
-          require("autoprefixer")({ browsers: "last 2 versions" }), // add vendor prefixes
-        ],
+          require('pixrem')(), // add fallbacks for rem units
+          //require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
+          //require('cssnano')() // minify the result
+        ]
       },
       dist: {
-        files: [
-          {
-            expand: true,
-            cwd: ".tmp/styles/",
-            src: "{,*/}*.css",
-            dest: ".tmp/styles/",
-          },
-        ],
-      },
+        cwd: ".tmp/styles/",
+        src: "{,*/}*.css",
+        dest: ".tmp/styles/",
+      }
     },
 
     // Automatically inject Bower components into the HTML file
@@ -759,7 +763,7 @@ module.exports = function(grunt) {
     imagemin: {
       dynamic: {
         options: {
-						progressive: true
+						progressive: true,
             //optimizationLevel: 3,
             //svgoPlugins: [{removeViewBox: false}],
             //use: [imageminPng()]
@@ -1479,7 +1483,6 @@ module.exports = function(grunt) {
         "wiredep",
         //'ngconstant:dev',
         "concurrent:server",
-        //'uncss',
         "postcss",
         "connect:livereload",
         "browserSync",
