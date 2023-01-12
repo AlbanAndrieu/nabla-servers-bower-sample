@@ -30,6 +30,7 @@
     "**/examples/**",
     "Dockerfile(-.+)?",
     ".jscpd.json",
+    ".cspell.json",
     ".mega-linter.yml",
     ".yamllint",
     "pre-commit",
@@ -55,6 +56,8 @@
     "hadolint",
     "readmemd",
     "codeql",
+    "terraform",
+    "terrascan",
     "aquasecurity",
     "Trivy",
     "sarif",
@@ -97,6 +100,7 @@
     "nohup",
     "firefox",
     "Gruntfile",
+    "Pipfile",
     "Hashi",
     "Kubernetes",
     "kubectl",
@@ -105,14 +109,14 @@
     "awstats"
   ],
   "languageSettings": [
-  {
-    "languageId": "markdown",
-    "caseSensitive": true
-  },
-  {
-    "languageId": "javascript",
-    "caseSensitive": false
-  }
+    {
+      "languageId": "markdown",
+      "caseSensitive": true
+    },
+    {
+      "languageId": "javascript",
+      "caseSensitive": false
+    }
   ],
   "version": "0.2"
 }
