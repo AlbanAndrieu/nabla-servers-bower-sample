@@ -1,7 +1,13 @@
 !.eslintrc.js
+.direnv/*
+.venv/*
 test/*
 docs/js
 target/*
 dist/*
 report/*
 bower_components/*
+Gruntfile*.js
+netsniff.js
+rasterize.js
+app/scripts/test/*
