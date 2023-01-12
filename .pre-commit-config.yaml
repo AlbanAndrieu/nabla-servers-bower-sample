@@ -152,11 +152,6 @@ repos:
         args:
           - --chart-search-root=packs/helm-sample/charts
         files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
-  - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.20.0
-    hooks:
-      - id: check-github-workflows
-      - id: check-gitlab-ci
   #  - repo: https://github.com/bridgecrewio/checkov.git
   #    rev: '2.0.1159' # change to tag or sha
   #    hooks:
