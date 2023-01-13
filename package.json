@@ -140,7 +140,7 @@
     "jasmine-spec-reporter": "4.1.0",
     "jit-grunt": "0.10.0",
     "jshint-stylish": "2.2.1",
-    "json2csv": "5.0.0",
+    "json2csv": "5.0.7",
     "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage": "2.1.0",
