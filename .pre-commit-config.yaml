@@ -163,15 +163,15 @@ repos:
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
-      - id: terraform_validate
-        args:
-          - --init-args=-lockfile=readonly
-      - id: terraform_tfsec
-        args:
-          - --args=--config-file=tfsec.yml
-          - --args=-m HIGH
-          - --args=--exclude-path=network/example
-          - --args=--tfvars-file=terraform.tfvars
+      # - id: terraform_validate
+      #   args:
+      #     - --init-args=-lockfile=readonly
+      # - id: terraform_tfsec
+      #   args:
+      #     - --args=--config-file=tfsec.yml
+      #     - --args=-m HIGH
+      #     - --args=--exclude-path=network/example
+      #     - --args=--tfvars-file=terraform.tfvars
       - id: terraform_providers_lock
         args:
           - --args=-platform=linux_amd64

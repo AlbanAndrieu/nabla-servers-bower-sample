@@ -1,5 +1,5 @@
 // Generated on 2015-03-19 using generator-angular 0.11.1
-'use strict'
+"use strict";
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -9,60 +9,60 @@
 // var path = require('path');
 
 module.exports = function (grunt) {
-  let localConfig
+  let localConfig;
   try {
-    localConfig = require('./server/config/local.env')
+    localConfig = require("./server/config/local.env");
   } catch (e) {
-    localConfig = {}
+    localConfig = {};
   }
 
-  const ZAP_PORT = process.env.ZAP_PORT || 8090
+  const ZAP_PORT = process.env.ZAP_PORT || 8090;
   // console.log('ZAP_PORT : ' + ZAP_PORT);
-  const ZAP_HOST = process.env.ZAP_HOST || 'localhost'
+  const ZAP_HOST = process.env.ZAP_HOST || "localhost";
   // console.log('ZAP_HOST : ' + ZAP_HOST);
-  const SERVER_HOST = process.env.SERVER_HOST || 'localhost'
+  const SERVER_HOST = process.env.SERVER_HOST || "localhost";
   // console.log('SERVER_HOST : ' + SERVER_HOST);
-  const SERVER_PROD_PORT = process.env.JETTY_PORT || 9090
+  const SERVER_PROD_PORT = process.env.JETTY_PORT || 9090;
   // var SERVER_PORT = 9014;
-  const SERVER_PORT = SERVER_PROD_PORT
-  const SERVER_SECURE_PORT = 9443
+  const SERVER_PORT = SERVER_PROD_PORT;
+  const SERVER_SECURE_PORT = 9443;
   // console.log('SERVER_PORT : ' + SERVER_PORT);
-  const SERVER_PROD_URL = 'http://' + SERVER_HOST + ':' + SERVER_PROD_PORT
+  const SERVER_PROD_URL = "http://" + SERVER_HOST + ":" + SERVER_PROD_PORT;
   const SERVER_URL =
-    process.env.SERVER_URL || 'http://' + SERVER_HOST + ':' + SERVER_PORT
+    process.env.SERVER_URL || "http://" + SERVER_HOST + ":" + SERVER_PORT;
   const SERVER_SECURE_URL =
     process.env.SERVER_SECURE_URL ||
-    'https://' + SERVER_HOST + ':' + SERVER_SECURE_PORT
-  const SERVER_CONTEXT = process.env.SERVER_CONTEXT || '/test/#/'
+    "https://" + SERVER_HOST + ":" + SERVER_SECURE_PORT;
+  const SERVER_CONTEXT = process.env.SERVER_CONTEXT || "/test/#/";
 
   // Time how long tasks take. Can help when optimizing build times
-  require('time-grunt')(grunt)
+  require("time-grunt")(grunt);
 
   // Load grunt tasks automatically, when needed
-  require('jit-grunt')(grunt, {
-    bower: 'grunt-bower-task',
-    retire: 'grunt-retire',
+  require("jit-grunt")(grunt, {
+    bower: "grunt-bower-task",
+    retire: "grunt-retire",
     // configureProxies: 'grunt-connect-proxy',
-    zap_start: 'grunt-zaproxy',
-    zap_spider: 'grunt-zaproxy',
-    zap_scan: 'grunt-zaproxy',
-    zap_alert: 'grunt-zaproxy',
-    zap_report: 'grunt-zaproxy',
-    zap_stop: 'grunt-zaproxy',
-    zap_results: 'grunt-zaproxy',
+    zap_start: "grunt-zaproxy",
+    zap_spider: "grunt-zaproxy",
+    zap_scan: "grunt-zaproxy",
+    zap_alert: "grunt-zaproxy",
+    zap_report: "grunt-zaproxy",
+    zap_stop: "grunt-zaproxy",
+    zap_results: "grunt-zaproxy",
     // 'validate-package': 'grunt-nsp-package',
     // protractor_coverage: "grunt-protractor-coverage",
     // instrument: "grunt-istanbul",
     // makeReport: "grunt-istanbul",
     // phantomcss: 'grunt-phantomcss',
-    usebanner: 'grunt-banner',
-    replace: 'grunt-text-replace',
-    useminPrepare: 'grunt-usemin',
-    ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn',
-    protractor: 'grunt-protractor-runner',
-    buildcontrol: 'grunt-build-control'
-  })
+    usebanner: "grunt-banner",
+    replace: "grunt-text-replace",
+    useminPrepare: "grunt-usemin",
+    ngtemplates: "grunt-angular-templates",
+    cdnify: "grunt-google-cdn",
+    protractor: "grunt-protractor-runner",
+    buildcontrol: "grunt-build-control"
+  });
 
   // const imageminPng = require('imagemin-pngquant');
   // const imageminPng = require('imagemin-optipng');
@@ -71,95 +71,95 @@ module.exports = function (grunt) {
 
   // var async = require('async'),
   //    request = require('request');
-  const serveStatic = require('serve-static')
-  const serveIndex = require('serve-index')
+  const serveStatic = require("serve-static");
+  const serveIndex = require("serve-index");
 
   const parseVersionFromPomXml = function () {
-    const fs = require('fs-extra')
-    const parseString = require('xml2js').parseString
-    let version
-    let pomFile = 'pom.xml'
-    if (typeof process.env.MVN_RELEASE_VERSION !== 'undefined') {
-      pomFile = 'pom.xml.tag'
+    const fs = require("fs-extra");
+    const parseString = require("xml2js").parseString;
+    let version;
+    let pomFile = "pom.xml";
+    if (typeof process.env.MVN_RELEASE_VERSION !== "undefined") {
+      pomFile = "pom.xml.tag";
     }
     // TODO use pom.xml.tag
     // pom.xml.next
-    let pomXml
+    let pomXml;
     try {
-      pomXml = fs.readFileSync(pomFile, 'utf8')
+      pomXml = fs.readFileSync(pomFile, "utf8");
     } catch (err) {
       // If the type is not what you want, then just throw the error again.
-      if (err.code !== 'ENOENT') {
-        throw err
+      if (err.code !== "ENOENT") {
+        throw err;
       }
       // Handle a file-not-found error
 
       try {
-        pomXml = fs.readFileSync('pom.xml', 'utf8')
+        pomXml = fs.readFileSync("pom.xml", "utf8");
       } catch (err) {
         // If the type is not what you want, then just throw the error again.
-        if (err.code !== 'ENOENT') {
-          throw err
+        if (err.code !== "ENOENT") {
+          throw err;
         }
 
         // Handle a file-not-found error
-        console.log('Missing pom.xml')
+        console.log("Missing pom.xml");
       }
     }
     parseString(pomXml, { trim: true }, function (err, result) {
-      version = result.project.parent[0].version
+      version = result.project.parent[0].version;
       // console.dir(result.project.version);
       // version = result.project.version;
-    })
-    return version
-  }
+    });
+    return version;
+  };
 
   // console.log('Done.');
 
   const getVersion = function () {
     // TODO use https://www.npmjs.com/package/grunt-jenkins-build-info
-    const POM_VERSION = parseVersionFromPomXml()
+    const POM_VERSION = parseVersionFromPomXml();
     // console.log('POM_VERSION : ' + POM_VERSION);
-    const JENKINS_VERSION = process.env.BUILD_NUMBER || '0'
+    const JENKINS_VERSION = process.env.BUILD_NUMBER || "0";
     // TODO use https://www.npmjs.com/package/grunt-jenkins-build-number for 0
-    let RELEASE_VERSION = process.env.MVN_RELEASE_VERSION || POM_VERSION
-    if (typeof process.env.MVN_RELEASE_VERSION === 'undefined') {
-      RELEASE_VERSION = RELEASE_VERSION + '.' + JENKINS_VERSION
+    let RELEASE_VERSION = process.env.MVN_RELEASE_VERSION || POM_VERSION;
+    if (typeof process.env.MVN_RELEASE_VERSION === "undefined") {
+      RELEASE_VERSION = RELEASE_VERSION + "." + JENKINS_VERSION;
     }
-    const pattern = /SNAPSHOT/i
-    RELEASE_VERSION = RELEASE_VERSION.replace(pattern, 'build')
+    const pattern = /SNAPSHOT/i;
+    RELEASE_VERSION = RELEASE_VERSION.replace(pattern, "build");
     // MVN_ISDRYRUN
     // MVN_DEV_VERSION
     // console.log('RELEASE_VERSION : ' + RELEASE_VERSION);
-    return RELEASE_VERSION
-  }
+    return RELEASE_VERSION;
+  };
 
-  const VERSION = getVersion()
+  const VERSION = getVersion();
   // console.log('VERSION : ' + VERSION);
 
   // Configurable paths for the application
   const appConfig = {
-    app: require('./bower.json').appPath || 'app',
-    dist: 'dist',
-    e2e: 'coverage/e2e'
+    app: require("./bower.json").appPath || "app",
+    dist: "dist",
+    e2e: "coverage/e2e"
     // instrumentedServer: 'coverage/server/instrument',
     // instrumentedE2E: "coverage/e2e/instrumented",
-  }
+  };
 
   const corsMiddleware = function (req, res, next) {
-    console.log('cors')
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', '*')
+    console.log("cors");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "*");
     // res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-    res.setHeader('X-Content-Type-Options', 'nosniff')
-    res.setHeader('X-Frame-Options', 'DENY')
-    res.setHeader('X-XSS-Protection', '1;mode=block')
-    res.setHeader('Expires', '0')
-    res.setHeader('Pragma', 'no-cache')
-    res.setHeader('Cache-Control', 'no-cache,no-store,must-revalidate')
-    next()
-  }
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
+    res.setHeader("X-XSS-Protection", "1;mode=block");
+    res.setHeader("Expires", "0");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+    next();
+  };
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -167,49 +167,49 @@ module.exports = function (grunt) {
     config: appConfig,
 
     // Project meta
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON("package.json"),
     banner:
-      '/**\n' +
-      ' * <%= pkg.name %>\n' +
-      ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      ' * @link <%= pkg.homepage %>\n' +
-      ' * @author <%= pkg.author.name %> <%= pkg.author.email %>\n' +
-      ' * @license <%= pkg.licenses.type %>, <%= pkg.licenses.url %>\n' +
-      ' */\n',
+      "/**\n" +
+      " * <%= pkg.name %>\n" +
+      " * @version v<%= pkg.version %> - <%= grunt.template.today(\"yyyy-mm-dd\") %>\n" +
+      " * @link <%= pkg.homepage %>\n" +
+      " * @author <%= pkg.author.name %> <%= pkg.author.email %>\n" +
+      " * @license <%= pkg.licenses.type %>, <%= pkg.licenses.url %>\n" +
+      " */\n",
 
     // Install bower dependencies
     bower: {
-      bower: require('./bower.json'),
+      bower: require("./bower.json"),
       verbose: true
     },
 
     nsp: {
-      package: grunt.file.readJSON('package.json')
+      package: grunt.file.readJSON("package.json")
     },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
+        files: ["bower.json"],
+        tasks: ["wiredep"]
       },
       js: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        files: ["<%= config.app %>/scripts/{,*/}*.js"],
+        tasks: ["newer:jshint:all"],
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: "<%= connect.options.livereload %>"
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'test:watch', 'karma']
+        files: ["test/spec/{,*/}*.js"],
+        tasks: ["newer:jshint:test", "test:watch", "karma"]
       },
       compass: {
-        files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'postcss']
+        files: ["<%= config.app %>/styles/{,*/}*.{scss,sass}"],
+        tasks: ["compass:server", "postcss"]
       },
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ["Gruntfile.js"]
         // },
         // styles: {
         //  files: ['<%= config.app %>/styles/{,*/}*.css'],
@@ -217,15 +217,15 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: "<%= connect.options.livereload %>"
         },
         files: [
-          '<%= config.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}',
-          '<%= config.app %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
-          '<%= config.app %>/resources/{,*/}*.json', // for angular-translate
-          '<%= config.app %>/scripts/{,*/}*.js'
+          "<%= config.app %>/{,*/}*.html",
+          ".tmp/styles/{,*/}*.css",
+          "<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}",
+          "<%= config.app %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}",
+          "<%= config.app %>/resources/{,*/}*.json", // for angular-translate
+          "<%= config.app %>/scripts/{,*/}*.js"
         ]
       }
     },
@@ -237,15 +237,15 @@ module.exports = function (grunt) {
         // protocol: 'https',
         // Change this to '0.0.0.0' to access the server from outside.
         // hostname: '*',
-        hostname: 'localhost',
+        hostname: "localhost",
         livereload: 35730,
         analytics: {
-          account: 'UA-56011797-1',
-          domainName: 'albandrieu.com'
+          account: "UA-56011797-1",
+          domainName: "albandrieu.com"
         },
         discussions: {
-          shortName: 'nabla',
-          url: 'https://albandrieu.com',
+          shortName: "nabla",
+          url: "https://albandrieu.com",
           dev: false
         }
       },
@@ -255,71 +255,71 @@ module.exports = function (grunt) {
           debug: true,
           middleware: function (connect, options, middlewares) {
             if (!Array.isArray(options.base)) {
-              options.base = [options.base]
+              options.base = [options.base];
             }
 
             const directory =
-              options.directory || options.base[options.base.length - 1]
-            middlewares.push(serveIndex(directory))
+              options.directory || options.base[options.base.length - 1];
+            middlewares.push(serveIndex(directory));
 
             return [
               middlewares,
-              serveStatic('.tmp'),
+              serveStatic(".tmp"),
               connect().use(
-                '/bower_components',
-                serveStatic('./bower_components')
+                "/bower_components",
+                serveStatic("./bower_components")
               ),
               serveStatic(appConfig.app),
-              connect().use('/fonts', serveStatic(appConfig.dist + '/fonts')),
+              connect().use("/fonts", serveStatic(appConfig.dist + "/fonts")),
               connect().use(
-                '/views/styles.html',
-                serveStatic(appConfig.dist + '/views/styles.html')
+                "/views/styles.html",
+                serveStatic(appConfig.dist + "/views/styles.html")
               ), // nabla-styles
-              connect().use('/images', serveStatic(appConfig.dist + '/images')) // nabla-styles styles.html images
-            ]
+              connect().use("/images", serveStatic(appConfig.dist + "/images")) // nabla-styles styles.html images
+            ];
           }
         }
       },
       test: {
         options: {
           port: SERVER_SECURE_PORT,
-          protocol: 'https',
+          protocol: "https",
           // open: true,
           singleRun: true,
           middleware: function (connect, options, middlewares) {
             return [
-              serveStatic('.tmp'),
-              serveStatic('test'),
+              serveStatic(".tmp"),
+              serveStatic("test"),
               connect().use(
-                '/bower_components',
-                serveStatic('./bower_components')
+                "/bower_components",
+                serveStatic("./bower_components")
               ),
-              connect().use('/fonts', serveStatic(appConfig.dist + '/fonts')),
+              connect().use("/fonts", serveStatic(appConfig.dist + "/fonts")),
               serveStatic(appConfig.app)
-            ]
+            ];
           }
         }
       },
       coverageE2E: {
         options: {
           port: SERVER_PORT,
-          protocol: 'https',
+          protocol: "https",
           // open: true,
           // livereload: false,
           singleRun: true,
           // base: '<%= config.instrumentedE2E %>/app',
           middleware: function (connect) {
             return [
-              serveStatic('.tmp'),
+              serveStatic(".tmp"),
               // serveStatic('test'),
               connect().use(
-                '/bower_components',
-                serveStatic('./bower_components')
+                "/bower_components",
+                serveStatic("./bower_components")
               ),
-              connect().use('/fonts', serveStatic(appConfig.dist + '/fonts'))
+              connect().use("/fonts", serveStatic(appConfig.dist + "/fonts"))
               // serveStatic(appConfig.instrumentedE2E + "/app"),
               // serveStatic(config.app)
-            ]
+            ];
           }
         }
       },
@@ -327,31 +327,31 @@ module.exports = function (grunt) {
         options: {
           // port: 9003,
           open: true,
-          base: '<%= config.dist %>'
+          base: "<%= config.dist %>"
         }
       }
     },
 
     instrument: {
       // files: ['lib/**/*.js', '<%= config.app %>/scripts/**/*.js'],
-      files: ['app/scripts/test/**/*.js'],
+      files: ["app/scripts/test/**/*.js"],
       options: {
         // cwd: 'app/',
         // lazy: true,
-        basePath: '<%= config.instrumentedE2E %>'
+        basePath: "<%= config.instrumentedE2E %>"
         // basePath: './coverage/e2e/instrumented/'
       }
     },
 
     protractor_coverage: {
       options: {
-        configFile: 'protractor.conf.js', // Default config file
+        configFile: "protractor.conf.js", // Default config file
         keepAlive: true,
         noColor: false,
         // debug: true,
         verbose: true,
         // noInject: true,
-        coverageDir: '<%= config.instrumentedE2E %>/',
+        coverageDir: "<%= config.instrumentedE2E %>/",
         // args: {}
         args: {
           baseUrl: SERVER_SECURE_URL + SERVER_CONTEXT
@@ -362,53 +362,53 @@ module.exports = function (grunt) {
           args: {
             // baseUrl: 'http://localhost:' + ( process.env.SERVER_PORT || 9190 ) + '/',
             // Arguments passed to the command
-            browser: 'chrome'
+            browser: "chrome"
           }
         }
       }
     },
     makeReport: {
-      src: '<%= config.instrumentedE2E %>/*.json',
+      src: "<%= config.instrumentedE2E %>/*.json",
       options: {
-        type: 'lcov',
+        type: "lcov",
         // type: 'html',
         // dir: 'target/coverage/dir',
-        dir: 'target',
-        print: 'detail'
+        dir: "target",
+        print: "detail"
       }
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
+        jshintrc: ".jshintrc",
+        reporter: require("jshint-stylish")
       },
       all: {
         src: [
-          'Gruntfile.js',
-          '<%= config.app %>/scripts/{,*/}*.js',
-          '!<%= config.app %>/scripts/vendor/*'
+          "Gruntfile.js",
+          "<%= config.app %>/scripts/{,*/}*.js",
+          "!<%= config.app %>/scripts/vendor/*"
         ]
       },
       test: {
         options: {
-          jshintrc: 'test/.jshintrc'
+          jshintrc: "test/.jshintrc"
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ["test/spec/{,*/}*.js"]
       }
     },
 
     jscs: {
       options: {
-        config: '.jscs.json'
+        config: ".jscs.json"
       },
       all: {
         src: [
-          'Gruntfile.js',
-          '<%= config.app %>/scripts/{,*/}*.js',
-          '!<%= config.app %>/scripts/vendor/*',
-          'test/spec/{,*/}*.js'
+          "Gruntfile.js",
+          "<%= config.app %>/scripts/{,*/}*.js",
+          "!<%= config.app %>/scripts/vendor/*",
+          "test/spec/{,*/}*.js"
         ]
       }
     },
@@ -419,7 +419,7 @@ module.exports = function (grunt) {
         options: {
           run: true,
           urls: [
-            'http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html'
+            "http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html"
           ]
         }
       }
@@ -432,20 +432,20 @@ module.exports = function (grunt) {
           {
             dot: true,
             src: [
-              '.tmp',
-              '<%= config.dist %>/{,*/}*',
-              '!<%= config.dist %>/.git{,*/}*'
+              ".tmp",
+              "<%= config.dist %>/{,*/}*",
+              "!<%= config.dist %>/.git{,*/}*"
             ]
           }
         ]
       },
-      server: '.tmp',
+      server: ".tmp",
       // bower: ['.bower', 'bower_components'],
-      tmp: ['tmp'],
-      build: ['build'],
-      docs: ['docs/groovydocs/', 'docs/js/', 'docs/partials/'],
+      tmp: ["tmp"],
+      build: ["build"],
+      docs: ["docs/groovydocs/", "docs/js/", "docs/partials/"],
       coverageE2E: {
-        src: ['<%= config.e2e %>/']
+        src: ["<%= config.e2e %>/"]
       }
     },
 
@@ -461,15 +461,15 @@ module.exports = function (grunt) {
         // },
 
         processors: [
-          require('pixrem')(), // add fallbacks for rem units
+          require("pixrem")(), // add fallbacks for rem units
           // require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
-          require('cssnano')() // minify the result
+          require("cssnano")() // minify the result
         ]
       },
       dist: {
-        cwd: '.tmp/styles/',
-        src: '{,*/}*.css',
-        dest: '.tmp/styles/'
+        cwd: ".tmp/styles/",
+        src: "{,*/}*.css",
+        dest: ".tmp/styles/"
       }
     },
 
@@ -477,15 +477,15 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         ignorePath: /^\/|\.\.\//,
-        src: ['<%= config.app %>/index.html'],
+        src: ["<%= config.app %>/index.html"],
         exclude: [
           // '/angular-i18n/',  // localizations are loaded dynamically
           // 'bower_components/bootstrap/dist/js/bootstrap.js',
           // 'bower_components/bootstrap/dist/css/bootstrap.css', // notneeded if used by uncss
-          'bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
-          'bower_components/social-likes/social-likes_classic.css',
-          'bower_components/social-likes/social-likes_birman.css',
-          'bower_components/nabla-styles/views/styles.html'
+          "bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css",
+          "bower_components/social-likes/social-likes_classic.css",
+          "bower_components/social-likes/social-likes_birman.css",
+          "bower_components/nabla-styles/views/styles.html"
           // 'bower_components/github-fork-ribbon-css/gh-fork-ribbon.css', // notneeded if used by uncss
           // '/swagger-ui/',
           /// bootstrap-sass-official/,
@@ -506,7 +506,7 @@ module.exports = function (grunt) {
       },
       test: {
         devDependencies: true,
-        src: '<%= karma.unit.configFile %>',
+        src: "<%= karma.unit.configFile %>",
         exclude: [/angular-i18n/, /swagger-ui/, /angular-scenario/],
         ignorePath: /\.\.\//, // remove ../../ from paths of injected javascripts
         fileTypes: {
@@ -522,7 +522,7 @@ module.exports = function (grunt) {
         }
       },
       sass: {
-        src: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
+        src: ["<%= config.app %>/styles/{,*/}*.{scss,sass}"],
         ignorePath: /(\.\.\/){1,2}bower_components\//
         // exclude: ['font-awesome', 'bootstrap-sass-official']
       }
@@ -531,23 +531,23 @@ module.exports = function (grunt) {
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
-        sassDir: '<%= config.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%= config.app %>/images',
-        javascriptsDir: '<%= config.app %>/scripts',
-        fontsDir: '<%= config.app %>/../bower_components/font-awesome/fonts',
-        importPath: '<%= config.app %>/../bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
+        sassDir: "<%= config.app %>/styles",
+        cssDir: ".tmp/styles",
+        generatedImagesDir: ".tmp/images/generated",
+        imagesDir: "<%= config.app %>/images",
+        javascriptsDir: "<%= config.app %>/scripts",
+        fontsDir: "<%= config.app %>/../bower_components/font-awesome/fonts",
+        importPath: "<%= config.app %>/../bower_components",
+        httpImagesPath: "/images",
+        httpGeneratedImagesPath: "/images/generated",
+        httpFontsPath: "/styles/fonts",
         relativeAssets: false,
         assetCacheBuster: false,
-        raw: 'Sass::Script::Number.precision = 10\n'
+        raw: "Sass::Script::Number.precision = 10\n"
       },
       dist: {
         options: {
-          generatedImagesDir: '<%= config.dist %>/images/generated'
+          generatedImagesDir: "<%= config.dist %>/images/generated"
         }
       },
       server: {
@@ -561,14 +561,14 @@ module.exports = function (grunt) {
       dev: {
         bsFiles: {
           src: [
-            '<%= config.app %>/**/*.html',
-            '<%= config.app %>/**/*.json',
-            '<%= config.app %>/styles/**/*.css',
-            '<%= config.app %>/scripts/**/*.js',
-            '<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}',
-            'bower_components/**/*',
-            '<%= config.app %>/images/**/*.{ico,png,jpg,jpeg,gif,webp,svg}',
-            '.tmp/**/*.{css,js}'
+            "<%= config.app %>/**/*.html",
+            "<%= config.app %>/**/*.json",
+            "<%= config.app %>/styles/**/*.css",
+            "<%= config.app %>/scripts/**/*.js",
+            "<%= config.dist %>/fonts/{,*/}*.{woff,woff2,ttf,svg}",
+            "bower_components/**/*",
+            "<%= config.app %>/images/**/*.{ico,png,jpg,jpeg,gif,webp,svg}",
+            ".tmp/**/*.{css,js}"
           ]
         }
       },
@@ -577,7 +577,7 @@ module.exports = function (grunt) {
         // online: false,
         // browser: ["google chrome", "firefox"],
         // server: '<%= config.app %>'
-        proxy: 'localhost:8002'
+        proxy: "localhost:8002"
         // proxy: SERVER_HOST + ":" + SERVER_PORT
       }
     },
@@ -591,12 +591,12 @@ module.exports = function (grunt) {
       // },
       dist: {
         src: [
-          '<%= config.dist %>/scripts/{,*/}*.js',
-          '<%= config.dist %>/styles/{,*/}*.css',
-          '<%= config.dist %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
-          '!<%= config.dist %>/images/no-filerev/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}',
+          "<%= config.dist %>/scripts/{,*/}*.js",
+          "<%= config.dist %>/styles/{,*/}*.css",
+          "<%= config.dist %>/images/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}",
+          "!<%= config.dist %>/images/no-filerev/{,*/}*.{ico,png,jpg,jpeg,gif,webp,svg}",
           // '<%= config.dist %>/*.{ico,png}',
-          '<%= config.dist %>/styles/fonts/*'
+          "<%= config.dist %>/styles/fonts/*"
         ]
       }
     },
@@ -605,18 +605,18 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= config.app %>/**/*.html',
+      html: "<%= config.app %>/**/*.html",
       options: {
-        dest: '<%= config.dist %>',
+        dest: "<%= config.dist %>",
         flow: {
           html: {
             steps: {
-              js: ['concat'],
+              js: ["concat"],
               // js: ['concat', 'uglifyjs'] //when using uncss
               // Disabled as we'll be using a manual
               // cssmin configuration later. This is
               // to ensure we work well with grunt-uncss
-              css: ['cssmin'] // disable when using uncss
+              css: ["cssmin"] // disable when using uncss
             },
             post: {}
           }
@@ -626,14 +626,14 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= config.dist %>/{,*/}*.html'],
-      css: ['<%= config.dist %>/styles/{,*/}*.css'],
+      html: ["<%= config.dist %>/{,*/}*.html"],
+      css: ["<%= config.dist %>/styles/{,*/}*.css"],
       // js: ['<%= config.dist %>/scripts/**/*.js'],
       options: {
         assetsDirs: [
-          '<%= config.dist %>',
-          '<%= config.dist %>/images',
-          '<%= config.dist %>/styles'
+          "<%= config.dist %>",
+          "<%= config.dist %>/images",
+          "<%= config.dist %>/styles"
         ]
       }
     },
@@ -648,18 +648,18 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          '<%= config.dist %>/styles/main.css': ['.tmp/styles/{,*/}*.css']
+          "<%= config.dist %>/styles/main.css": [".tmp/styles/{,*/}*.css"]
         }
       }
     },
     uglify: {
       dist: {
         files: {
-          '<%= config.dist %>/scripts/scripts.js': [
-            '<%= config.dist %>/scripts/scripts.js'
+          "<%= config.dist %>/scripts/scripts.js": [
+            "<%= config.dist %>/scripts/scripts.js"
           ],
-          '<%= config.dist %>/scripts/vendor.js': [
-            '<%= config.dist %>/scripts/vendor.js'
+          "<%= config.dist %>/scripts/vendor.js": [
+            "<%= config.dist %>/scripts/vendor.js"
           ]
         }
       }
@@ -671,13 +671,13 @@ module.exports = function (grunt) {
     usebanner: {
       dist: {
         options: {
-          position: 'top',
-          banner: '<%= banner %>'
+          position: "top",
+          banner: "<%= banner %>"
         },
         files: {
           src: [
-            '<%= config.dist %>/styles/*.css',
-            '<%= config.dist %>/scripts/*.js'
+            "<%= config.dist %>/styles/*.css",
+            "<%= config.dist %>/scripts/*.js"
           ]
         }
       }
@@ -693,17 +693,17 @@ module.exports = function (grunt) {
             // '../bower_components/nabla-notification/styles/css/nabla-notification.css',
             // '../bower_components/nabla-header/styles/css/nabla-header.css',
             // '../bower_components/bootstrap/dist/css/bootstrap.css',
-            '../bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css',
-            '../.tmp/styles/main.css'
+            "../bower_components/github-fork-ribbon-css/gh-fork-ribbon.ie.css",
+            "../.tmp/styles/main.css"
           ],
           // Ignore css selectors for async content with complete selector or regexp
           // Only needed if using Bootstrap
           ignore: [
-            '.ng-move',
-            '.ng-enter',
-            '.ng-leave',
-            '#added_at_runtime',
-            '.created_by_jQuery',
+            ".ng-move",
+            ".ng-enter",
+            ".ng-leave",
+            "#added_at_runtime",
+            ".created_by_jQuery",
             /nabla-header.*/,
             /github-fork-ribbon.*/,
             /app-loading.*/,
@@ -714,8 +714,8 @@ module.exports = function (grunt) {
           ]
         },
         files: {
-          '.tmp/styles/main.css': [
-            '<%= config.app %>/{,*/}*.html'
+          ".tmp/styles/main.css": [
+            "<%= config.app %>/{,*/}*.html"
             // './bower_components/nabla-notification/{,*/}*.html',
             // './bower_components/nabla-header/{,*/}*.html'
           ]
@@ -727,36 +727,36 @@ module.exports = function (grunt) {
       test: {
         options: {
           // base: '<%= config.dist %>/',
-          base: './',
+          base: "./",
           css: [
-            '.tmp/styles/main.css',
-            '.tmp/styles/blog.css',
-            '.tmp/styles/carousel.css'
+            ".tmp/styles/main.css",
+            ".tmp/styles/blog.css",
+            ".tmp/styles/carousel.css"
             // 'test/fixture/styles/bootstrap.css'
           ],
           width: 320,
           height: 70
         },
-        src: '<%= config.dist %>/index.html',
+        src: "<%= config.dist %>/index.html",
         // dest: 'styles/critical.css'
         // dest: 'index.html'
-        dest: '<%= config.dist %>/index.html'
+        dest: "<%= config.dist %>/index.html"
       }
     },
 
     penthouse: {
       server: {
         // outfile: '<%= config.dist %>/styles/critical.css',
-        css: '<%= config.dist %>/styles/main.*.css',
+        css: "<%= config.dist %>/styles/main.*.css",
         // url: SERVER_URL + SERVER_CONTEXT,
-        url: 'http://localhost:9090/test/#/',
+        url: "http://localhost:9090/test/#/",
         width: 1280,
         height: 800
       }
     },
 
     compare_size: {
-      files: ['app/styles/**', 'dist/styles/**']
+      files: ["app/styles/**", "dist/styles/**"]
     },
 
     // The following *-min tasks produce minified files in the dist folder
@@ -773,9 +773,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= config.app %>/images',
-            src: '{,*/}*.{ico,png,jpg,jpeg,gif}',
-            dest: '<%= config.dist %>/images'
+            cwd: "<%= config.app %>/images",
+            src: "{,*/}*.{ico,png,jpg,jpeg,gif}",
+            dest: "<%= config.dist %>/images"
           }
         ]
       }
@@ -786,9 +786,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= config.app %>/images',
-            src: '{,*/}*.svg',
-            dest: '<%= config.dist %>/images'
+            cwd: "<%= config.app %>/images",
+            src: "{,*/}*.svg",
+            dest: "<%= config.dist %>/images"
           }
         ]
       }
@@ -810,9 +810,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= config.dist %>',
-            src: ['*.html', 'views/{,*/}*.html'],
-            dest: '<%= config.dist %>'
+            cwd: "<%= config.dist %>",
+            src: ["*.html", "views/{,*/}*.html"],
+            dest: "<%= config.dist %>"
           }
         ]
       }
@@ -825,9 +825,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: '<%= config.dist %>/scripts',
-            src: ['{,*/}*.js'],
-            dest: '<%= config.dist %>/scripts'
+            cwd: "<%= config.dist %>/scripts",
+            src: ["{,*/}*.js"],
+            dest: "<%= config.dist %>/scripts"
           }
         ]
       }
@@ -835,28 +835,28 @@ module.exports = function (grunt) {
 
     ngconstant: {
       options: {
-        name: require('./bower.json').moduleName,
+        name: require("./bower.json").moduleName,
         deps: false,
         wrap:
-          '"use strict";\n// DO NOT EDIT THIS FILE, EDIT THE GRUNT TASK NGCONSTANT SETTINGS INSTEAD WHICH GENERATES THIS FILE\n{%= __ngModule %}'
+          "\"use strict\";\n// DO NOT EDIT THIS FILE, EDIT THE GRUNT TASK NGCONSTANT SETTINGS INSTEAD WHICH GENERATES THIS FILE\n{%= __ngModule %}"
       },
       dev: {
         options: {
-          dest: '<%= config.app %>/scripts/app.constants.js'
+          dest: "<%= config.app %>/scripts/app.constants.js"
           // dest: '.tmp/concat/scripts/app.constants.js'
         },
         constants: {
-          ENV: 'dev',
+          ENV: "dev",
           VERSION: parseVersionFromPomXml()
         }
       },
       prod: {
         options: {
-          dest: '<%= config.app %>/scripts/app.constants.js'
+          dest: "<%= config.app %>/scripts/app.constants.js"
           // dest: '.tmp/concat/scripts/app.constants.js'
         },
         constants: {
-          ENV: 'prod',
+          ENV: "prod",
           VERSION: parseVersionFromPomXml()
         }
       }
@@ -865,14 +865,14 @@ module.exports = function (grunt) {
     // Package all the html partials into a single javascript payload
     ngtemplates: {
       dist: {
-        cwd: '<%= config.app %>',
-        src: ['scripts/**/*.html'],
-        dest: '.tmp/templates/templates.js',
+        cwd: "<%= config.app %>",
+        src: ["scripts/**/*.html"],
+        dest: ".tmp/templates/templates.js",
         options: {
           // This should be the name of your apps angular module
-          module: require('./bower.json').moduleName,
+          module: require("./bower.json").moduleName,
           // module: require('./bower.json').name + 'App',
-          usemin: '<%= config.app %>/scripts/app.js',
+          usemin: "<%= config.app %>/scripts/app.js",
           htmlmin: {
             removeCommentsFromCDATA: true,
             // https://github.com/yeoman/grunt-usemin/issues/44
@@ -895,71 +895,71 @@ module.exports = function (grunt) {
           {
             expand: true,
             dot: true,
-            cwd: '<%= config.app %>',
-            dest: '<%= config.dist %>',
+            cwd: "<%= config.app %>",
+            dest: "<%= config.dist %>",
             src: [
-              '*.{ico,png,txt}',
-              '.htaccess',
-              '*.html',
-              'views/{,*/}*.html',
-              'images/{,*/}*.{webp}',
-              'styles/fonts/{,*/}*.*',
-              'fonts/{,*/}*.*',
-              'resources/{,*/}*.*'
+              "*.{ico,png,txt}",
+              ".htaccess",
+              "*.html",
+              "views/{,*/}*.html",
+              "images/{,*/}*.{webp}",
+              "styles/fonts/{,*/}*.*",
+              "fonts/{,*/}*.*",
+              "resources/{,*/}*.*"
             ]
           },
           {
             expand: true,
-            cwd: '.tmp/images',
-            dest: '<%= config.dist %>/images',
-            src: ['generated/*']
+            cwd: ".tmp/images",
+            dest: "<%= config.dist %>/images",
+            src: ["generated/*"]
           },
           {
             expand: true,
-            cwd: 'bower_components/nabla-styles/app',
-            src: 'images/*',
-            dest: '<%= config.dist %>'
+            cwd: "bower_components/nabla-styles/app",
+            src: "images/*",
+            dest: "<%= config.dist %>"
           },
           {
             expand: true,
-            cwd: 'bower_components/nabla-styles/app',
-            src: 'views/*',
-            dest: '<%= config.dist %>'
+            cwd: "bower_components/nabla-styles/app",
+            src: "views/*",
+            dest: "<%= config.dist %>"
             // }, {
             //  src: 'node_modules/apache-server-configs/dist/.htaccess',
             //  dest: '<%= config.dist %>/.htaccess'
           },
           {
             expand: true,
-            cwd: '.',
+            cwd: ".",
             src:
-              'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-            dest: '<%= config.dist %>'
+              "bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*",
+            dest: "<%= config.dist %>"
           },
           {
             expand: true,
-            cwd: '.',
-            src: 'bower_components/font-awesome/fonts/*',
-            dest: '<%= config.dist %>'
+            cwd: ".",
+            src: "bower_components/font-awesome/fonts/*",
+            dest: "<%= config.dist %>"
           },
           {
             expand: true,
-            cwd: 'bower_components/bootstrap-sass-official/assets/fonts/',
-            src: '**/*',
-            dest: '<%= config.dist %>/fonts'
+            cwd: "bower_components/bootstrap-sass-official/assets/fonts/",
+            src: "**/*",
+            dest: "<%= config.dist %>/fonts"
           },
           {
             expand: true,
-            cwd: 'bower_components/font-awesome/fonts/',
-            src: '**/*',
-            dest: '<%= config.dist %>/fonts'
+            cwd: "bower_components/font-awesome/fonts/",
+            src: "**/*",
+            dest: "<%= config.dist %>/fonts"
           },
           {
             // angular-translate
             expand: true,
-            cwd: 'bower_components/angular-i18n/',
-            src: '*.js',
-            dest: '<%= config.dist %>/bower_components/angular-i18n'
+            cwd: "bower_components/angular-i18n/",
+            src: "*.js",
+            dest: "<%= config.dist %>/bower_components/angular-i18n"
           }
         ]
       },
@@ -968,59 +968,59 @@ module.exports = function (grunt) {
           {
             expand: true,
             dot: true,
-            cwd: '<%= config.app %>',
-            dest: '<%= config.instrumentedE2E %>/app',
+            cwd: "<%= config.app %>",
+            dest: "<%= config.instrumentedE2E %>/app",
             src: [
-              '*.{ico,png,txt}',
-              'images/{,*/}*.{webp}',
-              '{,*/}*.html',
-              'scripts/**/*.js',
+              "*.{ico,png,txt}",
+              "images/{,*/}*.{webp}",
+              "{,*/}*.html",
+              "scripts/**/*.js",
               // 'styles/fonts/{,*/}*.*'
-              '.htaccess',
+              ".htaccess",
               // '../bower_components/**/*',
-              'images/**/*',
-              'fonts/**/*',
-              'views/**/*',
-              'styles/**/*'
+              "images/**/*",
+              "fonts/**/*",
+              "views/**/*",
+              "styles/**/*"
             ]
           },
           {
             expand: true,
-            cwd: '.',
+            cwd: ".",
             src:
-              'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-            dest: '<%= config.instrumentedE2E %>/app'
+              "bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*",
+            dest: "<%= config.instrumentedE2E %>/app"
           },
           {
             expand: true,
-            cwd: '.',
-            src: 'bower_components/font-awesome/fonts/*',
-            dest: '<%= config.instrumentedE2E %>/app'
+            cwd: ".",
+            src: "bower_components/font-awesome/fonts/*",
+            dest: "<%= config.instrumentedE2E %>/app"
           },
           {
             expand: true,
-            cwd: '.tmp/images',
-            dest: '<%= config.instrumentedE2E %>/app/images',
-            src: ['generated/*']
+            cwd: ".tmp/images",
+            dest: "<%= config.instrumentedE2E %>/app/images",
+            src: ["generated/*"]
           }
         ]
       },
       styles: {
         expand: true,
-        cwd: '<%= config.app %>/styles',
-        dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        cwd: "<%= config.app %>/styles",
+        dest: ".tmp/styles/",
+        src: "{,*/}*.css"
       }
     },
 
     buildcontrol: {
       options: {
-        dir: 'dist',
+        dir: "dist",
         commit: true,
         push: true,
         connectCommits: false,
         message:
-          'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+          "Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%"
       },
       // pages: {
       //  options: {
@@ -1030,14 +1030,14 @@ module.exports = function (grunt) {
       // },
       heroku: {
         options: {
-          remote: 'heroku',
-          branch: 'master'
+          remote: "heroku",
+          branch: "master"
         }
       },
       openshift: {
         options: {
-          remote: 'openshift',
-          branch: 'master'
+          remote: "openshift",
+          branch: "master"
         }
         // },
         // local: {
@@ -1050,22 +1050,22 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
-      server: ['copy:styles', 'compass:server'],
+      server: ["copy:styles", "compass:server"],
       test: [
         // 'copy:styles',
-        'compass'
+        "compass"
       ],
       dist: [
-        'copy:styles',
-        'compass:dist',
-        'imagemin',
-        'svgmin']
+        "copy:styles",
+        "compass:dist",
+        "imagemin",
+        "svgmin"]
     },
 
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: "test/karma.conf.js",
         // browsers: ['PhantomJS', 'Chrome', 'Firefox'],
         singleRun: true
       }
@@ -1075,51 +1075,51 @@ module.exports = function (grunt) {
       // replace the font file path for critical
       dist: {
         // src: ['<%= config.dist %>/styles//*.css'],
-        src: ['<%= config.dist %>/index.html'],
+        src: ["<%= config.dist %>/index.html"],
         overwrite: true, // overwrite matched source files
         replacements: [
           {
             from:
-              '.tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+              ".tmp/bower_components/bootstrap-sass-official/assets/fonts/bootstrap/",
             to:
-              '../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/'
+              "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/"
           },
           {
-            from: '/.tmp/bower_components/font-awesome/fonts/',
-            to: '../bower_components/font-awesome/fonts/'
+            from: "/.tmp/bower_components/font-awesome/fonts/",
+            to: "../bower_components/font-awesome/fonts/"
           },
           {
-            from: '.tmp/fonts/bootstrap/',
-            to: 'fonts/bootstrap/'
+            from: ".tmp/fonts/bootstrap/",
+            to: "fonts/bootstrap/"
           },
           {
-            from: '@@undefined-version',
+            from: "@@undefined-version",
             to: VERSION
           }
         ]
       },
       // Sets DEBUG_MODE to FALSE in dist
       debugMode: {
-        src: ['<%= config.dist %>/scripts/scripts.js'],
+        src: ["<%= config.dist %>/scripts/scripts.js"],
         overwrite: true,
         replacements: [
           {
             from: /\/\*DEBUG_MODE\*\/.{1,}\/\*DEBUG_MODE\*\//gi,
-            to: '/*DEBUG_MODE*/false/*DEBUG_MODE*/'
+            to: "/*DEBUG_MODE*/false/*DEBUG_MODE*/"
           }
         ]
       },
       // Sets VERSION_TAG for cache busting
       versionTag: {
-        src: ['<%= config.dist %>/scripts/scripts.js'],
+        src: ["<%= config.dist %>/scripts/scripts.js"],
         overwrite: true,
         replacements: [
           {
             from: /\/\*VERSION_TAG_START\*\/.{1,}\/\*VERSION_TAG_END\*\//gi,
             to:
-              '/*VERSION_TAG_START*/' +
+              "/*VERSION_TAG_START*/" +
               new Date().getTime() +
-              '/*VERSION_TAG_END*/'
+              "/*VERSION_TAG_END*/"
           }
         ]
       }
@@ -1128,7 +1128,7 @@ module.exports = function (grunt) {
     protractor: {
       options: {
         // keepAlive: true,
-        configFile: 'test/protractor.conf.js',
+        configFile: "test/protractor.conf.js",
         // debug: true,
         args: {
           // directConnect: true,
@@ -1141,34 +1141,34 @@ module.exports = function (grunt) {
 
     env: {
       test: {
-        NODE_ENV: 'test'
+        NODE_ENV: "test"
       },
       prod: {
-        NODE_ENV: 'production'
+        NODE_ENV: "production"
       },
       all: localConfig
     },
 
     yslow_test: {
       options: {
-        args: ' --web-security=false --ignore-ssl-errors=yes ',
-        info: 'grade',
-        format: 'tap',
+        args: " --web-security=false --ignore-ssl-errors=yes ",
+        info: "grade",
+        format: "tap",
         // format: 'junit',
         // ruleset: 'yblog',
-        cdns: 'nabla.mobi,albandrieu.com,albandri,localhost,127.0.0.1',
+        cdns: "nabla.mobi,albandrieu.com,albandri,localhost,127.0.0.1",
         /* jshint ignore:start */
         threshold:
           "\'{\"overall\": \"C\", \"ycdn\": \"F\", \"yexpires\": \"F\", \"ynumreq\": \"E\", \"yminify\": \"B\", \"ycompress\": \"C\", \"ydns\": \"D\", \"yno404\": \"F\", \"yexpressions\": \"B\", \"ymindom\": \"F\"}\'",
         /* jshint ignore:end */
         urls: [
           SERVER_PROD_URL + SERVER_CONTEXT,
-          SERVER_PROD_URL + SERVER_CONTEXT + '#/about'
+          SERVER_PROD_URL + SERVER_CONTEXT + "#/about"
         ],
         // headers: '\'{"Cookie": "'JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName"}\'',
         // reports: ['target/surefire-reports/yslow-main.xml',
         //          'target/surefire-reports/yslow-about.xml']
-        reports: ['target/yslow-main.tap', 'target/yslow-about.tap']
+        reports: ["target/yslow-main.tap", "target/yslow-about.tap"]
       },
       your_target: {
         files: []
@@ -1184,19 +1184,19 @@ module.exports = function (grunt) {
             jsErrors: 0, // receive warning, when more than 0 JS errors appear
             gzipRequests: {
               // receive warning, when less compressed assets are loaded then 10 ( might be useful for checking server configurations )
-              type: '<',
+              type: "<",
               value: 10
             }
           },
-          indexPath: './build/phantomas/',
+          indexPath: "./build/phantomas/",
           // See https://github.com/macbre/phantomas#parameters
           options: {
-            'cookies-file': './target/cookies.txt',
+            "cookies-file": "./target/cookies.txt",
             timeout: 30,
             // 'film-strip': false,
-            'ignore-ssl-errors': true,
-            'web-security': false,
-            har: './target/phantomas.har',
+            "ignore-ssl-errors": true,
+            "web-security": false,
+            har: "./target/phantomas.har",
             // cookie: ''JSESSIONID=0003EB22CC71A700D676B1E0B6558325;user=%7B%22loginName%22%3A%22nabla%22%2C%22userName',
             verbose: true,
             debug: true
@@ -1232,12 +1232,12 @@ module.exports = function (grunt) {
           width: 1100,
           height: 768
         },
-        screenshotPath: '.tmp/screenshots',
-        originalScreenshotPath: '.tmp/original_screenshots',
-        diffScreenshotPath: '.tmp/diff_screenshots',
-        errorDiffPath: '.tmp/screenshots/error',
+        screenshotPath: ".tmp/screenshots",
+        originalScreenshotPath: ".tmp/original_screenshots",
+        diffScreenshotPath: ".tmp/diff_screenshots",
+        errorDiffPath: ".tmp/screenshots/error",
         resemble: {
-          errorType: 'movement'
+          errorType: "movement"
         }
       }
     },
@@ -1258,7 +1258,7 @@ module.exports = function (grunt) {
           // url: 'http://albandrieu.com:9090/',
           url: SERVER_PROD_URL + SERVER_CONTEXT,
           deepth: 1,
-          resultBaseDir: './build/sitespeedio/'
+          resultBaseDir: "./build/sitespeedio/"
         }
       }
     },
@@ -1274,7 +1274,7 @@ module.exports = function (grunt) {
         // url: 'bababou.eu'
         // url: 'http://localhost:9090/'
         // url: SERVER_PROD_URL + SERVER_CONTEXT
-        url: 'http://albandrieu.com/sample/'
+        url: "http://albandrieu.com/sample/"
       },
       // prod: {
       //  options: {
@@ -1286,9 +1286,9 @@ module.exports = function (grunt) {
       // },
       paths: {
         options: {
-          paths: ['sample/#/about', 'sample/#/', 'nabla/#/'],
-          locale: 'en_GB',
-          strategy: 'desktop',
+          paths: ["sample/#/about", "sample/#/", "nabla/#/"],
+          locale: "en_GB",
+          strategy: "desktop",
           threshold: 58
         }
       }
@@ -1297,9 +1297,9 @@ module.exports = function (grunt) {
     pagespeed_junit: {
       options: {
         // urls: ['http://albandrieu.com:9090/'],
-        urls: ['http://albandrieu.com/nabla/'],
+        urls: ["http://albandrieu.com/nabla/"],
         // key: '<API_KEY>',
-        reports: ['target/surefire-reports/TEST-pagespeed.xml'],
+        reports: ["target/surefire-reports/TEST-pagespeed.xml"],
         threshold: 60,
         ruleThreshold: 12
       }
@@ -1307,7 +1307,7 @@ module.exports = function (grunt) {
 
     wpt: {
       options: {
-        locations: ['Paris_wpt'],
+        locations: ["Paris_wpt"],
         key: process.env.WPT_API_KEY
       },
       sideroad: {
@@ -1315,10 +1315,10 @@ module.exports = function (grunt) {
           url: [
             // 'http://albandrieu.com:9090/'
             // SERVER_PROD_URL + SERVER_CONTEXT
-            'https://albandrieu.com/sample/'
+            "https://albandrieu.com/sample/"
           ]
         },
-        dest: './build/sideroad/'
+        dest: "./build/sideroad/"
       }
     },
 
@@ -1327,25 +1327,25 @@ module.exports = function (grunt) {
         options: {
           // url: 'http://albandrieu.com:9090/',
           // url: SERVER_PROD_URL + SERVER_CONTEXT,
-          url: 'https://albandrieu.com/sample/',
+          url: "https://albandrieu.com/sample/",
           timeout: 500,
           key: process.env.WPT_API_KEY,
           budget: {
-            render: '2000',
-            SpeedIndex: '6000'
+            render: "2000",
+            SpeedIndex: "6000"
           }
         }
       }
     },
 
-    'gh-pages': {
+    "gh-pages": {
       options: {
-        base: 'dist',
+        base: "dist",
         push: false,
         dotfiles: true,
         silent: true
       },
-      src: ['**/*']
+      src: ["**/*"]
     },
 
     zap_start: {
@@ -1374,16 +1374,16 @@ module.exports = function (grunt) {
         host: ZAP_HOST,
         port: ZAP_PORT,
         ignore: [
-          'Content-Type header missing',
-          'Private IP disclosure',
-          'X-Content-Type-Options header missing',
-          'X-Frame-Options header not set'
+          "Content-Type header missing",
+          "Private IP disclosure",
+          "X-Content-Type-Options header missing",
+          "X-Frame-Options header not set"
         ]
       }
     },
     zap_report: {
       options: {
-        dir: 'build/reports/zaproxy',
+        dir: "build/reports/zaproxy",
         host: ZAP_HOST,
         port: ZAP_PORT,
         html: true
@@ -1397,28 +1397,28 @@ module.exports = function (grunt) {
     },
     zap_results: {
       options: {
-        risks: ['High']
+        risks: ["High"]
         // risks: ['High', 'Medium', 'Low', 'Informational']
       }
     },
 
     retire: {
-      js: ['app/src/*.js'] /** Which js-files to scan. **/,
+      js: ["app/src/*.js"] /** Which js-files to scan. **/,
       node: [
-        'node'
+        "node"
       ] /** Which node directories to scan (containing package.json). **/,
       options: {
-        proxy: 'http://albandrieu.com',
+        proxy: "http://albandrieu.com",
         verbose: true,
         packageOnly: true,
         jsRepository:
-          'https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json',
+          "https://raw.github.com/RetireJS/retire.js/master/repository/jsrepository.json",
         nodeRepository:
-          'https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json',
-        outputFile: './target/retire-output.json',
-        ignore: 'documents,java',
+          "https://raw.github.com/RetireJS/retire.js/master/repository/npmrepository.json",
+        outputFile: "./target/retire-output.json",
+        ignore: "documents,java",
         /** list of files to ignore **/
-        ignorefile: '.retireignore.json' // or '.retireignore'
+        ignorefile: ".retireignore.json" // or '.retireignore'
       }
     },
 
@@ -1428,84 +1428,84 @@ module.exports = function (grunt) {
 
     release: {
       options: {
-        additionalFiles: ['bower.json'],
+        additionalFiles: ["bower.json"],
         npm: false, // default: true
         github: {
           // apiRoot: 'https://git.example.com/v3', // Default: https://github.com
-          repo: '<%= pkg.repository.url %>', // put your user/repo here
-          accessTokenVar: 'GITHUB_ACCESS_TOKEN', // ENVIRONMENT VARIABLE that contains GitHub Access Token
+          repo: "<%= pkg.repository.url %>", // put your user/repo here
+          accessTokenVar: "GITHUB_ACCESS_TOKEN", // ENVIRONMENT VARIABLE that contains GitHub Access Token
           // Or you can use username and password env variables, we discourage you to do so
-          usernameVar: 'GITHUB_USERNAME', // ENVIRONMENT VARIABLE that contains GitHub username
-          passwordVar: 'GITHUB_PASSWORD' // ENVIRONMENT VARIABLE that contains GitHub password
+          usernameVar: "GITHUB_USERNAME", // ENVIRONMENT VARIABLE that contains GitHub username
+          passwordVar: "GITHUB_PASSWORD" // ENVIRONMENT VARIABLE that contains GitHub password
         }
       }
     }
-  })
+  });
 
-  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks("grunt-contrib-watch");
   // grunt.loadNpmTasks("grunt-contrib-imagemin");
   // grunt.loadNpmTasks("grunt-reload");
 
   // Used for delaying livereload until after server has restarted
-  grunt.registerTask('wait', function () {
-    grunt.log.ok('Waiting for server reload...')
+  grunt.registerTask("wait", function () {
+    grunt.log.ok("Waiting for server reload...");
 
-    const done = this.async()
+    const done = this.async();
 
     setTimeout(function () {
-      grunt.log.writeln('Done waiting!')
-      done()
-    }, 1500)
-  })
+      grunt.log.writeln("Done waiting!");
+      done();
+    }, 1500);
+  });
 
   grunt.registerTask(
-    'serve',
-    'start the server and preview your app, --allow-remote for remote access',
+    "serve",
+    "start the server and preview your app, --allow-remote for remote access",
     function (target) {
-      if (grunt.option('allow-remote')) {
-        grunt.config.set('connect.options.hostname', '0.0.0.0')
+      if (grunt.option("allow-remote")) {
+        grunt.config.set("connect.options.hostname", "0.0.0.0");
       }
-      if (target === 'dist') {
-        return grunt.task.run(['build', 'connect:dist:keepalive'])
-      }
-
-      if (target === 'test') {
-        return grunt.task.run(['build', 'connect:test:keepalive'])
+      if (target === "dist") {
+        return grunt.task.run(["build", "connect:dist:keepalive"]);
       }
 
-      if (target === 'coverageE2E') {
-        return grunt.task.run(['build', 'connect:coverageE2E:keepalive'])
+      if (target === "test") {
+        return grunt.task.run(["build", "connect:test:keepalive"]);
+      }
+
+      if (target === "coverageE2E") {
+        return grunt.task.run(["build", "connect:coverageE2E:keepalive"]);
       }
 
       grunt.task.run([
-        'clean:server',
+        "clean:server",
         // 'wiredep:server', if we do not use uncss below
-        'wiredep',
+        "wiredep",
         // 'ngconstant:dev',
-        'concurrent:server',
-        'postcss',
-        'connect:livereload',
-        'browserSync',
-        'watch'
-      ])
+        "concurrent:server",
+        "postcss",
+        "connect:livereload",
+        "browserSync",
+        "watch"
+      ]);
     }
-  )
+  );
 
   grunt.registerTask(
-    'server',
-    'DEPRECATED TASK. Use the "serve" task instead',
+    "server",
+    "DEPRECATED TASK. Use the \"serve\" task instead",
     function (target) {
       grunt.log.warn(
-        'The `server` task has been deprecated. Use `grunt serve` to start a server.'
-      )
-      grunt.task.run([target ? 'serve:' + target : 'serve'])
+        "The `server` task has been deprecated. Use `grunt serve` to start a server."
+      );
+      grunt.task.run([target ? "serve:" + target : "serve"]);
     }
-  )
+  );
 
   /**
    * Run acceptance tests to teach ZAProxy how to use the app.
    **/
-  grunt.registerTask('acceptance-test', function () {
+  grunt.registerTask("acceptance-test", function () {
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     // var done = this.async();
@@ -1538,17 +1538,17 @@ module.exports = function (grunt) {
     //  done();
     // });
 
-    grunt.task.run(['protractor:run'])
-  })
+    grunt.task.run(["protractor:run"]);
+  });
 
   /**
    * ZAProxy alias task.
    **/
-  grunt.registerTask('zap', [
+  grunt.registerTask("zap", [
     // 'zap_start',
     // 'connect:test',
     // 'connect:coverageE2E',
-    'acceptance-test'
+    "acceptance-test"
     // 'protractor_coverage:chrome',
     // 'makeReport',
     // 'zap_spider',
@@ -1566,86 +1566,86 @@ module.exports = function (grunt) {
     // 'qunit'
     // 'zap_stop'
     // 'zap_results'
-  ])
+  ]);
 
-  grunt.registerTask('qunit', ['qunit'])
+  grunt.registerTask("qunit", ["qunit"]);
 
-  grunt.registerTask('prepare', [
+  grunt.registerTask("prepare", [
     // 'clean:bower',
-    'bower'
-  ])
+    "bower"
+  ]);
 
-  grunt.registerTask('integration-test', ['zap'])
+  grunt.registerTask("integration-test", ["zap"]);
 
-  grunt.registerTask('test', ['unit-test'])
+  grunt.registerTask("test", ["unit-test"]);
 
-  grunt.registerTask('unit-test', function (target) {
-    if (target !== 'watch') {
+  grunt.registerTask("unit-test", function (target) {
+    if (target !== "watch") {
       grunt.task.run([
         // 'check',
-        'clean:server',
-        'wiredep:test',
+        "clean:server",
+        "wiredep:test",
         // 'ngconstant:dev',
-        'concurrent:test',
-        'postcss'
-      ])
+        "concurrent:test",
+        "postcss"
+      ]);
     }
 
     grunt.task.run([
       // 'connect:test',
       // 'mocha',
-      'karma'
-    ])
-  })
+      "karma"
+    ]);
+  });
 
-  grunt.registerTask('check', function () {
+  grunt.registerTask("check", function () {
     grunt.task.run([
-      'newer:jshint',
+      "newer:jshint",
       // "newer:jscs", // joined ESLint
-      'checkDependencies'
-    ])
-  })
+      "checkDependencies"
+    ]);
+  });
 
-  grunt.registerTask('package', ['build'])
+  grunt.registerTask("package", ["build"]);
 
-  grunt.registerTask('site', ['gh-pages'])
+  grunt.registerTask("site", ["gh-pages"]);
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    'clean:coverageE2E',
-    'wiredep', // remove boostrap after the test
+  grunt.registerTask("build", [
+    "clean:dist",
+    "clean:coverageE2E",
+    "wiredep", // remove boostrap after the test
     // 'ngconstant:prod',
-    'useminPrepare',
-    'concurrent:dist',
-    'postcss',
+    "useminPrepare",
+    "concurrent:dist",
+    "postcss",
     // 'uncss',
-    'ngtemplates',
-    'concat',
-    'copy:dist',
-    'cssmin',
-    'replace:debugMode',
-    'replace:versionTag',
-    'ngAnnotate',
-    'uglify',
-    'filerev',
-    'usemin',
+    "ngtemplates",
+    "concat",
+    "copy:dist",
+    "cssmin",
+    "replace:debugMode",
+    "replace:versionTag",
+    "ngAnnotate",
+    "uglify",
+    "filerev",
+    "usemin",
     // 'critical',
-    'htmlmin',
-    'replace:dist',
-    'usebanner'
+    "htmlmin",
+    "replace:dist",
+    "usebanner"
     // "copy:coverageE2E",
     // "instrument",
-  ])
+  ]);
 
-  grunt.registerTask('docs', ['clean:docs'])
+  grunt.registerTask("docs", ["clean:docs"]);
 
-  grunt.registerTask('test-docs', ['docs', 'connect'])
+  grunt.registerTask("test-docs", ["docs", "connect"]);
 
-  grunt.registerTask('default', [
-    'bower',
-    'unit-test',
-    'package',
-    'compare_size',
-    'docs'
-  ])
-}
+  grunt.registerTask("default", [
+    "bower",
+    "unit-test",
+    "package",
+    "compare_size",
+    "docs"
+  ]);
+};

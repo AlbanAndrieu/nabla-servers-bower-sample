@@ -7,7 +7,7 @@ target/*
 dist/*
 report/*
 bower_components/*
-Gruntfile*.js
+# Gruntfile*.js
 netsniff.js
 rasterize.js
 app/scripts/test/*
