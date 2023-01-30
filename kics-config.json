@@ -1,11 +1,11 @@
 {
   "exclude-paths": [
-     ".direnv/",
-     ".infracost/",
-     ".terraform/",
-     ".tfsec/",
-     "**/*.tfvars",
-     "^.*\\.terraform.*$"
+    ".direnv/",
+    ".infracost/",
+    ".terraform/",
+    ".tfsec/",
+    "**/*.tfvars",
+    "^.*\\.terraform.*$"
   ],
   "log-file": true,
   "minimal-ui": false,

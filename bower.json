@@ -14,12 +14,7 @@
     "bower_components",
     "test"
   ],
-  "keywords": [
-    "nabla",
-    "bootstrap",
-    "less",
-    "sass"
-  ],
+  "keywords": ["nabla", "bootstrap", "less", "sass"],
   "dependencies": {
     "jquery": "2.1.4",
     "bootstrap-sass-official": "3.4.1",

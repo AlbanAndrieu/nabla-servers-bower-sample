@@ -25,7 +25,8 @@ resource "aws_s3_bucket_website_configuration" "site" {
 resource "aws_s3_bucket_acl" "site" {
   bucket = aws_s3_bucket.site.id
 
-  acl = "public-read"
+  acl = "private"
+  # acl = "public-read"
 }
 
 resource "aws_s3_bucket_policy" "site" {
