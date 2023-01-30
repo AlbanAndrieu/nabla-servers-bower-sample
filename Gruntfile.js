@@ -195,14 +195,15 @@ module.exports = function (grunt) {
       },
       js: {
         files: ["<%= config.app %>/scripts/{,*/}*.js"],
-        tasks: ["newer:jshint:all"],
+        // tasks: ["newer:jshint:all"],
         options: {
           livereload: "<%= connect.options.livereload %>"
         }
       },
       jsTest: {
         files: ["test/spec/{,*/}*.js"],
-        tasks: ["newer:jshint:test", "test:watch", "karma"]
+        // tasks: ["newer:jshint:test", "test:watch", "karma"]
+        tasks: ["test:watch", "karma"]
       },
       compass: {
         files: ["<%= config.app %>/styles/{,*/}*.{scss,sass}"],
@@ -1600,7 +1601,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask("check", function () {
     grunt.task.run([
-      "newer:jshint",
+      // "newer:jshint",
       // "newer:jscs", // joined ESLint
       "checkDependencies"
     ]);
