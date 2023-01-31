@@ -151,6 +151,8 @@ jobs:
           # exit-code: '1'
           ignore-unfixed: true
           vuln-type: os,library
+          timeout: "10m0s"
+          security-checks: "vuln"
           severity: CRITICAL,HIGH
 
       - name: Upload Trivy scan results to GitHub Security tab
