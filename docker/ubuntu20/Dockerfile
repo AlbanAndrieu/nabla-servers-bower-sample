@@ -202,6 +202,7 @@ USER jenkins
 
 EXPOSE 8080
 
+# dockerfile_lint - ignore
 FROM openjdk:11-jre-slim as RUNTIME
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]

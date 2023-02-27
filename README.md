@@ -771,7 +771,7 @@ npx mega-linter-runner
 
 #### Check secret
 
-```
+```bash
 npx @secretlint/quick-start "**/*"
 ```
 
@@ -786,7 +786,7 @@ npx cspell "**/*.{txt,js,md}"
 * [github-markdown-toc](https://github.com/jonschlinkert/markdown-toc)
 * With [github-markdown-toc](https://github.com/Lucas-C/pre-commit-hooks-nodejs)
 
-```
+```bash
 sudo npm install -g markdown-toc
 markdown-toc README.md -i
 markdown-toc CHANGELOG.md -i

@@ -1,13 +1,16 @@
+<!-- markdown-link-check-disable-next-line -->
+# [![Nabla](https://bababou.albandrieu.com/nabla/index/assets/nabla/nabla-4.png)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample) nabla-servers-bower-sample
+
 # Changelog
 
 <!-- markdown-link-check-disable -->
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-# Table of contents
+## Table of contents
 
 // spell-checker:disable
 
@@ -27,9 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 // spell-checker:enable
 
-### Size 🌈
+## Size
 
 // cSpell:words pgclient jusmundi
+
+🌈 Total Image size: 4.61 GB -> 3.1 GB
 
 ## [Unreleased]
 
@@ -63,6 +68,19 @@ Ubuntu 20.04
 - None
 
 ### Remove
+
+-
+
+<!--lint disable no-undefined-references-->
+
+dive report
+`
+  efficiency: 93.4520 %
+
+  wastedBytes: 885950854 bytes (886 MB)
+
+  userWastedPercent: 10.3672 %
+`
 
 // cSpell:words pgclient
 - None

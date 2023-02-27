@@ -35,6 +35,7 @@ JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
 YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml)
+JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json)
 BASH_FILTER_REGEX_EXCLUDE: (lib)
 MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md)
 MARKDOWN_MARKDOWN_LINK_CHECK_DISABLE_ERRORS: true
