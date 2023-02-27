@@ -27,7 +27,7 @@ jobs:
   build-maven:
     # if: github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user depbot.
     name: Build Maven
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     # See https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu2004-README.md
     # runs-on: ubuntu-latest
     # container:
@@ -86,7 +86,7 @@ jobs:
   build-docker:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
     name: Build Docker
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
