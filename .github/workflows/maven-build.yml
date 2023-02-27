@@ -165,30 +165,31 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-  sonarcloud:
-    if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
-    name: SonarCloud Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up SonarCloud Scan
-        uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-
-      - name: Run SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1.8
-        with:
-          # Set the sonar.projectBaseDir analysis property
-          projectBaseDir: .  # optional, default is .
-          # Additional arguments to the sonarcloud scanner
-          # args: >
-          #   -Dsonar.organization=albanandrieu-gihub
-          #   -Dsonar.projectKey=nabla:nabla-servers-bower-sample
-          #   -Dsonar.sources=lib/
-          #   -Dsonar.test.exclusions=test/**
-          #   -Dsonar.tests=test/
-          #   -Dsonar.verbose=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # You should run the goal 'org.sonarsource.scanner.maven:sonar' during build rather than using this GitHub Action.
+  # sonarcloud:
+  #   if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
+  #   name: SonarCloud Scan
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up SonarCloud Scan
+  #       uses: actions/checkout@v2
+  #       with:
+  #         # Disabling shallow clone is recommended for improving relevancy of reporting
+  #         fetch-depth: 0
+  #
+  #     - name: Run SonarCloud Scan
+  #       uses: sonarsource/sonarcloud-github-action@v1.8
+  #       with:
+  #         # Set the sonar.projectBaseDir analysis property
+  #         projectBaseDir: .  # optional, default is .
+  #         # Additional arguments to the sonarcloud scanner
+  #         # args: >
+  #         #   -Dsonar.organization=albanandrieu-gihub
+  #         #   -Dsonar.projectKey=nabla:nabla-servers-bower-sample
+  #         #   -Dsonar.sources=lib/
+  #         #   -Dsonar.test.exclusions=test/**
+  #         #   -Dsonar.tests=test/
+  #         #   -Dsonar.verbose=true
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

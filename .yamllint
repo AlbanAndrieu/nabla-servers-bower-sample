@@ -3,14 +3,16 @@
 extends: relaxed
 
 rules:
+  # to match ansible-lint --write ansible
   braces:
+    min-spaces-inside: 1
     max-spaces-inside: 1
     level: error
   brackets:
     max-spaces-inside: 1
     level: error
   comments:
-    min-spaces-from-content: 2
+    min-spaces-from-content: 1
   line-length: disable
   # document-start: disable
   # truthy: disable

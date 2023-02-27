@@ -16,7 +16,8 @@ paths = [
     '''gitleaks.toml''',
     '''docker-compose/configs/alertmanager/config.yml$''',
     '''(.*?)(jpg|gif|doc|pdf|bin|svg|socket)$''',
-    '''(go.mod|go.sum)$'''
+    '''(go.mod|go.sum)$''',
+    '''.npmrc'''
 ]
 
 [[rules]]

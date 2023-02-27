@@ -13,6 +13,8 @@ repos:
             .pnp.cjs|
             package-lock.json|
             npm-shrinkwrap.json|
+            Pipfile.lock|
+            poetry.lock
           )$
       - id: check-case-conflict
       - id: check-docstring-first
@@ -69,17 +71,18 @@ repos:
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/willthames/ansible-lint.git
-    rev: v6.14.0a0
+    rev: v6.11.0
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
         exclude: >
           (?x)^(
             .travis.yml|
-            packs/|
-            k8s/|
-            docker/|
-            docker-compose/|
+            packs/.*|
+            k8s/.*|
+            docker/.*|
+            docker-compose/.*|
+            megalinter-reports/.*|
           )$
   - repo: https://github.com/doublify/pre-commit-hindent.git
     rev: b3680b6ebf9f7cf29b19307f246adef66756feef
@@ -89,7 +92,7 @@ repos:
     rev: v3.6.0-1
     hooks:
       # Choose one of:
-      #- id: shfmt         # native (requires Go to build)
+      # - id: shfmt         # native (requires Go to build)
       - id: shfmt-docker # Docker image (requires Docker to run)
   - repo: https://github.com/detailyang/pre-commit-shell
     rev: 1.0.5
@@ -218,24 +221,11 @@ repos:
     rev: v6.19.0
     hooks:
       - id: megalinter-incremental # Faster, less thorough
-        # args:
-        #   - mega-linter-runner
-        #   - --containername
-        #   - "megalinter-incremental"
-        #   - --remove-container
-        #   - --fix
-        #   - --env
-        #   - "'APPLY_FIXES=all'"
-        #   - --env
-        #   - "'CLEAR_REPORT_FOLDER=true'"
-        #   - --env
-        #   - "'LOG_LEVEL=warning'"
-        #   - --filesonly
         stages:
           - commit
-      # - id: megalinter-full # Slower, more thorough
-      #   stages:
-      #     - push
+  #  - id: megalinter-full  # Slower, more thorough
+  #    stages:
+  #      - push
   - repo: https://github.com/AlbanAndrieu/nabla-hooks
     rev: v1.0.4
     hooks:
