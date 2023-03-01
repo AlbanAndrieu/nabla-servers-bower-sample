@@ -41,7 +41,7 @@ echo -e "${magenta} npm-license ${NC}"
 
 # Whiteshource is doing
 npm ls --only=prod --json
-mvn -T1 dependency:tree -DoutputFile=./target/mvn_dependency_tree.txt
+mvn -T1 dependency:tree -Dserver=jetty9x -Prun-integration-test -s settings.xml -DoutputFile=./target/mvn_dependency_tree.txt
 
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war ${NC}"

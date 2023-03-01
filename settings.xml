@@ -190,11 +190,22 @@ under the License.
       <url>http://192.168.1.57:8081/repository/maven-public/</url>
     </mirror>
     -->
+
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
       <url>https://nexus.albandrieu.com/repository/maven-public/</url>
     </mirror>
+
+    <!--
+    <mirror>
+      <id>maven-default-http-blocker</id>
+      <mirrorOf>external:http:*</mirrorOf>
+      <name>Pseudo repository to mirror external repositories initially using HTTP.</name>
+      <url>http://0.0.0.0/</url>
+      <blocked>false</blocked>
+    </mirror>
+    -->
   </mirrors>
 
   <!-- profiles
@@ -544,6 +555,7 @@ under the License.
               <enabled>true</enabled>
             </releases>
         </pluginRepository>
+        <!--
         <pluginRepository>
             <id>sonatype-repository</id>
             <name>Sonatype Repository</name>
@@ -555,10 +567,11 @@ under the License.
               <enabled>true</enabled>
             </releases>
         </pluginRepository>
+        -->
         <pluginRepository>
             <id>jboss-public-repository</id>
             <name>JBoss Repository</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public</url>
+            <url>https://repository.jboss.org/nexus/content/groups/public</url>
             <snapshots>
               <enabled>false</enabled>
             </snapshots>
@@ -567,15 +580,15 @@ under the License.
             </releases>
         </pluginRepository>
         <pluginRepository>
-          <id>smartics</id>
-          <name>Smartics Repository</name>
-          <url>http://www.smartics.eu/nexus/content/groups/public-group</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
+            <id>smartics</id>
+            <name>Smartics Repository</name>
+            <url>https://www.smartics.eu/nexus/content/groups/public-group</url>
+            <releases>
+              <enabled>true</enabled>
+            </releases>
+            <snapshots>
+              <enabled>false</enabled>
+            </snapshots>
         </pluginRepository>
       </pluginRepositories>
     </profile>
@@ -626,16 +639,16 @@ under the License.
          </repository>
        </repositories>
        <pluginRepositories>
-				 <pluginRepository>
-						<id>upstream</id>
-						<url>${env.Jenkins.Repository}</url>
-						<releases>
-							<enabled>true</enabled>
-						</releases>
-						<snapshots>
-							<enabled>true</enabled>
-						</snapshots>
-				 </pluginRepository>
+	   <pluginRepository>
+	   		<id>upstream</id>
+	   		<url>${env.Jenkins.Repository}</url>
+	   		<releases>
+	   			<enabled>true</enabled>
+	   		</releases>
+	   		<snapshots>
+	   			<enabled>true</enabled>
+	   		</snapshots>
+	   </pluginRepository>
        </pluginRepositories>
     </profile>
   </profiles>

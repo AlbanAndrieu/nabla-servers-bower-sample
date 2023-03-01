@@ -9,18 +9,6 @@
     <meta name="have-i-been-pwned-verification" value="100ddf556695245c2288b0fdfb05d2f0"/>
     <link rel="shortcut icon" href="images/no-filerev/favicon.ico"/>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <script>
-       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
-       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
-       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
-       }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-56011797-1', 'auto');
-       ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
-
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -204,6 +192,32 @@
       </footer>
     </div>
 
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+       (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+       r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+       }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+       ga('create', 'UA-56011797-1', 'auto');
+       ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+
+    <!-- Axeptio: change clientId to be your site's PROJECT ID -->
+    <script>
+    window.axeptioSettings = {
+      clientId: "63ff48361876ce66c29dddcd",
+    };
+
+    (function(d, s) {
+      var t = d.getElementsByTagName(s)[0], e = d.createElement(s);
+      e.async = true; e.src = "//static.axept.io/sdk.js";
+      t.parentNode.insertBefore(e, t);
+    })(document, "script");
+    </script>
+    <!-- End Axeptio cookies -->
+    
     <script src="https://cdn.jsdelivr.net/npm/social-likes-next/dist/social-likes.min.js"></script>
 
     <!--WARNING jquery must be loaded before angular -->
