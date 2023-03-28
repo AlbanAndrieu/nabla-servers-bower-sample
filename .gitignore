@@ -2,6 +2,7 @@
 
 docker-compose/data
 .repository
+megalinter-reports/
 reports/
 scripts/microscanner-wrapper/
 popeye/

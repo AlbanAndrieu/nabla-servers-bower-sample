@@ -59,7 +59,7 @@ repos:
       - id: sort-simple-yaml
       - id: file-contents-sorter
   - repo: https://github.com/pre-commit/pre-commit.git
-    rev: v3.1.0
+    rev: v3.2.1
     hooks:
       - id: validate_manifest
   - repo: https://github.com/asottile/reorder_python_imports.git
@@ -71,7 +71,7 @@ repos:
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/willthames/ansible-lint.git
-    rev: v6.11.0
+    rev: v6.14.3
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
@@ -89,7 +89,7 @@ repos:
     hooks:
       - id: hindent
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.6.0-1
+    rev: v3.6.0-2
     hooks:
       # Choose one of:
       # - id: shfmt         # native (requires Go to build)
@@ -109,7 +109,7 @@ repos:
     hooks:
       - id: pyupgrade
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.1
+    rev: v2.0.2
     hooks:
       - id: autopep8
   - repo: https://github.com/PyCQA/flake8
@@ -141,12 +141,12 @@ repos:
           - --dockerfile
           - ./docker/ubuntu20/Dockerfile
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.1
+    rev: v1.1.1
     hooks:
       - id: mypy
         exclude: ^(docs/|example-plugin/|tests/fixtures)
   - repo: https://github.com/gruntwork-io/pre-commit
-    rev: v0.1.18
+    rev: v0.1.19
     hooks:
       - id: helmlint
   - repo: https://github.com/norwoodj/helm-docs
@@ -184,7 +184,7 @@ repos:
   #        args:
   #          - --args=--quiet
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.21.0
+    rev: 0.22.0
     hooks:
       - id: check-github-workflows
       - id: check-gitlab-ci
@@ -218,7 +218,7 @@ repos:
   #       always_run: true
   #       #args: [--soft-fail]
   - repo: https://github.com/oxsecurity/megalinter
-    rev: v6.19.0
+    rev: v6.21.0
     hooks:
       - id: megalinter-incremental # Faster, less thorough
         stages:

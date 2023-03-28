@@ -688,51 +688,51 @@ terraform-docs .
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name                                                                      | Version |
-|---------------------------------------------------------------------------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.2.5   |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws)                   | ~> 4.0  |
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.2.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
 
 ## Providers
 
-| Name                                              | Version |
-|---------------------------------------------------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.11.0  |
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.11.0 |
 
 ## Modules
 
-| Name                                             | Source         | Version |
-|--------------------------------------------------|----------------|---------|
-| <a name="module_site"></a> [site](#module\_site) | ./modules/site | n/a     |
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_site"></a> [site](#module\_site) | ./modules/site | n/a |
 
 ## Resources
 
-| Name                                                                                                                             | Type     |
-|----------------------------------------------------------------------------------------------------------------------------------|----------|
-| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc)               | resource |
+| Name | Type |
+|------|------|
+| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | resource |
 | [aws_dynamodb_table.terraform_locks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
-| [aws_s3_bucket.terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)           | resource |
-| [aws_security_group.prod_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)        | resource |
+| [aws_s3_bucket.terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_security_group.prod_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 
 ## Inputs
 
-| Name                                                                                            | Description                         | Type           | Default                  | Required |
-|-------------------------------------------------------------------------------------------------|-------------------------------------|----------------|--------------------------|:--------:|
-| <a name="input_CI_PROJECT_NAME"></a> [CI\_PROJECT\_NAME](#input\_CI\_PROJECT\_NAME)             | n/a                                 | `string`       | `"default"`              |    no    |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region)                              | AWS region to launch servers.       | `string`       | `"eu-west-3"`            |    no    |
-| <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization)   | Github organization                 | `string`       | `"Banbou"`               |    no    |
-| <a name="input_site"></a> [site](#input\_site)                                                  | Site Name                           | `string`       | n/a                      |   yes    |
-| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site                    | `string`       | `"nabla-tf-site-bucket"` |    no    |
-| <a name="input_website_root"></a> [website\_root](#input\_website\_root)                        | Path to the root of website content | `string`       | `"./dist"`               |    no    |
-| <a name="input_whitelist"></a> [whitelist](#input\_whitelist)                                   | n/a                                 | `list(string)` | n/a                      |   yes    |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_CI_PROJECT_NAME"></a> [CI\_PROJECT\_NAME](#input\_CI\_PROJECT\_NAME) | n/a | `string` | `"default"` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to launch servers. | `string` | `"eu-west-3"` | no |
+| <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization) | Github organization | `string` | `"Banbou"` | no |
+| <a name="input_site"></a> [site](#input\_site) | Site Name | `string` | n/a | yes |
+| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site | `string` | `"nabla-tf-site-bucket"` | no |
+| <a name="input_website_root"></a> [website\_root](#input\_website\_root) | Path to the root of website content | `string` | `"./dist"` | no |
+| <a name="input_whitelist"></a> [whitelist](#input\_whitelist) | n/a | `list(string)` | n/a | yes |
 
 ## Outputs
 
-| Name                                                                                              | Description                    |
-|---------------------------------------------------------------------------------------------------|--------------------------------|
+| Name | Description |
+|------|-------------|
 | <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | The name of the DynamoDB table |
-| <a name="output_project_name"></a> [project\_name](#output\_project\_name)                        | n/a                            |
-| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn)                   | The ARN of the S3 bucket       |
+| <a name="output_project_name"></a> [project\_name](#output\_project\_name) | n/a |
+| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | The ARN of the S3 bucket |
 <!-- END_TF_DOCS -->
 
 

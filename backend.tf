@@ -57,7 +57,8 @@ resource "aws_s3_bucket" "terraform_state" {
   # Enable versioning so we can see the full revision history of our
   # state files
   versioning {
-    enabled = true
+    enabled    = true
+    mfa_delete = true
   }
   # Enable server-side encryption by default
   server_side_encryption_configuration {
