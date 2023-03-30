@@ -2,7 +2,8 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-FROM selenium/standalone-chrome:3.141.59-20210128 as BUILD
+FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
+#FROM selenium/standalone-chrome:4.7.1-20221208 as selenium
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.0"
 # dockerfile_lint - ignore
@@ -229,7 +230,7 @@ USER jenkins
 
 #RUN find / \( -uid 429679 \)  -ls 2>/dev/null || true
 
-COPY --from=BUILD /home/jenkins/target/test.war /home/jenkins/target/dependency/jetty-runner.jar /opt/
+COPY --from=selenium /home/jenkins/target/test.war /home/jenkins/target/dependency/jetty-runner.jar /opt/
 WORKDIR /opt/
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
