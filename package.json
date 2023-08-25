@@ -183,7 +183,7 @@
     "vinyl-fs": "3.0.3",
     "webpagetest": "^0.6.0",
     "wiredep": "4.0.0",
-    "xml2js": "0.4.23",
+    "xml2js": "0.6.2",
     "yo": "3.1.1"
   },
   "optionalDependencies": {
