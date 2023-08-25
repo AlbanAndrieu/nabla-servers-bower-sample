@@ -73,4 +73,5 @@ angular
       $location.hash(id);
       $anchorScroll();
     };
+
   });
