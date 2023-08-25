@@ -78,6 +78,7 @@ repos:
         exclude: >
           (?x)^(
             .travis.yml|
+            .gitlab-ci.yml|
             packs/.*|
             k8s/.*|
             docker/.*|
