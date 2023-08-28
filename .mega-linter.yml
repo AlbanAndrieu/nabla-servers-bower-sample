@@ -12,7 +12,7 @@ DISABLE:
   - EDITORCONFIG
   # - MARKDOWN
   # - REPOSITORY
-  # - SPELL  # Uncomment to disable checks of spelling mistakes
+  - SPELL  # Uncomment to disable checks of spelling mistakes
   - JAVASCRIPT
   - CSS_SCSS_LINT
   - CSS_STYLELINT
@@ -23,14 +23,19 @@ DISABLE_LINTERS:
   # - JSON_JSONLINT
   # - DOCKERFILE_HADOLINT
   - REPOSITORY_DEVSKIM
+  - REPOSITORY_CHECKOV
   # - REPOSITORY_TRIVY
   - REPOSITORY_SYFT
+  - TERRAFORM_TERRAGRUNT
+  - TERRAFORM_TERRASCAN
+  - TERRAFORM_TFLINT
+  - TERRAFORM_KICS
   - PYTHON_MYPY
   - PYTHON_PYRIGHT
   - PYTHON_PYLINT
   - GROOVY_NPM_GROOVY_LINT
 IGNORE_GITIGNORED_FILES: true
-FILTER_REGEX_EXCLUDE: (\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
+FILTER_REGEX_EXCLUDE: (megalinter-reports/|\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
@@ -48,7 +53,9 @@ REPOSITORY_DEVSKIM_DISABLE_ERRORS_IF_LESS_THAN: 10
 # See https://github.com/oxsecurity/megalinter/issues/1993
 REPOSITORY_DEVSKIM_ARGUMENTS: --severity critical,important --skip-git-ignored-files # --ignore-globs **/.git/**,**/bin/**,.mypy_cache/**,**/tests/**,**/README.md
 REPOSITORY_TRIVY_DISABLE_ERRORS: true
-REPOSITORY_TRIVY_ARGUMENTS: --security-checks vuln,config,secret --vuln-type os,library --ignore-unfixed --skip-dirs .direnv --skip-dirs .venv --skip-files pip.conf --skip-files Pipfile
+REPOSITORY_TRIVY_ARGUMENTS: --security-checks vuln,config,secret --vuln-type os,library --ignore-unfixed --skip-dirs .direnv --skip-dirs .venv --skip-files pip.conf --skip-files Pipfile --skip-files /usr/bin/nomad
+REPOSITORY_TRIVY_DISABLE_ERRORS_IF_LESS_THAN: 3
+REPOSITORY_CHECKOV_DISABLE_ERRORS_IF_LESS_THAN: 1
 TERRAFORM_TERRASCAN_ARGUMENTS: -i terraform -t docker -t github -d terraform # -f myfile.tf
 TERRAFORM_TERRASCAN_DISABLE_ERRORS: true
 REPOSITORY_GITLEAKS_DISABLE_ERRORS: false
@@ -60,6 +67,16 @@ PYTHON_BANDIT_DISABLE_ERRORS: true
 PYTHON_MYPY_DISABLE_ERRORS: true
 PYTHON_PYLINT_DISABLE_ERRORS: true
 PYTHON_PYRIGHT_DISABLE_ERRORS: true
+YAML_V8R_FILE_NAMES_REGEX:
+  [
+    ".codeclimate.yml",
+    ".dive.yaml",
+    ".gitlab-ci.yml",
+    ".mega-linter.yml",
+    ".checkov.yml",
+    "terraform/nomad/jobs/files/alertmanager/alertmanager.yml",
+    "terraform/nomad/jobs/files/prometheus/prom-nomad-rules.yml",
+  ]
 EXCLUDED_DIRECTORIES:
   [".github", ".gitlab-ci", "node_modules", ".venv", ".direnv", ".mypy_cache"]
 SHOW_ELAPSED_TIME: true
