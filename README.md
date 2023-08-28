@@ -1,5 +1,5 @@
 <!-- markdown-link-check-disable-next-line -->
-## [![Nabla](https://bababou.albandrieu.com/nabla/index/assets/nabla/nabla-4.png)](https://github.com/AlbanAndrieu) nabla-servers-bower-sample
+# [![Nabla](https://bababou.albandrieu.com/nabla/index/assets/nabla/nabla-4.png)](https://github.com/AlbanAndrieu) nabla-servers-bower-sample
 
 [![License: APACHE](http://img.shields.io/:license-apache-blue.svg?style=flat-square)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -142,7 +142,7 @@ Javascript project
 
 <!-- markdown-link-check-enable -->
 
-# A bower project sample
+## [A bower project sample](#table-of-contents)
 
 This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular) version 0.11.1.
 Then I applied [uncss generator](https://github.com/addyosmani/generator-webapp-uncss)
@@ -172,7 +172,7 @@ languages like :
 
 jmeter, gatling, mutation testing and arquillian are available in other sample project
 
-## Initialize
+## [Initialize](#table-of-contents)
 
 ```bash
 direnv allow
@@ -183,7 +183,7 @@ direnv allow
 pre-commit install
 ```
 
-## Create project
+## [Create project](#table-of-contents)
 
 as local user
 
@@ -203,14 +203,14 @@ as local user
 yo angular translate
 ```
 
-# Initiate
+## [Initiate](#table-of-contents)
 
 ```bash
 rm -Rf .venv/ .direnv/
 direnv allow
 ```
 
-## Tools
+## [Tools](#table-of-contents)
 
 ### Internationalization
 
@@ -271,7 +271,7 @@ See [takari-maven-wrapper](https://github.com/takari/maven-wrapper)
 mvn -N io.takari:maven:wrapper
 ```
 
-## NODE/NPM Installation
+## [NODE/NPM Installation](#table-of-contents)
 
 ### Using nvm
 
@@ -307,7 +307,7 @@ env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true npm install -g puppeteer@0.12.0
 env PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn global add puppeteer
 ```
 
-## Installation
+## [Installation](#table-of-contents)
 
 Install NPM modules.
 
@@ -321,7 +321,7 @@ Install Javascript dependencies.
 bower install
 ```
 
-## Build & development
+## [Build & development](#table-of-contents)
 
 ### Docker image
 
@@ -376,7 +376,7 @@ cd /opt/harbor
 sudo docker-compose -f ./docker-compose.yml up -d
 ```
 
-## Documentation
+## [Documentation](#table-of-contents)
 
 See [mkdocs](https://www.mkdocs.org/)
 
@@ -392,20 +392,20 @@ mkdocs gh-deploy
 [GitHub Pages](http://albanandrieu.github.io/nabla-servers-bower-sample/)
 [github-pages](https://docs.github.com/en/pages/getting-started-with-github-pages)
 
-## Fix imagemin upgrade
+## [Fix imagemin upgrade](#table-of-contents)
 
 ```bash
 npm install optipng-bin@3.1.4
 grunt imagemin:dist
 ```
 
-## List browser compatibility
+## [List browser compatibility](#table-of-contents)
 
 ```bash
 npx browserslist
 ```
 
-## Testing
+## [Testing](#table-of-contents)
 
 test (dev mode)
 
@@ -421,7 +421,7 @@ grunt serve:dist
 
 Running `grunt test` will run the unit tests with karma.
 
-## Livereload
+## [Livereload](#table-of-contents)
 
 Run with grunt watch -v then manually edit a file listed in the watch.livereload.files array. Ensure that it is triggering the file by printing the file name to the console.
 
@@ -429,7 +429,7 @@ Then from the browser end, ensure going to <http://localhost:35730/> works and d
 
 Be sure the <http://localhost:35730/livereload.js> script is being loaded and you see the network socket being established.
 
-## Proxy / Rewrite jetty
+## [Proxy / Rewrite jetty](#table-of-contents)
 
 Proxy can be used to get access to oter URL.
 In order to be activated it must be reached once : <http://localhost:9090/login>
@@ -437,14 +437,14 @@ In order to be activated it must be reached once : <http://localhost:9090/login>
 Even though it is strongly advice to run this project behind an apache.
 Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order to install this project behind an apache.
 
-## Run war in jetty or using cargo
+## [Run war in jetty or using cargo](#table-of-contents)
 
 ```bash
 mvnw jetty:run-war
 mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
 
-## ZaProxy
+## [ZaProxy](#table-of-contents)
 
 Needed for having /usr/bin/xml2-config in the PATH
 
@@ -473,7 +473,7 @@ export DISPLAY=:99 && nohup /usr/local/zap/zap-2.3.1/zap.sh -daemon -port 8090 >
 tail -f zap.log
 ```
 
-## Selenium Grid
+## [Selenium Grid](#table-of-contents)
 
 How to start selenium grid
 
@@ -519,7 +519,7 @@ curl <http://albandrieu.com:4444/grid/console>
 
 Please use : [ansible-selenium](https://github.com/AlbanAndrieu/ansible-selenium) in order to install selenium hub and node
 
-## Jenkins
+## [Jenkins](#table-of-contents)
 
 In order to properly configure Jenkins master
 
@@ -531,7 +531,7 @@ export ZAPROXY_HOME=/zapSource/build/zap
 export PATH=$PATH:$ZAPROXY_HOME
 ```
 
-## Yslow Psi WebPageTest
+## [Yslow Psi WebPageTest](#table-of-contents)
 
 Run yslow, Psi or webpagetest
 
@@ -543,7 +543,7 @@ grunt wpt
 ```
 
 
-## Refresh from upstream
+## [Refresh from upstream](#table-of-contents)
 
 ```bash
 git remote add upstream https://github.com/AlbanAndrieu/nabla-servers-bower-sample.git
@@ -555,7 +555,7 @@ git rebase --continue
 git push origin master --force
 ```
 
-## Deploy to internet
+## [Deploy to internet](#table-of-contents)
 
 ```bash
 grunt gh-pages --gh-pages-tag 'v1.0.3' --gh-pages-message 'Tagging v1.0.3'
@@ -577,11 +577,11 @@ Alias /bower_components "/var/www/sample/bower_components"
 Alias /fonts "/var/www/sample/fonts"
 ```
 
-## Performance improvements
+## [Performance improvements](#table-of-contents)
 
 What has been done is described at <https://www.youtube.com/watch?v=FEs2jgZBaQA>
 
-## Issues
+## [Issues](#table-of-contents)
 
 [using-ui-bootstrap-causing-issues-with-carousel](http://stackoverflow.com/questions/26332202/using-ui-bootstrap-causing-issues-with-carousel)
 
@@ -589,14 +589,14 @@ In order to workaround issue of bower_components (cssmin) absolute path instead 
 [how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster](http://ignaciosuay.com/how-to-avoid-grunt-build-not-loading-bootstrap-glyphicons-using-jhipster/)
 [generator-angular](https://github.com/yeoman/generator-angular/issues/1011)
 
-## Run End2End tests
+## [Run End2End tests](#table-of-contents)
 
 ```bash
 mvnw clean install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x
 grunt --gruntfile Gruntfile-e2e.js
 ```
 
-## Eclipse
+## [Eclipse](#table-of-contents)
 
 Uninstall Nodeclipse Core & Node.js
 
@@ -623,7 +623,7 @@ Exclude validation for
 - app
 - coverage
 
-## Terraform
+## [Terraform](#table-of-contents)
 
 ### Init
 
@@ -688,51 +688,51 @@ terraform-docs .
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.2.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
+| Name                                                                      | Version |
+|---------------------------------------------------------------------------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | 1.2.5   |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws)                   | ~> 4.0  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.11.0 |
+| Name                                              | Version |
+|---------------------------------------------------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.11.0  |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_site"></a> [site](#module\_site) | ./modules/site | n/a |
+| Name                                             | Source         | Version |
+|--------------------------------------------------|----------------|---------|
+| <a name="module_site"></a> [site](#module\_site) | ./modules/site | n/a     |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) | resource |
+| Name                                                                                                                             | Type     |
+|----------------------------------------------------------------------------------------------------------------------------------|----------|
+| [aws_default_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc)               | resource |
 | [aws_dynamodb_table.terraform_locks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
-| [aws_s3_bucket.terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
-| [aws_security_group.prod_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_s3_bucket.terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)           | resource |
+| [aws_security_group.prod_web](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)        | resource |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_CI_PROJECT_NAME"></a> [CI\_PROJECT\_NAME](#input\_CI\_PROJECT\_NAME) | n/a | `string` | `"default"` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region to launch servers. | `string` | `"eu-west-3"` | no |
-| <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization) | Github organization | `string` | `"Banbou"` | no |
-| <a name="input_site"></a> [site](#input\_site) | Site Name | `string` | n/a | yes |
-| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site | `string` | `"nabla-tf-site-bucket"` | no |
-| <a name="input_website_root"></a> [website\_root](#input\_website\_root) | Path to the root of website content | `string` | `"./dist"` | no |
-| <a name="input_whitelist"></a> [whitelist](#input\_whitelist) | n/a | `list(string)` | n/a | yes |
+| Name                                                                                            | Description                         | Type           | Default                  | Required |
+|-------------------------------------------------------------------------------------------------|-------------------------------------|----------------|--------------------------|:--------:|
+| <a name="input_CI_PROJECT_NAME"></a> [CI\_PROJECT\_NAME](#input\_CI\_PROJECT\_NAME)             | n/a                                 | `string`       | `"default"`              |    no    |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region)                              | AWS region to launch servers.       | `string`       | `"eu-west-3"`            |    no    |
+| <a name="input_github_organization"></a> [github\_organization](#input\_github\_organization)   | Github organization                 | `string`       | `"Banbou"`               |    no    |
+| <a name="input_site"></a> [site](#input\_site)                                                  | Site Name                           | `string`       | n/a                      |   yes    |
+| <a name="input_website_bucket_name"></a> [website\_bucket\_name](#input\_website\_bucket\_name) | Nabla bower site                    | `string`       | `"nabla-tf-site-bucket"` |    no    |
+| <a name="input_website_root"></a> [website\_root](#input\_website\_root)                        | Path to the root of website content | `string`       | `"./dist"`               |    no    |
+| <a name="input_whitelist"></a> [whitelist](#input\_whitelist)                                   | n/a                                 | `list(string)` | n/a                      |   yes    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
+| Name                                                                                              | Description                    |
+|---------------------------------------------------------------------------------------------------|--------------------------------|
 | <a name="output_dynamodb_table_name"></a> [dynamodb\_table\_name](#output\_dynamodb\_table\_name) | The name of the DynamoDB table |
-| <a name="output_project_name"></a> [project\_name](#output\_project\_name) | n/a |
-| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | The ARN of the S3 bucket |
+| <a name="output_project_name"></a> [project\_name](#output\_project\_name)                        | n/a                            |
+| <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn)                   | The ARN of the S3 bucket       |
 <!-- END_TF_DOCS -->
 
 

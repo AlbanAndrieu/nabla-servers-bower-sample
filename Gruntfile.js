@@ -453,7 +453,7 @@ module.exports = function (grunt) {
     // Add vendor prefixed styles
     postcss: {
       options: {
-        // map: true, // inline sourcemaps
+        map: true, // inline sourcemaps
 
         // or
         // map: {
@@ -463,7 +463,7 @@ module.exports = function (grunt) {
 
         processors: [
           require("pixrem")(), // add fallbacks for rem units
-          // require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
+          require('autoprefixer')({browsers: 'last 2 versions'}), // add vendor prefixes
           require("cssnano")() // minify the result
         ]
       },
@@ -1446,6 +1446,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   // grunt.loadNpmTasks("grunt-contrib-imagemin");
   // grunt.loadNpmTasks("grunt-reload");
+  grunt.loadNpmTasks("@lodder/grunt-postcss");
 
   // Used for delaying livereload until after server has restarted
   grunt.registerTask("wait", function () {
