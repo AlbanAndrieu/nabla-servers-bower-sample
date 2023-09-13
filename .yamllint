@@ -32,3 +32,7 @@ ignore: |
   .ansible-lint
   .github/
   .pre-commit-config.yaml
+  docker-compose.elk.yml
+  docker-compose/
+  docker/centos7/
+  docker/ubuntu18/

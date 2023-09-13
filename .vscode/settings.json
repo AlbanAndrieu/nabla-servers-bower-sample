@@ -1,5 +1,22 @@
 {
   "maven.view": "flat",
   "maven.executable.options": "-Dserver=jetty9x -Pjetty9x",
-  "cSpell.enableFiletypes": ["terraform"]
+  "cSpell.enableFiletypes": ["terraform"],
+  "makefile.extensionOutputFolder": "./.vscode",
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length", "88"],
+  "markdown.styles": [
+    "https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+  ],
+  "[markdown]": {
+    "files.trimTrailingWhitespace": false
+  },
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "files.autoSave": "onFocusChange",
+  "vs-code-prettier-eslint.prettierLast": "false",
+  "java.compile.nullAnalysis.mode": "automatic"
 }

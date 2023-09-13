@@ -19,7 +19,7 @@ Javascript project
 ## Build
 
 [![Grunt](https://gruntjs.com/cdn/builtwith.png)](http://gruntjs.com/)
-[![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)
+<!--[![Travis Build Status](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample.svg?branch=master)](https://travis-ci.org/AlbanAndrieu/nabla-servers-bower-sample)-->
 <!--[![Jenkins Build Status](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly/badge/icon)](http://albandrieu.com/jenkins/job/nabla-servers-bower-sample-nightly)-->
 [![Build Status](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/maven-build.yml)
 [![Release Charts](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/release.yml/badge.svg)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/actions/workflows/release.yml)
@@ -754,6 +754,15 @@ dockerfile_lint --json --verbose --dockerfile Dockerfile
 ```bash
 brew install hadolint
 hadolint Dockerfile
+```
+
+
+#### Javascript linter
+
+```bash
+npm install
+# yarn add -D prettier@^2.5.1 eslint@^8.7.0
+yarn run eslint
 ```
 
 #### Ansible linter

@@ -1,7 +1,7 @@
 ---
 # To execute this docker-compose yml file use docker-compose -f <file_name> up
 # Add the "-d" flag at the end for deattached execution
-version: "3.7"
+version: '3.7'
 
 services:
   sample:
@@ -34,10 +34,10 @@ services:
         # com.example.description: This label will appear on the web service
       resources:
         limits:
-          cpus: "0.50"
+          cpus: '0.50'
           memory: 500M
         reservations:
-          cpus: "0.25"
+          cpus: '0.25'
           memory: 200M
     #  ulimits:
     #    nproc: 65535
@@ -56,11 +56,11 @@ services:
     #    - /home/sample/data/sessions:rw,exec,nosuid,size=2g
     #    - /home/sample/webapps:rw,exec,nosuid,size=2g
     ports:
-      - 8080:80 #nginx
-    #   - "1099:1099" #jmx remote
-    #   - "9090:9090" #http
-    #   - "9443:9443" #https
-    #   - "2924:2924" #eclipse
+      - 8080:80 # nginx
+    #   - "1099:1099"  # jmx remote
+    #   - "9090:9090"  # http
+    #   - "9443:9443"  # https
+    #   - "2924:2924"  # eclipse
     depends_on:
       - db
     networks:
@@ -76,12 +76,12 @@ services:
       MYSQL_DATABASE: nabla
       MYSQL_USER: nabla
       MYSQL_PASSWORD: nabla
-    #volumes:
-    #  #- "./conf.d:/etc/mysql/conf.d:ro"
-    #  - db_data:/var/lib/mysql
+    # volumes:
+    #   # - "./conf.d:/etc/mysql/conf.d:ro"
+    #   - db_data:/var/lib/mysql
     networks:
       - backend
 
 networks:
   backend: {}
-#  frontend: {}
+#  frontend: { }

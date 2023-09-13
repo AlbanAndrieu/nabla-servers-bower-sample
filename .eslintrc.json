@@ -13,10 +13,11 @@
     "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
+  "plugins": ["@typescript-eslint"],
   "rules": {
-   "semi": ["error", "always"],
-   "prettier/prettier": ["error", { "doubleQuote": true }],
-   "quotes": ["error", "double"]
+    "indent": ["error", 2],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"]
   },
   "overrides": [
     {

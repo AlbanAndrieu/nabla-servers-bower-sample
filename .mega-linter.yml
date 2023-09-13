@@ -2,7 +2,10 @@
 # Configuration file for MegaLinter
 # See all available variables at https://oxsecurity.github.io/megalinter/configuration/ and in linters documentation
 
-APPLY_FIXES: all # all, none, or list of linter keys
+APPLY_FIXES:
+  all # all, none, or list of linter keys
+  # - MARKDOWN_MARKDOWNLINT
+  # - JAVASCRIPT_ES
 DEFAULT_BRANCH: main # Usually master or main
 # ENABLE: # If you use ENABLE variable, all other languages/formats/tooling-formats will be disabled by default
 # ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
@@ -10,9 +13,9 @@ DISABLE:
   - CLOUDFORMATION
   # - COPYPASTE  # Uncomment to disable checks of abusive copy-pastes
   - EDITORCONFIG
-  # - MARKDOWN
+  - MARKDOWN
   # - REPOSITORY
-  - SPELL  # Uncomment to disable checks of spelling mistakes
+  - SPELL # Uncomment to disable checks of spelling mistakes
   - JAVASCRIPT
   - CSS_SCSS_LINT
   - CSS_STYLELINT
@@ -34,6 +37,7 @@ DISABLE_LINTERS:
   - PYTHON_PYRIGHT
   - PYTHON_PYLINT
   - GROOVY_NPM_GROOVY_LINT
+  - JAVASCRIPT_STANDARD # Using JAVASCRIPT_ES
 IGNORE_GITIGNORED_FILES: true
 FILTER_REGEX_EXCLUDE: (megalinter-reports/|\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
@@ -55,7 +59,7 @@ REPOSITORY_DEVSKIM_ARGUMENTS: --severity critical,important --skip-git-ignored-f
 REPOSITORY_TRIVY_DISABLE_ERRORS: true
 REPOSITORY_TRIVY_ARGUMENTS: --security-checks vuln,config,secret --vuln-type os,library --ignore-unfixed --skip-dirs .direnv --skip-dirs .venv --skip-files pip.conf --skip-files Pipfile --skip-files /usr/bin/nomad
 REPOSITORY_TRIVY_DISABLE_ERRORS_IF_LESS_THAN: 3
-REPOSITORY_CHECKOV_DISABLE_ERRORS_IF_LESS_THAN: 1
+REPOSITORY_CHECKOV_DISABLE_ERRORS_IF_LESS_THAN: 3
 TERRAFORM_TERRASCAN_ARGUMENTS: -i terraform -t docker -t github -d terraform # -f myfile.tf
 TERRAFORM_TERRASCAN_DISABLE_ERRORS: true
 REPOSITORY_GITLEAKS_DISABLE_ERRORS: false
@@ -69,16 +73,16 @@ PYTHON_PYLINT_DISABLE_ERRORS: true
 PYTHON_PYRIGHT_DISABLE_ERRORS: true
 YAML_V8R_FILE_NAMES_REGEX:
   [
-    ".codeclimate.yml",
-    ".dive.yaml",
-    ".gitlab-ci.yml",
-    ".mega-linter.yml",
-    ".checkov.yml",
-    "terraform/nomad/jobs/files/alertmanager/alertmanager.yml",
-    "terraform/nomad/jobs/files/prometheus/prom-nomad-rules.yml",
+    '.codeclimate.yml',
+    '.dive.yaml',
+    '.gitlab-ci.yml',
+    '.mega-linter.yml',
+    '.checkov.yml',
+    'terraform/nomad/jobs/files/alertmanager/alertmanager.yml',
+    'terraform/nomad/jobs/files/prometheus/prom-nomad-rules.yml',
   ]
 EXCLUDED_DIRECTORIES:
-  [".github", ".gitlab-ci", "node_modules", ".venv", ".direnv", ".mypy_cache"]
+  ['.github', '.gitlab-ci', 'node_modules', '.venv', '.direnv', '.mypy_cache']
 SHOW_ELAPSED_TIME: true
 EMAIL_REPORTER_EMAIL: alban.andrieu@free.fr
 JSON_REPORTER: true

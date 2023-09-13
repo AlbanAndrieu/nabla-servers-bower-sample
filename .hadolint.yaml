@@ -10,8 +10,16 @@ ignored:
   - SC2039
   - DL3059
   - DL3049
-#  - DL3018
+  #  - DL3018
+  - DL3008
 label-schema:
   name: text
-#  org.website: url
+  # author: text
+  # contact: email
+  # created: rfc3339
+  version: semver
+  # documentation: url
+  # git-revision: hash
+  # license: spdx
+  # org.website: url
 # strict-labels: true

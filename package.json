@@ -8,6 +8,8 @@
     "nabla"
   ],
   "author": "Alban Andrieu <alban.andrieu@free.fr> (http://albandrieu.com)",
+  "main": "scripts.js",
+  "type": "module",
   "license": "MIT",
   "licenses": [
     {
@@ -36,8 +38,9 @@
     ]
   },
   "engines": {
-    "node": ">=14.19.0 || >=16.0.0",
-    "npm": ">=6.14.16 || >=8.5.5",
+    "node": ">=16.0.0",
+    "npm": ">=8.5.5",
+    "yarn": " >=1.22.0",
     "node-gyp": ">=3.0.3",
     "grunt": ">=1.5.3"
   },
@@ -75,6 +78,7 @@
     "@secretlint/secretlint-rule-preset-recommend": "^4.1.3",
     "@types/imagemin-jpegtran": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.30.5",
     "apache-server-configs": "3.2.1",
     "async": "3.1.0",
     "autoprefixer": "^10.4.13",
@@ -92,6 +96,8 @@
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-prettier": "3.1.2",
     "eslint-plugin-promise": "^6.1.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-compat": "^4.2.0",
     "fs-extra": "8.1.0",
     "graceful-fs": "4.2.9",
     "grunt": "1.5.3",
@@ -162,6 +168,7 @@
     "karma-tapfile-reporter": "0.0.1",
     "lint-staged": "10.1.2",
     "load-grunt-tasks": "5.1.0",
+    "prettier": "^2.5.1",
     "nue": "0.7.1",
     "phantomas": "2.4.0",
     "pixrem": "^5.0.0",
@@ -191,8 +198,13 @@
     "fsevents": "2.1.3"
   },
   "scripts": {
+    "start": "node scripts.js",
+    "eslint": "eslint . --ext .js,.cjs,.mjs",
+    "eslint-npx": "npx eslint . --ext .js,.cjs,.mjs",
+    "eslint-fix": "eslint . --fix",
+    "dev": "node scripts.js",
+    "debug": "node --inspect-brk=0.0.0.0 scripts.js",
     "test": "grunt test",
-    "eslint": "npx eslint . --ext .js,.cjs,.mjs",
     "lint": "npx eslint",
     "lint-fix": "npx eslint --fix .",
     "stylelint": "npx stylelint **/*.css",

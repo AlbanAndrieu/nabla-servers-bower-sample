@@ -8,6 +8,7 @@ exclude_paths:
   - ../../../../home/albandrieu/.cache
   - ./scripts/microscanner-wrapper/
   - ./docker-compose/configs/
+  - ansible/main.yml
 # parseable: true
 # quiet: true
 # rulesdir:

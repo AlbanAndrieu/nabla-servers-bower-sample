@@ -1,5 +1,5 @@
 ---
-version: "2"
+version: '2'
 # This is a sample .codeclimate.yml configured for Engine analysis on Code
 # Climate Platform For an overview of the Code Climate Platform, see here:
 # http://docs.codeclimate.com/article/300-the-codeclimate-platform
@@ -19,6 +19,19 @@ engines:
   # to turn off an engine, set enabled to `false` or remove it
   rubocop:
     enabled: false
+  semgrep:
+    enabled: false
+  bandit:
+    enabled: false
+  pylint:
+    enabled: false
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - javascript:
+  bundler-audit:
+    enabled: false
   golint:
     enabled: false
   gofmt:
@@ -34,38 +47,18 @@ engines:
   markdownlint:
     enabled: true
     checks:
-      MD002:  # "First header should be a h1 header"
+      MD002: # "First header should be a h1 header"
         enabled: false
   shellcheck:
     enabled: true
-  duplication:
-    enabled: true
-    config:
-      languages:
-        - javascript:
-# Engines can analyze files and report issues on them, but you can separately
-# decide which files will receive ratings based on those issues. This is
-# specified by path patterns under the ratings key.
-
-# For more details see here:
-# http://docs.codeclimate.com/article/289-configuring-your-repository-via-codeclimate-yml#platform
-
-# ratings:
-#   paths:
-#   - app/**
-#   - lib/**
-#   - "**.rb"
-#   - "**.go"
-
-# You can globally exclude files from being analyzed by any engine using the
-# exclude_paths key.
-
-# exclude_paths:
-# - spec/**/*
-# - vendor/**/*
 exclude_patterns:
   - .direnv/**/*
   - .venv/**/*
+  - .mypy_cache/
+  - config/
+  - db/
+  - dist/
+  - features/
   - node_modules/**/*
   - node_cache/**/*
   # - spec/**/*

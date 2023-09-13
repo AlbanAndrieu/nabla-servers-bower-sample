@@ -1,4 +1,5 @@
 README.md
+CHANGELOG.md
 docker/ubuntu16/Dockerfile
 docker/ubuntu18/Dockerfile
 
@@ -15,6 +16,12 @@ Jenkinsfile-full
 
 .npmrc
 
+
+# Ignore git items
+.gitignore
+.git/
+:include .gitignore
+
 # Common large paths
 node_modules/
 build/
@@ -24,8 +31,8 @@ vendor/
 .venv/
 .tox/
 *.min.js
-playbooks/files/python/requirements-current-*
 .mvn/
+playbooks/files/python/requirements-current-*
 
 # Common test paths
 test/
