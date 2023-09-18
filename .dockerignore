@@ -12,8 +12,8 @@ Dockerfile*
 local/
 .dvc/
 data/
-var
-vendor
+var/
+vendor/
 job.nomad
 .gitlab-ci.yml
 tests/

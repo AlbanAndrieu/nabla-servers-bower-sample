@@ -15,10 +15,11 @@ regexes = [
     ]
 paths = [
     '''gitleaks.toml''',
-    '''docker-compose/configs/alertmanager/config.yml$''',
     '''(.*?)(jpg|gif|doc|pdf|bin|svg|socket)$''',
     '''(go.mod|go.sum)$''',
-    '''.npmrc'''
+    '''terraform/nomad/jobs/files/alertmanager/config.yml''',
+    '''terraform/nomad/jobs/4-2-keycloak.nomad''',
+    '''megalinter-reports/''',
 ]
 
 [[rules]]
