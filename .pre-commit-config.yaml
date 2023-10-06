@@ -132,9 +132,7 @@ repos:
     hooks:
       - id: htmllint
         args: [--config, .eslintrc.json]
-        # args:
-        #   - --config
-        #   - .htmlhintrc
+        # args: [--config, .htmlhintrc]
         files: ^src/
       - id: dockerfile_lint
         args:

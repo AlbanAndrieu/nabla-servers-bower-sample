@@ -1,3 +1,31 @@
 {
-  "extends": ["stylelint-config-recommended-less"]
+  "env": {
+    "browser": false,
+    "es2021": true,
+    "node": true,
+    "commonjs": true
+  },
+  "extends": ["stylelint-config-recommended-less"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "indent": ["error", 2],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "block-no-empty": null,
+    "unit-allowed-list": ["em", "rem", "%", "s"],
+    "color-function-notation": ["legacy"],
+    "alpha-value-notation": ["number"]
+    // "alpha-value-notation": ["percentage", { "exceptProperties": ["opacity"] }]
+  },
+  "overrides": [
+    {
+      "files": ["migrations/*.js", "src/*.js"],
+      "excludedFiles": "*.test.js"
+    }
+  ]
 }

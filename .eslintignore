@@ -3,18 +3,17 @@
 .venv/*
 __tests__/*
 test/*
-docs/js
+docs/*
 
-dist/*
-
-node_modules/*
-bower_components/*
 # Gruntfile*.js
 netsniff.js
 rasterize.js
 app/scripts/test/*
 
 report/*
+node_modules/*
+bower_components/*
 megalinter-reports/*
 target/*
+dist/*
 bin/*

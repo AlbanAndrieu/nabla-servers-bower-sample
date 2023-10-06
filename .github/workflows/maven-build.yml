@@ -125,7 +125,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           #tags: nabla/nabla-servers-bower-sample:latest,nabla/nabla-servers-bower-sample:${{ github.sha }}
           tags: |
@@ -144,13 +144,13 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: nabla/nabla-servers-bower-sample:latest
-          format: template
+          format: "template"
           template: "@/contrib/sarif.tpl"
-          output: trivy-results.sarif
+          output: "trivy-results.sarif"
           # format: 'table'
           # exit-code: '1'
           ignore-unfixed: true
-          vuln-type: os,library
+          vuln-type: "os,library"
           timeout: "10m0s"
           security-checks: vuln  # vuln,secret
           severity: "CRITICAL,HIGH"
@@ -158,7 +158,7 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: trivy-results.sarif
+          sarif_file: "trivy-results.sarif"
 
       - name: Print the GitHub context
         env:
@@ -172,7 +172,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Set up SonarCloud Scan
-  #       uses: actions/checkout@v2
+  #       uses: actions/checkout@v3
   #       with:
   #         # Disabling shallow clone is recommended for improving relevancy of reporting
   #         fetch-depth: 0
