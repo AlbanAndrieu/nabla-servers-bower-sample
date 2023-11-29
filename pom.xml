@@ -120,7 +120,7 @@
 		<maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
-		<maven.cargo.maven3.plugin.version>1.9.9</maven.cargo.maven3.plugin.version>
+		<maven.cargo.maven3.plugin.version>1.10.11</maven.cargo.maven3.plugin.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.dependency.check.plugin.version>6.5.3</maven.dependency.check.plugin.version>
