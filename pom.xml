@@ -117,7 +117,7 @@
 		<logback.version>1.5.0</logback.version>
 		<maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
-		<maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
+		<maven.buildnumber.plugin.version>3.2.0</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
 		<maven.cargo.maven3.plugin.version>1.10.12</maven.cargo.maven3.plugin.version>
