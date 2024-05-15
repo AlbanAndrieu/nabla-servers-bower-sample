@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 ansible-core = "~=2.13.11"
-cryptography = "~=42.0.2"
+cryptography = "~=42.0.4"
 
 [dev-packages]
 ansible-lint = {extras = ["yamllint"], version = ">=6.13.1"}
@@ -13,7 +13,7 @@ ansible-navigator = ">=1.1.0"
 ansible-runner = ">=2.2.1"
 ansible-builder = ">=1.1.0"
 ansible-playbook-grapher = ">=1.1.0"
-black = {version = "~=23.7.0", extras = ["d"]}
+black = {version = "~=24.3.0", extras = ["d"]}
 checkov = ">=2.3.115"
 semgrep = ">=1.15.0"
 #pipenv = ">=2023.7.23"
