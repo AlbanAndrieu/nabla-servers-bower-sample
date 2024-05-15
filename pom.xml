@@ -138,7 +138,7 @@
 		<maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
 		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
-		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
+		<maven.install.plugin.version>3.1.2</maven.install.plugin.version>
 		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
 		<maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
 		<maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
