@@ -62,7 +62,7 @@
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<doxia.core.version>1.8</doxia.core.version>
 		<doxia.version>1.11.1</doxia.version>
-		<groovy.eclipse.batch.version>2.5.7-01</groovy.eclipse.batch.version>
+		<groovy.eclipse.batch.version>3.0.8-01</groovy.eclipse.batch.version>
 		<groovy.eclipse.compiler.version>3.4.0-01</groovy.eclipse.compiler.version>
 		<groovy.version>2.4.6</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
