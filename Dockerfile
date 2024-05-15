@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.2.1
+# syntax=docker/dockerfile:1.7
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007

@@ -62,9 +62,9 @@
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<doxia.core.version>1.8</doxia.core.version>
 		<doxia.version>1.11.1</doxia.version>
-		<groovy.eclipse.batch.version>2.5.7-01</groovy.eclipse.batch.version>
-		<groovy.eclipse.compiler.version>3.4.0-01</groovy.eclipse.compiler.version>
-		<groovy.version>2.4.6</groovy.version>
+		<groovy.eclipse.batch.version>3.0.8-01</groovy.eclipse.batch.version>
+		<groovy.eclipse.compiler.version>3.7.0</groovy.eclipse.compiler.version>
+		<groovy.version>3.0.8</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 		<guava.version>14.0</guava.version>
 		<guice.version>4.1.0</guice.version>
@@ -86,7 +86,8 @@
 		<jaxb.version>2.2.11</jaxb.version>
 
 		<jdk.level>11</jdk.level>
-		<jdk.target>1.8</jdk.target>
+		<!--<jdk.target>1.8</jdk.target>-->
+		<jdk.target>11.0</jdk.target>
 		<jdk.version>${jdk.level}</jdk.version>
 		<!--
 		<jdk.level>1.8</jdk.level>
@@ -296,6 +297,7 @@
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>${groovy.version}</version>
+			<type>pom</type>
 		</dependency>
 
 		<dependency>
