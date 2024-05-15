@@ -9,6 +9,7 @@ source "${WORKING_DIR}/scripts/step-0-color.sh"
 # "${WORKING_DIR}/scripts/webdriver.sh"
 
 #npm install --save-dev grunt-dev-update
+echo -e "${magenta} yarn install --immutable ${NC}"
 #grunt devUpdate:main
 
 echo -e "${magenta} grunt serve:dist --debug ${NC}"
