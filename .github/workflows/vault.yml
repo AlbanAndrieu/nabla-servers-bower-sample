@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Import Secrets
-        uses: hashicorp/vault-action@v2.7.4
+        uses: hashicorp/vault-action@v3.0.0
         with:
           #url: https://vault-cluster.vault.aa257bb4-2600-4ef4-b9ce-a97076835404.aws.hashicorp.cloud:8200
           url: https://vault.albandrieu.com
