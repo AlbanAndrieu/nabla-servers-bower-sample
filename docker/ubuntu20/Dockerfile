@@ -55,10 +55,12 @@ RUN apt-get -q update &&\
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-8-dbg openjdk-11-dbg openjdk-21-jdk maven \
+    openjdk-8-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
+
+#    openjdk-8-dbg openjdk-11-dbg openjdk-21-jdk maven \
 
 # Remove unnecessary getty and udev targets that result in high CPU usage when using
 # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
