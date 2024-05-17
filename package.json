@@ -175,7 +175,7 @@
     "protractor": "^7.0.0",
     "qs": "6.11.0",
     "remark-cli": "^10.0.0",
-    "remark-preset-lint-recommended": "^6.1.1",
+    "remark-preset-lint-recommended": "^7.0.0",
     "request": "2.88.2",
     "secretlint": "^4.1.3",
     "semantic-release": "^19.0.3",
