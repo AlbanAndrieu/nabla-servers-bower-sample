@@ -146,7 +146,7 @@
     "grunt-wpt": "^3.1.4",
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-mozjpeg": "^10.0.0",
-    "istanbul-lib-coverage": "3.0.0",
+    "istanbul-lib-coverage": "3.2.2",
     "jasmine-bail-fast": "0.0.1",
     "jasmine-core": "3.5.0",
     "jasmine-reporters": "2.3.2",
