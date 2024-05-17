@@ -7,7 +7,12 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${WORKING_DIR}/step-0-color.sh"
 
 # 116.0.5845.110
-export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"114.0.5735.90"}
+echo -e "${magenta} https://getwebdriver.com/ ${NC}"
+
+# export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"114.0.5735.90"}
+# export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"123.0.6312.122"}
+# export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"124.0.6367.207"} # stable
+export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"125.0.6422.41"} # beta
 
 echo -e "${magenta} npm install -g bower@1.8.14 grunt@1.5.3 webdriver-manager@13.0.2 ${NC}"
 

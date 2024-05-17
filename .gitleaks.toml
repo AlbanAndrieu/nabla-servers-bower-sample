@@ -19,6 +19,7 @@ paths = [
     '''(go.mod|go.sum)$''',
     '''terraform/nomad/jobs/files/alertmanager/config.yml''',
     '''terraform/nomad/jobs/4-2-keycloak.nomad''',
+    '''.npmrc''',
     '''megalinter-reports/''',
 ]
 

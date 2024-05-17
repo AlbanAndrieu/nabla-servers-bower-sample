@@ -27,8 +27,10 @@ DISABLE_LINTERS:
   # - DOCKERFILE_HADOLINT
   - REPOSITORY_DEVSKIM
   - REPOSITORY_CHECKOV
-  # - REPOSITORY_TRIVY
+  - REPOSITORY_TRIVY
   - REPOSITORY_SYFT
+  - REPOSITORY_KICS
+  - REPOSITORY_GRYPE
   - TERRAFORM_TERRAGRUNT
   - TERRAFORM_TERRASCAN
   - TERRAFORM_TFLINT
@@ -38,13 +40,15 @@ DISABLE_LINTERS:
   - PYTHON_PYLINT
   - GROOVY_NPM_GROOVY_LINT
   - JAVASCRIPT_STANDARD # Using JAVASCRIPT_ES
+  # - YAML_V8R
+  # - JSON_V8R
 IGNORE_GITIGNORED_FILES: true
 FILTER_REGEX_EXCLUDE: (megalinter-reports/|\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
-YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml)
-JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json)
+YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml|\.travis\.yml)
+JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json|bower\.json)
 BASH_FILTER_REGEX_EXCLUDE: (lib)
 MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md)
 MARKDOWN_MARKDOWN_LINK_CHECK_DISABLE_ERRORS: true

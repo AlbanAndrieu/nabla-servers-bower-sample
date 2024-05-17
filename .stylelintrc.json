@@ -20,7 +20,6 @@
     "unit-allowed-list": ["em", "rem", "%", "s"],
     "color-function-notation": ["legacy"],
     "alpha-value-notation": ["number"]
-    // "alpha-value-notation": ["percentage", { "exceptProperties": ["opacity"] }]
   },
   "overrides": [
     {

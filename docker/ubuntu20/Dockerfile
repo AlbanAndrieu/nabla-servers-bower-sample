@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.2.1
+# syntax=docker/dockerfile:1.7
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
@@ -55,7 +55,7 @@ RUN apt-get -q update &&\
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-8-dbg openjdk-11-dbg maven \
+    openjdk-8-dbg openjdk-11-dbg openjdk-21-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1

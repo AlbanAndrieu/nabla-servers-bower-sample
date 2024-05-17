@@ -2025,5 +2025,24 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<!--
+    <profile>
+            <id>default-tools.jar</id>
+            <activation>
+                    <file>
+                            <exists>${java.home}/lib/tools.jar</exists>
+                    </file>
+            </activation>
+            <dependencies>
+                    <dependency>
+                            <groupId>com.sun</groupId>
+                            <artifactId>tools</artifactId>
+                            <version>${jdkVersion}</version>
+                            <scope>system</scope>
+                            <systemPath>${java.home}/lib/tools.jar</systemPath>
+                    </dependency>
+            </dependencies>
+    </profile>
+    -->		
 	</profiles>
 </project>
