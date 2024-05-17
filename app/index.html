@@ -24,13 +24,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-likes-next/dist/social-likes_birman.css">
     <!--<link rel="manifest" href="/manifest.json">-->
 
-    <!-- start Mixpanel -->
-    <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
-    for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
-    mixpanel.init("e28ee9625ec33982c6f8666ed974382c", { debug: true, ignore_dnt: true, track_pageview: true, persistence: "localStorage" });
-    </script>
-    <!-- end Mixpanel -->
-
   </head>
   <body ng-controller="AppController" id="top">
 
@@ -42,6 +35,12 @@
     <div id="nabla-header" header-view title="Application Header" appid="test">
     </div>
     -->
+    <!-- start Mixpanel -->
+    <script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+    for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+    mixpanel.init("e28ee9625ec33982c6f8666ed974382c", { debug: true, ignore_dnt: true, track_pageview: true, persistence: "localStorage" });
+    </script>
+    <!-- end Mixpanel -->
 
     <a href="#" mixpanel-track-click="{{'Clicked' + ' it!' + 1 + 1}}" mixpanel-properties="{a: 1, b: 2}">Click it!</a>
     <button name="Submit" mixpanel-track-click>A button</button>
@@ -95,7 +94,7 @@
             <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
               <ul class="nav navbar-nav">
-				<!--
+                <!--
                 <li ng-class="{active: currentPath === '/'}">
                   <a ng-href="#/">{{"views.index.Home" | translate}}</a>
                 </li>
@@ -142,7 +141,7 @@
                     <div class="nav navbar-nav">
                       <li class="dropdown">
                         <a ng-click="scrollTo('top')" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-							<img class="glyphicon" style="top: -7px;" gravatar-src="'alban.andrieu@free.fr'" gravatar-size="20"></img><span class="caret"></span></a>
+                          <img class="glyphicon" style="top: -7px;" gravatar-src="'alban.andrieu@free.fr'" gravatar-size="20"></img><span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="split-button">
                           <li role="menuitem"><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{"views.index.Profile" | translate}}</a></li>
                           <li role="menuitem"><a href="#"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{"views.index.Login" | translate}}</a></li>
@@ -204,11 +203,11 @@
                 <div data-service="facebook" title="Share link on Facebook">Facebook</div>
                 <div data-service="twitter" data-via="AlbanAndrieu" title="Share link on Twitter">Twitter</div>
                 <div data-service="telegram" title="Share link on Telegram">Telegram</div>
-		<div data-service="linkedin" data-url="https://www.linkedin.com/in/nabla/" title="Share link on LinkedIn">LinkedIn</div>
+        <div data-service="linkedin" data-url="https://www.linkedin.com/in/nabla/" title="Share link on LinkedIn">LinkedIn</div>
                 <div data-service="plusone" title="Share link on Google+">Google+</div>
                 <div data-service="pinterest" title="Share link on Pinterest" data-media="image link, required">Pinterest</div>
-              	<div data-service="vkontakte" title="Share link on Vkontakte">Vkontakte</div>
-              	<div data-service="odnoklassniki" title="Share link on Odnoklassniki">Odnoklassniki</div>
+                <div data-service="vkontakte" title="Share link on Vkontakte">Vkontakte</div>
+                <div data-service="odnoklassniki" title="Share link on Odnoklassniki">Odnoklassniki</div>
             </div>
             <p class="pull-right"><a ng-click="scrollTo('top')">Back to top</a></p>
             <p>&copy; {{ today | date:'yyyy' }}  Nabla, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>

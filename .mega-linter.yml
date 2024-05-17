@@ -42,6 +42,10 @@ DISABLE_LINTERS:
   - JAVASCRIPT_STANDARD # Using JAVASCRIPT_ES
   # - YAML_V8R
   # - JSON_V8R
+  # - CSS_STYLELINT
+  - CSS_SCSS_LINT
+  - HTML_DJLINT
+  - HTML_HTMLHINT
 IGNORE_GITIGNORED_FILES: true
 FILTER_REGEX_EXCLUDE: (megalinter-reports/|\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
@@ -49,6 +53,7 @@ YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
 YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml|\.travis\.yml)
 JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json|bower\.json)
+CSS_SCSS_LINT_FILTER_REGEX_EXCLUDE: (app\/styles\/_mixins\.scss|app\/styles\/main\.scss)
 BASH_FILTER_REGEX_EXCLUDE: (lib)
 MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md)
 MARKDOWN_MARKDOWN_LINK_CHECK_DISABLE_ERRORS: true

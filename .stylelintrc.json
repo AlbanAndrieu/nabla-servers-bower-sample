@@ -5,7 +5,7 @@
     "node": true,
     "commonjs": true
   },
-  "extends": ["stylelint-config-recommended-less"],
+  "extends": ["stylelint-config-standard-scss", "stylelint-config-prettier"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "parser": "@typescript-eslint/parser",
