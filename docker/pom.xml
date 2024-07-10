@@ -35,12 +35,12 @@
         <maven.git-commit-id.plugin.version>3.0.0</maven.git-commit-id.plugin.version>
         <maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <testcontainers.version>1.11.4</testcontainers.version>
         <docker.compose.version>0.9.9</docker.compose.version>
         <system.rules.version>1.18.0</system.rules.version>
 
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.lang.version>2.6</commons.lang.version>
 
         <cargo.docker.basedir>${project.basedir}/src/main/resources/</cargo.docker.basedir>
