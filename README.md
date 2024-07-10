@@ -440,8 +440,8 @@ Please use : [ansible-web](https://github.com/AlbanAndrieu/ansible-web) in order
 ## [Run war in jetty or using cargo](#table-of-contents)
 
 ```bash
-mvnw jetty:run-war
-mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
+./mvnw jetty:run-war
+./mvnw install org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x > install.log
 ```
 
 ## [ZaProxy](#table-of-contents)

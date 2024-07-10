@@ -54,6 +54,8 @@ YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
 YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml|\.travis\.yml)
 JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json|bower\.json)
 CSS_SCSS_LINT_FILTER_REGEX_EXCLUDE: (app\/styles\/_mixins\.scss|app\/styles\/main\.scss)
+CSS_STYLELINT_DISABLE_ERRORS: false
+CSS_STYLELINT_DISABLE_ERRORS_IF_LESS_THAN: 2
 BASH_FILTER_REGEX_EXCLUDE: (lib)
 MARKDOWN_FILTER_REGEX_EXCLUDE: (license\.md)
 MARKDOWN_MARKDOWN_LINK_CHECK_DISABLE_ERRORS: true
@@ -61,6 +63,8 @@ SPELL_MISSPELL_FILTER_REGEX_EXCLUDE: (\.automation/generated|docs/descriptors)
 DOCKERFILE_HADOLINT_ARGUMENTS:
   --ignore DL3003 --ignore DL3007 --ignore DL3013 --ignore DL3016 --ignore DL3018 --ignore DL3028 --ignore DL4001 --ignore DL4006 --ignore
   SC2015 --ignore SC2016 --ignore SC2039 --ignore SC2086 --ignore SC1091
+DOCKERFILE_HADOLINT_DISABLE_ERRORS: false
+DOCKERFILE_HADOLINT_DISABLE_ERRORS_IF_LESS_THAN: 2
 REPOSITORY_DEVSKIM_DISABLE_ERRORS: true
 REPOSITORY_DEVSKIM_DISABLE_ERRORS_IF_LESS_THAN: 10
 # See https://github.com/oxsecurity/megalinter/issues/1993

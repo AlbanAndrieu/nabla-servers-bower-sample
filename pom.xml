@@ -5,8 +5,8 @@
 	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
 	<!-- @formatter:off -->
 	<parent>
-		<artifactId>sample</artifactId>
 		<groupId>com.nabla.project.sample</groupId>
+		<artifactId>sample</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
 		<relativePath></relativePath>
 		<!-- lookup parent from repository -->
@@ -209,11 +209,6 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.codehaus.groovy</groupId>
-				<artifactId>groovy</artifactId>
-				<version>${groovy.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
 				<artifactId>jersey-bom</artifactId>
 				<version>${jersey.bom.version}</version>
@@ -240,6 +235,11 @@
 				<version>${spring.boot.starter.parent.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy</artifactId>
+				<version>${groovy.version}</version>
 			</dependency>
 			<!--
 			<dependency>
@@ -307,8 +307,8 @@
 			<exclusions>
 				<!-- circular dependency -->
 				<exclusion>
-					<artifactId>logback-classic</artifactId>
 					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -440,8 +440,8 @@
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
-					<artifactId>junit-vintage-engine</artifactId>
 					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -452,13 +452,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<extensions>
-			<extension>
-				<groupId>kr.motd.maven</groupId>
-				<artifactId>os-maven-plugin</artifactId>
-				<version>1.7.0</version>
-			</extension>
-		</extensions>
 		<finalName>test</finalName>
 		<pluginManagement>
 			<plugins>
@@ -556,14 +549,6 @@
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
 					<version>${maven.spotbugs.plugin.version}</version>
-					<dependencies>
-						<!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
-						<dependency>
-							<groupId>com.github.spotbugs</groupId>
-							<artifactId>spotbugs</artifactId>
-							<version>${maven.spotbugs.plugin.version}</version>
-						</dependency>
-					</dependencies>
 					<configuration>
 						<effort>Max</effort>
 						<threshold>Low</threshold>
@@ -578,6 +563,14 @@
 							</plugin>
 						</plugins>
 					</configuration>
+					<dependencies>
+						<!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+						<dependency>
+							<groupId>com.github.spotbugs</groupId>
+							<artifactId>spotbugs</artifactId>
+							<version>${maven.spotbugs.plugin.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>com.github.ekryd.sortpom</groupId>
@@ -620,6 +613,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${maven.site.plugin.version}</version>
+					<configuration>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
 					<dependencies>
 						<!--
 						<dependency>
@@ -634,9 +630,6 @@
 							<version>${doxia.version}</version>
 						</dependency>
 					</dependencies>
-					<configuration>
-						<encoding>${project.build.sourceEncoding}</encoding>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
@@ -654,6 +647,10 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jarsigner-plugin</artifactId>
 					<version>${maven.jarsigner.plugin.version}</version>
+					<configuration>
+						<!--<verbose>true</verbose>-->
+						<certs>true</certs>
+					</configuration>
 					<executions>
 						<execution>
 							<id>verify</id>
@@ -662,10 +659,6 @@
 							</goals>
 						</execution>
 					</executions>
-					<configuration>
-						<!--<verbose>true</verbose>-->
-						<certs>true</certs>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>io.fabric8</groupId>
@@ -765,13 +758,22 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>${maven.exec.plugin.version}</version>
+				<configuration>
+					<skip>${maven.exec.skip}</skip>
+					<environmentVariables>
+						<!-- The following parameters create an NPM sandbox for CI -->
+						<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
+						<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
+						<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
+					</environmentVariables>
+				</configuration>
 				<executions>
 					<execution>
 						<id>exec-npm-install</id>
-						<phase>generate-sources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>generate-sources</phase>
 						<configuration>
 							<executable>npm</executable>
 							<arguments>
@@ -780,18 +782,18 @@
 							</arguments>
 						</configuration>
 					</execution>
+					<!--
 					<execution>
 						<id>exec-bash-webdriver</id>
-						<phase>generate-sources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>generate-sources</phase>
 						<configuration>
 							<executable>bash</executable>
 							<commandlineArgs>scripts/webdriver.sh</commandlineArgs>
 						</configuration>
 					</execution>
-					<!--
 					<execution>
 						<id>exec-yarn-install</id>
 						<phase>generate-sources</phase>
@@ -806,13 +808,13 @@
 							</arguments>
 						</configuration>
 					</execution>
-          -->
+                    -->
 					<execution>
 						<id>exec-bower-install</id>
-						<phase>generate-sources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>generate-sources</phase>
 						<configuration>
 							<executable>bower</executable>
 							<arguments>
@@ -823,10 +825,10 @@
 					</execution>
 					<execution>
 						<id>exec-grunt-prepare</id>
-						<phase>generate-resources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>generate-resources</phase>
 						<configuration>
 							<executable>grunt</executable>
 							<arguments>
@@ -836,10 +838,10 @@
 					</execution>
 					<execution>
 						<id>exec-grunt-check</id>
-						<phase>process-resources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>process-resources</phase>
 						<configuration>
 							<executable>grunt</executable>
 							<arguments>
@@ -849,10 +851,10 @@
 					</execution>
 					<execution>
 						<id>exec-grunt-default</id>
-						<phase>compile</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>compile</phase>
 						<configuration>
 							<executable>grunt</executable>
 							<arguments>
@@ -878,10 +880,10 @@
                     -->
 					<execution>
 						<id>exec-grunt-site</id>
-						<phase>site</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
+						<phase>site</phase>
 						<configuration>
 							<executable>grunt</executable>
 							<arguments>
@@ -890,32 +892,11 @@
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<skip>${maven.exec.skip}</skip>
-					<environmentVariables>
-						<!-- The following parameters create an NPM sandbox for CI -->
-						<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-						<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-						<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-					</environmentVariables>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-compiler</artifactId>
-						<version>${groovy.eclipse.compiler.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-batch</artifactId>
-						<version>${groovy.eclipse.batch.version}</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<source>${jdk.level}</source>
 					<target>${jdk.target}</target>
@@ -939,6 +920,18 @@
 						<compilerArg>-Amapstruct.suppressGeneratorVersionInfoComment=true</compilerArg>
 					</compilerArgs>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-eclipse-compiler</artifactId>
+						<version>${groovy.eclipse.compiler.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-eclipse-batch</artifactId>
+						<version>${groovy.eclipse.batch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<!--
 			<plugin>
@@ -961,10 +954,10 @@
 				<executions>
 					<execution>
 						<id>add-source</id>
-						<phase>generate-sources</phase>
 						<goals>
 							<goal>add-source</goal>
 						</goals>
+						<phase>generate-sources</phase>
 						<configuration>
 							<sources>
 								<source>src/main/groovy</source>
@@ -973,10 +966,10 @@
 					</execution>
 					<execution>
 						<id>add-test-source</id>
-						<phase>generate-test-sources</phase>
 						<goals>
 							<goal>add-test-source</goal>
 						</goals>
+						<phase>generate-test-sources</phase>
 						<configuration>
 							<sources>
 								<source>src/test/groovy</source>
@@ -986,10 +979,10 @@
 					<!-- Build helper maven plugin sets the parsedVersion.osgiVersion property -->
 					<execution>
 						<id>set-osgi-version</id>
-						<phase>validate</phase>
 						<goals>
 							<goal>parse-version</goal>
 						</goals>
+						<phase>validate</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -1103,15 +1096,12 @@
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
 				<version>${maven.gmavenplus.plugin.version}</version>
-				<executions>
-					<execution>
-						<phase>site</phase>
-						<goals>
-							<goal>generateStubs</goal>
-							<goal>groovydoc</goal>
-						</goals>
-					</execution>
-				</executions>
+				<configuration>
+					<groovydocJavaSources>false</groovydocJavaSources>
+					<groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
+					<testGroovyDocOutputDirectory>${project.basedir}/target/site/testgapidocs</testGroovyDocOutputDirectory>
+					<invokeDynamic>true</invokeDynamic>
+				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
@@ -1120,22 +1110,25 @@
 						<scope>runtime</scope>
 					</dependency>
 				</dependencies>
-				<configuration>
-					<groovydocJavaSources>false</groovydocJavaSources>
-					<groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
-					<testGroovyDocOutputDirectory>${project.basedir}/target/site/testgapidocs</testGroovyDocOutputDirectory>
-					<invokeDynamic>true</invokeDynamic>
-				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generateStubs</goal>
+							<goal>groovydoc</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>package</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
+						<phase>package</phase>
 						<configuration>
 							<descriptorRefs>
 								<!--<descriptorRef>config</descriptorRef>-->
@@ -1325,33 +1318,6 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${maven.jetty.eclipse.plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-client</artifactId>
-						<version>${jetty.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-servlets</artifactId>
-						<version>${jetty.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-util</artifactId>
-						<version>${jetty.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-http</artifactId>
-						<version>${jetty.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-rewrite</artifactId>
-						<version>${jetty.version}</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
@@ -1381,6 +1347,33 @@
                         -->
 					</webApp>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-client</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-servlets</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-util</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-http</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jetty</groupId>
+						<artifactId>jetty-rewrite</artifactId>
+						<version>${jetty.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<!-- Allow this web application to be started with the command : 'mvn
                 tomcat7:run' -->
@@ -1388,22 +1381,6 @@
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>${maven.tomcat7.plugin.version}</version>
-				<dependencies>
-					<dependency>
-						<groupId>${project.groupId}</groupId>
-						<artifactId>${project.artifactId}</artifactId>
-						<version>${project.version}</version>
-						<type>war</type>
-					</dependency>
-					<!--
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.client.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    -->
-				</dependencies>
 				<configuration>
 					<!-- http port -->
 					<port>${tomcat.port}</port>
@@ -1423,6 +1400,22 @@
 					<!--<configurationDir>${basedir}</configurationDir> -->
 					<!--<server>nabla-tomcat</server> -->
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>${project.groupId}</groupId>
+						<artifactId>${project.artifactId}</artifactId>
+						<version>${project.version}</version>
+						<type>war</type>
+					</dependency>
+					<!--
+                    <dependency>
+                        <groupId>${jdbc.groupId}</groupId>
+                        <artifactId>${jdbc.client.artifactId}</artifactId>
+                        <version>${jdbc.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    -->
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -1432,10 +1425,10 @@
 				<executions>
 					<execution>
 						<id>copy-files-on-build</id>
-						<phase>validate</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
+						<phase>validate</phase>
 						<configuration>
 							<outputDirectory>${project.build.directory}/${project.build.finalName}/bower_components</outputDirectory>
 							<resources>
@@ -1476,10 +1469,10 @@
 				<!--$NO-MVN-MAN-VER$ -->
 				<executions>
 					<execution>
-						<phase>package</phase>
 						<goals>
 							<goal>copy</goal>
 						</goals>
+						<phase>package</phase>
 						<configuration>
 							<artifactItems>
 								<artifactItem>
@@ -1537,10 +1530,10 @@
 				<executions>
 					<execution>
 						<id>lcovFileForSonar</id>
-						<phase>package</phase>
 						<goals>
 							<goal>run</goal>
 						</goals>
+						<phase>package</phase>
 						<configuration>
 							<target>
 								<echo message="Copying LCOV file lcov-karma.info for Sonar purpose to target directory"></echo>
@@ -1659,6 +1652,13 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.7.0</version>
+			</extension>
+		</extensions>
 	</build>
 
 	<profiles>
@@ -1704,10 +1704,10 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>package</phase>
 								<goals>
 									<goal>single</goal>
 								</goals>
+								<phase>package</phase>
 								<configuration>
 									<descriptorRefs>
 										<descriptorRef>config</descriptorRef>
@@ -1760,25 +1760,6 @@
 						<groupId>org.codehaus.cargo</groupId>
 						<artifactId>cargo-maven3-plugin</artifactId>
 						<version>${maven.cargo.maven3.plugin.version}</version>
-						<executions>
-							<execution>
-								<id>start-container-integration-test</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<timeout>240000</timeout>
-								</configuration>
-							</execution>
-							<execution>
-								<id>stop-container-integration-test</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-							</execution>
-						</executions>
 						<inherited>true</inherited>
 						<configuration>
 							<properties>
@@ -1810,6 +1791,25 @@
 								</properties>
 							</configuration>
 						</configuration>
+						<executions>
+							<execution>
+								<id>start-container-integration-test</id>
+								<goals>
+									<goal>start</goal>
+								</goals>
+								<phase>pre-integration-test</phase>
+								<configuration>
+									<timeout>240000</timeout>
+								</configuration>
+							</execution>
+							<execution>
+								<id>stop-container-integration-test</id>
+								<goals>
+									<goal>stop</goal>
+								</goals>
+								<phase>post-integration-test</phase>
+							</execution>
+						</executions>
 					</plugin>
 					<!-- DISABLE because it is too slow mvnw dependency-check:check
 					<plugin>
@@ -1837,21 +1837,6 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>exec-maven-plugin</artifactId>
 						<version>${maven.exec.plugin.version}</version>
-						<executions>
-							<execution>
-								<id>exec-grunt-integration-test</id>
-								<phase>integration-test</phase>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<configuration>
-									<executable>grunt</executable>
-									<arguments>
-										<argument>integration-test</argument>
-									</arguments>
-								</configuration>
-							</execution>
-						</executions>
 						<configuration>
 							<skip>${maven.exec.skip}</skip>
 							<environmentVariables>
@@ -1860,6 +1845,21 @@
 								<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
 							</environmentVariables>
 						</configuration>
+						<executions>
+							<execution>
+								<id>exec-grunt-integration-test</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>integration-test</phase>
+								<configuration>
+									<executable>grunt</executable>
+									<arguments>
+										<argument>integration-test</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 					<!--
                     <plugin>
@@ -1982,8 +1982,8 @@
 					<exclusions>
 						<!-- circular dependency -->
 						<exclusion>
-							<artifactId>slf4j-api</artifactId>
 							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
 						</exclusion>
 					</exclusions>
 				</dependency>
@@ -2012,8 +2012,8 @@
 					<exclusions>
 						<!-- circular dependency -->
 						<exclusion>
-							<artifactId>slf4j-api</artifactId>
 							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
 						</exclusion>
 					</exclusions>
 				</dependency>

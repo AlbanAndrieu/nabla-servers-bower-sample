@@ -27,10 +27,14 @@ lint:
 	@echo "=> Validating..."
 	scripts/docker-validate.sh
 
+.PHONY: build-docker-ci
+build-docker-ci:
+	@echo "=> Building image ci..."
+	docker build -t $(IMAGE) .
+
 .PHONY: build-docker
 build-docker:
 	@echo "=> Building image..."
-	# docker build -t $(IMAGE) --squash .
 	scripts/docker-build-runtime-22.sh
 
 .PHONY: build-buildah-docker

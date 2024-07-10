@@ -2,8 +2,8 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-FROM selenium/standalone-chrome:126.0-20240621 as selenium
-# FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
+# FROM selenium/standalone-chrome:126.0-20240621 as selenium
+FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.1"
 # dockerfile_lint - ignore
@@ -55,7 +55,7 @@ RUN apt-get -q update &&\
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-11-jdk maven \
+    openjdk-8-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
@@ -150,7 +150,7 @@ RUN chmod +x /tmp/kubectl \
 # COMPASS
 # need rubygems
 #RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
-RUN gem install ffi -v 1.17.0
+# RUN gem install ffi -v 1.17.0
 RUN gem install sass && gem install compass && gem cleanup all
 RUN sass -v & compass -v
 

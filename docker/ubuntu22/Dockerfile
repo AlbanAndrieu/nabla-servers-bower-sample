@@ -89,8 +89,8 @@ RUN add-apt-repository \
     stable"
 # Install Docker from Docker Inc. repositories.
 RUN apt-get update -qq && apt-get --no-install-recommends install -qqy \
-  docker-ce=5:${DOCKER_VERSION}~ubuntu-$(lsb_release -cs) \
-  docker-ce-cli=5:${DOCKER_VERSION}~ubuntu-$(lsb_release -cs) \
+  docker-ce=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
+  docker-ce-cli=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ### JAVASCRIPT
