@@ -21,7 +21,7 @@
         -->
 
 	<artifactId>bower-sample</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Nabla Bower Sample</name>
 	<description>Bower sample components</description>
@@ -204,7 +204,7 @@
 		<!-- jenkins cargo 8182,8183 -->
 		<tomcat.port>8280</tomcat.port>
 		<webdriver.base.url>${cargo.protocol}://${cargo.host}:${cargo.port}</webdriver.base.url>
-		<yarn.version>1.12.3</yarn.version>
+		<yarn.version>1.22.22</yarn.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
