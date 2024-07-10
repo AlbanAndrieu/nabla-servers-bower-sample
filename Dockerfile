@@ -4,10 +4,10 @@
 # hadolint ignore=DL3007
 FROM selenium/standalone-chrome:126.0-20240621 as selenium
 
-LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.1"
+LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.2.0"
 # dockerfile_lint - ignore
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
- this image is running on Ubuntu 20.04."
+ this image is running on Ubuntu 22.04."
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -80,14 +80,20 @@ RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 ### DOCKER
 
-RUN wget --no-check-certificate -q -O - https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
-    && apt-key fingerprint 0EBFCD88 \
-    && add-apt-repository \
+# dockerfile_lint - ignore
+ENV DOCKER_VERSION=${DOCKER_VERSION:-"20.10.21~3-0"}
+
+# hadolint ignore=DL3006,DL4006
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
 # Install Docker from Docker Inc. repositories.
-RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce=5:20.10.3~3-0~ubuntu-focal docker-ce-cli=5:20.10.3~3-0~ubuntu-focal && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get --no-install-recommends install -qqy \
+  docker-ce=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
+  docker-ce-cli=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ### JAVASCRIPT
 
