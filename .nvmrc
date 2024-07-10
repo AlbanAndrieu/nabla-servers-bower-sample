@@ -1,5 +1,5 @@
 #lts/*
 # v16.17.0
 #lts/gallium
-# v18.14.2
-lts/hydrogen
+v18.14.2
+# lts/hydrogen

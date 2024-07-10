@@ -2,10 +2,10 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
-#FROM selenium/standalone-chrome:4.7.1-20221208 as selenium
+FROM selenium/standalone-chrome:126.0-20240621 as selenium
+# FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
 
-LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.0"
+LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.1"
 # dockerfile_lint - ignore
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
  this image is running on Ubuntu 20.04."
@@ -55,12 +55,12 @@ RUN apt-get -q update &&\
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-8-jdk openjdk-11-jdk openjdk-21-jdk maven \
+    openjdk-11-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
 
-# openjdk-8-dbg
+#    openjdk-8-dbg openjdk-11-dbg openjdk-21-jdk maven \
 
 # Remove unnecessary getty and udev targets that result in high CPU usage when using
 # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
@@ -101,7 +101,7 @@ RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x
 # OK npm@8.11.0
 RUN npm install -g npm@6.14.16 && apt-get purge -y npm # && ln -s /usr/local/bin/npm /usr/bin/npm
 RUN npm -v && command -v npm # 6.14.16
-RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.8 yarn@1.19.1 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.2
+RUN npm install -g bower@1.8.13 grunt@1.4.1 grunt-cli@1.4.3 webdriver-manager@12.1.9 yarn@1.22.19 yo@latest shrinkwrap@0.4.0 json2csv@4.3.3 phantomas@1.20.1 dockerfile_lint@0.3.3 newman@5.2.2 newman-reporter-htmlextra@1.19.7 xunit-viewer@5.1.11 phantomas@1.20.1 dockerfile_lint@0.3.3 bower-nexus3-resolver@1.0.2
 
 ### USER
 
@@ -150,6 +150,7 @@ RUN chmod +x /tmp/kubectl \
 # COMPASS
 # need rubygems
 #RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
+RUN gem install ffi -v 1.17.0
 RUN gem install sass && gem install compass && gem cleanup all
 RUN sass -v & compass -v
 

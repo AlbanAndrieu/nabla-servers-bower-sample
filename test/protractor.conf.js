@@ -94,9 +94,11 @@ exports.config = {
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
   //chromeDriver: '/usr/local/bin/chromedriver',
-  //seleniumServerJar: './node_modules/protractor/node_modules/webdriver-manager/selenium/selenium-server-standalone-3.8.1.jar',
-  //chromeDriver: './node_modules/webdriver-manager/selenium/chromedriver_2.35',
-  //chromeDriver: './node_modules/protractor/node_modules/webdriver-manager/selenium/chromedriver_2.35',
+  // chromeDriver: '/usr/bin/chromedriver',
+
+  chromeDriver: require(`chromedriver/lib/chromedriver`).path,
+
+  SELENIUM_PROMISE_MANAGER: false,
 
   onPrepare: function () {
     browser.executeScript('window.name = "NG_ENABLE_DEBUG_INFO"');
@@ -146,7 +148,9 @@ exports.config = {
   //}, {
   //  'browserName': 'chrome'
   //}],
-  allScriptsTimeout: 10000000,
+  // https://github.com/angular/protractor/blob/master/docs/timeouts.md
+  allScriptsTimeout: 110000, // 10000000
+
   // Selector for the element housing the angular app - this defaults to
   // body, but is necessary if ng-app is on a descendant of <body>
   //rootElement: 'body',

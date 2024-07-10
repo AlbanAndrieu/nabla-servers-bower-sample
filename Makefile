@@ -31,7 +31,7 @@ lint:
 build-docker:
 	@echo "=> Building image..."
 	# docker build -t $(IMAGE) --squash .
-	scripts/docker-build-runtime-20.sh
+	scripts/docker-build-runtime-22.sh
 
 .PHONY: build-buildah-docker
 build-buildah-docker:

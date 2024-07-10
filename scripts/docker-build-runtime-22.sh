@@ -8,19 +8,19 @@ set -eo pipefail
 WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 export DOCKER_NAME=${DOCKER_NAME:-"nabla-servers-bower-sample"}
-export DOCKER_TAG=${DOCKER_TAG:-"2.0.1"}
+export DOCKER_TAG=${DOCKER_TAG:-"2.2.0"}
 
 if [ -n "${DOCKER_BUILD_ARGS}" ]; then
   echo -e "${green} DOCKER_BUILD_ARGS is defined ${happy_smiley} : ${DOCKER_BUILD_ARGS} ${NC}"
 else
   echo -e "${red} ${double_arrow} Undefined build parameter ${head_skull} : DOCKER_BUILD_ARGS, use the default one ${NC}"
   #export DOCKER_BUILD_ARGS="--pull --network=monitoring_default --add-host albandrieu.com:192.168.132.24 --target RUNTIME --no-cache --squash" #--no-cache --dns 192.168.132.133 NOK --network=bridge
-  export DOCKER_BUILD_ARGS="--pull --network=host --add-host albandrieu.com:192.168.132.24 --target RUNTIME --squash" #--no-cache --dns 192.168.132.133 NOK --network=bridge
+  export DOCKER_BUILD_ARGS="--pull --network=host --add-host albandrieu.com:192.168.132.24 --target RUNTIME" #--no-cache --dns 192.168.132.133 NOK --network=bridge
   echo -e "${magenta} DOCKER_BUILD_ARGS : ${DOCKER_BUILD_ARGS} ${NC}"
 fi
 
-export DOCKER_FILE=${DOCKER_FILE:-"docker/ubuntu20/Dockerfile"}
-export CST_CONFIG=${CST_CONFIG:-"docker/ubuntu20/config.yaml"}
+export DOCKER_FILE=${DOCKER_FILE:-"docker/ubuntu22/Dockerfile"}
+export CST_CONFIG=${CST_CONFIG:-"docker/ubuntu22/config.yaml"}
 
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/docker-env.sh"

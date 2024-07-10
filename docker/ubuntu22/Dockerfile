@@ -2,12 +2,12 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
+FROM selenium/standalone-chrome:126.0-20240621 as selenium
 
-LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.1"
+LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.2.0"
 # dockerfile_lint - ignore
 LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
- this image is running on Ubuntu 20.04."
+ this image is running on Ubuntu 22.04."
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -16,7 +16,7 @@ ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 #ENV https_proxy=${https_proxy:-"${http_proxy}"}
 ENV no_proxy=${no_proxy:-"localhost,127.0.0.1,.albandrieu.com,.azure.io,albandri,albandrieu"}
 
-ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
+ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-11-openjdk-amd64"}
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -50,16 +50,14 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloa
 RUN apt-get -q update &&\
     apt-get -q --no-install-recommends install -y \
     -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
-    git bzip2 zip unzip python-yaml python-jinja2 rsyslog \
+    git bzip2 zip unzip python3-yaml python3-jinja2 rsyslog \
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-8-jdk maven \
+    openjdk-11-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
-
-#    openjdk-8-dbg openjdk-11-dbg openjdk-21-jdk maven \
 
 # Remove unnecessary getty and udev targets that result in high CPU usage when using
 # multiple containers with Molecule (https://github.com/ansible/molecule/issues/1104)
@@ -80,20 +78,26 @@ RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
 ### DOCKER
 
-RUN wget --no-check-certificate -q -O - https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
-    && apt-key fingerprint 0EBFCD88 \
-    && add-apt-repository \
+# dockerfile_lint - ignore
+ENV DOCKER_VERSION=${DOCKER_VERSION:-"20.10.21~3-0"}
+
+# hadolint ignore=DL3006,DL4006
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
 # Install Docker from Docker Inc. repositories.
-RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce=5:20.10.3~3-0~ubuntu-focal docker-ce-cli=5:20.10.3~3-0~ubuntu-focal && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -qq && apt-get --no-install-recommends install -qqy \
+  docker-ce=5:${DOCKER_VERSION}~ubuntu-$(lsb_release -cs) \
+  docker-ce-cli=5:${DOCKER_VERSION}~ubuntu-$(lsb_release -cs) \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ### JAVASCRIPT
 
 # hadolint ignore=DL3008,DL3015
-RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get update && apt-get install --no-install-recommends -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && apt-get install --no-install-recommends -y nodejs=18* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 #NOK npm@7.11.2 with imagemin
@@ -208,7 +212,7 @@ USER jenkins
 EXPOSE 8080
 
 # dockerfile_lint - ignore
-FROM openjdk:8-jre-slim as RUNTIME
+FROM openjdk:11-jre-slim as RUNTIME
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

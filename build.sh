@@ -47,9 +47,9 @@ mvn -T1 dependency:tree -Dserver=jetty9x -Prun-integration-test -s settings.xml 
 #See https://www.baeldung.com/deploy-to-jetty
 echo -e "${magenta} java -jar target/dependency/jetty-runner.jar target/test.war ${NC}"
 
-export DOCKER_TAG=${DOCKER_TAG:-"1.0.5"}
+export DOCKER_TAG=${DOCKER_TAG:-"2.2.0"}
 
-./scripts/docker-build-runtime-20.sh # 1>docker-build-runtime-20.log 2>docker-build-runtime-20-error.log
+./scripts/docker-build-runtime-22.sh # 1>docker-build-runtime-22.log 2>docker-build-runtime-22-error.log
 
 echo -e "${magenta} dependency-check.sh --project \"Nabla Servers Bower Sample\"  --out . --scan .  --format \"ALL\" ${NC}"
 
