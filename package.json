@@ -174,7 +174,7 @@
     "postcss": "^8.4.35",
     "prettier": "^2.5.1",
     "protractor": "^7.0.0",
-    "qs": "6.11.1",
+    "qs": "6.11.2",
     "remark-cli": "^10.0.0",
     "remark-preset-lint-recommended": "^6.1.1",
     "request": "2.88.2",
@@ -191,7 +191,7 @@
     "vinyl-fs": "3.0.3",
     "webpagetest": "^0.6.0",
     "wiredep": "4.0.0",
-    "xml2js": "0.6.0",
+    "xml2js": "0.6.1",
     "yo": "3.1.1"
   },
   "optionalDependencies": {
