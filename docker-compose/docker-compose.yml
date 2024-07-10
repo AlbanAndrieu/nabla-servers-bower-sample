@@ -1,6 +1,6 @@
 # vi: ft=yaml.ansible.jinja2
 ---
-version: "3.7"
+version: '3.7'
 
 services:
   web:
@@ -37,7 +37,7 @@ services:
       - db
       - cache
     healthcheck:
-      test: [CMD, curl, -s, -f, "http://localhost:8080/#/"]
+      test: [CMD, curl, -s, -f, 'http://localhost:8080/#/']
   selenium-hub:
     image: selenium/hub:3.12.0-cobalt
     container_name: selenium-hub

@@ -1,8 +1,8 @@
 ---
 # Default application configuration that all configurations inherit from.
 
-scss_files: "**/*.scss"
-plugin_directories: [".scss-linters"]
+scss_files: '**/*.scss'
+plugin_directories: ['.scss-linters']
 
 # List of gem names to load custom linters from (make sure they are already
 # installed)
@@ -14,4 +14,4 @@ severity: warning
 linters:
   StringQuotes:
     enabled: true
-    style: double_quotes  # or single_quotes
+    style: double_quotes # or single_quotes

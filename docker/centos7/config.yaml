@@ -33,9 +33,9 @@ commandTests:
     expectedOutput: [uid=1100.jenkins. gid=1101.docker. .*]
   - name: check PATH
     command: echo
-    args: ["${PATH}"]
+    args: ['${PATH}']
     expectedOutput:
-      ["/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"]
+      ['/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin']
   #- name:  "yum update"
   #  command: "yum"
   #  args: ["update", "-y"]
@@ -83,17 +83,17 @@ metadataTest:
   #  labels:
   #    - key: 'com.example.vendor'
   #      value: 'ACME Incorporated'
-  exposedPorts: ["8080"]
+  exposedPorts: ['8080']
   #  exposedPorts: ["8080", "2345"]
   volumes: []
   #  volumes: ["/test"]
   entrypoint:
     [
-      "java",
-      "-Djava.security.egd=file:/dev/./urandom",
-      "-Djetty.base=/var/lib/jetty",
-      "-jar",
-      "/home/jenkins/jetty-runner.jar",
+      'java',
+      '-Djava.security.egd=file:/dev/./urandom',
+      '-Djetty.base=/var/lib/jetty',
+      '-jar',
+      '/home/jenkins/jetty-runner.jar',
     ]
-  cmd: ["/home/jenkins/test.war"]
+  cmd: ['/home/jenkins/test.war']
   workdir: /home/jenkins
