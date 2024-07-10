@@ -1,4 +1,4 @@
-#brew 'cairo'
-brew 'hadolint'
-brew 'dive'
-brew "terrascan"
+brew "dive"
+brew "github-markdown-toc"
+brew "hadolint"
+brew "gitleaks"
