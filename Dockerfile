@@ -2,8 +2,7 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-# FROM selenium/standalone-chrome:126.0-20240621 as selenium
-FROM selenium/standalone-chrome:3.141.59-20210929 as selenium
+FROM selenium/standalone-chrome:126.0-20240621 as selenium
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.0.1"
 # dockerfile_lint - ignore
@@ -17,7 +16,7 @@ ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}
 #ENV https_proxy=${https_proxy:-"${http_proxy}"}
 ENV no_proxy=${no_proxy:-"localhost,127.0.0.1,.albandrieu.com,.azure.io,albandri,albandrieu"}
 
-ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-1.8.0-openjdk-amd64"}
+ENV JAVA_HOME=${JAVA_HOME:-"/usr/lib/jvm/java-11-openjdk-amd64"}
 
 # No interactive frontend during docker build
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -51,11 +50,11 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloa
 RUN apt-get -q update &&\
     apt-get -q --no-install-recommends install -y \
     -o Dpkg::Options::="--force-confnew" -o APT::Install-Recommend=false -o APT::Install-Suggests=false \
-    git bzip2 zip unzip python-yaml python-jinja2 rsyslog \
+    git bzip2 zip unzip python3-yaml python3-jinja2 rsyslog \
     apt-transport-https ca-certificates software-properties-common \
     locales xz-utils ksh tzdata sudo curl wget lsof sshpass gpg-agent \
     python3-setuptools python3 python3-pip python3-dev python3-apt \
-    openjdk-8-jdk maven \
+    openjdk-11-jdk maven \
     net-tools iputils-ping x11-apps \
     ruby-full build-essential rubygems \
     libgtk-3-0 libgtk-3-dev libxss1
@@ -93,8 +92,8 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qqy docker-ce
 ### JAVASCRIPT
 
 # hadolint ignore=DL3008,DL3015
-RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get update && apt-get install --no-install-recommends -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && apt-get install --no-install-recommends -y nodejs=18* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 #NOK npm@7.11.2 with imagemin
@@ -150,7 +149,7 @@ RUN chmod +x /tmp/kubectl \
 # COMPASS
 # need rubygems
 #RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
-# RUN gem install ffi -v 1.17.0
+RUN gem install ffi -v 1.17.0
 RUN gem install sass && gem install compass && gem cleanup all
 RUN sass -v & compass -v
 
