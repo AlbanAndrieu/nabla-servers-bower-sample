@@ -1,7 +1,7 @@
 ---
 # - One or more filenames or glob patterns describing local file or files to validate
 # - overridden by passing one or more positional arguments
-patterns: ["*json"]
+patterns: ['*json']
 
 # - Level of verbose logging. 0 is standard, higher numbers are more verbose
 # - overridden by passing --verbose / -v
@@ -24,7 +24,7 @@ cacheTtl: 86400
 # - Output format for validation results
 # - overridden by passing --format
 # - default = text
-format: "json"
+format: 'json'
 
 # - A custom schema catalog.
 #   This catalog will be searched ahead of any custom catalogs passed using
@@ -37,7 +37,7 @@ customCatalog:
       description: Custom Schema # A description of the schema (optional)
 
       # A Minimatch glob expression for matching up file names with a schema (required)
-      fileMatch: ["*.geojson"]
+      fileMatch: ['*.geojson']
 
       # A URL or local file path for the schema location (required)
       # Unlike the SchemaStore.org format, which has a `url` key,

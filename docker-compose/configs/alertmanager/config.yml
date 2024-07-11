@@ -17,7 +17,7 @@ route:
 receivers:
   - name: slack-notifications
     slack_configs:
-      - channel: "#alerts_test"
+      - channel: '#alerts_test'
         api_url: https://hooks.slack.com/services/T010XXXX/B010NXXXX/Nq9kxCXXXXXX
         icon_url: https://avatars3.githubusercontent.com/u/3380462
         #icon_url: https://avatars1.githubusercontent.com/u/7859836

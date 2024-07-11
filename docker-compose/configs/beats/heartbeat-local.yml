@@ -25,8 +25,8 @@ heartbeat.config.monitors:
 heartbeat.monitors:
   - name: Local heartbeat test for elasticsearch
     type: http
-    urls: ["http://localhost:9200"]
-    schedule: "@every 10s"
+    urls: ['http://localhost:9200']
+    schedule: '@every 10s'
 
   # - type: icmp
   #   schedule: '*/5 * * * * * *'
@@ -61,8 +61,8 @@ heartbeat.monitors:
   - name: Local apache2
     type: http
     enabled: true
-    schedule: "@every 5s"
-    urls: ["http://albandrieu:7075/server-status"]
+    schedule: '@every 5s'
+    urls: ['http://albandrieu:7075/server-status']
     ipv4: true
     ipv6: true
     mode: any
@@ -136,7 +136,7 @@ setup.kibana:
   # Scheme and port can be left out and will be set to the default (http and 5601)
   # In case you specify and additional path, the scheme is required: http://localhost:5601/path
   # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
-  host: "localhost:5601"
+  host: 'localhost:5601'
 
 # Kibana Space ID
 # ID of the Kibana Space into which the dashboards should be loaded. By default,
@@ -163,7 +163,7 @@ setup.kibana:
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["localhost:9200"]
+  hosts: ['localhost:9200']
   # Protocol - either `http` (default) or `https`.
   #protocol: "https"
   # Authentication credentials - either API key or username/password.
@@ -206,7 +206,7 @@ logging.level: debug
 # At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
 # "publish", "service".
-logging.selectors: ["*"]
+logging.selectors: ['*']
 logging.metrics.enabled: true
 #logging.to_files: true
 #logging.files:
