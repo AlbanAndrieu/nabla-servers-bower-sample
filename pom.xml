@@ -106,7 +106,7 @@
 		-->
 
 		<!--<jetty9.version>9.4.28.v20200408</jetty9.version>-->
-		<jetty9.version>9.4.19.v20190610</jetty9.version>
+		<jetty9.version>11.0.22</jetty9.version>
 		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
 		<jmockit.version>1.49</jmockit.version>
