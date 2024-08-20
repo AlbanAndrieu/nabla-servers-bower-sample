@@ -74,11 +74,11 @@ repos:
       - id: sort-simple-yaml
       - id: file-contents-sorter
   - repo: https://github.com/pre-commit/pre-commit.git
-    rev: v3.7.1
+    rev: v3.8.0
     hooks:
       - id: validate_manifest
   - repo: https://github.com/asottile/reorder_python_imports.git
-    rev: v3.12.0
+    rev: v3.13.0
     hooks:
       - id: reorder-python-imports
   - repo: https://github.com/asottile/add-trailing-comma
@@ -86,7 +86,7 @@ repos:
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/willthames/ansible-lint.git
-    rev: v24.2.3
+    rev: v24.7.0
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
@@ -105,7 +105,7 @@ repos:
     hooks:
       - id: hindent
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.8.0-1
+    rev: v3.9.0-1
     hooks:
       # Choose one of:
       # - id: shfmt         # native (requires Go to build)
@@ -121,7 +121,7 @@ repos:
             hooks|
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.15.2
+    rev: v3.17.0
     hooks:
       - id: pyupgrade
   - repo: https://github.com/pre-commit/mirrors-autopep8
@@ -129,7 +129,7 @@ repos:
     hooks:
       - id: autopep8
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
+    rev: 7.1.1
     hooks:
       - id: flake8
         args: [--max-line-length=88, --max-complexity=30]
@@ -155,7 +155,7 @@ repos:
           - --dockerfile
           - ./docker/ubuntu20/Dockerfile
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.10.0
+    rev: v1.11.1
     hooks:
       - id: mypy
         exclude: ^(docs/|example-plugin/|tests/fixtures)
@@ -164,7 +164,7 @@ repos:
     hooks:
       - id: helmlint
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.13.1
+    rev: v1.14.2
     hooks:
       - id: helm-docs
         args:
@@ -177,7 +177,7 @@ repos:
   #      verbose: true
   #      args: [--soft-fail]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.89.1
+    rev: v1.92.2
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
@@ -198,7 +198,7 @@ repos:
   #        args:
   #          - --args=--quiet
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.3
+    rev: 0.29.1
     hooks:
       - id: check-github-workflows
       - id: check-gitlab-ci
@@ -232,7 +232,7 @@ repos:
   #       always_run: true
   #       #args: [--soft-fail]
   - repo: https://github.com/oxsecurity/megalinter
-    rev: v7.11.1
+    rev: v8.0.0
     hooks:
       - id: megalinter-incremental # Faster, less thorough
         stages:
@@ -241,7 +241,7 @@ repos:
   #    stages:
   #      - push
   - repo: https://github.com/AlbanAndrieu/nabla-hooks
-    rev: v1.0.4
+    rev: v1.0.5
     hooks:
       - id: git-branches-check
         always_run: false
