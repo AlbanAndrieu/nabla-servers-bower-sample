@@ -85,7 +85,7 @@
     "bower-nexus3-resolver": "1.0.4",
     "codeclimate-test-reporter": "0.5.1",
     "connect-pushstate": "1.1.0",
-    "cssnano": "^5.1.14",
+    "cssnano": "^7.0.6",
     "engine.io": "6.5.3",
     "engine.io-client": "^3.4.0",
     "eslint": "^8.33.0",
