@@ -9,6 +9,7 @@
 
 [![Jenkins Version](https://img.shields.io/badge/Jenkins-2.221-green.svg?label=min.%20Jenkins)](https://jenkins.io/download/)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/AlbanAndrieu/nabla-servers-bower-sample?label=changelog)](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/releases)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAlbanAndrieu%2Fnabla-servers-bower-sample.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2FAlbanAndrieu%2Fnabla-servers-bower-sample?ref=badge_shield&issueType=license)
 
 Javascript project
 
