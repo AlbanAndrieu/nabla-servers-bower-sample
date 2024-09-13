@@ -1,0 +1,27 @@
+on: [push]
+
+jobs:
+  soos-sca-analysis:
+    name: SOOS SCA Scan
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Run SOOS Scan
+      uses: soos-io/soos-sca-github-action@v2
+      with:
+        client_id: ${{ secrets.SOOS_CLIENT_ID }}
+        api_key: ${{ secrets.SOOS_API_KEY }}
+        project_name: "nabla-servers-bower-sample"
+
+  soos_dast_scan:
+    name: SOOS DAST Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run SOOS DAST Scan
+        uses: soos-io/soos-dast-github-action@v2
+        with:
+          client_id: ${{ secrets.SOOS_CLIENT_ID }}
+          api_key: ${{ secrets.SOOS_API_KEY }}
+          project_name: "nabla-servers-bower-sample"
+          # TODO changeme
+          target_url: https://bababou.albandrieu.com/nabla/index/
