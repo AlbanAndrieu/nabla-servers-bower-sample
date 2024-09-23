@@ -87,7 +87,7 @@
     "connect-pushstate": "1.1.0",
     "cssnano": "^7.0.6",
     "engine.io": "6.5.3",
-    "engine.io-client": "^3.4.0",
+    "engine.io-client": "^6.6.1",
     "eslint": "^8.33.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "6.10.1",
