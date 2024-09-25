@@ -98,7 +98,7 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "^6.6.0",
     "fs-extra": "8.1.0",
-    "graceful-fs": "4.2.9",
+    "graceful-fs": "4.2.11",
     "grunt": "1.5.3",
     "grunt-angular-templates": "1.2.0",
     "grunt-banner": "0.6.0",
