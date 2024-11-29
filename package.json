@@ -138,7 +138,7 @@
     "grunt-release": "0.14.0",
     "grunt-replace": "^2.0.1",
     "grunt-retire": "^1.0.8",
-    "grunt-svgmin": "6.0.0",
+    "grunt-svgmin": "7.0.0",
     "grunt-text-replace": "0.4.0",
     "grunt-usemin": "3.1.1",
     "grunt-version-check": "0.3.8",
