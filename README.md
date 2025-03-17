@@ -285,7 +285,6 @@ nvm ls-remote --lts
 nvm --version
 nvm version
 
-nvm install 14
 nvm install 16
 nvm use 16
 ```
