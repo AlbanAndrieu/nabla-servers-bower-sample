@@ -1,73 +1,249 @@
+# vi: ft=yaml.ansible.jinja2
+---
+fail_fast: true
+minimum_pre_commit_version: 3.7.1
+exclude: 'docs/_build/'
+ci:
+  # format compatible with commitlint
+  autoupdate_commit_msg: 'chore: pre-commit autoupdate'
+  autoupdate_schedule: monthly
+  autofix_commit_msg: |
+    chore: auto fixes from pre-commit.com hooks
+    for more information, see https://pre-commit.ci
+  skip:
+    # https://github.com/pre-commit-ci/issues/issues/55
+    - pip-compile
+    - schemas
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks.git
-    sha: v1.2.3
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v5.0.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: autopep8-wrapper
-    -   id: check-added-large-files
-        exclude: 'package-lock.json'
-    -   id: check-case-conflict
-    -   id: check-docstring-first
-    -   id: check-executables-have-shebangs
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+        args: ['--maxkb=123']
         exclude: >
-                  (?x)^(
-                      clean.bat|
-                      build.bat|
-                      mvnw.cmd|
-                      .mvn/
-                  )$
-    -   id: check-json
-    -   id: check-xml
-    -   id: check-yaml
-    -   id: check-symlinks
-    -   id: debug-statements
-    -   id: detect-private-key
+          (?x)^(
+            .pnp.cjs|
+            package-lock.json|
+            yarn.lock|
+            npm-shrinkwrap.json|
+            Pipfile.lock|
+            poetry.lock
+          )$
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
         exclude: >
-                  (?x)^(
-                      roles/jenkins-master/defaults/main.yml|
-                      roles/jenkins-master/README.md
-                  )$
-    -   id: double-quote-string-fixer
-    -   id: name-tests-test
-    -   id: end-of-file-fixer
-    -   id: fix-encoding-pragma
-    -   id: requirements-txt-fixer
-    -   id: sort-simple-yaml
-    -   id: flake8
-        args: [--max-line-length=120]
--   repo: https://github.com/pre-commit/pre-commit.git
-    rev: v1.6.0
+          (?x)^(
+            clean.bat|
+            build.bat|
+            mvnw.cmd|
+            .mvn/.*|
+          )$
+      - id: check-json
+        exclude: ^.vscode/
+      - id: check-xml
+      - id: check-yaml
+        exclude: >
+          (?x)^(
+            packs/.*|
+            k8s/.*|
+            .gitlab-ci.yml|
+          )$
+      - id: check-symlinks
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: detect-private-key
+        exclude: >
+          (?x)^(
+            roles/jenkins-master/defaults/main.yml|
+            roles/jenkins-master/README.md|
+            ca.key|
+            server.key|
+          )$
+      - id: double-quote-string-fixer
+      - id: name-tests-test
+        exclude: >
+          (?x)^(
+            .*/molecule/default/tests/test_default.py|
+          )$
+      - id: end-of-file-fixer
+      - id: fix-encoding-pragma
+      - id: requirements-txt-fixer
+      - id: sort-simple-yaml
+      - id: file-contents-sorter
+  - repo: https://github.com/pre-commit/pre-commit.git
+    rev: v4.1.0
     hooks:
-    -   id: validate_manifest
--   repo: https://github.com/asottile/reorder_python_imports.git
-    rev: v1.1.0
+      - id: validate_manifest
+  - repo: https://github.com/asottile/reorder_python_imports.git
+    rev: v3.14.0
     hooks:
-    -   id: reorder-python-imports
-#        language_version: python2.7
--   repo: https://github.com/asottile/add-trailing-comma
-    rev: v0.6.4
+      - id: reorder-python-imports
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
     hooks:
-    -   id: add-trailing-comma
-#-   repo: meta
-#    hooks:
-#    -   id: check-hooks-apply
-#    -   id: check-useless-excludes
--   repo: https://github.com/willthames/ansible-lint.git
-    rev: v3.5.0rc1
+      - id: add-trailing-comma
+  - repo: https://github.com/willthames/ansible-lint.git
+    rev: v25.1.3
     hooks:
-    -   id: ansible-lint
+      - id: ansible-lint
         files: \.(yaml|yml)$
-        exclude: '.travis.yml'
--   repo: git://github.com/doublify/pre-commit-hindent
-    rev: 73078a9ff6f276461c63568445972d6365dfeab2
+        exclude: >
+          (?x)^(
+            .travis.yml|
+            .gitlab-ci.yml|
+            packs/.*|
+            k8s/.*|
+            docker/.*|
+            docker-compose/.*|
+            megalinter-reports/.*|
+          )$
+  - repo: https://github.com/doublify/pre-commit-hindent.git
+    rev: b3680b6ebf9f7cf29b19307f246adef66756feef
     hooks:
-    -   id: hindent
--   repo: git://github.com/detailyang/pre-commit-shell
-    rev: 1.0.2
+      - id: hindent
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.11.0-1
     hooks:
-    - id: shell-lint
-#-   repo: git://github.com/doublify/pre-commit-clang-format
-#    sha: 994f99b6498e9c76341367ecaf76c69dfb4ea4f2
-#    hooks:
-#    -   id: clang-format
+      # Choose one of:
+      # - id: shfmt         # native (requires Go to build)
+      - id: shfmt-docker # Docker image (requires Docker to run)
+  - repo: https://github.com/detailyang/pre-commit-shell
+    rev: 1.0.5
+    hooks:
+      - id: shell-lint
+        args: [-x]
+        exclude: >
+          (?x)^(
+            mvnw|
+            hooks|
+          )$
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+      - id: pyupgrade
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v2.0.4
+    hooks:
+      - id: autopep8
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.2
+    hooks:
+      - id: flake8
+        args: [--max-line-length=88, --max-complexity=30]
+  - repo: https://github.com/IamTheFij/ansible-pre-commit
+    rev: v1.0.1
+    hooks:
+      - id: encryption-check
+        exclude: >
+          (?x)^(
+            .github/workflows/vault.yml$|
+          )$
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
+    rev: v1.1.2
+    hooks:
+      - id: htmllint
+        args: [--config, .eslintrc.json]
+        # args: [--config, .htmlhintrc]
+        files: ^src/
+      - id: dockerfile_lint
+        args:
+          - --permissive
+          - --verbose
+          - --dockerfile
+          - ./docker/ubuntu20/Dockerfile
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        exclude: ^(docs/|example-plugin/|tests/fixtures)
+  - repo: https://github.com/gruntwork-io/pre-commit
+    rev: v0.1.26
+    hooks:
+      - id: helmlint
+  - repo: https://github.com/norwoodj/helm-docs
+    rev: v1.14.2
+    hooks:
+      - id: helm-docs
+        args:
+          - --chart-search-root=packs/helm-sample/charts
+        files: (README\.md\.gotmpl|(Chart|requirements|values)\.yaml)$
+  #  - repo: https://github.com/bridgecrewio/checkov.git
+  #    rev: '2.0.1159' # change to tag or sha
+  #    hooks:
+  #    - id: checkov
+  #      verbose: true
+  #      args: [--soft-fail]
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.97.4
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_docs
+      # - id: terraform_validate
+      #   args:
+      #     - --init-args=-lockfile=readonly
+      # - id: terraform_tfsec
+      #   args:
+      #     - --args=--config-file=tfsec.yml
+      #     - --args=-m HIGH
+      #     - --args=--exclude-path=network/example
+      #     - --args=--tfvars-file=terraform.tfvars
+      - id: terraform_providers_lock
+        args:
+          - --args=-platform=linux_amd64
+  #      - id: terraform_tflint
+  #      - id: terraform_checkov
+  #        args:
+  #          - --args=--quiet
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.31.3
+    hooks:
+      - id: check-github-workflows
+      - id: check-gitlab-ci
+  #  - repo: https://github.com/Checkmarx/kics
+  #    rev: "v1.5.10"
+  #    hooks:
+  #      #- id: kics
+  #      #  exclude: >
+  #      #    (?x)^(
+  #      #        .direnv$|
+  #      #        .*\.terraform.*$|
+  #      #        .*\.tfvars$|
+  #      #    )$
+  #      - id: kics-scan
+  #        verbose: true
+  #        args: [--ignore-on-exit, "all", --config, "kics-config.json"]
+  #  - repo: https://github.com/hadolint/hadolint
+  #    rev: v2.10.0
+  #    hooks:
+  #      - id: hadolint-docker
+  # - repo: https://github.com/zricethezav/gitleaks
+  #   rev: v8.15.2
+  #   hooks:
+  #     - id: gitleaks-docker
+  #       entry: zricethezav/gitleaks protect --verbose --redact --staged
+  # - repo: https://github.com/bridgecrewio/checkov.git
+  #   rev: "2.2.120"
+  #   hooks:
+  #     - id: checkov
+  #       verbose: true
+  #       always_run: true
+  #       #args: [--soft-fail]
+  - repo: https://github.com/oxsecurity/megalinter
+    rev: v8.4.2
+    hooks:
+      - id: megalinter-incremental # Faster, less thorough
+        stages:
+          - pre-commit
+  #  - id: megalinter-full  # Slower, more thorough
+  #    stages:
+  #      - push
+  - repo: https://github.com/AlbanAndrieu/nabla-hooks
+    rev: v1.0.5
+    hooks:
+      - id: git-branches-check
+        always_run: false
+        args: [--max=3]
+        verbose: true
