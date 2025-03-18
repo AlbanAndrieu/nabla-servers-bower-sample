@@ -317,11 +317,28 @@
                         <centralAnalyzerEnabled>false</centralAnalyzerEnabled>
                         <nexusAnalyzerEnabled>false</nexusAnalyzerEnabled>
 			<!--
-                        <cveUrl12Modified>https://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                        <cveUrl20Modified>https://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                        <cveUrl12Base>https://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                        <cveUrl20Base>https://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                        <cveUrl12Modified>http://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                        <cveUrl20Modified>http://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                        <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                        <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
 			-->
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jarsigner-plugin</artifactId>
+                    <version>${maven.jarsigner.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!--<verbose>true</verbose>-->
+                        <certs>true</certs>
                     </configuration>
                 </plugin>
             </plugins>
@@ -673,14 +690,7 @@
                     <instructions>
                         <Import-Package>javax.servlet.jsp.*;version="[2.2.0,3.0)",org.eclipse.jetty.*;version="[$(version;===;${parsedVersion.osgiVersion}),$(version;==+;${parsedVersion.osgiVersion}))",*</Import-Package>
                         <Export-Package>!com.test*</Export-Package>
-                        <!-- the test webapp is configured via a jetty xml file
-                        in order to add the security handler. -->
                         <Web-ContextPath>/</Web-ContextPath>
-                        <!-- in fact the '.' must not be there
-                        but Felix-BND has a bug:
-                        http://www.mail-archive.com/users@felix.apache.org/msg04730.html
-                        https://issues.apache.org/jira/browse/FELIX-1571
-                        -->
                         <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
                     </instructions>
                 </configuration>
@@ -1051,6 +1061,7 @@
                                         <include name="karma-coverage/lcov-karma.info"></include>
                                     </fileset>
                                 </copy>
+                                <!--
                                 <path id="sourceDirectory.path">
                                     <pathelement location="${basedir}/app/scripts" />
                                 </path>
@@ -1068,6 +1079,7 @@
                                         <include name="lcov-karma.info" />
                                     </fileset>
                                 </replaceregexp>
+                                -->
                             </target>
                         </configuration>
                     </execution>
@@ -1120,11 +1132,13 @@
         </profile>
         <profile>
             <id>run-integration-test</id>
+            <!--
             <activation>
                 <property>
                     <name>!profile.activation</name>
                 </property>
             </activation>
+            -->
             <build>
                 <plugins>
                     <plugin>
@@ -1227,10 +1241,14 @@
                             <skipRuntimeScope>true</skipRuntimeScope>
                             <skipSystemScope>true</skipSystemScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                            <cveUrl12Modified>https://kgrdb01/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-                            <cveUrl20Modified>https://kgrdb01/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-                            <cveUrl12Base>https://kgrdb01/download/nist/nvdcve-%d.xml</cveUrl12Base>
-                            <cveUrl20Base>https://kgrdb01/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                            -->
+                            <!--
+                            <cveUrl12Modified>http://home.nabla.mobi/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
+                            <cveUrl20Modified>http://home.nabla.mobi/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
+                            <cveUrl12Base>http://home.nabla.mobi/download/nist/nvdcve-%d.xml</cveUrl12Base>
+                            <cveUrl20Base>http://home.nabla.mobi/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
+                            -->
+                            <!--
                         </configuration>
                     </plugin>
                     -->
@@ -1254,6 +1272,7 @@
 							</execution>
 						</executions>
 						<configuration>
+							<skip>${maven.exec.skip}</skip>
 							<environmentVariables>
 								<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
 								<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
@@ -1281,7 +1300,6 @@
                         <configuration>
                             <nodeVersion>v${node.version}</nodeVersion>
                             <yarnVersion>v${yarn.version}</yarnVersion>
-                            <downloadRoot>http://kgrdb01/download/nodejs/</downloadRoot>
                             <workingDirectory>./</workingDirectory>
                         </configuration>
                     </plugin>
