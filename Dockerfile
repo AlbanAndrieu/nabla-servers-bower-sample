@@ -2,7 +2,7 @@
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
-FROM selenium/standalone-chrome:126.0-20240621 as selenium
+FROM selenium/standalone-chrome:135.0-chromedriver-135.0-20250404 as selenium
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.2.0"
 # dockerfile_lint - ignore
