@@ -7,15 +7,26 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${WORKING_DIR}/step-0-color.sh"
 
 # 116.0.5845.110
+# shellcheck disable=SC2154
 echo -e "${magenta} https://getwebdriver.com/ ${NC}"
+
+# echo -e "${magenta} npm install -g bower@1.8.14 grunt@1.5.3 webdriver-manager@13.0.2 ${NC}"
+# shellcheck disable=SC2154
+echo -e "${magenta} sudo apt install chromium-chromedriver ${NC}"
+
+# which chromedriver
+# /usr/bin/chromedriver
+chromedriver --version
+
+webdriver-manager version
 
 # export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"114.0.5735.90"} # 115.0.5790.98
 # export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"123.0.6312.122"}
 # export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"124.0.6367.207"} # stable
 # export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"125.0.6422.41"} # beta
-export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"126.0.6478.126"}
-
-# echo -e "${magenta} npm install -g bower@1.8.14 grunt@1.5.3 webdriver-manager@13.0.2 ${NC}"
+# export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"126.0.6478.126"}
+# export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"134.0.6998.88"}
+export WEBDRIVER_CHROME_VERSION=${WEBDRIVER_CHROME_VERSION:-"136.0.7103.92"}
 
 # See https://github.com/angular/protractor/issues/5563
 

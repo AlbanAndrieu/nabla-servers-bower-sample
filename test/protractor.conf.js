@@ -94,9 +94,9 @@ exports.config = {
   //chromeDriver: './node_modules/grunt-protractor-runner/node_modules/protractor/selenium/chromedriver',
   //chromeDriver: '/usr/lib/chromium-browser/chromedriver',
   //chromeDriver: '/usr/local/bin/chromedriver',
-  // chromeDriver: '/usr/bin/chromedriver',
+  chromeDriver: '/usr/bin/chromedriver',
 
-  chromeDriver: require(`chromedriver/lib/chromedriver`).path,
+  // chromeDriver: require(`chromedriver/lib/chromedriver`).path,
 
   SELENIUM_PROMISE_MANAGER: false,
 

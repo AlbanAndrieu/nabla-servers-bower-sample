@@ -421,6 +421,9 @@ grunt serve:dist
 
 Running `grunt test` will run the unit tests with karma.
 
+
+Running `grunt protractor:run` will run the end2end tests with protractor and local /usr/bin/chromedriver.
+
 ## [Livereload](#table-of-contents)
 
 Run with grunt watch -v then manually edit a file listed in the watch.livereload.files array. Ensure that it is triggering the file by printing the file name to the console.
