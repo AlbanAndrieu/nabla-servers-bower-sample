@@ -6,7 +6,16 @@ WORKING_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "${WORKING_DIR}/scripts/step-0-color.sh"
 
+# "${WORKING_DIR}/scripts/install.sh"
+
 # "${WORKING_DIR}/scripts/webdriver.sh"
+
+echo -e "${magenta} Stop service on same port ${NC}"
+sudo lsof -i :9090 || true
+sudo service prometheus stop || true
+
+#  Error message: No update-config.json found. Run 'webdriver-manager update' to download binaries.
+webdriver-manager update
 
 #npm install --save-dev grunt-dev-update
 echo -e "${magenta} yarn install --immutable ${NC}"
