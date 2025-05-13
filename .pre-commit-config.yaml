@@ -115,7 +115,7 @@ repos:
           (?x)^(
             mvnw|
             hooks|
-            scripts/install.sh|
+            scripts/run-install.sh
           )$
   - repo: https://github.com/IamTheFij/ansible-pre-commit
     rev: v1.0.1
