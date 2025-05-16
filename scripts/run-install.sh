@@ -21,6 +21,8 @@ gem cleanup all
 # shellcheck disable=SC2154
 echo -e "${magenta} sudo gem un install compass"
 echo -e "${magenta} direnv allow"
+gem update --system
+sudo gem install ffi -v 1.17.0
 gem install sass compass
 
 echo -e "${green} Installing DONE. ${NC}"

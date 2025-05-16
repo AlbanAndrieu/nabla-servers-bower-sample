@@ -71,8 +71,8 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_U
 
 ### PYTHON 3
 
-RUN python3 -m pip install --no-cache-dir --upgrade pip==20.3.4 \
-    && pip3 install --no-cache-dir ansible==2.10.3 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
+RUN python3 -m pip install --no-cache-dir --upgrade pip==25.1.1 \
+    && pip3 install --no-cache-dir ansible==2.10.7 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
 
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
@@ -98,8 +98,8 @@ RUN apt-get update -qq && apt-get --no-install-recommends install -qqy \
 ### JAVASCRIPT
 
 # hadolint ignore=DL3008,DL3015
-RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get update && apt-get install --no-install-recommends -y nodejs=18* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN wget -x --no-check-certificate -q -O - https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get update && apt-get install --no-install-recommends -y nodejs=20* && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     npm set progress=false && \
     npm config set depth 0;
 #NOK npm@7.11.2 with imagemin

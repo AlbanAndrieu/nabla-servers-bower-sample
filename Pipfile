@@ -15,10 +15,10 @@ ansible-builder = ">=1.1.0"
 ansible-playbook-grapher = ">=1.1.0"
 black = {version = ">=23.7.0", extras = ["d"]}
 checkov = ">=2.3.115"
-semgrep = ">=1.15.0"
 #pipenv = ">=2023.7.23"
-pre-commit = ">=3.7.1"
+pre-commit = ">=4.0.1"
 pre-commit-hooks = ">=4.4.0"
+semgrep = ">=1.15.0"
 
 [requires]
 python_version = ">=3.12"

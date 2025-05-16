@@ -52,6 +52,7 @@ JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
 YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml|\.travis\.yml)
+YAML_V8R_DISABLE_ERRORS_IF_LESS_THAN: 10
 JSON_V8R_FILTER_REGEX_EXCLUDE: (\.cspell\.json|bower\.json)
 CSS_SCSS_LINT_FILTER_REGEX_EXCLUDE: (app\/styles\/_mixins\.scss|app\/styles\/main\.scss)
 CSS_STYLELINT_DISABLE_ERRORS: false

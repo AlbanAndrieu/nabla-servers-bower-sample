@@ -62,7 +62,7 @@ jobs:
       - name: Install npm package (bower)
         #run: sudo apt -y update && sudo apt -y install bower
         run: |
-          npm install -g bower@1.8.14 grunt@1.0.4 grunt-cli@1.3.2 webdriver-manager@12.1.7 yarn@1.19.1 yo@3.1.1 bower-nexus3-resolver@1.0.2
+          npm install -g bower@1.8.14 grunt@1.0.4 grunt-cli@1.3.2 webdriver-manager@12.1.9 yarn@1.19.1 yo@3.1.1 bower-nexus3-resolver@1.0.2
           npm install -g markdown-toc@latest secretlint@latest
 
       #- name: Install Yarn
