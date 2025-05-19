@@ -72,8 +72,8 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata && date && locale-gen en_U
 ### PYTHON 3
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip==25.1.1 \
-    && pip3 install --no-cache-dir ansible==2.17.11 zabbix-api==0.5.4
-# pip3 install --no-cache-dir ansible==2.10.7 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
+    && pip3 install --no-cache-dir ansible==11.5.0 zabbix-api==0.5.4
+# pip3 install --no-cache-dir ansible==11.5.0 zabbix-api==0.5.4 docker-compose==1.25.5 distro==1.5.0
 
 # Install Ansible inventory file.
 RUN mkdir -p /etc/ansible
