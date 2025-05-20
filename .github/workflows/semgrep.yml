@@ -28,7 +28,7 @@ jobs:
 
       - run: semgrep ci
         env:
-          SEMGREP_SEND_METRICS: 0
+          SEMGREP_SEND_METRICS: off
           # Select rules for your scan with one of these two options.
           # Option 1: set hard-coded rulesets
           SEMGREP_RULES: >- # more at semgrep.dev/r
