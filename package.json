@@ -125,7 +125,7 @@
     "grunt-contrib-jshint": "2.1.0",
     "grunt-contrib-uglify": "5.0.1",
     "grunt-contrib-watch": "1.1.0",
-    "grunt-critical": "2.0.1",
+    "grunt-critical": "3.0.1",
     "grunt-filerev": "2.3.1",
     "grunt-gh-pages": "^4.0.0",
     "grunt-jscs": "3.0.1",
