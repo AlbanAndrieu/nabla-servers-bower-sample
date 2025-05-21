@@ -82,7 +82,8 @@ RUN printf "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 ### DOCKER
 
 # dockerfile_lint - ignore
-ENV DOCKER_VERSION=${DOCKER_VERSION:-"20.10.21~3-0"}
+# ENV  DOCKER_VERSION=${DOCKER_VERSION:-"20.10.21~3-0"}
+ENV DOCKER_VERSION=${DOCKER_VERSION:-"26.1.4-1"}
 
 # hadolint ignore=DL3006,DL4006
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -90,10 +91,15 @@ RUN add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
+
 # Install Docker from Docker Inc. repositories.
-RUN apt-get update -qq && apt-get --no-install-recommends install -qqy \
-  docker-ce=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
-  docker-ce-cli=5:"${DOCKER_VERSION}~ubuntu-$(lsb_release -cs)" \
+# hadolint ignore=SC2046,DL3008
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  apt-get update -qq && apt-get --no-install-recommends install -qqy \
+  docker-ce=5:${DOCKER_VERSION}~ubuntu.24.04~$(lsb_release -cs) \
+  docker-ce-cli=5:${DOCKER_VERSION}~ubuntu.24.04~$(lsb_release -cs) \
+  docker-buildx-plugin \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ### JAVASCRIPT

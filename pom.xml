@@ -115,7 +115,7 @@
 		<junit.version>4.12</junit.version>
 		<log4j.core.version>2.22.0</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
-		<logback.version>1.4.14</logback.version>
+		<logback.version>1.5.18</logback.version>
 		<!-- error 1.5.0 Unsupported class file major version 65 -->
 		<maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
@@ -127,7 +127,7 @@
 		<maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
 		<maven.dependency.check.plugin.version>10.0.3</maven.dependency.check.plugin.version>
 		<maven.dependency.plugin.version>3.8.0</maven.dependency.plugin.version>
-		<maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+		<maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
 		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 		<maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
