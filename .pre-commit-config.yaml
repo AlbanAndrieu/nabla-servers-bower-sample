@@ -78,11 +78,11 @@ repos:
     hooks:
       - id: validate_manifest
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v3.1.0
+    rev: v3.2.0
     hooks:
       - id: add-trailing-comma
   - repo: https://github.com/willthames/ansible-lint.git
-    rev: v25.4.0
+    rev: v25.5.0
     hooks:
       - id: ansible-lint
         files: \.(yaml|yml)$
@@ -156,7 +156,7 @@ repos:
   #      verbose: true
   #      args: [--soft-fail]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.99.0
+    rev: v1.99.4
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
@@ -220,7 +220,7 @@ repos:
   #    stages:
   #      - push
   - repo: https://github.com/AlbanAndrieu/nabla-hooks
-    rev: v1.0.5
+    rev: v1.0.6
     hooks:
       - id: git-branches-check
         always_run: false
