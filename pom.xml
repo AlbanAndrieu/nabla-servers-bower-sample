@@ -793,6 +793,7 @@
 							<executable>npm</executable>
 							<arguments>
 								<argument>install</argument>
+								<argument>--legacy-peer-deps</argument>
 								<!-- no-optional -->
 							</arguments>
 						</configuration>
