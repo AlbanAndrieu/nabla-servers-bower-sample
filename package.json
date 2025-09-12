@@ -188,7 +188,7 @@
     "serve-static": "^1.16.2",
     "snyk": "1.1297.3",
     "socket.io-client": "^4.8.1",
-    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-config-standard-scss": "^16.0.0",
     "stylelint-no-unsupported-browser-features": "^8.0.1",
     "time-grunt": "2.0.0",
     "typescript": "^5.8.3",
