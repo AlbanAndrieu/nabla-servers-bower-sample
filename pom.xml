@@ -64,7 +64,7 @@
 		<doxia.version>1.11.1</doxia.version>
 		<groovy.eclipse.batch.version>3.0.8-01</groovy.eclipse.batch.version>
 		<groovy.eclipse.compiler.version>3.7.0</groovy.eclipse.compiler.version>
-		<groovy.version>3.0.8</groovy.version>
+		<groovy.version>3.0.22</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 		<guava.version>14.0</guava.version>
 		<guice.version>4.1.0</guice.version>
