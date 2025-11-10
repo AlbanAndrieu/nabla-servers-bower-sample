@@ -66,7 +66,7 @@
 		<groovy.eclipse.compiler.version>3.7.0</groovy.eclipse.compiler.version>
 		<groovy.version>3.0.8</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
-		<guava.version>14.0</guava.version>
+		<guava.version>32.0.0-android</guava.version>
 		<guice.version>4.1.0</guice.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
