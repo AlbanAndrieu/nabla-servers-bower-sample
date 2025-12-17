@@ -13,7 +13,7 @@ ARG CERT_NAME=${CERT_NAME:-"NABLA.crt"}
 ARG CERT_URL=${CERT_URL:-"https://albandrieu.com/download/certs/"}
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
-LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
+LABEL description="Image used by nabla products to build Java/Javascript and CPP\
  this image is running on Ubuntu 16.04."
 
 # Volume can be accessed outside of container
@@ -214,7 +214,7 @@ EXPOSE 8080
 #FROM tomcat:8-jre8 as runner
 #
 #LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
-#LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
+#LABEL description="Image used by nabla products to build Java/Javascript and CPP\
 # this image is running on Ubuntu 16.04."
 #
 #ARG JENKINS_USER_HOME=${JENKINS_USER_HOME:-/home/jenkins}

@@ -264,7 +264,7 @@ exit 0
                                 echo "DOCKER_REGISTRY_HUB_CREDENTIAL : ${DOCKER_REGISTRY_HUB_CREDENTIAL} "
 
                                 docker.withRegistry(DOCKER_REGISTRY_HUB_URL, DOCKER_REGISTRY_HUB_CREDENTIAL) {
-                                    //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.hub.docker.com'], pushCredentialsId: 'mgr.jenkins', pushOnSuccess: true, tagsString: 'fusion-risk/ansible-jenkins-slave:latest'])
+                                    //step([$class: 'DockerBuilderPublisher', cleanImages: true, cleanupWithJenkinsJobDelete: true, cloud: '', dockerFileDirectory: '', fromRegistry: [credentialsId: 'mgr.jenkins', url: 'https://registry.hub.docker.com'], pushCredentialsId: 'jenkins', pushOnSuccess: true, tagsString: 'nabla/ansible-jenkins-slave:latest'])
 
                                     def container = docker.build("${DOCKER_BUILD_IMG}", "${DOCKER_BUILD_ARGS} . ")
                                     container.inside {

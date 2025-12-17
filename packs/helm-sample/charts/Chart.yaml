@@ -1,6 +1,6 @@
 apiVersion: v2
 name: helm-sample
-icon: https://albandrieu.com/nabla/index/assets/nabla/nabla-2.png
+icon: https://nabla.albandrieu.com/assets/nabla/nabla-4.png
 home: https://albandrieu.com/
 description: A Helm sample chart for Kubernetes
 
@@ -42,7 +42,7 @@ dependencies:
 #    - back-end
 #    - mysql
 #- name: configuration
-#  repository: https://registry-tmp.misys.global.ad/chartrepo/fusion-risk
+#  repository: https://registry-tmp.albandrieu.com/chartrepo/nabla
 ##  repository: "@custom"
 #  version: ^1.7.11
 #- name: mongodb

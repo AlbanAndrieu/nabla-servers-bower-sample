@@ -43,6 +43,6 @@ spec:
         {{- end }}
   {{- end }}
 {{- end }}
-controller:
-  ingressClassResource:
-    default: true
+#controller:
+#  ingressClassResource:
+#    default: true
