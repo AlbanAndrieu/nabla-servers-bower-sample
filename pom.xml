@@ -112,7 +112,7 @@
 		<jmockit.version>1.49</jmockit.version>
 		<jsr305.version>2.0.1</jsr305.version>
 		<junit.bom.version>5.10.3</junit.bom.version>
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.2</junit.version>
 		<log4j.core.version>2.22.0</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
 		<logback.version>1.5.18</logback.version>
@@ -122,7 +122,7 @@
 		<maven.buildnumber.plugin.version>3.2.0</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
-		<maven.cargo.maven3.plugin.version>1.10.12</maven.cargo.maven3.plugin.version>
+		<maven.cargo.maven3.plugin.version>1.10.20</maven.cargo.maven3.plugin.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
 		<maven.dependency.check.plugin.version>10.0.3</maven.dependency.check.plugin.version>
@@ -183,7 +183,7 @@
 		<prometheus.version>1.3.5</prometheus.version>
 		<restfulaudit.version>1.2.2</restfulaudit.version>
 		<server.version>${jetty.version}</server.version>
-		<slf4j.version>2.0.5</slf4j.version>
+		<slf4j.version>2.0.16</slf4j.version>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
 		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>

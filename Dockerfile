@@ -162,7 +162,7 @@ RUN chmod +x /tmp/kubectl \
 # COMPASS
 # need rubygems
 #RUN gem install sass creates=/usr/local/bin/sass && gem install compass creates=/usr/local/bin/compass
-RUN gem update --system
+#RUN gem update --system
 RUN gem install ffi -v 1.17.0
 RUN gem install sass && gem install compass && gem cleanup all
 RUN sass -v & compass -v
