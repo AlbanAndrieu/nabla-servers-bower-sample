@@ -194,7 +194,7 @@ under the License.
     <mirror>
       <id>nexus</id>
       <mirrorOf>*</mirrorOf>
-      <url>https://nexus.albandrieu.com/nexus/content/groups/public/</url>      
+      <url>https://nexus.albandrieu.com/repository/maven-public/</url>
     </mirror>
 
     <!--
@@ -333,7 +333,7 @@ under the License.
             <id>nexus-releases</id>
             <name>Nexus Staging Repository</name>
             <!--<url>https://nexus.albandrieu.com/repository/maven-releases</url>-->
-            <url>https://nexus.albandrieu.com/nexus/content/repositories/releases</url>
+            <url>https://nexus.albandrieu.com/repository/nabla-releases</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -346,7 +346,7 @@ under the License.
             <id>nexus-snapshots</id>
             <name>Nexus Snapshot Repository</name>
             <!--<url>https://nexus.albandrieu.com/repository/maven-snapshots</url>-->
-            <url>https://nexus.albandrieu.com/nexus/content/repositories/snapshots</url>
+            <url>https://nexus.albandrieu.com/repository/nabla-snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>daily</updatePolicy>
