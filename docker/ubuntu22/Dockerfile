@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.15
+# syntax=docker/dockerfile:1
 
 # This Dockerfile is used to build an image containing basic stuff to be used as a Jenkins slave build node.
 # hadolint ignore=DL3007
@@ -6,7 +6,7 @@ FROM selenium/standalone-chrome:126.0-20240621 as selenium
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.2.0"
 # dockerfile_lint - ignore
-LABEL description="Image used by fusion-risk products to build Java/Javascript and CPP\
+LABEL description="Image used by nabla products to build Java/Javascript and CPP\
  this image is running on Ubuntu 22.04."
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
