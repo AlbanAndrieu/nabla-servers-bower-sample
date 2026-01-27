@@ -4,13 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
 	<!-- @formatter:off -->
+	<!--
 	<parent>
 		<groupId>com.nabla.project.sample</groupId>
 		<artifactId>sample</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
 		<relativePath></relativePath>
-		<!-- lookup parent from repository -->
+		 lookup parent from repository
 	</parent>
+	-->
 
 	<!--
 	<parent>
@@ -20,6 +22,7 @@
 	</parent>
         -->
 
+	<groupId>com.nabla.project.sample</groupId>
 	<artifactId>bower-sample</artifactId>
 	<version>1.0.6-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -45,10 +48,11 @@
 
 	<!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 	<properties>
+		<asm.ow2.version>9.2</asm.ow2.version>
 		<cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote
             -Dcom.sun.management.jmxremote.ssl=false
             -Dcom.sun.management.jmxremote.authenticate=false
-            -Dcom.sun.management.jmxremote.port=${cargo.monitoring.jmx.rmi.port}
+            -Dcom.sun.management.jmxremote.port>${cargo.monitoring.jmx.rmi.port}
             -Djetty.jmxrmihost=${jetty.jmxremote.rmiserverhost}
             -Djetty.jmxrmiport=${jetty.jmxremote.rmiserverport}</cargo.jetty.jmx.activation>
 		<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
@@ -139,6 +143,39 @@
 
 		<maven.frontend.plugin.version>1.12.0</maven.frontend.plugin.version>
 		<maven.git-commit-id.plugin.version>4.9.10</maven.git-commit-id.plugin.version>
+		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
+		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
+		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
+		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
+		<maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
+		<maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
+		<maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+		<maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
+		<maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
+		<maven.jenkinsfile.plugin.version>1.0.1</maven.jenkinsfile.plugin.version>
+		<maven.jetty.eclipse.plugin.version>${jetty9.version}</maven.jetty.eclipse.plugin.version>
+		<maven.jgitflow.plugin.version>1.0-m5.1</maven.jgitflow.plugin.version>
+		<maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
+		<maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
+		<maven.openapi.generator.plugin.version>4.3.1</maven.openapi.generator.plugin.version>
+		<maven.pitest.plugin.version>1.16.2</maven.pitest.plugin.version>
+		<maven.project.info.reports.plugin.version>3.4.5</maven.project.info.reports.plugin.version>
+		<maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+		<maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
+		<maven.site.plugin.version>3.12.1</maven.site.plugin.version>
+		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
+		<maven.sortpom.plugin.version>4.0.0</maven.sortpom.plugin.version>
+		<maven.spotbugs.plugin.version>4.9.3.0</maven.spotbugs.plugin.version>
+		<maven.spring.boot.plugin.version>2.3.5.RELEASE</maven.spring.boot.plugin.version>
+		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
+		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
+		<maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
+		<maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+		<maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
+		<maven.zkm.version>12.0.0</maven.zkm.version>
+		
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
 		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
 		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
@@ -1209,7 +1246,7 @@
 				<configuration>
 					<webResources>
 						<resource>
-							<directory>dist</directory>
+							<directory>app</directory>
 						</resource>
 					</webResources>
 					<webApp>
