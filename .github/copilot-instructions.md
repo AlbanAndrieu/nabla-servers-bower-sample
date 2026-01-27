@@ -212,6 +212,6 @@ Logs are output to console during `mvn jetty:run`
 ## Contact and Resources
 
 - **Repository**: https://github.com/AlbanAndrieu/nabla-servers-bower-sample
-- **Issues**: https://github.com/AlbanAndrieu/nabla-servers-bower/issues
+- **Issues**: https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues
 - **Jetty Documentation**: https://www.eclipse.org/jetty/documentation/9.4.x/
 - **Jersey Documentation**: https://eclipse-ee4j.github.io/jersey/

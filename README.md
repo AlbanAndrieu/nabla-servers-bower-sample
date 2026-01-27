@@ -301,6 +301,15 @@ rm -rf ~/.m2/repository/com/nabla/
 ./mvnw clean package -DskipTests -Dmaven.exec.skip=true
 ```
 
+### Maven Repository Issues
+
+If you encounter errors about missing artifacts from a private Nexus repository, the project is configured to use Maven Central by default. The commands in this README use the Maven Wrapper (`./mvnw`) which should work out of the box without additional configuration.
+
+**Note for developers**: If you need to use a custom Maven settings file (e.g., for corporate proxies), you can specify it with the `-s` flag:
+```bash
+./mvnw clean package -s /path/to/settings.xml
+```
+
 ## Docker Support
 
 Build and run with Docker:
@@ -330,7 +339,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ### Reporting Issues
 
-Use the [GitHub issue tracker](https://github.com/AlbanAndrieu/nabla-servers-bower/issues) to report bugs or request features.
+Use the [GitHub issue tracker](https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues) to report bugs or request features.
 
 ### Pull Requests
 
