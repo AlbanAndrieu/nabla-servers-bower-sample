@@ -72,7 +72,7 @@
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 		<guava.version>14.0</guava.version>
 		<guice.version>4.1.0</guice.version>
-		<hamcrest.version>2.2</hamcrest.version>
+		<hamcrest.version>3.0</hamcrest.version>
 		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
 		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
 		<hibernate.version>4.3.6.Final</hibernate.version>
