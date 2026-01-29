@@ -36,7 +36,7 @@ jobs:
       #- name: Install maven
       #  run: sudo apt -y update && sudo apt -y install maven
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 00
@@ -181,7 +181,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Set up SonarCloud Scan
-  #       uses: actions/checkout@v5
+  #       uses: actions/checkout@v6
   #       with:
   #         # Disabling shallow clone is recommended for improving relevancy of reporting
   #         fetch-depth: 0
