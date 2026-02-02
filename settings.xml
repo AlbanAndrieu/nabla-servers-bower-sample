@@ -134,6 +134,7 @@ under the License.
 
     <server>
       <id>github</id>
+      <username>USERNAME</username>
       <password>${env.GITHUB_TOKEN}</password>
     </server>
 
@@ -653,6 +654,22 @@ under the License.
 	   </pluginRepository>
        </pluginRepositories>
     </profile>
+    <profile>
+      <id>github</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <repository>
+          <id>github</id>
+          <url>https://maven.pkg.github.com/OWNER/REPOSITORY</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
   </profiles>
 
   <!-- activeProfiles
@@ -667,5 +684,6 @@ under the License.
   <activeProfiles>
     <!--<activeProfile>nexus</activeProfile>-->
     <activeProfile>nabla</activeProfile>
+    <activeProfile>github</activeProfile>
   </activeProfiles>
 </settings>

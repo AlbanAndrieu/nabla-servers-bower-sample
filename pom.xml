@@ -1685,6 +1685,14 @@
 		</extensions>
 	</build>
 
+	<distributionManagement>
+	   <repository>
+	     <id>github</id>
+	     <name>GitHub OWNER Apache Maven Packages</name>
+	     <url>https://maven.pkg.github.com/AlbanAndrieu/nabla-servers-bower-sample</url>
+	   </repository>
+	</distributionManagement>
+
 	<profiles>
 
 		<!-- mvn clean install jfx:native -Pjavafx
@@ -1757,11 +1765,6 @@
 		</profile>
 		<profile>
 			<id>docker</id>
-			<!--
-            <modules>
-                <module>docker</module>
-            </modules>
-            -->
 			<activation>
 				<property>
 					<name>docker</name>
