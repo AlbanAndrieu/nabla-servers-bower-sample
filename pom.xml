@@ -116,7 +116,7 @@
 		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
 		<jmockit.version>1.49</jmockit.version>
-		<jsr305.version>2.0.1</jsr305.version>
+		<jsr305.version>2.0.3</jsr305.version>
 		<junit.bom.version>5.10.3</junit.bom.version>
 		<junit.version>4.13.2</junit.version>
 		<log4j.core.version>2.22.0</log4j.core.version>
