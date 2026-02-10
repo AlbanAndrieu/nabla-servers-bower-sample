@@ -23,7 +23,7 @@ jobs:
     #runs-on: self-hosted
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Import Secrets
         uses: hashicorp/vault-action@v3.4.0
