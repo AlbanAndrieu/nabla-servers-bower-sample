@@ -27,7 +27,7 @@ jobs:
   build-maven:
     # if: github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user depbot.
     name: Build Maven
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
 
@@ -68,7 +68,7 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
     name: Build Docker
     needs: build-maven
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: write

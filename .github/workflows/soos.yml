@@ -3,7 +3,7 @@ on: [push]
 jobs:
   soos-sca-analysis:
     name: SOOS SCA Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@master
     - name: Run SOOS Scan
@@ -15,7 +15,7 @@ jobs:
 
   soos_dast_scan:
     name: SOOS DAST Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Run SOOS DAST Scan
         uses: soos-io/soos-dast-github-action@v2
