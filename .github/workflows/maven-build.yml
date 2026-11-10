@@ -44,7 +44,13 @@ jobs:
 
       # frontend (npm/bower/grunt) is skipped: Gruntfile no longer loads on current Node
       - name: Build with Maven
-        run: ./mvnw -B package -Dmaven.exec.skip=true
+        env:
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        # resolve through nexus.albandrieu.com once the Cloudflare Access service token secrets exist
+        run: |
+          if [ -n "${CF_ACCESS_CLIENT_ID:-}" ]; then set -- -s settings.xml; fi
+          ./mvnw -B package -Dmaven.exec.skip=true "$@"
 
   build-docker:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
