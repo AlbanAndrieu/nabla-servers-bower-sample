@@ -54,7 +54,7 @@ jobs:
             https://nexus.albandrieu.com/repository/maven-public/kr/motd/maven/os-maven-plugin/1.7.0/os-maven-plugin-1.7.0.jar \
             | tee /dev/stderr | grep -q '^200 application/java-archive'
 
-      # frontend (npm/bower/grunt) is skipped: Gruntfile no longer loads on current Node
+      # the frontend (scripts/build-frontend.mjs) is built by the Dockerfile FRONTEND stage
       - name: Build with Maven
         env:
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
