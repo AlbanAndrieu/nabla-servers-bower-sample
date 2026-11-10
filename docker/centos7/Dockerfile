@@ -1,5 +1,5 @@
 # CentOS based image (RHEL7-compatible):
-FROM centos:7.5.1804 as BUILD
+FROM centos:7.9.2009 as BUILD
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="1.0.0"
 
