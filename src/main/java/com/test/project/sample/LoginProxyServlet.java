@@ -3,7 +3,7 @@ package com.test.project.sample;
 //import java.net.URI;
 //import javax.servlet.http.HttpServletRequest;
 
-import org.eclipse.jetty.proxy.ProxyServlet;
+import org.eclipse.jetty.ee10.proxy.ProxyServlet;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
