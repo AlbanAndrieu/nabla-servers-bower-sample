@@ -108,7 +108,7 @@
 		<jsr305.version>2.0.3</jsr305.version>
 		<junit.bom.version>5.14.4</junit.bom.version>
 		<junit.version>4.13.2</junit.version>
-		<logback.version>1.5.32</logback.version>
+		<logback.version>1.5.34</logback.version>
 		<!-- error 1.5.0 Unsupported class file major version 65 -->
 		<maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.6.1</maven.build.helper.plugin.version>
