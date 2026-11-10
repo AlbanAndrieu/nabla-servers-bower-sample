@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM eclipse-temurin:21-jdk AS BUILD
+FROM eclipse-temurin:25-jdk AS BUILD
 
 WORKDIR /build
 
@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.m2 \
     if [ -n "${CF_ACCESS_CLIENT_ID:-}" ]; then set -- -s settings.xml; fi; \
     ./mvnw --batch-mode package -DskipTests -Dmaven.exec.skip=true "$@"
 
-FROM eclipse-temurin:21-jre AS RUNTIME
+FROM eclipse-temurin:25-jre AS RUNTIME
 
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.3.0"
 LABEL description="Nabla bower sample war running on jetty-runner"

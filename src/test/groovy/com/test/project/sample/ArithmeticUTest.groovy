@@ -1,7 +1,7 @@
 package com.test.project.sample
 
+import groovy.test.GroovyTestCase
 import static org.junit.Assert.assertEquals
-import groovy.util.GroovyTestCase
 
 import org.junit.Test
 

@@ -2,7 +2,7 @@
 
 ## Project Overview
 This is a Maven-based Java web application that demonstrates a Bower sample with Jetty server deployment. The project combines:
-- **Backend**: Java 21 with JAX-RS (Jersey) REST APIs
+- **Backend**: Java 25 (bytecode 21, Jetty 9.4 limit) with JAX-RS (Jersey 2) REST APIs and Groovy 5
 - **Server**: Eclipse Jetty 9.4.x embedded server
 - **Frontend**: HTML/JavaScript/CSS assets in the `app/` directory
 - **Build**: Maven 3.x with custom profiles and configurations
