@@ -26,7 +26,7 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 ## Features
 
-- ✅ **Java 21** backend with JAX-RS (Jersey) REST APIs
+- ✅ **Java 25** backend (bytecode 21, Jetty 9.4 limit) with JAX-RS (Jersey 2) REST APIs and Groovy 5
 - ✅ **Eclipse Jetty 9.4.x** embedded server
 - ✅ **Maven** build system with wrapper
 - ✅ **Integration tests** with JUnit

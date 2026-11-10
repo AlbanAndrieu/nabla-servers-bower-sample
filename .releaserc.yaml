@@ -1,0 +1,14 @@
+---
+branches:
+  - master
+
+# continues the existing v1.0.x tags
+tagFormat: "v${version}"
+
+# master requires PRs and signed commits: no release commit, only the tag and the GitHub release
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/exec"
+    - prepareCmd: "echo ${nextRelease.version} > .release-version"
+  - "@semantic-release/github"

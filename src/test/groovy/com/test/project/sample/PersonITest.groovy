@@ -1,7 +1,7 @@
 package com.test.project.sample
 
 import com.test.project.sample.Person
-import groovy.util.GroovyTestCase
+import groovy.test.GroovyTestCase
 
 import org.junit.Test
 

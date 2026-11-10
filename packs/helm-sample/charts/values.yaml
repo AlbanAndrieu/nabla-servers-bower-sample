@@ -13,10 +13,11 @@ global:
   registry:
 
 image:
-  repository: nabla/nabla-servers-bower-sample
+  repository: ghcr.io/albanandrieu/nabla-servers-bower-sample
   #imagePullPolicy: IfNotPresent
   imagePullPolicy: Always
-  tag: latest
+  # empty: the chart appVersion, which semantic-release aligns with the image tag
+  tag: ""
   # tag: "{{ default .Chart.AppVersion latest }}"
 
 imagePullSecrets: []

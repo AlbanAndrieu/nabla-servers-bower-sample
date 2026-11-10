@@ -5,14 +5,8 @@ metadata:
   # See https://helm.sh/docs/chart_best_practices/labels/
   labels:
     environment: dev
-    app.kubernetes.io/name: "{{ template "testChart.name" . }}"
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    app.kubernetes.io/managed-by: "{{ .Release.Service  }}"
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
-    app.kubernetes.io/version: "{{ .Chart.Version | replace "+" "_" }}"
     app.kubernetes.io/component: sample
     app.kubernetes.io/part-of: test
-    app.kubernetes.io/managed-by: helm
     app: "{{ template "testChart.name" . }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     heritage: "{{ .Release.Service  }}"
@@ -42,7 +36,7 @@ spec:
       shareProcessNamespace: true
       initContainers:
         - name: sleep
-          image: debian:stretch
+          image: busybox:1.37
           imagePullPolicy: Always
           command:
             - sh
@@ -64,7 +58,7 @@ spec:
             value: '/home/jenkins/home/'
           - name: TITLE
             value: "Welcome to (AKS)"
-          image: "{{ .Values.global.registry }}{{ .Values.image.repository }}:{{ default .Values.image.tag .Chart.AppVersion  }}"
+          image: "{{ .Values.global.registry }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           #command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
           command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/opt/jetty-runner.jar", "/opt/test.war"]
           #args: ["--version"]
@@ -74,12 +68,11 @@ spec:
             - name: http
               #containerPort: 80
               containerPort: 8080
-              hostPort: 9093
               protocol: TCP
           # See https://kubernetes.io/fr/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
           readinessProbe:
             httpGet:
-              path: /#/
+              path: /rest/books/test
               port: http
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -87,7 +80,7 @@ spec:
             failureThreshold: 12 # ~2 minutes
           livenessProbe:
             httpGet:
-              path: /#/
+              path: /rest/books/test
               port: http
             initialDelaySeconds: 15
             periodSeconds: 20
@@ -97,7 +90,7 @@ spec:
             - mountPath: /secrets
               name: shared
         - name: shell
-          image: busybox
+          image: busybox:1.37
           securityContext:
             capabilities:
               add:
