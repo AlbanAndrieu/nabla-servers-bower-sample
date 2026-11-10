@@ -1,41 +1,100 @@
 ---
-name: Release Charts
+name: Release
 
 on:
   push:
-    branches: [master, main]
-    paths-ignore:
-      - "**.md"
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: release-master
+  cancel-in-progress: false
 
 jobs:
   release:
-    if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
+    if: github.actor != 'dependabot[bot]'
+    name: Version, image and chart
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      packages: write
+      pull-requests: write
+    env:
+      IMAGE: ghcr.io/albanandrieu/nabla-servers-bower-sample
     steps:
-      - name: Checkout
+      - name: Checkout full history
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-      - name: Fetch history
-        run: git fetch --prune --unshallow
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
 
-      - name: Configure Git
+      - name: Run semantic-release
+        id: semrel
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          npx --yes \
+            --package semantic-release@25.0.8 \
+            --package @semantic-release/exec@7.1.0 \
+            semantic-release
+          if [ -f .release-version ]; then
+            echo "version=$(cat .release-version)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Docker Buildx
+        if: steps.semrel.outputs.version
+        uses: docker/setup-buildx-action@v4
+
+      - name: Login to Github Packages
+        if: steps.semrel.outputs.version
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push the release image
+        if: steps.semrel.outputs.version
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.semrel.outputs.version }}
+            ${{ env.IMAGE }}:latest
+          secrets: |
+            cf_access_client_id=${{ secrets.CF_ACCESS_CLIENT_ID }}
+            cf_access_client_secret=${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          push: true
+
+      # the chart version follows the release so chart-releaser never reuses an existing tag
+      - name: Version the chart
+        if: steps.semrel.outputs.version
+        env:
+          VERSION: ${{ steps.semrel.outputs.version }}
+        run: |
+          sed -i "s/^version: .*/version: ${VERSION}/; s/^appVersion: .*/appVersion: \"${VERSION}\"/" packs/helm-sample/charts/Chart.yaml
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.4.0
+      - uses: azure/setup-helm@v4
+        if: steps.semrel.outputs.version
 
-      #- name: Add helm repositories
-      #  run: |
-      #    helm repo add bitnami https://charts.bitnami.com/bitnami
-      #    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-
-      - name: Run chart-releaser
+      - name: Install chart-releaser
+        if: steps.semrel.outputs.version
         uses: helm/chart-releaser-action@v1.7.0
         with:
-          charts_dir: packs/helm-sample
+          install_only: true
+
+      # cr is called directly: the action only packages charts changed in Git, the version bump is not committed
+      - name: Release the chart
+        if: steps.semrel.outputs.version
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          helm package packs/helm-sample/charts --destination .cr-release-packages
+          cr upload --owner AlbanAndrieu --git-repo nabla-servers-bower-sample --commit "$GITHUB_SHA" --skip-existing
+          cr index --owner AlbanAndrieu --git-repo nabla-servers-bower-sample --index-path .cr-index --push
