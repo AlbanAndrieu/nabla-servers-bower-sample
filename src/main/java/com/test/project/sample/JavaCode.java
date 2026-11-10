@@ -1,22 +1,35 @@
 package com.test.project.sample;
 
-public class JavaCode {
-    public enum JavaEnum {
-        DOMESTIC,
-        FOREIGN,
-        ALL,
-    }
+/**
+ * Java counterpart of GroovyCode.
+ */
+public final class JavaCode {
 
-    static final String getCurrencyType(final JavaEnum currencyType) {
-        switch (currencyType) {
-        case DOMESTIC:
-            return "Domestic";
-        case FOREIGN:
-            return "Foreign";
-        case ALL:
-            return "All";
-        default:
-            throw new RuntimeException("Unsupported " + JavaEnum.class.getSimpleName() + "." + currencyType);
-        }
-    }
+  /** Currency types. */
+  public enum JavaEnum {
+    /** Domestic. */
+    DOMESTIC,
+    /** Foreign. */
+    FOREIGN,
+    /** All. */
+    ALL,
+  }
+
+  /** Utility class. */
+  private JavaCode() {
+  }
+
+  /**
+   * Label of a currency type.
+   *
+   * @param currencyType the type
+   * @return its label
+   */
+  static String getCurrencyType(final JavaEnum currencyType) {
+    return switch (currencyType) {
+      case DOMESTIC -> "Domestic";
+      case FOREIGN -> "Foreign";
+      case ALL -> "All";
+    };
+  }
 }

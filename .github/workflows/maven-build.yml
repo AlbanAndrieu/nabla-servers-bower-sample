@@ -135,7 +135,7 @@ jobs:
             curl -fsS http://localhost:8080/rest/books/test && break
             sleep 5
           done
-          for path in / /rest/books/test /vendor/angular/angular.js /styles/main.css /scripts/app.js; do
+          for path in / /rest/books/test /rest/books /vendor/angular/angular.js /styles/main.css /scripts/app.js; do
             curl -fsS -o /dev/null "http://localhost:8080$path" || { docker logs bower-sample; exit 1; }
           done
           # only GET and HEAD are allowed by web.xml
