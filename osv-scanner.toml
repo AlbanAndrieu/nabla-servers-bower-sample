@@ -1,0 +1,23 @@
+# Accepted risks, reviewed in https://github.com/AlbanAndrieu/nabla-servers-bower-sample/pull/666
+
+# AngularJS reached end of life in January 2022: these advisories will never get a fixed release.
+# The app only renders static content; a rewrite on modern Angular removes them.
+[[PackageOverrides]]
+name = "angular"
+ecosystem = "npm"
+effectiveUntil = 2027-05-10
+vulnerability.ignore = true
+reason = "AngularJS 1.8.3 is end of life, no fixed release exists"
+
+[[PackageOverrides]]
+name = "angular-sanitize"
+ecosystem = "npm"
+effectiveUntil = 2027-05-10
+vulnerability.ignore = true
+reason = "AngularJS 1.8.3 is end of life, no fixed release exists"
+
+# minimatch 11 (the fix) drops the default export that eslint 10 still imports
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2027-02-10
+reason = "dev-only lint dependency of eslint 10, Renovate bumps it once eslint supports minimatch 11"
