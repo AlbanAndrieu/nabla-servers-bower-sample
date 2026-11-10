@@ -113,7 +113,7 @@
 
 		<jmockit.version>1.50</jmockit.version>
 		<jsr305.version>2.0.3</jsr305.version>
-		<junit.bom.version>5.14.3</junit.bom.version>
+		<junit.bom.version>5.14.4</junit.bom.version>
 		<junit.version>4.13.2</junit.version>
 		<log4j.core.version>2.25.3</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
