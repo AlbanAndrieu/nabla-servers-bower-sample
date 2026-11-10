@@ -48,7 +48,7 @@
 
 	<!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 	<properties>
-		<asm.ow2.version>9.2</asm.ow2.version>
+		<asm.ow2.version>9.9.1</asm.ow2.version>
 		<cargo.jetty.jmx.activation>-Dcom.sun.management.jmxremote
             -Dcom.sun.management.jmxremote.ssl=false
             -Dcom.sun.management.jmxremote.authenticate=false
@@ -60,7 +60,7 @@
 		<!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 		<cargo.protocol>http</cargo.protocol>
 
-		<commons.io.version>2.6</commons.io.version>
+		<commons.io.version>2.21.0</commons.io.version>
 		<commons.version>1.10</commons.version>
 		<docker.compose.version>0.9.9</docker.compose.version>
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
@@ -68,7 +68,7 @@
 		<doxia.version>1.11.1</doxia.version>
 		<groovy.version>3.0.25</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
-		<guava.version>14.0</guava.version>
+		<guava.version>14.0.1</guava.version>
 		<guice.version>4.1.0</guice.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
@@ -76,16 +76,15 @@
 		<hibernate.version>4.3.6.Final</hibernate.version>
 		<http.builder.version>0.7.1</http.builder.version>
 
-		<jacoco.version>0.8.12</jacoco.version>
+		<jacoco.version>0.8.14</jacoco.version>
 		<java.ws.version>2.0</java.ws.version>
 		<javax.activation.version>1.1.1</javax.activation.version>
 		<javax.jsp.api.version>2.0</javax.jsp.api.version>
 		<javax.servlet.api.version>4.0.1</javax.servlet.api.version>
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
-		<jaxb.api.version>${jaxb.version}</jaxb.api.version>
-		<jaxb.core.version>${jaxb.version}</jaxb.core.version>
-		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
-		<jaxb.version>2.2.11</jaxb.version>
+		<jaxb.api.version>2.3.1</jaxb.api.version>
+		<jaxb.core.version>2.3.0.1</jaxb.core.version>
+		<jaxb.impl.version>2.3.9</jaxb.impl.version>
 
 		<jdk.level>21</jdk.level>
 		<jdk.version>${jdk.level}</jdk.version>
@@ -94,7 +93,7 @@
 		<jdk.version>1.8.0</jdk.version>
     -->
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
-		<jersey.version>2.28</jersey.version>
+		<jersey.version>2.48</jersey.version>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
 		<jetty.jmxremote.rmiport>3099</jetty.jmxremote.rmiport>
 		<jetty.port>9090</jetty.port>
@@ -111,42 +110,42 @@
 		<jetty9.version>9.4.58.v20250814</jetty9.version>
 		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
-		<jmockit.version>1.49</jmockit.version>
-		<jsr305.version>2.0.1</jsr305.version>
-		<junit.bom.version>5.10.3</junit.bom.version>
+		<jmockit.version>1.50</jmockit.version>
+		<jsr305.version>2.0.3</jsr305.version>
+		<junit.bom.version>5.14.3</junit.bom.version>
 		<junit.version>4.13.2</junit.version>
-		<log4j.core.version>2.22.0</log4j.core.version>
+		<log4j.core.version>2.25.3</log4j.core.version>
 		<log4j.version>1.2.17</log4j.version>
-		<logback.version>1.5.18</logback.version>
+		<logback.version>1.5.32</logback.version>
 		<!-- error 1.5.0 Unsupported class file major version 65 -->
-		<maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
-		<maven.build.helper.plugin.version>3.0.0</maven.build.helper.plugin.version>
-		<maven.buildnumber.plugin.version>3.2.0</maven.buildnumber.plugin.version>
+		<maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
+		<maven.build.helper.plugin.version>3.6.1</maven.build.helper.plugin.version>
+		<maven.buildnumber.plugin.version>3.3.0</maven.buildnumber.plugin.version>
 		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
 		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
-		<maven.cargo.maven3.plugin.version>1.10.20</maven.cargo.maven3.plugin.version>
-		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
-		<maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
-		<maven.dependency.check.plugin.version>10.0.3</maven.dependency.check.plugin.version>
-		<maven.dependency.plugin.version>3.8.1</maven.dependency.plugin.version>
+		<maven.cargo.maven3.plugin.version>1.10.26</maven.cargo.maven3.plugin.version>
+		<maven.clean.plugin.version>3.5.0</maven.clean.plugin.version>
+		<maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
+		<maven.dependency.check.plugin.version>10.0.4</maven.dependency.check.plugin.version>
+		<maven.dependency.plugin.version>3.10.0</maven.dependency.plugin.version>
 		<maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
 		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 		<maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
 		<!-- nok 3.0.0 -->
 		<maven.exec.skip>false</maven.exec.skip>
-		<maven.fabric8-docker-maven.plugin.version>0.44.0</maven.fabric8-docker-maven.plugin.version>
+		<maven.fabric8-docker-maven.plugin.version>0.48.1</maven.fabric8-docker-maven.plugin.version>
 		<maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
 		<maven.failsafe.plugin.version>${maven.surefire.plugin.version}</maven.failsafe.plugin.version>
 
 		<maven.frontend.plugin.version>1.12.0</maven.frontend.plugin.version>
 		<maven.git-commit-id.plugin.version>4.9.10</maven.git-commit-id.plugin.version>
 		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
-		<maven.gmavenplus.plugin.version>4.2.1</maven.gmavenplus.plugin.version>
+		<maven.gmavenplus.plugin.version>4.3.1</maven.gmavenplus.plugin.version>
 		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
 		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
-		<maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
-		<maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
+		<maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
+		<maven.jarsigner.plugin.version>3.1.0</maven.jarsigner.plugin.version>
 		<maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
 		<maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
 		<maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
@@ -156,20 +155,21 @@
 		<maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
 		<maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
 		<maven.openapi.generator.plugin.version>4.3.1</maven.openapi.generator.plugin.version>
-		<maven.pitest.plugin.version>1.16.2</maven.pitest.plugin.version>
-		<maven.project.info.reports.plugin.version>3.4.5</maven.project.info.reports.plugin.version>
-		<maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
+		<maven.pitest.plugin.version>1.23.0</maven.pitest.plugin.version>
+		<maven.project.info.reports.plugin.version>3.9.0</maven.project.info.reports.plugin.version>
+		<maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
 		<maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
-		<maven.site.plugin.version>3.12.1</maven.site.plugin.version>
+		<maven.site.plugin.version>3.21.0</maven.site.plugin.version>
 		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.sortpom.plugin.version>4.0.0</maven.sortpom.plugin.version>
-		<maven.spotbugs.plugin.version>4.9.3.0</maven.spotbugs.plugin.version>
+		<maven.spotbugs.plugin.version>4.9.8.2</maven.spotbugs.plugin.version>
+		<spotbugs.version>4.9.8</spotbugs.version>
 		<maven.spring.boot.plugin.version>2.3.5.RELEASE</maven.spring.boot.plugin.version>
 		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
-		<maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
+		<maven.surefire.plugin.version>3.6.1</maven.surefire.plugin.version>
 		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
 		<maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
-		<maven.war.plugin.version>3.4.0</maven.war.plugin.version>
+		<maven.war.plugin.version>3.5.1</maven.war.plugin.version>
 		<maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
 		<maven.zkm.version>12.0.0</maven.zkm.version>
 		
@@ -187,12 +187,12 @@
 		<prometheus.version>1.3.5</prometheus.version>
 		<restfulaudit.version>1.2.2</restfulaudit.version>
 		<server.version>${jetty.version}</server.version>
-		<slf4j.version>2.0.16</slf4j.version>
+		<slf4j.version>2.0.17</slf4j.version>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
 		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
 		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>
 		<spring.boot.starter.parent.version>2.3.12.RELEASE</spring.boot.starter.parent.version>-->
-		<spring.boot.starter.parent.version>2.6.4</spring.boot.starter.parent.version>
+		<spring.boot.starter.parent.version>2.7.18</spring.boot.starter.parent.version>
 		<!--<spring.boot.admin.version>2.2.3</spring.boot.admin.version>-->
 		<spring.boot.starter.web.version>2.3.5.RELEASE</spring.boot.starter.web.version>
 
@@ -579,7 +579,7 @@
 						<dependency>
 							<groupId>com.github.spotbugs</groupId>
 							<artifactId>spotbugs</artifactId>
-							<version>${maven.spotbugs.plugin.version}</version>
+							<version>${spotbugs.version}</version>
 						</dependency>
 					</dependencies>
 				</plugin>
