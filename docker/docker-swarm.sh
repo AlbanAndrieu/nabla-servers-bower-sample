@@ -4,8 +4,8 @@ set -eu
 
 docker swarm init --advertise-addr 192.168.99.100
 docker swarm join-token manager
-docker swarm join --token SWMTKN-1-1boem8bc83efxtic9g9kxjfrlpqqpb2la3u3iqvfpfe2k61eiq-dsk0b7mlreg8n4t3t70w7ie6n 192.168.99.100:2377
-docker swarm join --token SWMTKN-1-1boem8bc83efxtic9g9kxjfrlpqqpb2la3u3iqvfpfe2k61eiq-5e71he18dnlqohst0b4oag76b 192.168.99.100:2377
+SWARM_JOIN_TOKEN="$(docker swarm join-token -q manager)"
+docker swarm join --token "${SWARM_JOIN_TOKEN}" 192.168.99.100:2377
 
 docker service create --replicas 3 --name web2 -d -p 8080:80 nginx
 docker service update --replicas 3 web2
