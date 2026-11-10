@@ -127,16 +127,19 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      # deploy the image like the runtime would and probe the REST endpoint
+      # deploy the image like the runtime would, probe the REST endpoint and the frontend assets
       - name: Smoke test
         run: |
           docker run -d --name bower-sample -p 8080:8080 "$IMAGE:sha-$GITHUB_SHA"
           for _ in $(seq 30); do
-            curl -fsS http://localhost:8080/rest/books/test && exit 0
+            curl -fsS http://localhost:8080/rest/books/test && break
             sleep 5
           done
-          docker logs bower-sample
-          exit 1
+          for path in / /rest/books/test /vendor/angular/angular.js /styles/main.css /scripts/app.js; do
+            curl -fsS -o /dev/null "http://localhost:8080$path" || { docker logs bower-sample; exit 1; }
+          done
+          # only GET and HEAD are allowed by web.xml
+          [ "$(curl -s -o /dev/null -w '%{http_code}' -X PUT http://localhost:8080/admin/x)" = 403 ]
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
