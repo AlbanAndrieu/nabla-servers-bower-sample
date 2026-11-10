@@ -37,7 +37,9 @@ angular
     preferredLocale: "en_US",
   })
   // Router
-  .config(function($routeProvider) {
+  .config(function($routeProvider, $locationProvider) {
+    // AngularJS 1.6+ defaults to "#!/": keep the existing "#/about" links working
+    $locationProvider.hashPrefix("");
     $routeProvider
       .when("/", {
         navitem: true,
@@ -131,6 +133,6 @@ angular
   // Angular Dynamic Locale
   .config(function(tmhDynamicLocaleProvider) {
     tmhDynamicLocaleProvider.localeLocationPattern(
-      "bower_components/angular-i18n/angular-locale_{{locale}}.js"
+      "vendor/angular-i18n/angular-locale_{{locale}}.js"
     );
   });
