@@ -36,3 +36,5 @@ ignore: |
   docker-compose/
   docker/centos7/
   docker/ubuntu18/
+  # Go templates, not YAML: checked by helm lint
+  packs/helm-sample/charts/templates/

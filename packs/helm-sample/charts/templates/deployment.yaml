@@ -50,18 +50,10 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           env:
-          - name: JETTY_TMP
-            value: '/home/jenkins/'
-          - name: JETTY_BASE
-            value: '/home/jenkins/'
-          - name: JETTY_HOME
-            value: '/home/jenkins/home/'
           - name: TITLE
             value: "Welcome to (AKS)"
           image: "{{ .Values.global.registry }}{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          #command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-Djetty.base=/var/lib/jetty", "-jar", "/home/jenkins/jetty-runner.jar", "/home/jenkins/test.war"]
-          command: ["java", "-Djava.io.tmpdir=/home/jenkins/", "-jar", "/opt/jetty-runner.jar", "/opt/test.war"]
-          #args: ["--version"]
+          # the image entrypoint starts Jetty 12 from /var/lib/jetty (JETTY_BASE)
           #imagePullPolicy: {{ .Values.image.imagePullPolicy }}
           terminationMessagePath: "/tmp/my-log"
           ports:

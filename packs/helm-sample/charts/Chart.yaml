@@ -17,7 +17,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 version: 1.0.6
-#version: 1.0.3
+# version: 1.0.3
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -30,9 +30,9 @@ maintainers:
   - name: aandrieu
     email: "alban.andrieu@free.fr"
 
-#helm search repo bitnami
+# helm search repo bitnami
 dependencies:
-#- name: mysql
+# - name: mysql
 #  #bitnami/mariadb
 #  version: 8.2.3
 #  repository: https://charts.bitnami.com/bitnami/
@@ -41,11 +41,11 @@ dependencies:
 #  tags:
 #    - back-end
 #    - mysql
-#- name: configuration
+# - name: configuration
 #  repository: https://registry-tmp.albandrieu.com/chartrepo/nabla
 ##  repository: "@custom"
 #  version: ^1.7.11
-#- name: mongodb
+# - name: mongodb
 #  version: 3.0.4
 #  repository: https://kubernetes-charts.storage.googleapis.com/
 #  condition: mongodb.enabled
