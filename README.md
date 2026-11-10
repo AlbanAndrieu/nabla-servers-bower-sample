@@ -26,8 +26,9 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 ## Features
 
-- ✅ **Java 25** backend (bytecode 21, Jetty 9.4 limit) with JAX-RS (Jersey 2) REST APIs and Groovy 5
-- ✅ **Eclipse Jetty 9.4.x** embedded server
+- ✅ **Java 25** backend with Jakarta REST (Jersey 3.1) APIs and Groovy 5
+- ✅ **Eclipse Jetty 12.1** (ee10, Servlet 6) on Ubuntu 26.04
+- ✅ **AngularJS 1.8** frontend, libraries from npm (`npm run build:front`)
 - ✅ **Maven** build system with wrapper
 - ✅ **Integration tests** with JUnit
 - ✅ **Static content** serving (HTML, CSS, JavaScript)
@@ -55,7 +56,8 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 3. **Run the application**
    ```bash
-   ./mvnw jetty:run -Dmaven.exec.skip=true
+   npm ci && npm run build:front   # AngularJS libraries + CSS into app/
+   ./mvnw jetty:run-war -Dmaven.exec.skip=true
    ```
 
 4. **Test the application**
@@ -94,7 +96,7 @@ After a successful build, you'll find:
 ### Using Jetty Maven Plugin (Development)
 
 ```bash
-./mvnw jetty:run -Dmaven.exec.skip=true
+./mvnw jetty:run-war -Dmaven.exec.skip=true
 ```
 
 The application will be available at:
@@ -121,7 +123,7 @@ Press `Ctrl+C` to stop the server.
 To run on a different port:
 
 ```bash
-./mvnw jetty:run -Djetty.port=8080 -Djetty.stop.port=8081 -Dmaven.exec.skip=true
+./mvnw jetty:run-war -Djetty.port=8080 -Djetty.stop.port=8081 -Dmaven.exec.skip=true
 ```
 
 ## Testing
@@ -229,7 +231,8 @@ public class MyResource {
 3. Rebuild and test:
    ```bash
    ./mvnw clean package -DskipTests -Dmaven.exec.skip=true
-   ./mvnw jetty:run -Dmaven.exec.skip=true
+   npm ci && npm run build:front   # AngularJS libraries + CSS into app/
+   ./mvnw jetty:run-war -Dmaven.exec.skip=true
    curl http://localhost:9090/test/rest/myresource
    ```
 
@@ -249,7 +252,7 @@ Frontend files are in the `app/` directory:
 For Java code changes, Jetty maven plugin supports hot reload:
 
 ```bash
-./mvnw jetty:run -Dmaven.exec.skip=true
+./mvnw jetty:run-war -Dmaven.exec.skip=true
 # Make code changes, Jetty will automatically reload
 ```
 
@@ -276,7 +279,7 @@ export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 **Solution**: Either stop the process using the port or use a different port:
 ```bash
-./mvnw jetty:run -Djetty.port=8080 -Djetty.stop.port=8081 -Dmaven.exec.skip=true
+./mvnw jetty:run-war -Djetty.port=8080 -Djetty.stop.port=8081 -Dmaven.exec.skip=true
 ```
 
 ### Web Resources Not Found (404 errors)

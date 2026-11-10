@@ -2,8 +2,9 @@
 
 ## Project Overview
 This is a Maven-based Java web application that demonstrates a Bower sample with Jetty server deployment. The project combines:
-- **Backend**: Java 25 (bytecode 21, Jetty 9.4 limit) with JAX-RS (Jersey 2) REST APIs and Groovy 5
-- **Server**: Eclipse Jetty 9.4.x embedded server
+- **Backend**: Java 25 with Jakarta REST (Jersey 3.1) APIs and Groovy 5
+- **Frontend**: AngularJS 1.8, libraries from npm copied to `app/vendor` by `npm run build:front`
+- **Server**: Eclipse Jetty 12.1 (ee10), `jetty-home` distribution in the Ubuntu 26.04 image
 - **Frontend**: HTML/JavaScript/CSS assets in the `app/` directory
 - **Build**: Maven 3.x with custom profiles and configurations
 
@@ -29,7 +30,7 @@ This is a Maven-based Java web application that demonstrates a Bower sample with
 - **ArtifactId**: `bower-sample`
 - **Packaging**: WAR (Web Application Archive)
 - **Java Version**: 21 (Groovy sources compiled to 17)
-- **Jetty Version**: 9.4.58.v20250814
+- **Jetty Version**: 12.1.15
 
 ### Key Maven Properties
 ```xml
@@ -62,7 +63,7 @@ PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package
 
 ### Using Jetty Maven Plugin
 ```bash
-./mvnw jetty:run -Dmaven.exec.skip=true
+./mvnw jetty:run-war -Dmaven.exec.skip=true
 ```
 - Access at: `http://localhost:9090/test/`
 - REST API at: `http://localhost:9090/test/rest/books/test`
@@ -143,7 +144,7 @@ export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ### Issue: Port conflicts
 **Solution**: Configure ports in pom.xml or use system properties:
 ```bash
-./mvnw jetty:run -Djetty.port=8080 -Djetty.stop.port=8081
+./mvnw jetty:run-war -Djetty.port=8080 -Djetty.stop.port=8081
 ```
 
 ## Development Guidelines
@@ -165,8 +166,8 @@ export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 ## Maven Profiles
 
-### jetty9x (default)
-- Activates Jetty 9.x container
+### jetty12x (default)
+- Activates the Jetty 12 (ee10) dependencies
 - Port: 9090 (configurable via `jetty.port`)
 - Context path: `/test`
 
@@ -184,7 +185,7 @@ export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ### Remote Debug Jetty
 ```bash
 MAVEN_OPTS="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005" \
-  ./mvnw jetty:run
+  ./mvnw jetty:run-war
 ```
 
 ### View Jetty Logs
@@ -210,5 +211,5 @@ Logs are output to console during `mvn jetty:run`
 
 - **Repository**: https://github.com/AlbanAndrieu/nabla-servers-bower-sample
 - **Issues**: https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues
-- **Jetty Documentation**: https://www.eclipse.org/jetty/documentation/9.4.x/
+- **Jetty Documentation**: https://jetty.org/docs/jetty/12.1/
 - **Jersey Documentation**: https://eclipse-ee4j.github.io/jersey/
