@@ -66,9 +66,7 @@
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
 		<doxia.core.version>1.8</doxia.core.version>
 		<doxia.version>1.11.1</doxia.version>
-		<groovy.eclipse.batch.version>3.0.8-01</groovy.eclipse.batch.version>
-		<groovy.eclipse.compiler.version>3.7.0</groovy.eclipse.compiler.version>
-		<groovy.version>3.0.8</groovy.version>
+		<groovy.version>3.0.25</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
 		<guava.version>14.0</guava.version>
 		<guice.version>4.1.0</guice.version>
@@ -89,9 +87,7 @@
 		<jaxb.impl.version>${jaxb.version}</jaxb.impl.version>
 		<jaxb.version>2.2.11</jaxb.version>
 
-		<jdk.level>11</jdk.level>
-		<!--<jdk.target>1.8</jdk.target>-->
-		<jdk.target>11.0</jdk.target>
+		<jdk.level>21</jdk.level>
 		<jdk.version>${jdk.level}</jdk.version>
 		<!--
 		<jdk.level>1.8</jdk.level>
@@ -112,7 +108,7 @@
 		-->
 
 		<!--<jetty9.version>9.4.28.v20200408</jetty9.version>-->
-		<jetty9.version>9.4.19.v20190610</jetty9.version>
+		<jetty9.version>9.4.58.v20250814</jetty9.version>
 		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
 		<jmockit.version>1.49</jmockit.version>
@@ -146,7 +142,7 @@
 		<maven.frontend.plugin.version>1.12.0</maven.frontend.plugin.version>
 		<maven.git-commit-id.plugin.version>4.9.10</maven.git-commit-id.plugin.version>
 		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
-		<maven.gmavenplus.plugin.version>1.5</maven.gmavenplus.plugin.version>
+		<maven.gmavenplus.plugin.version>4.2.1</maven.gmavenplus.plugin.version>
 		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
 		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
 		<maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
@@ -170,7 +166,7 @@
 		<maven.spotbugs.plugin.version>4.9.3.0</maven.spotbugs.plugin.version>
 		<maven.spring.boot.plugin.version>2.3.5.RELEASE</maven.spring.boot.plugin.version>
 		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
-		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
+		<maven.surefire.plugin.version>3.5.4</maven.surefire.plugin.version>
 		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
 		<maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
 		<maven.war.plugin.version>3.4.0</maven.war.plugin.version>
@@ -428,6 +424,11 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -696,6 +697,7 @@
 			<plugin>
 				<groupId>org.cyclonedx</groupId>
 				<artifactId>cyclonedx-maven-plugin</artifactId>
+				<version>2.9.3</version>
 				<executions>
 					<execution>
 						<goals>
@@ -704,6 +706,18 @@
 						<phase>package</phase>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+				<configuration>
+					<!-- *ITest need a deployed server, see run-integration-test profile -->
+					<excludes>
+						<exclude>**/*ITest.java</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 
 			<plugin>
@@ -922,40 +936,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>${jdk.level}</source>
-					<target>${jdk.target}</target>
-					<!--<release>11</release>-->
-					<compilerId>groovy-eclipse-compiler</compilerId>
-					<verbose>true</verbose>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
-						</path>
-						<path>
-							<groupId>org.mapstruct</groupId>
-							<artifactId>mapstruct-processor</artifactId>
-							<version>${mapstruct.version}</version>
-						</path>
-					</annotationProcessorPaths>
-					<compilerArgs>
-						<compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
-						<compilerArg>-Amapstruct.suppressGeneratorVersionInfoComment=true</compilerArg>
-					</compilerArgs>
+					<release>${jdk.level}</release>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-compiler</artifactId>
-						<version>${groovy.eclipse.compiler.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.codehaus.groovy</groupId>
-						<artifactId>groovy-eclipse-batch</artifactId>
-						<version>${groovy.eclipse.batch.version}</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<!--
 			<plugin>
@@ -1125,17 +1107,33 @@
 					<groovydocOutputDirectory>${documentation.output.directory}/${groovydoc.directory.name}</groovydocOutputDirectory>
 					<testGroovyDocOutputDirectory>${project.basedir}/target/site/testgapidocs</testGroovyDocOutputDirectory>
 					<invokeDynamic>true</invokeDynamic>
+					<!-- shortcut: Groovy 3 targets at most 17, move to Groovy 4 (org.apache.groovy) for 21 -->
+					<targetBytecode>17</targetBytecode>
 				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
 						<version>${groovy.version}</version>
-						<scope>runtime</scope>
+						<type>pom</type>
 					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
+						<id>groovy-compile</id>
+						<goals>
+							<goal>addSources</goal>
+							<goal>addTestSources</goal>
+							<goal>generateStubs</goal>
+							<goal>compile</goal>
+							<goal>generateTestStubs</goal>
+							<goal>compileTests</goal>
+							<goal>removeStubs</goal>
+							<goal>removeTestStubs</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>groovy-doc</id>
 						<goals>
 							<goal>generateStubs</goal>
 							<goal>groovydoc</goal>

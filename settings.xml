@@ -138,6 +138,23 @@ under the License.
       <password>${env.GITHUB_TOKEN}</password>
     </server>
 
+    <!-- nexus.albandrieu.com is behind Cloudflare Access: CI authenticates with a service token -->
+    <server>
+      <id>nexus</id>
+      <configuration>
+        <httpHeaders>
+          <property>
+            <name>CF-Access-Client-Id</name>
+            <value>${env.CF_ACCESS_CLIENT_ID}</value>
+          </property>
+          <property>
+            <name>CF-Access-Client-Secret</name>
+            <value>${env.CF_ACCESS_CLIENT_SECRET}</value>
+          </property>
+        </httpHeaders>
+      </configuration>
+    </server>
+
   </servers>
 
   <!-- mirrors
@@ -303,7 +320,7 @@ under the License.
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <sonar.jdbc.url>jdbc:derby://localhost:${sonar.derby.port}/sonar;create=true</sonar.jdbc.url>
+        <sonar.jdbc.url>jdbc:derby://localhost:${sonar.derby.port}/sonar;create=true</sonar.jdbc.url> kingfisher:ignore
         <sonar.jdbc.driver>org.apache.derby.jdbc.ClientDriver</sonar.jdbc.driver>
         <sonar.jdbc.defaultTransactionIsolation>1</sonar.jdbc.defaultTransactionIsolation>
         <sonar.jdbc.username>sonar</sonar.jdbc.username>

@@ -26,7 +26,7 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 ## Features
 
-- ✅ **Java 11+** backend with JAX-RS (Jersey) REST APIs
+- ✅ **Java 21** backend with JAX-RS (Jersey) REST APIs
 - ✅ **Eclipse Jetty 9.4.x** embedded server
 - ✅ **Maven** build system with wrapper
 - ✅ **Integration tests** with JUnit
@@ -36,8 +36,8 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 ## Prerequisites
 
-- **Java**: JDK 11 or higher
-- **Maven**: 3.6+ (or use included Maven wrapper `./mvnw`)
+- **Tools**: [mise](https://mise.jdx.dev) installs the versions pinned in `mise.toml` (`mise install`)
+- **Maven**: use the included Maven wrapper `./mvnw` (Maven 3.9)
 - **curl** or web browser for testing
 
 ## Quick Start
@@ -193,7 +193,7 @@ Key properties in `pom.xml`:
     <jetty.port>9090</jetty.port>           <!-- Jetty HTTP port -->
     <jetty.stop.port>8089</jetty.stop.port> <!-- Jetty shutdown port -->
     <jdk.level>11</jdk.level>               <!-- Java version -->
-    <jetty9.version>9.4.19.v20190610</jetty9.version>
+    <jetty9.version>9.4.58.v20250814</jetty9.version>
 </properties>
 ```
 

@@ -2,7 +2,7 @@
 
 ## Project Overview
 This is a Maven-based Java web application that demonstrates a Bower sample with Jetty server deployment. The project combines:
-- **Backend**: Java 11+ with JAX-RS (Jersey) REST APIs
+- **Backend**: Java 21 with JAX-RS (Jersey) REST APIs
 - **Server**: Eclipse Jetty 9.4.x embedded server
 - **Frontend**: HTML/JavaScript/CSS assets in the `app/` directory
 - **Build**: Maven 3.x with custom profiles and configurations
@@ -28,8 +28,8 @@ This is a Maven-based Java web application that demonstrates a Bower sample with
 - **GroupId**: `com.nabla.project.sample`
 - **ArtifactId**: `bower-sample`
 - **Packaging**: WAR (Web Application Archive)
-- **Java Version**: 11
-- **Jetty Version**: 9.4.19.v20190610
+- **Java Version**: 21 (Groovy sources compiled to 17)
+- **Jetty Version**: 9.4.58.v20250814
 
 ### Key Maven Properties
 ```xml
@@ -39,33 +39,30 @@ This is a Maven-based Java web application that demonstrates a Bower sample with
 ```
 
 ### Important Maven Settings
-The project requires a custom Maven settings file to use Maven Central instead of private Nexus repository:
-```bash
-./mvnw <goal> -s /tmp/maven-settings.xml
-```
+`./mvnw` resolves from Maven Central. The root `settings.xml` (private Nexus mirror) is opt-in: `./mvnw <goal> -s settings.xml`.
 
 ## Building the Project
 
 ### Standard Build (Java only)
 ```bash
-./mvnw clean package -DskipTests -Dmaven.exec.skip=true -s /tmp/maven-settings.xml
+./mvnw clean package -DskipTests -Dmaven.exec.skip=true
 ```
 
 ### Full Build (with frontend)
 ```bash
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package -s /tmp/maven-settings.xml
+PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package
 ```
 
 ### Compilation Only
 ```bash
-./mvnw clean compile -DskipTests -Dmaven.exec.skip=true -s /tmp/maven-settings.xml
+./mvnw clean compile -DskipTests -Dmaven.exec.skip=true
 ```
 
 ## Running the Application
 
 ### Using Jetty Maven Plugin
 ```bash
-./mvnw jetty:run -s /tmp/maven-settings.xml -Dmaven.exec.skip=true
+./mvnw jetty:run -Dmaven.exec.skip=true
 ```
 - Access at: `http://localhost:9090/test/`
 - REST API at: `http://localhost:9090/test/rest/books/test`
@@ -79,12 +76,12 @@ java -cp target/test.war com.test.project.sample.App
 
 ### Run Unit Tests
 ```bash
-./mvnw test -s /tmp/maven-settings.xml
+./mvnw test
 ```
 
 ### Run Integration Tests
 ```bash
-./mvnw verify -Prun-integration-test -s /tmp/maven-settings.xml
+./mvnw verify -Prun-integration-test
 ```
 
 ### Test REST Endpoints (when server is running)
