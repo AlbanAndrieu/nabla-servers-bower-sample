@@ -58,7 +58,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
       security-events: write
+    env:
+      IMAGE: ghcr.io/albanandrieu/nabla-servers-bower-sample
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -92,28 +95,40 @@ jobs:
       #  with:
       #    images: nabla/nabla-servers-bower-sample:latest
 
-      - name: Build and push debug
-        run: echo "docker push nabla/nabla-servers-bower-sample:latest,${{ github.repository }}:${{ github.sha }}"
-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v7
         with:
-          #tags: nabla/nabla-servers-bower-sample:latest,nabla/nabla-servers-bower-sample:${{ github.sha }}
           tags: |
-            nabla/nabla-servers-bower-sample:latest
+            ${{ env.IMAGE }}:sha-${{ github.sha }}
+            ${{ github.ref == 'refs/heads/master' && format('{0}:latest', env.IMAGE) || '' }}
+          # Maven resolves through nexus.albandrieu.com (Cloudflare Access service token)
+          secrets: |
+            cf_access_client_id=${{ secrets.CF_ACCESS_CLIENT_ID }}
+            cf_access_client_secret=${{ secrets.CF_ACCESS_CLIENT_SECRET }}
           # load the image in the local daemon so Trivy scans this build, not the registry one
           load: true
-          # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/main' }}
+          # every non-fork build goes to ghcr.io (GITHUB_TOKEN, no long-lived secret); latest only on master
+          push: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
+      # deploy the image like the runtime would and probe the REST endpoint
+      - name: Smoke test
+        run: |
+          docker run -d --name bower-sample -p 8080:8080 "$IMAGE:sha-$GITHUB_SHA"
+          for _ in $(seq 30); do
+            curl -fsS http://localhost:8080/rest/books/test && exit 0
+            sleep 5
+          done
+          docker logs bower-sample
+          exit 1
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: nabla/nabla-servers-bower-sample:latest
+          image-ref: ${{ env.IMAGE }}:sha-${{ github.sha }}
           format: sarif
           output: "trivy-results.sarif"
           ignore-unfixed: true

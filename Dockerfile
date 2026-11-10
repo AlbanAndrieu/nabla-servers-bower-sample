@@ -7,8 +7,12 @@ WORKDIR /build
 COPY . .
 
 # frontend (npm/bower/grunt) is skipped, the war ships the committed app/ sources
+# the Cloudflare Access service token is a build secret: it never lands in a layer
 RUN --mount=type=cache,target=/root/.m2 \
-    ./mvnw --batch-mode package -DskipTests -Dmaven.exec.skip=true
+    --mount=type=secret,id=cf_access_client_id,env=CF_ACCESS_CLIENT_ID \
+    --mount=type=secret,id=cf_access_client_secret,env=CF_ACCESS_CLIENT_SECRET \
+    if [ -n "${CF_ACCESS_CLIENT_ID:-}" ]; then set -- -s settings.xml; fi; \
+    ./mvnw --batch-mode package -DskipTests -Dmaven.exec.skip=true "$@"
 
 FROM eclipse-temurin:21-jre AS RUNTIME
 
@@ -27,7 +31,7 @@ USER jenkins
 
 EXPOSE 8080
 
-HEALTHCHECK CMD curl --fail http://localhost:8080/ || exit 1
+HEALTHCHECK CMD ["curl", "--fail", "http://localhost:8080/"]
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/opt/jetty-runner.jar"]
 CMD ["/opt/test.war"]
