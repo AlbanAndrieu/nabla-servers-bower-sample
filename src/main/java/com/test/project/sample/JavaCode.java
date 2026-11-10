@@ -25,7 +25,7 @@ public final class JavaCode {
    * @param currencyType the type
    * @return its label
    */
-  static String getCurrencyType(final JavaEnum currencyType) {
+  /* default */ static String getCurrencyType(final JavaEnum currencyType) {
     return switch (currencyType) {
       case DOMESTIC -> "Domestic";
       case FOREIGN -> "Foreign";
