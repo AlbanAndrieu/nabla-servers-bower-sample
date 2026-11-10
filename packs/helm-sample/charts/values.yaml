@@ -14,7 +14,7 @@ global:
 
 image:
   repository: ghcr.io/albanandrieu/nabla-servers-bower-sample
-  #imagePullPolicy: IfNotPresent
+  # imagePullPolicy: IfNotPresent
   imagePullPolicy: Always
   # empty: the chart appVersion, which semantic-release aligns with the image tag
   tag: ""
@@ -28,7 +28,7 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
@@ -39,11 +39,11 @@ serviceAccount:
 maxUnavailable: 1
 
 podSecurityContext:
-  {}
+  { }
   # fsGroup: 2000
 
 securityContext:
-  {}
+  { }
   # capabilities:
   #   drop:
   #   - ALL
@@ -52,14 +52,14 @@ securityContext:
   # runAsUser: 1000
 
 service:
-  #type: ClusterIP
+  # type: ClusterIP
   type: NodePort
   port: 9093
 
 ingress:
   enabled: true
   annotations:
-    {}
+    { }
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -82,11 +82,11 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-nodeSelector: {}
+nodeSelector: { }
 
 tolerations: []
 
-affinity: {}
+affinity: { }
 
 mysql:
   enabled: true

@@ -21,7 +21,7 @@ jobs:
       id-token: write
     name: Test vault
     #runs-on: self-hosted
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
 
@@ -41,7 +41,8 @@ jobs:
           secrets: |
             nabla/data/scan/sonarcloud sonar-token | SONAR_TOKEN;
             secret/data/test/webapp api-key | API_KEY
-      - name: Test printing your secret
+      # check the secrets were fetched without printing them
+      - name: Test your secrets are set
         run: |
-          echo $SONAR_TOKEN
-          echo $API_KEY
+          [ -n "${SONAR_TOKEN:-}" ] && echo "SONAR_TOKEN set"
+          [ -n "${API_KEY:-}" ] && echo "API_KEY set"

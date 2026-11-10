@@ -7,6 +7,8 @@ rules:
   braces:
     min-spaces-inside: 1
     max-spaces-inside: 1
+    # MegaLinter APPLY_FIXES runs prettier first, which writes empty braces as {}
+    min-spaces-inside-empty: 0
     level: error
   brackets:
     max-spaces-inside: 1
@@ -36,3 +38,5 @@ ignore: |
   docker-compose/
   docker/centos7/
   docker/ubuntu18/
+  # Go templates, not YAML: checked by helm lint
+  packs/helm-sample/charts/templates/

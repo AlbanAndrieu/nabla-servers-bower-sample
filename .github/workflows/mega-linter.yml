@@ -27,7 +27,7 @@ jobs:
   build-mega-linter:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]' # ignore the pull request which comes from user dependabot.
     name: Mega Linter
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       # Git Checkout
       - name: Checkout Code
@@ -41,7 +41,7 @@ jobs:
         id: ml
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://oxsecurity.github.io/megalinter/flavors/
-        uses: oxsecurity/megalinter@v9.3.0
+        uses: oxsecurity/megalinter@v10.2.0
         env:
           # All available variables are described in documentation
           # https://oxsecurity.github.io/megalinter/configuration/
@@ -52,7 +52,7 @@ jobs:
 
       # Upload MegaLinter artifacts
       - name: Archive production artifacts
-        if: ${{ success() }} || ${{ failure() }}
+        if: success() || failure()
         uses: actions/upload-artifact@v6
         with:
           name: MegaLinter reports

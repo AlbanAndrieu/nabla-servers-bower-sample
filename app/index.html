@@ -12,7 +12,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/github-fork-ribbon-css/gh-fork-ribbon.css" />
+    <link rel="stylesheet" href="vendor/github-fork-ribbon-css/gh-fork-ribbon.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -55,21 +55,6 @@
     </script>
     <!-- end Mixpanel -->
 
-    <a href="#" mixpanel-track-click="{{'Clicked' + ' it!' + 1 + 1}}" mixpanel-properties="{a: 1, b: 2}">Click it!</a>
-    <button name="Submit" mixpanel-track-click>A button</button>
-    <script>
-      angular.module('example', ['analytics.mixpanel'])
-        .config(function(mixpanelProvider){
-          mixpanelProvider.token = '';
-          console.log('config', mixpanelProvider);
-        })
-        .run(function(mixpanel){
-          console.log('run', mixpanel);
-        })
-        .controller('a', function(mixpanel){
-          console.log('a', mixpanel);
-        })
-    </script>
 
     <!-- Add your site or application content here -->
     <div id="app-loading-wrapper" shown-when-loading>
@@ -185,7 +170,7 @@
                     new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-56011797-1'}, 'google_translate_element');
                     }
                     </script>
-                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                    <script async src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                   </li>
                 </li>
               </form>
@@ -265,31 +250,31 @@
     </script>
     <!-- End Axeptio cookies -->
 
-    <script src="https://cdn.jsdelivr.net/npm/social-likes-next/dist/social-likes.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/social-likes-next/dist/social-likes.min.js"></script>
 
     <!--WARNING jquery must be loaded before angular -->
-    <!--<script src="bower_components/jquery/dist/jquery.js"></script> -->
+    <!--<script src="vendor/jquery/dist/jquery.js"></script> -->
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
-    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
-    <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
-    <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
-    <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-gravatar/build/angular-gravatar.js"></script>
-    <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="vendor/jquery/dist/jquery.js"></script>
+    <script src="vendor/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+    <script src="vendor/jquery-ui/dist/jquery-ui.js"></script>
+    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular-animate/angular-animate.js"></script>
+    <script src="vendor/angular-cookies/angular-cookies.js"></script>
+    <script src="vendor/angular-resource/angular-resource.js"></script>
+    <script src="vendor/angular-route/angular-route.js"></script>
+    <script src="vendor/angular-sanitize/angular-sanitize.js"></script>
+    <script src="vendor/angular-touch/angular-touch.js"></script>
+    <script src="vendor/angular-translate/dist/angular-translate.js"></script>
+    <script src="vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="vendor/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+    <script src="vendor/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+    <script src="vendor/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+    <script src="vendor/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="vendor/angular-gravatar/build/angular-gravatar.js"></script>
+    <script src="vendor/angular-dynamic-locale/dist/tmhDynamicLocale.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -311,10 +296,10 @@
     <script src="scripts/test/sample-component.js"></script>
     <!-- endbuild -->
 
-    <script src="bower_components/angular-i18n/angular-locale_en.js"></script>
-    <script src="bower_components/angular-i18n/angular-locale_en-us.js"></script>
-    <script src="bower_components/angular-i18n/angular-locale_ru-ru.js"></script>
-    <script src="bower_components/angular-i18n/angular-locale_fr-fr.js"></script>
+    <script src="vendor/angular-i18n/angular-locale_en.js"></script>
+    <script src="vendor/angular-i18n/angular-locale_en-us.js"></script>
+    <script src="vendor/angular-i18n/angular-locale_ru-ru.js"></script>
+    <script src="vendor/angular-i18n/angular-locale_fr-fr.js"></script>
 
   </body>
 </html>

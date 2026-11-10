@@ -3,76 +3,108 @@ package com.test.project.sample;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-public class Book {
+/**
+ * A book listed by {@link BookResource}.
+ */
+// JSON DTO of /rest/books: a data class by design
+@SuppressWarnings({"PMD.ShortClassName", "PMD.DataClass"})
+public final class Book {
 
-    private Integer isbn;
-    private String title;
-    private String author;
+  /** ISBN, never null. */
+  private Integer isbn;
 
-    @SuppressWarnings("unused")
-	private Book() {
-        throw new AssertionError();
+  /** Title. */
+  private String title;
+
+  /** Author. */
+  private String author;
+
+  /** MOXy needs it to write the JSON of /rest/books. */
+  private Book() {
+  }
+
+  /**
+   * Book without title nor author.
+   *
+   * @param anIsbn ISBN
+   */
+  public Book(@Nonnull @Nonnegative final Integer anIsbn) {
+    this(anIsbn, null, null);
+  }
+
+  /**
+   * Book.
+   *
+   * @param anIsbn ISBN
+   * @param aTitle title
+   * @param anAuthor author
+   */
+  public Book(@Nonnull @Nonnegative final Integer anIsbn,
+      final String aTitle, final String anAuthor) {
+    if (anIsbn == null) {
+      throw new IllegalArgumentException("ISBN cannot be null");
     }
+    this.isbn = anIsbn;
+    this.title = aTitle;
+    this.author = anAuthor;
+  }
 
-    public Book(@Nonnull @Nonnegative Integer aIsbn) {
+  /**
+   * Title.
+   *
+   * @return the title
+   */
+  public String getTitle() {
+    return title;
+  }
 
-        this.isbn = aIsbn;
+  /**
+   * Sets the title.
+   *
+   * @param aTitle the title
+   */
+  public void setTitle(final String aTitle) {
+    this.title = aTitle;
+  }
 
-        if (null == this.isbn)
-        {
-            throw new IllegalArgumentException("ISBN cannot be null");
-        }
+  /**
+   * Author.
+   *
+   * @return the author
+   */
+  public String getAuthor() {
+    return author;
+  }
 
-    }
+  /**
+   * Sets the author.
+   *
+   * @param anAuthor the author
+   */
+  public void setAuthor(final String anAuthor) {
+    this.author = anAuthor;
+  }
 
-    public Book(@Nonnull @Nonnegative Integer aIsbn, String aTitle, String anAuthor) {
+  /**
+   * ISBN.
+   *
+   * @return the ISBN
+   */
+  public Integer getIsbn() {
+    return isbn;
+  }
 
-        this.isbn = aIsbn;
-        this.title = aTitle;
-        this.author = anAuthor;
+  /**
+   * Sets the ISBN.
+   *
+   * @param anIsbn the ISBN
+   */
+  public void setIsbn(final Integer anIsbn) {
+    this.isbn = anIsbn;
+  }
 
-        if (null == this.isbn)
-        {
-            throw new IllegalArgumentException("ISBN cannot be null");
-        }
-
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Integer getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Integer isbn) {
-        this.isbn = isbn;
-    }
-
-    @Override
-    public final String toString()
-    {
-
-        final StringBuilder str = new StringBuilder();
-
-        str.append("isbn: ").append(this.getIsbn()).append(' ');
-        str.append("title: ").append(this.getTitle()).append(' ');
-        str.append("author: ").append(this.getAuthor());
-
-        return str.toString();
-
-    }
+  @Override
+  public String toString() {
+    return "isbn: " + isbn + " title: " + title + " author: " + author;
+  }
 }
