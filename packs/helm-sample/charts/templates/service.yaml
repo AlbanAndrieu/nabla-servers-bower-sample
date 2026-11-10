@@ -5,16 +5,12 @@ metadata:
   # See https://helm.sh/docs/chart_best_practices/labels/
   labels:
     environment: dev
-    app.kubernetes.io/name: "{{ template "testChart.name" . }}"
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
-    app.kubernetes.io/managed-by: "{{ .Release.Service  }}"
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
     {{- include "testChart.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: {{ .Values.service.port }}
+      targetPort: http
       protocol: TCP
       name: sample
       nodePort: {{ .Values.service.nodePort }}
