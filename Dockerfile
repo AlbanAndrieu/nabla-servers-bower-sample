@@ -58,6 +58,7 @@ USER jenkins
 
 EXPOSE 8080
 
-HEALTHCHECK CMD ["curl", "--fail", "http://localhost:8080/rest/books/test"]
+# the resolute JRE image has no curl: bash /dev/tcp avoids installing a package
+HEALTHCHECK CMD ["bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080 && printf 'GET /rest/books/test HTTP/1.0\\r\\n\\r\\n' >&3 && head -n 1 <&3 | grep -q ' 200 '"]
 
 ENTRYPOINT ["java", "-jar", "/opt/jetty-home/start.jar"]
