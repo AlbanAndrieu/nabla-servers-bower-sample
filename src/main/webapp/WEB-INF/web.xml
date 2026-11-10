@@ -111,15 +111,22 @@
 
    <!-- rest/ping -->
    <!-- see http://www.techstacks.com/howto/disable-http-methods-in-tomcat.html -->
+   <!-- allow-list: a deny-list of methods let PATCH or PUT /admin/* through -->
+   <security-constraint>
+     <web-resource-collection>
+       <web-resource-name>Read only</web-resource-name>
+       <url-pattern>/*</url-pattern>
+       <http-method>GET</http-method>
+       <http-method>HEAD</http-method>
+     </web-resource-collection>
+   </security-constraint>
+
    <security-constraint>
      <web-resource-collection>
        <web-resource-name>Restricted methods</web-resource-name>
        <url-pattern>/*</url-pattern>
-       <http-method>PUT</http-method>
-       <http-method>POST</http-method>
-       <http-method>DELETE</http-method>
-       <http-method>OPTIONS</http-method>
-       <http-method>TRACE</http-method>
+       <http-method-omission>GET</http-method-omission>
+       <http-method-omission>HEAD</http-method-omission>
      </web-resource-collection>
      <auth-constraint />
    </security-constraint>
@@ -128,8 +135,6 @@
      <web-resource-collection>
        <web-resource-name>Administration</web-resource-name>
        <url-pattern>/admin/*</url-pattern>
-       <http-method>GET</http-method>
-       <http-method>POST</http-method>
      </web-resource-collection>
      <auth-constraint>
        <role-name>admin</role-name>
