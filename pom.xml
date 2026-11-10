@@ -233,7 +233,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.groovy</groupId>
-				<artifactId>groovy-all</artifactId>
+				<artifactId>groovy-bom</artifactId>
 				<version>${groovy.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -305,11 +305,10 @@
 			<artifactId>jersey-hk2</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<!-- core only: groovy-all shipped ant, ivy, the console and Jackson in the war -->
 		<dependency>
 			<groupId>org.apache.groovy</groupId>
-			<artifactId>groovy-all</artifactId>
-			<version>${groovy.version}</version>
-			<type>pom</type>
+			<artifactId>groovy</artifactId>
 		</dependency>
 
 		<dependency>
@@ -331,11 +330,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<version>${jsr305.version}</version>
@@ -344,53 +338,12 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-			<!--<version>${spring.boot.version}</version>-->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!-- if a war
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring.boot.starter.web.version}</version>
-        </dependency>
-    -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<!--<version>${lombok.version}</version>
-		  <scope>provided</scope>-->
-			<optional>true</optional>
-		</dependency>
+		<!-- no Spring, Guava nor lombok code: their jars only brought Netty/Jackson CVEs into the war -->
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-			<!--<version>${prometheus.version}</version>-->
-			<scope>runtime</scope>
 		</dependency>
 
 		<!-- test dependencies -->
