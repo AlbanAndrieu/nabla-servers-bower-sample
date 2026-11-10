@@ -6,7 +6,7 @@ APPLY_FIXES:
   all # all, none, or list of linter keys
   # - MARKDOWN_MARKDOWNLINT
   # - JAVASCRIPT_ES
-DEFAULT_BRANCH: main # Usually master or main
+DEFAULT_BRANCH: master # Usually master or main
 # ENABLE: # If you use ENABLE variable, all other languages/formats/tooling-formats will be disabled by default
 # ENABLE_LINTERS: # If you use ENABLE_LINTERS variable, all other linters will be disabled by default
 DISABLE:
@@ -49,6 +49,7 @@ DISABLE_LINTERS:
 IGNORE_GITIGNORED_FILES: true
 FILTER_REGEX_EXCLUDE: (megalinter-reports/|\.automation/test|\.automation/generated|\.github/workflows|\.venv/|\.direnv/|\.mypy_cache/|docs/javascripts|docs/overrides|docs/json-schemas|flavors|clj-kondo|TEMPLATES|tests)
 JSON_JSONLINT_FILTER_REGEX_EXCLUDE: (\.vscode/)
+YAML_YAMLLINT_CONFIG_FILE: .yamllint
 YAML_YAMLLINT_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|ansible/)
 YAML_PRETTIER_FILTER_REGEX_EXCLUDE: (templates/\.mega-linter\.yml|mkdocs\.yml)
 YAML_V8R_FILTER_REGEX_EXCLUDE: (descriptors|\.mega-linter\.yml|\.codecov\.yml|\.terraform-docs\.yml|ansible\/container\.yml|ansible\/meta\.yml|\.travis\.yml)
