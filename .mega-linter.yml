@@ -75,6 +75,9 @@ REPOSITORY_TRIVY_DISABLE_ERRORS: true
 REPOSITORY_TRIVY_ARGUMENTS: --security-checks vuln,config,secret --vuln-type os,library --ignore-unfixed --skip-dirs .direnv --skip-dirs .venv --skip-files pip.conf --skip-files Pipfile --skip-files /usr/bin/nomad
 REPOSITORY_TRIVY_DISABLE_ERRORS_IF_LESS_THAN: 3
 REPOSITORY_CHECKOV_DISABLE_ERRORS_IF_LESS_THAN: 3
+# repo.maven.apache.org answers 429 to GitHub runners: resolve poms from Google's Maven Central mirror
+REPOSITORY_OSV_SCANNER_ARGUMENTS: --maven-registry https://maven-central.storage-download.googleapis.com/maven2
+REPOSITORY_TRIVY_SBOM_ARGUMENTS: --offline-scan
 TERRAFORM_TERRASCAN_ARGUMENTS: -i terraform -t docker -t github -d terraform # -f myfile.tf
 TERRAFORM_TERRASCAN_DISABLE_ERRORS: true
 REPOSITORY_GITLEAKS_DISABLE_ERRORS: false
