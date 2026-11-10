@@ -42,6 +42,18 @@ jobs:
           key: maven-${{ hashFiles('pom.xml') }}
           restore-keys: maven-
 
+      # Access answers a bad token with its HTML login page, which Maven would cache as artifacts
+      - name: Check Nexus access
+        env:
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: |
+          [ -n "${CF_ACCESS_CLIENT_ID:-}" ] || exit 0
+          curl -sS -o /dev/null -w '%{http_code} %{content_type} %{redirect_url}\n' \
+            -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET" \
+            https://nexus.albandrieu.com/repository/maven-public/kr/motd/maven/os-maven-plugin/1.7.0/os-maven-plugin-1.7.0.jar \
+            | tee /dev/stderr | grep -q '^200 application/java-archive'
+
       # frontend (npm/bower/grunt) is skipped: Gruntfile no longer loads on current Node
       - name: Build with Maven
         env:
@@ -55,6 +67,7 @@ jobs:
   build-docker:
     if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
     name: Build Docker
+    needs: build-maven
     runs-on: ubuntu-latest
     permissions:
       contents: read
