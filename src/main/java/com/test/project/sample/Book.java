@@ -6,6 +6,8 @@ import javax.annotation.Nonnull;
 /**
  * A book listed by {@link BookResource}.
  */
+// JSON DTO of /rest/books: a data class by design
+@SuppressWarnings({"PMD.ShortClassName", "PMD.DataClass"})
 public final class Book {
 
   /** ISBN, never null. */

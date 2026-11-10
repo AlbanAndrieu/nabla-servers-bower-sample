@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Embedded Jetty launcher serving {@link BookResource} without the war.
  */
+// App is the Main-Class named in pom.xml, Server.start() throws Exception
+@SuppressWarnings({"PMD.ShortClassName",
+    "PMD.SignatureDeclareThrowsException"})
 public final class App {
 
   /** Port of the embedded server. */

@@ -14,6 +14,7 @@ import org.junit.Test;
 /**
  * Checks a deployed war, see the run-integration-test profile.
  */
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public final class DeploymentITest {
 
   /** Root of the deployed application, ending with a slash. */
