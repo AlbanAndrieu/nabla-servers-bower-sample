@@ -70,3 +70,13 @@ once that checkout is free.
   (`.mega-linter.yml`).
 - FOSSA (`License Compliance`, `Security Analysis`, `Dependency Quality`) reports
   findings that are only visible on app.fossa.com; no check is required on `master`.
+- `master` requires signed commits: MegaLinter no longer pushes fix commits
+  (`APPLY_FIXES: none`), run `npx prettier --write <files>` before pushing.
+- KICS scans what the project ships (`src`, `ansible`, `k8s`, `packs`,
+  `Dockerfile`). Not scanned yet, KICS reports high/medium findings there:
+  - `docker-compose/` and the root `docker-compose.yml`: legacy local stack
+    (privileged monitoring containers, no limits, sample passwords);
+  - root `*.tf` and `modules/site`: AWS S3 site with a public bucket and open
+    security groups.
+  Fix or delete them before adding them to the KICS `path`.
+- The `soos.yml` and `Vault` workflows are disabled in the Actions settings.
