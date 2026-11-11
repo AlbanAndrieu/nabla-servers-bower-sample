@@ -8,22 +8,37 @@ on:
   push:
     branches: [master, main]
     paths-ignore:
-      - "**.md"
+      - '**.md'
   schedule:
     - cron: 0 6 * * 3
   pull_request:
     branches: [master, main]
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - "**.md"
+      - '**.md'
 
-env:
-  REPO: ${{ github.event.repository.name }}
-  OWNER: ${{ github.event.repository.owner.login }}
-  ISSUE_NUMBER: ${{ github.event.issue.number }}
-  HEAD_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+permissions:
+  contents: read
+
+# a new push on a PR cancels its previous run, master runs always complete
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  lint-chart:
+    name: Lint Helm chart
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: azure/setup-helm@v4
+
+      - name: Lint and render the chart
+        run: |
+          helm lint --strict packs/helm-sample/charts
+          helm template ci packs/helm-sample/charts > /dev/null
+
   build-maven:
     # if: github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user depbot.
     name: Build Maven
@@ -65,7 +80,7 @@ jobs:
           ./mvnw -B package -Dmaven.exec.skip=true "$@"
 
   build-docker:
-    if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
+    if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]' # ignore the pull request which comes from user dependabot.
     name: Build Docker
     needs: build-maven
     runs-on: ubuntu-26.04
@@ -94,19 +109,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      #- name: Login to ECR
-      #  uses: docker/login-action@v4
-      #  with:
-      #    registry: <aws-account-number>.dkr.ecr.<region>.amazonaws.com
-      #    username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #    password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      #- name: Extract metadata (tags, labels) for Docker
-      #  id: meta
-      #  uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-      #  with:
-      #    images: nabla/nabla-servers-bower-sample:latest
 
       - name: Build and push
         id: docker_build
@@ -146,43 +148,14 @@ jobs:
         with:
           image-ref: ${{ env.IMAGE }}:sha-${{ github.sha }}
           format: sarif
-          output: "trivy-results.sarif"
+          output: 'trivy-results.sarif'
           ignore-unfixed: true
-          vuln-type: "os,library"
-          timeout: "10m0s"
+          vuln-type: 'os,library'
+          timeout: '10m0s'
           scanners: vuln
-          severity: "CRITICAL,HIGH"
+          severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: "trivy-results.sarif"
-
-  # You should run the goal 'org.sonarsource.scanner.maven:sonar' during build rather than using this GitHub Action.
-  # sonarcloud:
-  #   if: github.actor != 'dependabot[bot]' && github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user dependabot.
-  #   name: SonarCloud Scan
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Set up SonarCloud Scan
-  #       uses: actions/checkout@v7
-  #       with:
-  #         # Disabling shallow clone is recommended for improving relevancy of reporting
-  #         fetch-depth: 0
-  #
-  #     - name: Run SonarCloud Scan
-  #       uses: sonarsource/sonarcloud-github-action@v1.8
-  #       with:
-  #         # Set the sonar.projectBaseDir analysis property
-  #         projectBaseDir: .  # optional, default is .
-  #         # Additional arguments to the sonarcloud scanner
-  #         # args: >
-  #         #   -Dsonar.organization=albanandrieu-gihub
-  #         #   -Dsonar.projectKey=nabla:nabla-servers-bower-sample
-  #         #   -Dsonar.sources=lib/
-  #         #   -Dsonar.test.exclusions=test/**
-  #         #   -Dsonar.tests=test/
-  #         #   -Dsonar.verbose=true
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          sarif_file: 'trivy-results.sarif'
