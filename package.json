@@ -1,119 +1,119 @@
 {
-	"name": "nabla-servers-bower-sample",
-	"description": "Bower sample",
-	"branchVersion": "^1.0.6",
-	"branchPattern": "1.0.*",
-	"version": "1.0.6",
-	"keywords": [
-		"nabla"
-	],
-	"author": "Alban Andrieu <alban.andrieu@free.fr> (http://albandrieu.com)",
-	"license": "MIT",
-	"licenses": [
-		{
-			"type": "MIT",
-			"url": "http://www.opensource.org/licenses/MIT"
-		}
-	],
-	"homepage": "http://albandrieu.com",
-	"repository": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample",
-	"files": [
-		"lib",
-		"dist",
-		"contrib"
-	],
-	"bugs": {
-		"url": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues"
-	},
-	"lint-staged": {
-		"*.js": [
-			"npx eslint --fix .",
-			"git add"
-		],
-		"*.{json,css,scss,less,md}": [
-			"prettier --write",
-			"git add"
-		]
-	},
-	"engines": {
-		"node": ">=24",
-		"npm": ">=8.5.5",
-		"yarn": " >=1.22.0",
-		"node-gyp": ">=3.0.3",
-		"grunt": ">=1.6.1"
-	},
-	"engine-strict": true,
-	"eslintConfig": {
-		"parserOptions": {
-			"ecmaVersion": 6
-		},
-		"plugins": [
-			"compat"
-		],
-		"rules": {
-			"compat/compat": "warn"
-		}
-	},
-	"stylelint": {
-		"plugins": [
-			"stylelint-no-unsupported-browser-features"
-		],
-		"rules": {
-			"plugin/no-unsupported-browser-features": true
-		},
-		"defaultSeverity": "warning"
-	},
-	"dependencies": {
-		"angular": "1.8.3",
-		"angular-animate": "1.8.3",
-		"angular-cookies": "1.8.3",
-		"angular-dynamic-locale": "0.1.38",
-		"angular-gravatar": "0.4.2",
-		"angular-i18n": "1.8.3",
-		"angular-resource": "1.8.3",
-		"angular-route": "1.8.3",
-		"angular-sanitize": "1.8.3",
-		"angular-touch": "1.8.3",
-		"angular-translate": "2.19.1",
-		"angular-translate-handler-log": "2.19.1",
-		"angular-translate-loader-static-files": "2.19.1",
-		"angular-translate-storage-cookie": "2.19.1",
-		"angular-translate-storage-local": "2.19.1",
-		"angular-ui-bootstrap": "2.5.6",
-		"bootstrap-sass": "3.4.3",
-		"font-awesome": "4.7.0",
-		"github-fork-ribbon-css": "0.2.3",
-		"jquery": "3.7.1",
-		"jquery-ui": "1.14.2",
-		"sass": "1.108.1",
-		"social-likes-next": "^1.1.0"
-	},
-	"devDependencies": {
-		"@eslint/eslintrc": "^3.3.7",
-		"@eslint/js": "^9.39.5",
-		"@secretlint/secretlint-rule-preset-recommend": "^4.2.0",
-		"@typescript-eslint/eslint-plugin": "^8.72.2",
-		"@typescript-eslint/parser": "^8.72.2",
-		"eslint": "*",
-		"globals": "^16.5.0",
-		"lint-staged": "10.5.4",
-		"prettier": "^2.8.8",
-		"secretlint": "^4.2.0",
-		"stylelint-config-standard-scss": "^13.1.0",
-		"typescript": "^5.9.3"
-	},
-	"optionalDependencies": {
-		"fsevents": "2.3"
-	},
-	"scripts": {
-		"build:front": "node scripts/build-frontend.mjs",
-		"eslint": "eslint . --ext .js,.cjs,.mjs",
-		"eslint-npx": "npx eslint . --ext .js,.cjs,.mjs",
-		"eslint-fix": "eslint . --fix",
-		"lint": "eslint --format gitlab .",
-		"lint-fix": "eslint --fix .",
-		"stylelint": "npx stylelint **/*.css",
-		"lintme": "lint-staged"
-	},
-	"private": true
+  "name": "nabla-servers-bower-sample",
+  "description": "Bower sample",
+  "branchVersion": "^1.0.6",
+  "branchPattern": "1.0.*",
+  "version": "1.0.6",
+  "keywords": [
+    "nabla"
+  ],
+  "author": "Alban Andrieu <alban.andrieu@free.fr> (http://albandrieu.com)",
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "homepage": "http://albandrieu.com",
+  "repository": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample",
+  "files": [
+    "lib",
+    "dist",
+    "contrib"
+  ],
+  "bugs": {
+    "url": "https://github.com/AlbanAndrieu/nabla-servers-bower-sample/issues"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npx eslint --fix .",
+      "git add"
+    ],
+    "*.{json,css,scss,less,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=8.5.5",
+    "yarn": " >=1.22.0",
+    "node-gyp": ">=3.0.3",
+    "grunt": ">=1.6.1"
+  },
+  "engine-strict": true,
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6
+    },
+    "plugins": [
+      "compat"
+    ],
+    "rules": {
+      "compat/compat": "warn"
+    }
+  },
+  "stylelint": {
+    "plugins": [
+      "stylelint-no-unsupported-browser-features"
+    ],
+    "rules": {
+      "plugin/no-unsupported-browser-features": true
+    },
+    "defaultSeverity": "warning"
+  },
+  "dependencies": {
+    "angular": "1.8.3",
+    "angular-animate": "1.8.3",
+    "angular-cookies": "1.8.3",
+    "angular-dynamic-locale": "0.1.38",
+    "angular-gravatar": "0.4.2",
+    "angular-i18n": "1.8.3",
+    "angular-resource": "1.8.3",
+    "angular-route": "1.8.3",
+    "angular-sanitize": "1.8.3",
+    "angular-touch": "1.8.3",
+    "angular-translate": "2.19.1",
+    "angular-translate-handler-log": "2.19.1",
+    "angular-translate-loader-static-files": "2.19.1",
+    "angular-translate-storage-cookie": "2.19.1",
+    "angular-translate-storage-local": "2.19.1",
+    "angular-ui-bootstrap": "2.5.6",
+    "bootstrap-sass": "3.4.3",
+    "font-awesome": "4.7.0",
+    "github-fork-ribbon-css": "0.2.3",
+    "jquery": "3.7.1",
+    "jquery-ui": "1.14.2",
+    "sass": "1.108.1",
+    "social-likes-next": "^1.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@eslint/js": "^9.39.5",
+    "@secretlint/secretlint-rule-preset-recommend": "^4.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.2",
+    "@typescript-eslint/parser": "^8.72.2",
+    "eslint": "*",
+    "globals": "^16.5.0",
+    "lint-staged": "10.5.4",
+    "prettier": "^2.8.8",
+    "secretlint": "^4.2.0",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "typescript": "^5.9.3"
+  },
+  "optionalDependencies": {
+    "fsevents": "2.3"
+  },
+  "scripts": {
+    "build:front": "node scripts/build-frontend.mjs",
+    "eslint": "eslint . --ext .js,.cjs,.mjs",
+    "eslint-npx": "npx eslint . --ext .js,.cjs,.mjs",
+    "eslint-fix": "eslint . --fix",
+    "lint": "eslint --format gitlab .",
+    "lint-fix": "eslint --fix .",
+    "stylelint": "npx stylelint **/*.css",
+    "lintme": "lint-staged"
+  },
+  "private": true
 }
