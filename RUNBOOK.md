@@ -8,8 +8,11 @@ outside this repository, or a decision.
 The push goes through SSH with a YubiKey (`ED25519-SK`) key, which needs a touch:
 
 ```bash
-git push origin feat/semantic-release-upgrade-20261110
+git push -u origin build/drop-spring-maven-frontend-20261111
 ```
+
+PR #666 was squash-merged; `feat/semantic-release-upgrade-20261110` still holds
+`78920dd`, already carried by this branch, so the remote branch can be deleted.
 
 ## 2. Revoke secrets left in the Git history
 
