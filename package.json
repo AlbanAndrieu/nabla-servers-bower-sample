@@ -8,7 +8,6 @@
 		"nabla"
 	],
 	"author": "Alban Andrieu <alban.andrieu@free.fr> (http://albandrieu.com)",
-	"main": "scripts.js",
 	"license": "MIT",
 	"licenses": [
 		{
@@ -108,12 +107,9 @@
 	},
 	"scripts": {
 		"build:front": "node scripts/build-frontend.mjs",
-		"start": "node scripts.js",
 		"eslint": "eslint . --ext .js,.cjs,.mjs",
 		"eslint-npx": "npx eslint . --ext .js,.cjs,.mjs",
 		"eslint-fix": "eslint . --fix",
-		"dev": "node scripts.js",
-		"debug": "node --inspect-brk=0.0.0.0 scripts.js",
 		"lint": "eslint --format gitlab .",
 		"lint-fix": "eslint --fix .",
 		"stylelint": "npx stylelint **/*.css",
