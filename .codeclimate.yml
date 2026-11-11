@@ -66,6 +66,5 @@ exclude_patterns:
   - public/**
   - vendor/**
   - scripts/microscanner-wrapper/**
-  - netsniff.js
   - mvnw
   - docker/target/**
