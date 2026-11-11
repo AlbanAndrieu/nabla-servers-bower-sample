@@ -10,7 +10,7 @@ all: down clean lint build up dive
 .PHONY: install
 install:
 	@echo "=> Installing..."
-	scripts/webdriver.sh
+	npm ci --ignore-scripts
 
 .PHONY: rm
 rm: clean
@@ -35,7 +35,7 @@ build-docker-ci:
 .PHONY: build-docker
 build-docker:
 	@echo "=> Building image..."
-	scripts/docker-build-runtime-22.sh
+	docker build -t $(IMAGE) .
 
 .PHONY: build-buildah-docker
 build-buildah-docker:
@@ -45,7 +45,7 @@ build-buildah-docker:
 .PHONY: build
 build:
 	@echo "=> Building image..."
-	./build.sh
+	./mvnw clean package
 
 .PHONY: up
 up:
