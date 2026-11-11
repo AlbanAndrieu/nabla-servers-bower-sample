@@ -123,8 +123,7 @@
 		<maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
 		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
 		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
-		<maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
-		<!-- nok 3.0.0 -->
+		<maven.exec.plugin.version>3.6.2</maven.exec.plugin.version>
 		<maven.exec.skip>false</maven.exec.skip>
 		<maven.fabric8-docker-maven.plugin.version>0.48.1</maven.fabric8-docker-maven.plugin.version>
 		<maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
@@ -156,7 +155,6 @@
 		<maven.sortpom.plugin.version>4.0.0</maven.sortpom.plugin.version>
 		<maven.spotbugs.plugin.version>4.9.8.2</maven.spotbugs.plugin.version>
 		<spotbugs.version>4.9.8</spotbugs.version>
-		<maven.spring.boot.plugin.version>2.3.5.RELEASE</maven.spring.boot.plugin.version>
 		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
 		<maven.surefire.plugin.version>3.6.1</maven.surefire.plugin.version>
 		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
@@ -184,15 +182,8 @@
 		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
 		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>
 		<spring.boot.starter.parent.version>2.3.12.RELEASE</spring.boot.starter.parent.version>-->
-		<spring.boot.starter.parent.version>3.5.16</spring.boot.starter.parent.version>
 		<!--<spring.boot.admin.version>2.2.3</spring.boot.admin.version>-->
-		<spring.boot.starter.web.version>2.3.5.RELEASE</spring.boot.starter.web.version>
 
-		<spring.boot.version>2.2.2.RELEASE</spring.boot.version>
-		<spring.metrics.version>0.5.1.RELEASE</spring.metrics.version>
-		<spring.version>5.2.2.RELEASE</spring.version>
-		<springdoc.openapi.version>1.2.32</springdoc.openapi.version>
-		<springfox.version>2.9.2</springfox.version>
 		<sun.jsf.version>2.2.7</sun.jsf.version>
 		<swagger.annotations.version>1.5.20</swagger.annotations.version>
 		<swagger2.version>2.9.2</swagger2.version>
@@ -206,7 +197,7 @@
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			<!-- before the Spring Boot BOM, which would otherwise pin its own Jetty 12.0 -->
+			
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-bom</artifactId>
@@ -239,13 +230,6 @@
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
 				<version>${junit.bom.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-parent</artifactId>
-				<version>${spring.boot.starter.parent.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -339,6 +323,8 @@
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
+			<!-- Servlet 6.0 is the ee10 level of Jetty 12 -->
+			<version>6.0.0</version>
 			<scope>provided</scope>
 			<!-- javax.servlet-api-3.0.1.jar Offending class javax/servlet/Servlet.class  in Tomcat -->
 		</dependency>
@@ -372,27 +358,6 @@
 			<groupId>org.jmockit</groupId>
 			<artifactId>jmockit</artifactId>
 			<version>${jmockit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-				<!-- logback comes from the logback profile, this one only adds log4j-to-slf4j -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -729,137 +694,37 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>${maven.exec.plugin.version}</version>
+				<!-- same frontend build as the Dockerfile FRONTEND stage, skip it with -Dmaven.exec.skip=true -->
 				<configuration>
 					<skip>${maven.exec.skip}</skip>
-					<environmentVariables>
-						<!-- The following parameters create an NPM sandbox for CI -->
-						<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-						<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-						<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-					</environmentVariables>
+					<executable>npm</executable>
 				</configuration>
 				<executions>
 					<execution>
-						<id>exec-npm-install</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<executable>npm</executable>
-							<arguments>
-								<argument>install</argument>
-								<argument>--legacy-peer-deps</argument>
-								<!-- no-optional -->
-							</arguments>
-						</configuration>
-					</execution>
-					<!--
-					<execution>
-						<id>exec-bash-webdriver</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<executable>bash</executable>
-							<commandlineArgs>scripts/webdriver.sh</commandlineArgs>
-						</configuration>
-					</execution>
-					<execution>
-						<id>exec-yarn-install</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>yarn</executable>
-							<arguments>
-								<argument>install</argument>
-								<argument>ignore-optional</argument>
-							</arguments>
-						</configuration>
-					</execution>
-                    -->
-					<execution>
-						<id>exec-bower-install</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<executable>bower</executable>
-							<arguments>
-								<argument>install</argument>
-								<argument>--allow-root</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>exec-grunt-prepare</id>
+						<id>npm-ci</id>
 						<goals>
 							<goal>exec</goal>
 						</goals>
 						<phase>generate-resources</phase>
 						<configuration>
-							<executable>grunt</executable>
 							<arguments>
-								<argument>prepare</argument>
+								<argument>ci</argument>
+								<argument>--ignore-scripts</argument>
+								<argument>--no-audit</argument>
+								<argument>--no-fund</argument>
 							</arguments>
 						</configuration>
 					</execution>
 					<execution>
-						<id>exec-grunt-check</id>
+						<id>npm-build-front</id>
 						<goals>
 							<goal>exec</goal>
 						</goals>
-						<phase>process-resources</phase>
+						<phase>generate-resources</phase>
 						<configuration>
-							<executable>grunt</executable>
 							<arguments>
-								<argument>check</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>exec-grunt-default</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>compile</phase>
-						<configuration>
-							<executable>grunt</executable>
-							<arguments>
-								<argument>default</argument>
-								<argument>--skipTests=${maven.test.skip}</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<!--
-                    <execution>
-                        <id>exec-grunt-integration-test</id>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <executable>grunt</executable>
-                            <arguments>
-                                <argument>integration-test</argument>
-                            </arguments>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                    -->
-					<execution>
-						<id>exec-grunt-site</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>site</phase>
-						<configuration>
-							<executable>grunt</executable>
-							<arguments>
-								<argument>site</argument>
+								<argument>run</argument>
+								<argument>build:front</argument>
 							</arguments>
 						</configuration>
 					</execution>
@@ -1766,58 +1631,6 @@
 						</configuration>
 					</plugin>
           -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>exec-maven-plugin</artifactId>
-						<version>${maven.exec.plugin.version}</version>
-						<configuration>
-							<skip>${maven.exec.skip}</skip>
-							<environmentVariables>
-								<NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-								<NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-								<NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-							</environmentVariables>
-						</configuration>
-						<executions>
-							<execution>
-								<id>exec-grunt-integration-test</id>
-								<goals>
-									<goal>exec</goal>
-								</goals>
-								<phase>integration-test</phase>
-								<configuration>
-									<executable>grunt</executable>
-									<arguments>
-										<argument>integration-test</argument>
-									</arguments>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<!--
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>${maven.frontend.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>grunt integration-test</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>grunt</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>integration-test</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <nodeVersion>${node.version}</nodeVersion>
-                            <yarnVersion>v${yarn.version}</yarnVersion>
-                            <workingDirectory>./</workingDirectory>
-                        </configuration>
-                    </plugin>
-                    -->
 				</plugins>
 			</build>
 		</profile>
