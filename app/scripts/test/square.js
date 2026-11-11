@@ -13,7 +13,7 @@
    TODO add a sample
  */
 /*jshint strict: false */
-/*jshint unused: false */
+/* exported square */
 function square(n) {
   "use strict";
   return n * n;
