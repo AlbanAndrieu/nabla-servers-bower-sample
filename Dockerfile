@@ -34,8 +34,9 @@ FROM eclipse-temurin:25-jre-resolute AS RUNTIME
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.3.0"
 LABEL description="Nabla bower sample war running on Jetty 12"
 
-ARG UID=2000
-ARG GID=2000
+# uid above 10000 so it never matches a host user (KICS "Container Running With Low UID")
+ARG UID=10000
+ARG GID=10000
 RUN groupadd -g ${GID} jenkins && \
     useradd --uid ${UID} --gid ${GID} --create-home jenkins
 

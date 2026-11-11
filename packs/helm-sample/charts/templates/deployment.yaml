@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "testChart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   # See https://helm.sh/docs/chart_best_practices/labels/
   labels:
     environment: dev
@@ -31,9 +32,10 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       serviceAccountName: {{ include "testChart.serviceAccountName" . }}
+      # the app never calls the Kubernetes API
+      automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      shareProcessNamespace: true
       initContainers:
         - name: sleep
           image: busybox:1.37
@@ -42,6 +44,15 @@ spec:
             - sh
             - -c
             - 'echo "create by init-container" > /secrets/file'
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          resources:
+            limits:
+              cpu: 50m
+              memory: 16Mi
+            requests:
+              cpu: 10m
+              memory: 16Mi
           volumeMounts:
             - mountPath: /secrets
               name: shared
@@ -81,14 +92,6 @@ spec:
           volumeMounts:
             - mountPath: /secrets
               name: shared
-        - name: shell
-          image: busybox:1.37
-          securityContext:
-            capabilities:
-              add:
-              - SYS_PTRACE
-          stdin: true
-          tty: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
