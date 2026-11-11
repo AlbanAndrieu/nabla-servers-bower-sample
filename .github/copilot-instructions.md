@@ -36,7 +36,7 @@ This is a Maven-based Java web application that demonstrates a Bower sample with
 ```xml
 <jetty.port>9090</jetty.port>
 <jetty.stop.port>8089</jetty.stop.port>
-<maven.exec.skip>true</maven.exec.skip>  <!-- Skip frontend build -->
+<maven.exec.skip>false</maven.exec.skip>  <!-- true skips npm ci and npm run build:front -->
 ```
 
 ### Important Maven Settings
@@ -49,9 +49,9 @@ This is a Maven-based Java web application that demonstrates a Bower sample with
 ./mvnw clean package -DskipTests -Dmaven.exec.skip=true
 ```
 
-### Full Build (with frontend)
+### Full Build (with frontend: npm ci and npm run build:front)
 ```bash
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package
+./mvnw clean package
 ```
 
 ### Compilation Only
@@ -63,7 +63,7 @@ PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package
 
 ### Using Jetty Maven Plugin
 ```bash
-./mvnw jetty:run-war -Dmaven.exec.skip=true
+./mvnw jetty:run-war
 ```
 - Access at: `http://localhost:9090/test/`
 - REST API at: `http://localhost:9090/test/rest/books/test`
@@ -203,7 +203,7 @@ Logs are output to console during `mvn jetty:run`
 ## Troubleshooting Build Failures
 
 1. Clean Maven cache: `rm -rf ~/.m2/repository/com/nabla/`
-2. Verify Java version: `java -version` (should be 11+)
+2. Verify Java version: `java -version` (should be 25)
 3. Check Maven settings: Ensure using Maven Central, not private Nexus
 4. Skip problematic plugins: Use `-Dmaven.exec.skip=true` to skip frontend build
 

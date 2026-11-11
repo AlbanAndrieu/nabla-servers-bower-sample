@@ -49,15 +49,14 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
    cd nabla-servers-bower-sample
    ```
 
-2. **Build the project**
+2. **Build the project** (Java 25 and Node 26, see `mise.toml`)
    ```bash
-   ./mvnw clean package -DskipTests -Dmaven.exec.skip=true
+   ./mvnw clean package   # also runs npm ci and npm run build:front
    ```
 
 3. **Run the application**
    ```bash
-   npm ci && npm run build:front   # AngularJS libraries + CSS into app/
-   ./mvnw jetty:run-war -Dmaven.exec.skip=true
+   ./mvnw jetty:run-war
    ```
 
 4. **Test the application**
@@ -78,10 +77,10 @@ This skips the frontend build which requires Node.js:
 
 ### Full Build (with Frontend)
 
-If you have Node.js installed and want to build frontend assets:
+`npm ci` then `npm run build:front` copy the AngularJS libraries to `app/vendor` and compile the SCSS:
 
 ```bash
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true ./mvnw clean package
+./mvnw clean package
 ```
 
 ### Build Output
@@ -96,7 +95,7 @@ After a successful build, you'll find:
 ### Using Jetty Maven Plugin (Development)
 
 ```bash
-./mvnw jetty:run-war -Dmaven.exec.skip=true
+./mvnw jetty:run-war
 ```
 
 The application will be available at:
