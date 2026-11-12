@@ -73,3 +73,6 @@ once that checkout is free.
 - KICS scans what the project ships (`src`, `ansible`, `k8s`, `packs`,
   `Dockerfile`) and fails on high/medium findings.
 - The `soos.yml` and `Vault` workflows are disabled in the Actions settings.
+- Nexus down (homelab outage, Cloudflare 52x): `Build Maven` warns and resolves
+  from Maven Central, and `Build Docker` gets no Nexus secret. A bad Access token
+  (login page) still fails the job.

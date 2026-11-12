@@ -273,6 +273,13 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
+			<!-- MOXy only needs mail for MIME attachments, unused here; angus-mail 2.0.3 has CVE-2025-7962 -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.angus</groupId>
+					<artifactId>angus-mail</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!--  Jersey Client required for test *and runtime* due to Jersey bug : https://java.net/jira/browse/JERSEY-2104 -->
 		<!-- This dependency can be scoped to test when Jersey is upgraded to >=2.4 -->

@@ -60,6 +60,8 @@ jobs:
     # if: github.actor!= 'dependabot-preview[bot]'   # ignore the pull request which comes from user depbot.
     name: Build Maven
     runs-on: ubuntu-26.04
+    outputs:
+      use-nexus: ${{ steps.nexus.outputs.use-nexus }}
     steps:
       - uses: actions/checkout@v7
 
@@ -74,26 +76,33 @@ jobs:
           key: maven-${{ hashFiles('pom.xml') }}
           restore-keys: maven-
 
-      # Access answers a bad token with its HTML login page, which Maven would cache as artifacts
+      # Access answers a bad token with its HTML login page, which Maven would cache as artifacts.
+      # A homelab outage (Cloudflare 52x, no answer) falls back to Maven Central instead of failing.
       - name: Check Nexus access
+        id: nexus
         env:
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
           [ -n "${CF_ACCESS_CLIENT_ID:-}" ] || exit 0
-          curl -sS -o /dev/null -w '%{http_code} %{content_type} %{redirect_url}\n' \
+          status=$(curl -sS -o /dev/null -w '%{http_code} %{content_type}' --max-time 30 \
             -H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET" \
-            https://nexus.albandrieu.com/repository/maven-public/kr/motd/maven/os-maven-plugin/1.7.0/os-maven-plugin-1.7.0.jar \
-            | tee /dev/stderr | grep -q '^200 application/java-archive'
+            https://nexus.albandrieu.com/repository/maven-public/kr/motd/maven/os-maven-plugin/1.7.0/os-maven-plugin-1.7.0.jar) || true
+          echo "Nexus: $status"
+          case "$status" in
+            "200 application/java-archive") echo "use-nexus=true" >> "$GITHUB_OUTPUT" ;;
+            000* | 5*) echo "::warning::Nexus unreachable ($status), resolving from Maven Central" ;;
+            *) exit 1 ;;
+          esac
 
       # the frontend (scripts/build-frontend.mjs) is built by the Dockerfile FRONTEND stage
       - name: Build with Maven
         env:
           CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
-        # resolve through nexus.albandrieu.com once the Cloudflare Access service token secrets exist
+          USE_NEXUS: ${{ steps.nexus.outputs.use-nexus }}
         run: |
-          if [ -n "${CF_ACCESS_CLIENT_ID:-}" ]; then set -- -s settings.xml; fi
+          if [ "$USE_NEXUS" = true ]; then set -- -s settings.xml; fi
           ./mvnw -B package -Dmaven.exec.skip=true "$@"
 
   build-docker:
@@ -134,10 +143,10 @@ jobs:
           tags: |
             ${{ env.IMAGE }}:sha-${{ github.sha }}
             ${{ github.ref == 'refs/heads/master' && format('{0}:latest', env.IMAGE) || '' }}
-          # Maven resolves through nexus.albandrieu.com (Cloudflare Access service token)
+          # Maven resolves through nexus.albandrieu.com (Cloudflare Access service token) when the build-maven check reached it
           secrets: |
-            cf_access_client_id=${{ secrets.CF_ACCESS_CLIENT_ID }}
-            cf_access_client_secret=${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+            cf_access_client_id=${{ needs.build-maven.outputs.use-nexus == 'true' && secrets.CF_ACCESS_CLIENT_ID || '' }}
+            cf_access_client_secret=${{ needs.build-maven.outputs.use-nexus == 'true' && secrets.CF_ACCESS_CLIENT_SECRET || '' }}
           # load the image in the local daemon so Trivy scans this build, not the registry one
           load: true
           # every non-fork build goes to ghcr.io (GITHUB_TOKEN, no long-lived secret); latest only on master
