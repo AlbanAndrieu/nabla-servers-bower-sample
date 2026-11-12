@@ -24,7 +24,6 @@
     "src/test/java/**",
     "src/main/config/demo-base/**",
     "scripts/docker-build-runtime-*.sh",
-    "docker-compose/**",
     "docker/ubuntu16/**",
     "docker/ubuntu18/**"
   ]

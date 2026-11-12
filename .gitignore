@@ -4,7 +4,6 @@
 .env.secrets
 .waypoint/
 **/*.log
-docker-compose/data
 .repository
 docker-dive-stats.json
 scan-report*.md
