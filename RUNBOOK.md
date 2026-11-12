@@ -59,8 +59,6 @@ once that checkout is free.
 
 | Date | What |
 | --- | --- |
-| 2027-02-10 | `osv-scanner.toml`: minimatch ignore, check that eslint supports minimatch 11 |
-| 2027-05-10 | `osv-scanner.toml`: AngularJS 1.8.3 end-of-life ignores |
 | Next Jetty 12.1 release | Add the `dos` module back in the `Dockerfile` (broken in 12.1.15) |
 
 ## 6. Known CI behaviours

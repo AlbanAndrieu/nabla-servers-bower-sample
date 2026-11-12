@@ -9,17 +9,14 @@
 //Check order in bower.json
 
 // fonts are copied to app/vendor by scripts/build-frontend.mjs
-$icon-font-path: "../vendor/bootstrap-sass/assets/fonts/bootstrap/";
 $fa-font-path: "../vendor/font-awesome/fonts";
-@import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "bootstrap/scss/bootstrap";
 @import "font-awesome/scss/font-awesome.scss";
 
 //@import "nabla-styles/app/styles/nabla-bootstrap.scss";
 
-@import "mixins";
 @import "components/header";
 @import "views/about";
-@import "components/loading";
 
 // Workaround for bad position of warning
 
@@ -130,18 +127,6 @@ body {
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;
-  }
-}
-
-#app-loading-wrapper {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-
-  .app-loading {
-    @include circleLoader(50px);
   }
 }
 
