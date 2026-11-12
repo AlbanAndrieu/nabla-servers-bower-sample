@@ -90,6 +90,9 @@
   "optionalDependencies": {
     "fsevents": "2.3"
   },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  },
   "scripts": {
     "build:front": "node scripts/build-frontend.mjs",
     "eslint": "eslint .",
