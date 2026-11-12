@@ -97,4 +97,6 @@ jobs:
         run: |
           helm package packs/helm-sample/charts --destination .cr-release-packages
           cr upload --owner AlbanAndrieu --git-repo nabla-servers-bower-sample --commit "$GITHUB_SHA" --skip-existing
+          # cr 1.7 exits when --index-path is neither an existing directory nor a file called index.yaml
+          mkdir -p .cr-index
           cr index --owner AlbanAndrieu --git-repo nabla-servers-bower-sample --index-path .cr-index --push
