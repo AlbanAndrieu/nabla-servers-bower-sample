@@ -29,8 +29,6 @@ dist/
 
 scripts/
 !scripts/build-frontend.mjs
-docker/
-docker-compose/data/*
 megalinter-reports/
 */target*
 

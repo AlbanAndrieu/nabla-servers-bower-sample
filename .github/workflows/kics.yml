@@ -22,7 +22,7 @@ jobs:
       - name: Mkdir results-dir
         run: mkdir -p results-dir
 
-      # what the project ships; docker-compose/ is the legacy local monitoring stack
+      # only what the project ships
       - name: Run KICS Scan with SARIF result
         uses: checkmarx/kics-github-action@v2.1.19
         with:

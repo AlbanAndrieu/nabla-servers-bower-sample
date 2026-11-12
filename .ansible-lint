@@ -7,7 +7,6 @@ exclude_paths:
   - ./packs/
   - ../../../../home/albandrieu/.cache
   - ./scripts/microscanner-wrapper/
-  - ./docker-compose/configs/
   - ansible/main.yml
 # parseable: true
 # quiet: true

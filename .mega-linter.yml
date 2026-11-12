@@ -28,10 +28,6 @@ DISABLE_LINTERS:
   - REPOSITORY_SYFT
   - REPOSITORY_KICS
   - REPOSITORY_GRYPE
-  - TERRAFORM_TERRAGRUNT
-  - TERRAFORM_TERRASCAN
-  - TERRAFORM_TFLINT
-  - TERRAFORM_KICS
   - PYTHON_MYPY
   - PYTHON_PYRIGHT
   - PYTHON_PYLINT
@@ -75,8 +71,6 @@ REPOSITORY_CHECKOV_DISABLE_ERRORS_IF_LESS_THAN: 3
 # repo.maven.apache.org answers 429 to GitHub runners: resolve poms from Google's Maven Central mirror
 REPOSITORY_OSV_SCANNER_ARGUMENTS: --maven-registry https://maven-central.storage-download.googleapis.com/maven2
 REPOSITORY_TRIVY_SBOM_ARGUMENTS: --offline-scan
-TERRAFORM_TERRASCAN_ARGUMENTS: -i terraform -t docker -t github -d terraform # -f myfile.tf
-TERRAFORM_TERRASCAN_DISABLE_ERRORS: true
 REPOSITORY_GITLEAKS_DISABLE_ERRORS: false
 REPOSITORY_GITLEAKS_ARGUMENTS: --no-git
 REPOSITORY_SECRETLINT_DISABLE_ERRORS: false
@@ -93,8 +87,6 @@ YAML_V8R_FILE_NAMES_REGEX:
     '.gitlab-ci.yml',
     '.mega-linter.yml',
     '.checkov.yml',
-    'terraform/nomad/jobs/files/alertmanager/alertmanager.yml',
-    'terraform/nomad/jobs/files/prometheus/prom-nomad-rules.yml',
   ]
 EXCLUDED_DIRECTORIES:
   ['.github', '.gitlab-ci', 'node_modules', '.venv', '.direnv', '.mypy_cache']
