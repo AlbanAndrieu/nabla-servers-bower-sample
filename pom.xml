@@ -2,25 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<!-- @version $Revision: $ $Date: $ $Author: $ $State: $ -->
-	<!-- @formatter:off -->
-	<!--
-	<parent>
-		<groupId>com.nabla.project.sample</groupId>
-		<artifactId>sample</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
-		<relativePath></relativePath>
-		 lookup parent from repository
-	</parent>
-	-->
-
-	<!--
-	<parent>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<groupId>org.springframework.boot</groupId>
-		<version>2.2.0.RELEASE</version>
-	</parent>
-        -->
 
 	<groupId>com.nabla.project.sample</groupId>
 	<artifactId>bower-sample</artifactId>
@@ -41,10 +22,6 @@
 		<system>GitHub Issues</system>
 		<url>https://github.com/AlbanAndrieu/nabla-servers-bower/issues</url>
 	</issueManagement>
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>${JOB_URL}</url>
-	</ciManagement>
 
 	<!--TODO see jetty demo-base code at https://github.com/eclipse/jetty.project/blob/master/tests/test-webapps/test-jetty-webapp/pom.xml -->
 	<properties>
@@ -60,32 +37,15 @@
 		<!-- 9443 is used by zap see jetty-ssl.xml in src/main/config/demo-base/etc -->
 		<cargo.protocol>http</cargo.protocol>
 
-		<commons.io.version>2.21.0</commons.io.version>
-		<commons.version>1.10</commons.version>
-		<docker.compose.version>0.9.9</docker.compose.version>
 		<documentation.output.directory>${basedir}/docs</documentation.output.directory>
-		<doxia.core.version>1.8</doxia.core.version>
 		<doxia.version>1.11.1</doxia.version>
 		<groovy.version>5.1.3</groovy.version>
 		<groovydoc.directory.name>groovydocs</groovydoc.directory.name>
-		<guava.version>14.0.1</guava.version>
-		<guice.version>4.1.0</guice.version>
 		<hamcrest.version>2.2</hamcrest.version>
-		<hibernate.common.version>4.0.5.Final</hibernate.common.version>
-		<hibernate.javax.persistence.version>1.0.0.Final</hibernate.javax.persistence.version>
-		<hibernate.version>4.3.6.Final</hibernate.version>
 
 		<jacoco.version>0.8.16</jacoco.version>
-		<java.ws.version>2.0</java.ws.version>
-		<javax.jsp.api.version>2.0</javax.jsp.api.version>
-		<javax.validation.version>2.0.1.Final</javax.validation.version>
 
 		<jdk.level>25</jdk.level>
-		<jdk.version>${jdk.level}</jdk.version>
-		<!--
-		<jdk.level>1.8</jdk.level>
-		<jdk.version>1.8.0</jdk.version>
-    -->
 		<jersey.bom.version>${jersey.version}</jersey.bom.version>
 		<jersey.version>3.1.12</jersey.version>
 		<jetty.jmxremote.rmihost>localhost</jetty.jmxremote.rmihost>
@@ -94,110 +54,51 @@
 		<jetty.ssl.port>9443</jetty.ssl.port>
 		<jetty.stop.port>8089</jetty.stop.port>
 
-		<!--
-		<javax.ws.rs-api.version>2.0</javax.ws.rs-api.version>
-		<validation.api.version>1.1.0.Final</validation.api.version>
-		-->
-
-		<!--<jetty9.version>9.4.28.v20200408</jetty9.version>-->
-		<jetty9.version>9.4.58.v20250814</jetty9.version>
 		<jetty12.version>12.1.15</jetty12.version>
-		<!-- <jetty9.version>9.4.44.v20210927</jetty9.version> NOK -->
 
 		<jmockit.version>1.50</jmockit.version>
 		<jsr305.version>2.0.3</jsr305.version>
 		<junit.bom.version>5.14.4</junit.bom.version>
-		<junit.version>4.13.2</junit.version>
 		<logback.version>1.5.34</logback.version>
-		<!-- error 1.5.0 Unsupported class file major version 65 -->
 		<maven.assembly.plugin.version>3.8.0</maven.assembly.plugin.version>
 		<maven.build.helper.plugin.version>3.6.1</maven.build.helper.plugin.version>
 		<maven.buildnumber.plugin.version>3.3.0</maven.buildnumber.plugin.version>
-		<maven.bundle.plugin.version>4.2.0</maven.bundle.plugin.version>
-		<maven.cargo.maven2.plugin.version>1.9.0</maven.cargo.maven2.plugin.version>
 		<maven.cargo.maven3.plugin.version>1.10.26</maven.cargo.maven3.plugin.version>
 		<maven.clean.plugin.version>3.5.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
 		<maven.dependency.check.plugin.version>10.0.4</maven.dependency.check.plugin.version>
 		<maven.dependency.plugin.version>3.10.0</maven.dependency.plugin.version>
 		<maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
-		<maven.dockerfile.plugin.version>1.4.4</maven.dockerfile.plugin.version>
-		<maven.enforcer.plugin.version>3.0.0</maven.enforcer.plugin.version>
 		<maven.exec.plugin.version>3.6.2</maven.exec.plugin.version>
 		<maven.exec.skip>false</maven.exec.skip>
 		<maven.fabric8-docker-maven.plugin.version>0.48.1</maven.fabric8-docker-maven.plugin.version>
-		<maven.fabric8.docker.plugin.version>0.26.1</maven.fabric8.docker.plugin.version>
-		<maven.failsafe.plugin.version>${maven.surefire.plugin.version}</maven.failsafe.plugin.version>
 
-		<maven.frontend.plugin.version>1.12.0</maven.frontend.plugin.version>
 		<maven.git-commit-id.plugin.version>4.9.10</maven.git-commit-id.plugin.version>
-		<maven.git.commit.id.plugin.version>2.2.4</maven.git.commit.id.plugin.version>
 		<maven.gmavenplus.plugin.version>4.3.1</maven.gmavenplus.plugin.version>
 		<maven.install.plugin.version>2.5.2</maven.install.plugin.version>
 		<maven.jacoco.plugin.version>${jacoco.version}</maven.jacoco.plugin.version>
 		<maven.jar.plugin.version>3.5.1</maven.jar.plugin.version>
-		<maven.jarsigner.plugin.version>3.1.0</maven.jarsigner.plugin.version>
-		<maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
-		<maven.javafx.plugin.version>8.8.3</maven.javafx.plugin.version>
-		<maven.jaxrs.analyzer.plugin.version>0.16</maven.jaxrs.analyzer.plugin.version>
-		<maven.jenkinsfile.plugin.version>1.0.1</maven.jenkinsfile.plugin.version>
 		<maven.jetty.eclipse.plugin.version>${jetty12.version}</maven.jetty.eclipse.plugin.version>
-		<maven.jgitflow.plugin.version>1.0-m5.1</maven.jgitflow.plugin.version>
 		<maven.lifecycle.mapping.version>1.0.0</maven.lifecycle.mapping.version>
-		<maven.nexus.staging.plugin.version>1.6.8</maven.nexus.staging.plugin.version>
-		<maven.openapi.generator.plugin.version>4.3.1</maven.openapi.generator.plugin.version>
 		<maven.pitest.plugin.version>1.23.0</maven.pitest.plugin.version>
 		<maven.project.info.reports.plugin.version>3.9.0</maven.project.info.reports.plugin.version>
 		<maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
-		<maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
 		<maven.site.plugin.version>3.21.0</maven.site.plugin.version>
-		<maven.sonar.plugin.version>3.7.0.1746</maven.sonar.plugin.version>
 		<maven.sortpom.plugin.version>4.0.0</maven.sortpom.plugin.version>
 		<maven.spotbugs.plugin.version>4.9.8.2</maven.spotbugs.plugin.version>
 		<spotbugs.version>4.9.8</spotbugs.version>
-		<!--<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>-->
 		<maven.surefire.plugin.version>3.6.1</maven.surefire.plugin.version>
-		<maven.tomcat7.plugin.version>2.2</maven.tomcat7.plugin.version>
-		<maven.toolchains.plugin.version>3.0.0</maven.toolchains.plugin.version>
 		<maven.war.plugin.version>3.5.1</maven.war.plugin.version>
-		<maven.zkm.plugin.version>1.0.3</maven.zkm.plugin.version>
-		<maven.zkm.version>12.0.0</maven.zkm.version>
-		
-		<mapstruct.version>1.5.5.Final</mapstruct.version>
 
-		<!--<node.version>9.3.0</node.version> FreeNas -->
-		<!--<node.version>8.9.3</node.version> NOK -->
-		<!--<node.version>7.8.0</node.version> Ubuntu -->
-		<!--<node.version>12.16.1</node.version>-->
-		<node.version>14.19.0</node.version>
-		<npm.version>6.14.16</npm.version>
-
-		<org.umlgraph.umlgraph.version>5.6.6</org.umlgraph.umlgraph.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<prometheus.version>1.3.5</prometheus.version>
-		<restfulaudit.version>1.2.2</restfulaudit.version>
 		<server.version>${jetty.version}</server.version>
 		<slf4j.version>2.0.20</slf4j.version>
 		<sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
-		<!--<spring.cloud.version>Hoxton.SR6</spring.cloud.version>-->
-		<!--<spring.cloud.starter.parent.version>Hoxton.RELEASE</spring.cloud.starter.parent.version>
-		<spring.boot.starter.parent.version>2.3.12.RELEASE</spring.boot.starter.parent.version>-->
-		<!--<spring.boot.admin.version>2.2.3</spring.boot.admin.version>-->
-
-		<sun.jsf.version>2.2.7</sun.jsf.version>
-		<swagger.annotations.version>1.5.20</swagger.annotations.version>
-		<swagger2.version>2.9.2</swagger2.version>
-
-		<testcontainers.version>1.9.1</testcontainers.version>
-
-		<!-- jenkins cargo 8182,8183 -->
-		<tomcat.port>8280</tomcat.port>
 		<webdriver.base.url>${cargo.protocol}://${cargo.host}:${cargo.port}</webdriver.base.url>
-		<yarn.version>1.22.22</yarn.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
-			
+
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-bom</artifactId>
@@ -238,30 +139,9 @@
 				<artifactId>groovy</artifactId>
 				<version>${groovy.version}</version>
 			</dependency>
-			<!--
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-parent</artifactId>
-				<version>${spring.cloud.starter.parent.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
--->
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!--
-        <dependency>
-                <groupId>com.sun.faces</groupId>
-                <artifactId>jsf-api</artifactId>
-                <scope>${scope.tomcat.never.type}</scope>
-        </dependency>
-        <dependency>
-                <groupId>com.sun.faces</groupId>
-                <artifactId>jsf-impl</artifactId>
-                <scope>${scope.tomcat.never.type}</scope>
-        </dependency>
-        -->
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -286,7 +166,6 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
-			<!--<scope>test</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.inject</groupId>
@@ -324,7 +203,6 @@
 			<optional>true</optional>
 			<!-- needed only for annotations -->
 		</dependency>
-
 
 		<!-- no Spring, Guava nor lombok code: their jars only brought Netty/Jackson CVEs into the war -->
 		<dependency>
@@ -513,12 +391,6 @@
 						<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
 						<centralAnalyzerEnabled>false</centralAnalyzerEnabled>
 						<nexusAnalyzerEnabled>false</nexusAnalyzerEnabled>
-						<!--
-            <cveUrl12Modified>http://albandrieu.com/download/nist/nvdcve-Modified.xml.gz</cveUrl12Modified>
-            <cveUrl20Modified>http://albandrieu.com/download/nist/nvdcve-2.0-Modified.xml.gz</cveUrl20Modified>
-            <cveUrl12Base>http://albandrieu.com/download/nist/nvdcve-%d.xml</cveUrl12Base>
-            <cveUrl20Base>http://albandrieu.com/download/nist/nvdcve-2.0-%d.xml</cveUrl20Base>
-            -->
 					</configuration>
 				</plugin>
 				<plugin>
@@ -534,13 +406,6 @@
 						<encoding>${project.build.sourceEncoding}</encoding>
 					</configuration>
 					<dependencies>
-						<!--
-						<dependency>
-							<groupId>org.apache.maven.doxia</groupId>
-							<artifactId>doxia-core</artifactId>
-							<version>${doxia.core.version}</version>
-						</dependency>
-            -->
 						<dependency>
 							<groupId>org.apache.maven.doxia</groupId>
 							<artifactId>doxia-site-renderer</artifactId>
@@ -553,29 +418,10 @@
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>${maven.jacoco.plugin.version}</version>
 					<configuration>
-						<!-- includes> <include>com.test.project.**</include> </includes -->
 						<dumpOnExit>true</dumpOnExit>
 						<append>true</append>
 						<output>file</output>
-						<!--classDumpDir>${project.build.directory}/jacoco-instrumented</classDumpDir -->
 					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jarsigner-plugin</artifactId>
-					<version>${maven.jarsigner.plugin.version}</version>
-					<configuration>
-						<!--<verbose>true</verbose>-->
-						<certs>true</certs>
-					</configuration>
-					<executions>
-						<execution>
-							<id>verify</id>
-							<goals>
-								<goal>verify</goal>
-							</goals>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>io.fabric8</groupId>
@@ -653,21 +499,10 @@
 						<fileset>
 							<directory>${project.basedir}</directory>
 							<includes>
-								<!--
-                                <include>.bower/</include>
-                                <include>.node_cache/</include>
-                                <include>.node_tmp/</include>
-                                <include>.tmp/</include>
-                                <include>.sass-cache/</include>
-                                <include>node_modules/</include>
-                                <include>node/</include>
-                                -->
 								<include>bower_components/</include>
-								<!-- bower install is not installing bower_components/angular/angular.js properly -->
 								<include>lib/</include>
 								<include>docs/</include>
 								<include>dist/</include>
-								<!--<include>build/</include> -->
 							</includes>
 							<excludes>
 								<!-- Allow mvn clean install > install.log -->
@@ -679,24 +514,6 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>com.sebastian-daschner</groupId>
-				<artifactId>jaxrs-analyzer-maven-plugin</artifactId>
-				<version>${maven.jaxrs.analyzer.plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>analyze-jaxrs</goal>
-						</goals>
-						<configuration>
-							<backend>plaintext</backend>
-							<deployedDomain>localhost</deployedDomain>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-      -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -745,20 +562,6 @@
 					<release>${jdk.level}</release>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-toolchains-plugin</artifactId>
-				<version>${maven.toolchains.plugin.version}</version>
-				<configuration>
-					<toolchains>
-						<jdk>
-							<version>[11,)</version>
-						</jdk>
-					</toolchains>
-				</configuration>
-			</plugin>
-      -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
@@ -798,111 +601,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>${maven.frontend.plugin.version}</version>
-                <executions>
-                    -->
-			<!--install \-\-no-optional
-                    <execution>
-                        <id>install node and npm</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    -->
-			<!--
-                    <execution>
-                        <id>install node and yarn</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>install-node-and-yarn</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>yarn install</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    -->
-			<!--
-                    <execution>
-                        <id>grunt prepare</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>prepare</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>grunt check</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>check</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>grunt unit-test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>unit-test</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>grunt prepare-package</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>grunt</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>package</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <nodeVersion>v${node.version}</nodeVersion>
-                    <yarnVersion>v${yarn.version}</yarnVersion>
-                    -->
-			<!-- <nodeDownloadRoot>http://albandrieu.com/html/download/nodejs/</nodeDownloadRoot>
-                        <npmDownloadRoot>http://albandrieu.com/html/download/npm/-/</npmDownloadRoot>
-                        <yarnDownloadRoot>http://albandrieu.com/html/download//yarn/</yarnDownloadRoot>   -->
-			<!--<workingDirectory>./</workingDirectory>-->
-			<!--
-                    <srcdir>${basedir}/app</srcdir>
-                    <outputdir>${project.build.directory}/dist</outputdir>
-                    <triggerfiles>
-                        <triggerfile>Gruntfile.js</triggerfile>
-                        <triggerfile>package.json</triggerfile>
-                    </triggerfiles>
-                </configuration>
-            </plugin>
-            -->
 			<!-- mvn gplus:generateStubs gplus:groovydoc -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
@@ -958,7 +656,6 @@
 						<phase>package</phase>
 						<configuration>
 							<descriptorRefs>
-								<!--<descriptorRef>config</descriptorRef>-->
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
 							<descriptors>
@@ -968,50 +665,16 @@
 								<addMavenDescriptor>false</addMavenDescriptor>
 								<pomPropertiesFile>false</pomPropertiesFile>
 								<manifest>
-									<!--<addClasspath>true</addClasspath>-->
 									<mainClass>com.test.project.sample.App</mainClass>
 								</manifest>
 								<manifestEntries>
 									<Class-Path>WEB-INF/classes</Class-Path>
 								</manifestEntries>
 							</archive>
-							<!--
-							<archive>
-								<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-                            -->
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<version>${maven.bundle.plugin.version}</version>
-				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<supportedProjectTypes>
-						<supportedProjectType>war</supportedProjectType>
-					</supportedProjectTypes>
-					<instructions>
-						<Import-Package>javax.servlet.jsp.*;version="[2.2.0,3.0)",org.eclipse.jetty.*;version="[$(version;===;${parsedVersion.osgiVersion}),$(version;==+;${parsedVersion.osgiVersion}))",*</Import-Package>
-						<Export-Package>!com.test*</Export-Package>
-						<Web-ContextPath>/</Web-ContextPath>
-						<Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
-					</instructions>
-				</configuration>
-			</plugin>
-            -->
 			<!-- also make this webapp an osgi bundle -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -1033,7 +696,6 @@
 							<addClasspath>true</addClasspath>
 							<mainClass>com.test.project.sample.App</mainClass>
 						</manifest>
-						<!--<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>-->
 					</archive>
 				</configuration>
 			</plugin>
@@ -1043,13 +705,11 @@
 				<version>${maven.pitest.plugin.version}</version>
 			</plugin>
 			<!-- for automatic running of integration tests with Jetty -->
-			<!-- mvn org.codehaus.cargo:cargo-maven2-plugin:run -Dserver=jetty9x -->
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven3-plugin</artifactId>
 				<version>${maven.cargo.maven3.plugin.version}</version>
 				<configuration>
-					<!--<skip>${maven.test.skip}</skip>-->
 					<wait>${cargo.wait}</wait>
 					<container>
 						<!-- 5 minutes -->
@@ -1063,29 +723,11 @@
 						<log>${project.build.directory}/cargo.log</log>
 						<logLevel>debug</logLevel>
 						<systemProperties>
-							<!--<java.io.tmpdir>target/tmp</java.io.tmpdir>-->
 							<log4j.debug>true</log4j.debug>
 						</systemProperties>
-						<!--
-            <dependencies>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </dependency>
-            </dependencies>
-            -->
 					</container>
 					<configuration>
 						<properties>
-							<!--							<cargo.protocol>${cargo.protocol}</cargo.protocol>-->
 							<cargo.hostname>${cargo.host}</cargo.hostname>
 							<cargo.servlet.port>${cargo.port}</cargo.servlet.port>
 							<cargo.tomcat.manager.url>${deploy.url}</cargo.tomcat.manager.url>
@@ -1094,7 +736,6 @@
 							<cargo.logging>high</cargo.logging>
 							<cargo.start.jvmargs><![CDATA[${cargo.jmx.activation} ${jacoco.agent}]]></cargo.start.jvmargs>
 							<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
-							<!--<cargo.server.settings>jetty9x</cargo.server.settings>-->
 						</properties>
 
 						<configfiles>
@@ -1124,20 +765,6 @@
 							</configfile>
 						</files>
 					</configuration>
-					<!--
-          <deployables>
-              <deployable>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.artifactId}</artifactId>
-                  <type>war</type>
-                  <properties>
-                      <context>/test</context>
-                  </properties>
-                  <pingURL>${cargo.protocol}://${cargo.host}:${cargo.port}/</pingURL>
-                  <pingTimeout>60000</pingTimeout>
-              </deployable>
-          </deployables>
-          -->
 				</configuration>
 			</plugin>
 			<!-- launch mvn clean install jetty:run-war -->
@@ -1147,75 +774,16 @@
 				<version>${maven.jetty.eclipse.plugin.version}</version>
 				<configuration>
 					<scan>10</scan>
-					<!-- TODO <jettyConfig>src/main/etc/jetty.xml</jettyConfig> -->
 					<httpConnector>
-						<!--host>localhost</host -->
 						<port>${jetty.port}</port>
 					</httpConnector>
 					<stopPort>${jetty.stop.port}</stopPort>
 					<stopKey>STOP</stopKey>
-					<!--
-                    <systemProperties>
-                        <systemProperty>
-                            <name>fooprop</name>
-                            <value>222</value>
-                        </systemProperty>
-                    </systemProperties>
-                    -->
 					<webApp>
 						<contextPath>/test</contextPath>
 						<tempDirectory>${project.build.directory}/work</tempDirectory>
-						<!--
-                        <sessionHandler implementation="org.eclipse.jetty.server.session.SessionHandler">
-                            <sessionManager implementation="org.eclipse.jetty.server.session.HashSessionManager">
-                                <storeDirectory>${basedir}/target/sessions</storeDirectory>
-                            </sessionManager>
-                        </sessionHandler>
-                        -->
 					</webApp>
 				</configuration>
-			</plugin>
-			<!-- Allow this web application to be started with the command : 'mvn
-                tomcat7:run' -->
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${maven.tomcat7.plugin.version}</version>
-				<configuration>
-					<!-- http port -->
-					<port>${tomcat.port}</port>
-					<path>/test</path>
-					<!--<contextFile>${basedir}/src/main/webapp/META-INF/context.xml</contextFile> -->
-					<addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
-					<!--
-            <systemProperties>
-                <java.security.auth.login.config>${basedir}/conf/jaas.config</java.security.auth.login.config>
-            </systemProperties>
-            -->
-					<url>${deploy.url}</url>
-					<username>${cargo.remote.user}</username>
-					<password>${cargo.remote.password}</password>
-					<addContextWarDependencies>true</addContextWarDependencies>
-					<addWarDependenciesInClassloader>true</addWarDependenciesInClassloader>
-					<!--<configurationDir>${basedir}</configurationDir> -->
-					<!--<server>nabla-tomcat</server> -->
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>${project.groupId}</groupId>
-						<artifactId>${project.artifactId}</artifactId>
-						<version>${project.version}</version>
-						<type>war</type>
-					</dependency>
-					<!--
-                    <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.client.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                        <scope>runtime</scope>
-                    </dependency>
-                    -->
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -1233,9 +801,7 @@
 							<outputDirectory>${project.build.directory}/${project.build.finalName}/bower_components</outputDirectory>
 							<resources>
 								<resource>
-									<!--<directory>${basedir}/bower_components/</directory>-->
 									<directory>bower_components</directory>
-									<!--<include>*.[MIME-TYPE]</include>-->
 									<filtering>false</filtering>
 								</resource>
 							</resources>
@@ -1243,25 +809,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-            <plugin>
-                <groupId>com.sinapsi.memtracker</groupId>
-                <artifactId>mem-tracker-maven-plugin</artifactId>
-                <version>${maven.mem.tracker.maven.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>track</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <port>${cargo.monitoring.jmx.rmi.port}</port>
-                </configuration>
-            </plugin>
-            -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -1288,44 +835,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven.shade.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>com.test.project.sample.App</Main-Class>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <createDependencyReducedPom>true</createDependencyReducedPom>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-            </plugin>
-            -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -1349,110 +858,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- mvn jenkinsfile:validate -->
-			<plugin>
-				<groupId>com.andyserver.maven.plugins</groupId>
-				<artifactId>jenkinsfile-maven-plugin</artifactId>
-				<version>${maven.jenkinsfile.plugin.version}</version>
-				<configuration>
-					<server>${env.JENKINS_URL}</server>
-					<username>${env.JENKINS_USER}</username>
-					<password>${env.JENKINS_USER_TOKEN}</password>
-				</configuration>
-			</plugin>
-			<!--
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${maven.spring.boot.plugin.version}</version>
-                <configuration>
-                  <excludes>
-                    <exclude>
-                      <groupId>org.projectlombok</groupId>
-                      <artifactId>lombok</artifactId>
-                    </exclude>
-                    <exclude>
-                      <groupId>org.springframework.boot</groupId>
-                      <artifactId>spring-boot-configuration-processor</artifactId>
-                    </exclude>
-                  </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-              <groupId>org.openapitools</groupId>
-              <artifactId>openapi-generator-maven-plugin</artifactId>
-              <version>${maven.openapi.generator.plugin.version}</version>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>generate</goal>
-                  </goals>
-                  <configuration>-->
-			<!--<inputSpec>${project.basedir}/src/main/resources/client/api.yaml</inputSpec>-->
-			<!--
-                    <inputSpec>${project.basedir}/src/main/resources/public/api.yaml</inputSpec>-->
-			<!--<generatorName>java</generatorName>-->
-			<!--
-                    <generatorName>spring</generatorName>
-                    <configOptions>
-                       <sourceFolder>src/generated/java/main</sourceFolder>
-                                     <java8>true</java8>
-                                     <dateLibrary>java8</dateLibrary>
-                                     <interfaceOnly>true</interfaceOnly>
-                                     <apiPackage>com.test.project.sample.client.rest.api</apiPackage>
-                                     <modelPackage>com.test.project.sample.client.rest.model</modelPackage>
-                                     <configPackage>com.test.project.sample.client.rest.configuration</configPackage>-->
-			<!--<library>spring-cloud</library>-->
-			<!--
-                    </configOptions>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-            -->
-			<plugin>
-				<groupId>external.atlassian.jgitflow</groupId>
-				<artifactId>jgitflow-maven-plugin</artifactId>
-				<version>${maven.jgitflow.plugin.version}</version>
-				<configuration>
-					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
-						<developBranchName>develop</developBranchName>
-						<featureBranchPrefix>feature/</featureBranchPrefix>
-						<releaseBranchPrefix>release/</releaseBranchPrefix>
-						<hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-						<versionTagPrefix>version/</versionTagPrefix>
-					</flowInitContext>
-					<noDeploy>true</noDeploy>
-					<squash>true</squash>
-
-					<pullDevelop>false</pullDevelop>
-					<scmCommentPrefix>[RELEASE]</scmCommentPrefix>
-
-					<!-- Enable this to push to origin using SSH keys -->
-					<enableSshAgent>true</enableSshAgent>
-					<!-- Keep your maven submodules at the same version as the parent POM -->
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<!--
-                      Pusing in-development features to origin allows all devs to see what each other
-                      are working on
-                    -->
-					<pushFeatures>false</pushFeatures>
-					<!--
-                      This allows the CI server (e.g. Jenkins) to automatically push new releases to
-                      origin; you can then either manually deploy them or, if you are doing Continuous
-                      Deployments, auto-deploy them to prod
-                    -->
-					<pushReleases>false</pushReleases>
-					<!--
-                      Hot Fixes should be pushed to origin as well so that any dev can pick them up
-                    -->
-					<pushHotfixes>false</pushHotfixes>
-					<allowSnapshots>true</allowSnapshots>
-					<alwaysUpdateOrigin>false</alwaysUpdateOrigin>
-					<pullMaster>false</pullMaster>
-				</configuration>
-			</plugin>
 		</plugins>
 		<extensions>
 			<extension>
@@ -1473,33 +878,6 @@
 
 	<profiles>
 
-		<!-- mvn clean install jfx:native -Pjavafx
-        <profile>
-            <id>javafx</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.zenjava</groupId>
-                        <artifactId>javafx-maven-plugin</artifactId>
-                        <version>${maven.javafx.plugin.version}</version>
-                        <configuration>
-                            <mainClass>com.almonde.WSEntryPoint</mainClass>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-            <dependencies>
-                <dependency>
-                  <groupId>com.oracle</groupId>
-                  <artifactId>javafx</artifactId>
-                  <version>${com.oracle.javafx.version}</version>
-                  <scope>system</scope>
-                  <systemPath>${project.basedir}/lib/jfxrt.jar</systemPath>
-                  <optional>true</optional>
-                </dependency>
-            </dependencies>
-        </profile>
-        -->
 		<profile>
 			<id>config</id>
 			<activation>
@@ -1572,21 +950,9 @@
 								<cargo.remote.username>${cargo.remote.user}</cargo.remote.username>
 								<cargo.remote.password>${cargo.remote.password}</cargo.remote.password>
 								<cargo.logging>high</cargo.logging>
-								<!-- <cargo.start.jvmargs><![CDATA[${jacoco.agent} ${cargo.jmx.activation}]]></cargo.start.jvmargs> -->
 								<!-- -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005 -->
 								<cargo.jetty.createContextXml>false</cargo.jetty.createContextXml>
 							</properties>
-							<!--
-              <container>
-                  <timeout>300000</timeout>
-                  <containerId>${cargo.container}</containerId>
-                  <artifactInstaller>
-                      <groupId>org.eclipse.jetty</groupId>
-                      <artifactId>jetty-distribution</artifactId>
-                      <version>${server.version}</version>
-                  </artifactInstaller>
-              </container>
-              -->
 							<configuration>
 								<type>${cargo.configuration.type}</type>
 								<properties>
@@ -1616,28 +982,6 @@
 							</execution>
 						</executions>
 					</plugin>
-					<!-- DISABLE because it is too slow mvnw dependency-check:check
-					<plugin>
-						<groupId>org.owasp</groupId>
-						<artifactId>dependency-check-maven</artifactId>
-						<version>${maven.dependency.check.plugin.version}</version>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<goals>
-									<goal>check</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<format>XML</format>
-							<skipProvidedScope>true</skipProvidedScope>
-							<skipRuntimeScope>true</skipRuntimeScope>
-							<skipSystemScope>true</skipSystemScope>
-							<assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-						</configuration>
-					</plugin>
-          -->
 				</plugins>
 			</build>
 		</profile>
@@ -1646,17 +990,12 @@
 			<activation>
 				<property>
 					<name>!profile.activation</name>
-					<!--
-					<name>server</name>
-					<value>jetty9x</value>
-					 -->
 				</property>
 			</activation>
 			<properties>
 				<cargo.configuration.type>standalone</cargo.configuration.type>
 				<cargo.container>jetty12x</cargo.container>
 				<cargo.container.home>${project.build.directory}/jetty</cargo.container.home>
-				<!--<cargo.container.url>TODOjetty9</cargo.container.url> -->
 				<cargo.container.type>installed</cargo.container.type>
 				<cargo.deployables.type></cargo.deployables.type>
 				<cargo.jmx.activation>${cargo.jetty.jmx.activation}</cargo.jmx.activation>
@@ -1722,24 +1061,5 @@
 				</dependency>
 			</dependencies>
 		</profile>
-		<!--
-    <profile>
-            <id>default-tools.jar</id>
-            <activation>
-                    <file>
-                            <exists>${java.home}/lib/tools.jar</exists>
-                    </file>
-            </activation>
-            <dependencies>
-                    <dependency>
-                            <groupId>com.sun</groupId>
-                            <artifactId>tools</artifactId>
-                            <version>${jdkVersion}</version>
-                            <scope>system</scope>
-                            <systemPath>${java.home}/lib/tools.jar</systemPath>
-                    </dependency>
-            </dependencies>
-    </profile>
-    -->
 	</profiles>
 </project>

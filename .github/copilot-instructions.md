@@ -124,13 +124,6 @@ curl http://localhost:9090/test/rest/books/test
 export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ```
 
-### Issue: Missing properties (asm.ow2.version, mapstruct.version)
-**Solution**: These are now defined in pom.xml:
-```xml
-<asm.ow2.version>9.2</asm.ow2.version>
-<mapstruct.version>1.5.5.Final</mapstruct.version>
-```
-
 ### Issue: Web resources directory not found (dist)
 **Solution**: Changed to use `app/` directory:
 ```xml
