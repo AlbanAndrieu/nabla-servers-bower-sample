@@ -1,1 +1,0 @@
-/home/albandrieu/w/nabla/env/scripts/jenkins/step-2-0-0-build-env.sh
