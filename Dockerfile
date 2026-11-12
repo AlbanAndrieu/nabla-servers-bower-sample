@@ -34,6 +34,11 @@ FROM eclipse-temurin:25-jre-resolute AS RUNTIME
 LABEL name="nabla-servers-bower-sample" vendor="TEST" version="2.3.0"
 LABEL description="Nabla bower sample war running on Jetty 12"
 
+# the base image lags behind Ubuntu security updates (Trivy: perl-base, libpcre2, apt)
+RUN apt-get update && \
+    apt-get upgrade -y --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
+
 # uid above 10000 so it never matches a host user (KICS "Container Running With Low UID")
 ARG UID=10000
 ARG GID=10000

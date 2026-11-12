@@ -1,5 +1,0 @@
-[gerrit]
-host=gerrit-review.googlesource.com
-scheme=https
-project=nabla-servers-bower-sample.git
-defaultbranch=master

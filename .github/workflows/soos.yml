@@ -1,11 +1,14 @@
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   soos-sca-analysis:
     name: SOOS SCA Scan
     runs-on: ubuntu-26.04
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v7
     - name: Run SOOS Scan
       uses: soos-io/soos-sca-github-action@v2
       with:
