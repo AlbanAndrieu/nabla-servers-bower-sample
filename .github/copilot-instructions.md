@@ -3,7 +3,7 @@
 ## Project Overview
 This is a Maven-based Java web application that demonstrates a Bower sample with Jetty server deployment. The project combines:
 - **Backend**: Java 25 with Jakarta REST (Jersey 3.1) APIs and Groovy 5
-- **Frontend**: AngularJS 1.8, libraries from npm copied to `app/vendor` by `npm run build:front`
+- **Frontend**: static Bootstrap 5 pages in English, views loaded by a small hash router (`app/scripts/app.js`), libraries from npm copied to `app/vendor` by `npm run build:front`
 - **Server**: Eclipse Jetty 12.1 (ee10), `jetty-home` distribution in the Ubuntu 26.04 image
 - **Frontend**: HTML/JavaScript/CSS assets in the `app/` directory
 - **Build**: Maven 3.x with custom profiles and configurations

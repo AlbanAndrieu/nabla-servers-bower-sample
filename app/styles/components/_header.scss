@@ -1,20 +1,3 @@
-.navbar-header .navbar-toggle {
-  float: left;
-  margin-left: ($grid-gutter-width / 2);
-}
-
-.language-select {
-  $height: $font-size-base * $line-height-base + 14px;
-
-  line-height: $height;
-  margin-top: 8px;
-
-  select {
-    appearance: menulist-button;
-    height: $height;
-  }
-}
-
 /* Page headers */
 .bs-header {
   padding: 30px 15px 40px; /* side padding builds on .container 15px, so 30px */

@@ -29,7 +29,7 @@ export default [
     files: ["app/**/*.js"],
     languageOptions: {
       sourceType: "script",
-      globals: { ...globals.browser, angular: "readonly" },
+      globals: { ...globals.browser, bootstrap: "readonly" },
     },
   },
   {

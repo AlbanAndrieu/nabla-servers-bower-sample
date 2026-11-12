@@ -28,7 +28,7 @@ A Maven-based Java web application demonstrating a Bower sample with Eclipse Jet
 
 - ✅ **Java 25** backend with Jakarta REST (Jersey 3.1) APIs and Groovy 5
 - ✅ **Eclipse Jetty 12.1** (ee10, Servlet 6) on Ubuntu 26.04
-- ✅ **AngularJS 1.8** frontend, libraries from npm (`npm run build:front`)
+- ✅ **Static Bootstrap 5** frontend in English, views loaded by a small hash router (`app/scripts/app.js`), libraries from npm (`npm run build:front`)
 - ✅ **Maven** build system with wrapper
 - ✅ **Integration tests** with JUnit
 - ✅ **Static content** serving (HTML, CSS, JavaScript)
@@ -77,7 +77,7 @@ This skips the frontend build which requires Node.js:
 
 ### Full Build (with Frontend)
 
-`npm ci` then `npm run build:front` copy the AngularJS libraries to `app/vendor` and compile the SCSS:
+`npm ci` then `npm run build:front` copy Bootstrap 5 and the other frontend libraries to `app/vendor` and compile the SCSS:
 
 ```bash
 ./mvnw clean package
@@ -230,7 +230,7 @@ public class MyResource {
 3. Rebuild and test:
    ```bash
    ./mvnw clean package -DskipTests -Dmaven.exec.skip=true
-   npm ci && npm run build:front   # AngularJS libraries + CSS into app/
+   npm ci && npm run build:front   # Bootstrap 5 + CSS into app/
    ./mvnw jetty:run-war -Dmaven.exec.skip=true
    curl http://localhost:9090/test/rest/myresource
    ```

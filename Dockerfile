@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# AngularJS libraries (npm) and compiled SCSS, see scripts/build-frontend.mjs
+# Bootstrap 5 and other frontend libraries (npm) and compiled SCSS, see scripts/build-frontend.mjs
 FROM node:26-slim AS FRONTEND
 
 WORKDIR /front
