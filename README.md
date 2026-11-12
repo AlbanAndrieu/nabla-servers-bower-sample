@@ -193,8 +193,8 @@ Key properties in `pom.xml`:
 <properties>
     <jetty.port>9090</jetty.port>           <!-- Jetty HTTP port -->
     <jetty.stop.port>8089</jetty.stop.port> <!-- Jetty shutdown port -->
-    <jdk.level>11</jdk.level>               <!-- Java version -->
-    <jetty9.version>9.4.58.v20250814</jetty9.version>
+    <jdk.level>25</jdk.level>               <!-- Java version -->
+    <jetty12.version>12.1.15</jetty12.version>
 </properties>
 ```
 

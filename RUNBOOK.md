@@ -66,8 +66,9 @@ once that checkout is free.
 - `repo.maven.apache.org` answers 429 to GitHub runners: MegaLinter's osv-scanner
   reads Google's Maven Central mirror and trivy-sbom runs offline
   (`.mega-linter.yml`).
-- FOSSA (`License Compliance`, `Security Analysis`, `Dependency Quality`) reports
-  findings that are only visible on app.fossa.com; no check is required on `master`.
+- FOSSA is disconnected: its repository webhook is removed, so the `License
+  Compliance`, `Security Analysis` and `Dependency Quality` checks no longer run.
+  Dependabot, Trivy and the MegaLinter scanners cover dependencies.
 - `master` requires signed commits: MegaLinter no longer pushes fix commits
   (`APPLY_FIXES: none`), run `npx prettier --write <files>` before pushing.
 - KICS scans what the project ships (`src`, `ansible`, `k8s`, `packs`,
