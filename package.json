@@ -27,7 +27,7 @@
     "bootstrap": "5.3.9",
     "font-awesome": "4.7.0",
     "github-fork-ribbon-css": "0.2.3",
-    "sass": "1.108.1",
+    "sass": "1.108.2",
     "social-likes-next": "^1.1.0"
   },
   "devDependencies": {

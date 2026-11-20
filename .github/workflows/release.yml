@@ -85,7 +85,7 @@ jobs:
 
       - name: Install chart-releaser
         if: steps.semrel.outputs.version
-        uses: helm/chart-releaser-action@v1.7.0
+        uses: helm/chart-releaser-action@v1.9.0
         with:
           install_only: true
 
