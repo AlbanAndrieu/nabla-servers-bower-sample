@@ -80,7 +80,7 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - uses: azure/setup-helm@v4
+      - uses: azure/setup-helm@v5
         if: steps.semrel.outputs.version
 
       - name: Install chart-releaser
