@@ -24,7 +24,7 @@ jobs:
 
       # only what the project ships
       - name: Run KICS Scan with SARIF result
-        uses: checkmarx/kics-github-action@v2.1.19
+        uses: checkmarx/kics-github-action@v2.2.1
         with:
           path: src,ansible,k8s,packs,Dockerfile
           fail_on: high,medium
